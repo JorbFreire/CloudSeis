@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello, World!</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-config type="toml">
+      packages = ["numpy", "fs", "seismicio"]
+    </py-config>
+    <py-env>
+    paths
+        ./globals.py
+        ./myscript.py
+    </py-env>
+  </head>
+  <body>
+    <script>
+      console.log(SUFileAsBase64String)
+    </script>
+    <py-script src='globals.py'></py-script>
+    <py-script src='myscript.py'></py-script>
+    <script src="controll_input.js"></script>
+    <p id="counter-target">Some Placeholder Text</p>
+    <input id="input-text" type="text" py-change="log_file()" />
+    <input id="input-file" type="file" py-change="log_file()" />
+    <button id="debug-button" py-click="add_one()">
+      click
+    </button>
+    <py-repl></py-repl>
+    <div id="output">Outputs here</div>
+    <img id="preview">
+  </body>
+</html>
