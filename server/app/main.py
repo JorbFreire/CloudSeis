@@ -8,7 +8,7 @@ app.config['UPLOAD_FOLDER'] = "static"
 @app.route("/su-file", methods=['GET'])
 def showSuFile():
     try:
-        return send_file('static/marmousi_CS.su')
+        return send_file('../static/marmousi_CS.su')
     except Exception as e:
         return str(e)
 
