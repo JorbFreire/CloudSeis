@@ -17,6 +17,3 @@ def createSuFile():
     file = request.files['file']
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
     return { "file": "saved" }
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
