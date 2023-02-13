@@ -3,17 +3,17 @@ import api from '../../services/api'
 import { Container } from "./styles"
 
 interface SeismicVisualizationProps {
-  fileKey: string
+  unique_filename: string
 }
 
-export default function SeismicVisualization({ fileKey }: SeismicVisualizationProps) {
+export default function SeismicVisualization({ unique_filename }: SeismicVisualizationProps) {
   const [plotDiv, setPlotDiv] = useState("")
   const [plotScript, setPlotScript] = useState("")
 
   useEffect(() => {
     const getPlotHTML = async () => {
       try {
-        const response = await api.get('/get-plot')
+        const response = await api.get(`/get-plot/${unique_filename}`)
         setPlotDiv(response.data.div)
         setPlotScript(response.data.script)
       } catch (error) {
@@ -32,7 +32,7 @@ export default function SeismicVisualization({ fileKey }: SeismicVisualizationPr
 
   return (
     <Container>
-      <h1>Key: {fileKey}</h1>
+      <h1>File name: {unique_filename}</h1>
       <div dangerouslySetInnerHTML={{ __html: plotDiv }} />
     </Container>
   )

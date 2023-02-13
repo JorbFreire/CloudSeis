@@ -5,6 +5,6 @@ export default function SeismicVisualizationPage() {
   const { params } = useMatch()
 
   return (
-    <SeismicVisualizationView fileKey={params.key} />
+    <SeismicVisualizationView unique_filename={params.unique_filename} />
   )
 }

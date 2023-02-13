@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, FormEvent } from 'react'
+import api from '../../services/api'
 import { useNavigate } from '@tanstack/react-location'
-import { Container, FileInput, StartButton } from './styles'
+import { Container, FileInput, Button } from './styles'
 
 interface IProjectProps {
   projectName?: string
@@ -10,32 +10,49 @@ interface IProjectProps {
 export default function Project({ projectName }: IProjectProps) {
   const navigate = useNavigate()
   const [SUFiles, setSUFiles] = useState<FileList | null>()
-  const [readingFile, setReadingFile] = useState(false)
+  const [lastFileName, setLastFileName] = useState("")
+  const [loading, setLoading] = useState(false)
 
+  const openDataWindow = () => navigate({ to: `/seismic-visualization/${lastFileName}` })
 
-  const openDataWindow = () => navigate({ to: '/seismic-visualization/0' })
+  const submitFiles = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (SUFiles && !loading) {
+      setLoading(true)
 
-  useEffect(() => {
-    if (SUFiles && !readingFile) {
-      setReadingFile(true)
+      const formData = new FormData();
+      formData.append('file', SUFiles[0]);
+
       try {
-        axios.get('https://localhost:3001')
+        const response = await api.post('/su-file', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        setLastFileName(response.data.unique_filename)
       } catch (error) {
-
+        console.error(error)
       }
+
+      setLoading(false)
     }
-  }, [SUFiles])
+  }
 
   return (
-    <Container>
+    <Container onSubmit={submitFiles}>
       <h1>{projectName}</h1>
       <FileInput
         type="file"
         onChange={(event) => setSUFiles(event.target.files)}
       />
-      <StartButton onClick={openDataWindow}>
+
+      <Button type='submit'>
+        {loading ? 'uploading...' : 'Upload'}
+      </Button>
+
+      <Button onClick={openDataWindow}>
         Display Seismic Data
-      </StartButton>
+      </Button>
     </Container>
   )
 }
