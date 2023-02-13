@@ -28,8 +28,7 @@ def createSuFile():
 
 @app.route("/get-plot/<unique_filename>", methods=['GET'])
 def showPlotHtmlTags(unique_filename):
-    print(unique_filename)
-    script, div = getPlot()
+    script, div = getPlot(unique_filename)
     return jsonify({
         "script": script,
         "div": div
