@@ -2,7 +2,9 @@ import os
 from datetime import datetime
 from flask import Flask, send_file, request, jsonify
 from flask_cors import CORS
+
 from .plot import getPlot
+from .runSeismicUnix import runSeismicUnix
 
 app = Flask(__name__)
 CORS(app)
@@ -33,3 +35,12 @@ def showPlotHtmlTags(unique_filename):
         "script": script,
         "div": div
     })
+
+@app.route("/su-files/<unique_filename>/filters", methods=['PUT'])
+def updateSuFile(unique_filename):
+    updateOptions = request.form.get("updateOptions")
+    runSeismicUnix(unique_filename, updateOptions)
+    return jsonify({
+        "status": "file updated"
+    })
+ 
