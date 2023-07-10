@@ -1,20 +1,34 @@
-
-from os import getcwd
 from bokeh.plotting import figure
 from bokeh.embed import components
 from seismicio import readsu
 
-x = [1, 2, 3, 4, 5]
-y = [6, 7, 2, 4, 5]
+from .getFilePath import getFilePath
 
 # create a new plot with a title and axis labels
 def getPlot (unique_filename):
-	file_path = getcwd() + '/static/' + unique_filename
-	traces_data, headers = readsu(file_path)
+	file_path = getFilePath(unique_filename)
+	suData = readsu(file_path)
 
-	p = figure(title="Simple lane example", x_axis_label="x", y_axis_label="y")
-	p.line(x, y, legend_label="Temp.", line_width=2)
+	shot_gather = suData.get_shot_gather(100)
 
-	script, div = components(p)
+	plot = figure()
+	plot.x_range.range_padding = 0
+	plot.y_range.range_padding = 0
+
+	plot.image(
+		image=[shot_gather],
+		x=0,
+		y=100,
+		dw=100,
+		dh=100,
+		anchor="top_left",
+		origin="top_left",
+		palette="Greys256",
+		level="image"
+	)
+
+	plot.grid.visible = False
+
+	script, div = components(plot)
 
 	return script, div
