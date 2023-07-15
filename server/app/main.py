@@ -36,9 +36,10 @@ def showPlotHtmlTags(unique_filename):
         "div": div
     })
 
-@app.route("/su-files/<unique_filename>/filters", methods=['PUT'])
+@app.route("/su-file/<unique_filename>/filters", methods=['PUT'])
 def updateSuFile(unique_filename):
-    updateOptions = request.form.get("updateOptions")
+    data = request.get_json()
+    updateOptions = data["updateOptions"]
     runSeismicUnix(unique_filename, updateOptions)
     return jsonify({
         "status": "file updated"
