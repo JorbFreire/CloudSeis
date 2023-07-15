@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seismic Data Visualizer</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-config type="json" src="./config.json"></py-config>
+    <py-env>
+    paths
+        ./plot.py
+        ./decode.py
+    </py-env>
+  </head>
+  <body>
+    <header class="tools-bar">
+      <button>Zoom</button>
+
+      <div class="divider"></div>
+
+      <section class="change-trace">
+        <button><</button>
+        <input type="number" name="selectedTrace" value="2">
+        <button>></button>    
+      </section>
+
+      <div class="divider"></div>
+      
+      <section class="view-tooling">
+        <button>View \/</button>
+        <button>Picking</button>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="edit-tooling">
+        <button>Gain</button>
+        <button>Clip</button>
+      </section>
+    </header>
+
+    <main class="plot-content">
+    </main>
+
+    <footer class="shot-status">  
+    </footer>
+  </body>
+</html>
