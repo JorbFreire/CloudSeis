@@ -6,7 +6,7 @@ from ..getFilePath import getFilePath
 
 # create a new plot with a title and axis labels
 class PlotRepository:
-	def show(unique_filename):
+	def show(self, unique_filename):
 		file_path = getFilePath(unique_filename)
 		suData = readsu(file_path)
 

@@ -4,10 +4,10 @@ from datetime import datetime
 from ..getFilePath import getFilePath
 
 class SeismicFileRepository:
-	def _getParameter(parameterValues: list | str | float | int | bool) -> str:
+	def _getParameter(self, parameterValues: list | str | float | int | bool) -> str:
 		parameterValuesProcessString = ""
 		if not isinstance(parameterValues, list):
-			parameterValuesProcessString += f'{parameterValue}'
+			parameterValuesProcessString += f'{parameterValues}'
 			return parameterValuesProcessString
 		
 		for index, parameterValue in enumerate(parameterValues):
@@ -51,6 +51,6 @@ class SeismicFileRepository:
 		seismicUnixProcessString = self._getSemicUnixCommandString(seismicUnixCommandsQueue, source_file_path, changed_file_path)
 		try:
 			process_output = subprocess.check_output(seismicUnixProcessString, shell=True)
-			return process_output
+			return str(process_output)
 		except Exception as error:
 			return str(error)
