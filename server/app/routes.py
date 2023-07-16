@@ -26,6 +26,12 @@ def createSuFile():
 @router.route("/su-file/<unique_filename>/filters", methods=['PUT'])
 def updateSuFile(unique_filename):
     data = request.get_json()
+    if data == None:
+        return jsonify(
+            {"Error": "No body"}, 
+            status=400
+        )
+
     updateOptions = data["updateOptions"]
     process_output = seismicFileRepository.update(unique_filename, updateOptions)
     return jsonify({
