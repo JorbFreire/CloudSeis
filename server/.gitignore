@@ -1,4 +1,5 @@
 venv/
-static/*
 __pycache__
+.pytest_cache
+static/*
 !.gitkeep
