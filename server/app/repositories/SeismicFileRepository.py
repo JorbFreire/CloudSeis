@@ -36,11 +36,11 @@ class SeismicFileRepository:
 		return seismicUnixProcessString
 
 
-	def create(file, app) -> str:
+	def create(self, file) -> str:
 		unique_filename = file.filename.replace(".su", "_").replace(" ", "_")
 		unique_filename = unique_filename + datetime.now().strftime("%d%m%Y_%H%M%S") + ".su"
 
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+		file.save(os.path.join("static", unique_filename))
 		return unique_filename
 
 
