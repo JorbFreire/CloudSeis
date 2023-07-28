@@ -1,14 +1,12 @@
 from flask import Blueprint, send_file, request, jsonify
 
-from .repositories.PlotRepository import PlotRepository
-from .repositories.SeismicFileRepository import SeismicFileRepository
+from ..repositories.SeismicFileRepository import SeismicFileRepository
 
-router = Blueprint("routes", __name__)
-
-plotRepository = PlotRepository()
+suFileRouter = Blueprint("su-file-routes", __name__, url_prefix="/su-file")
 seismicFileRepository = SeismicFileRepository()
 
-@router.route("/su-file", methods=['GET'])
+# ? note sure if this "/ should be keep or not" 
+@suFileRouter.route("/", methods=['GET'])
 def showSuFile():
     try:
         return send_file('../static/marmousi_CS.su')
@@ -16,14 +14,15 @@ def showSuFile():
         return str(error)
 
 
-@router.route("/su-file", methods=['POST'])
+# ? note sure if this "/ should be keep or not" 
+@suFileRouter.route("/", methods=['POST'])
 def createSuFile():
     file = request.files['file']
     unique_filename = seismicFileRepository.create(file)
     return { "unique_filename": unique_filename }
 
 
-@router.route("/su-file/<unique_filename>/filters", methods=['PUT'])
+@suFileRouter.route("/<unique_filename>/filters", methods=['PUT'])
 def updateSuFile(unique_filename):
     data = request.get_json()
     if data == None:
@@ -37,12 +36,4 @@ def updateSuFile(unique_filename):
     return jsonify({
         "process_output": process_output
     })
- 
 
-@router.route("/get-plot/<unique_filename>", methods=['GET'])
-def showPlotHtmlTags(unique_filename):
-    script, div = plotRepository.show(unique_filename)
-    return jsonify({
-        "script": script,
-        "div": div
-    })
