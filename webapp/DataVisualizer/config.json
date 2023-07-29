@@ -1,7 +1,0 @@
-{
-  "packages": [
-    "numpy",
-    "fs",
-    "seismicio"
-  ]
-}
