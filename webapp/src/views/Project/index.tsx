@@ -15,6 +15,11 @@ interface IProjectProps {
 
 interface ITreeline {
   id: string
+  workflows: Array<IWorkflow> 
+}
+
+interface IWorkflow {
+  id: string
 }
 
 export default function Project({ projectName }: IProjectProps) {
@@ -23,6 +28,8 @@ export default function Project({ projectName }: IProjectProps) {
   const [lastFileName, setLastFileName] = useState("")
   const [loading, setLoading] = useState(false)
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
+  const [nextId, setNextId] = useState(1) 
+  const [nextWorkflowId, setNextWorkflowId] = useState(1) 
 
   const openDataWindow = () => navigate({ to: `/seismic-visualization/${lastFileName}` })
 
@@ -49,35 +56,58 @@ export default function Project({ projectName }: IProjectProps) {
     }
   }
 
-  const treeView = () => {
-    const tempTreelines = treelines
-    tempTreelines.push({id: `${Math.random()}`})
+  const createLine = () => {
+    const newLine = {
+      id: String(nextId),
+      workflows: [] 
+    }
 
-    setTreelines([...tempTreelines])
+    setTreelines((prevTreelines) => [...prevTreelines, newLine])
+    setNextId((prevId) => prevId + 1) 
+  }
+
+  const createWorkflow = (lineId: string) => {
+    const newWorkflow = {
+      id: String(nextWorkflowId)
+    }
+
+    setTreelines((prevTreelines) =>
+      prevTreelines.map((treeline) => {
+        if (treeline.id === lineId) {
+          return {
+            ...treeline,
+            workflows: [...treeline.workflows, newWorkflow] 
+          }
+        }
+        return treeline
+      })
+    )
+
+    setNextWorkflowId((prevId) => prevId + 1) 
   }
 
   return (
-  
     <Container onSubmit={submitFiles}>
-
       <TreeView
         aria-label="file system navigator"
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
         sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
       >
-
-        <Button onClick={treeView}>
+        <Button onClick={createLine}>
           Create Line
         </Button>
 
-          {treelines.map((treeline) => (
-            <TreeItem nodeId={treeline.id} label={`Line ${treeline.id}`}>
-              <Button className='workFlowButton'>Create Workflow</Button>
-            </TreeItem>
-          ))}
-        
-
+        {treelines.map((treeline) => (
+          <TreeItem key={treeline.id} nodeId={treeline.id} label={`Line ${treeline.id}`}>
+            <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
+              Create Workflow
+            </Button>
+            {treeline.workflows.map((workflow) => (
+              <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
+            ))}
+          </TreeItem>
+        ))}
 
         <TreeItem nodeId="5" label="Documents">
           <TreeItem nodeId="10" label="OSS" />
