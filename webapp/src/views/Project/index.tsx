@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react'
 import api from '../../services/api'
 import { useNavigate } from '@tanstack/react-location'
-import { Container, FileInput, Button } from './styles'
+import { Container, FileInput, Button, ConsoleContainer } from './styles'
 
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -87,49 +87,61 @@ export default function Project({ projectName }: IProjectProps) {
   }
 
   return (
-    <Container onSubmit={submitFiles}>
-      <TreeView
-        aria-label="file system navigator"
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-        sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-      >
-        <Button onClick={createLine}>
-          Create Line
+    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+      <Container onSubmit={submitFiles}>
+        <TreeView
+          aria-label="file system navigator"
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+          sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+        >
+          <Button onClick={createLine}>
+            Create Line
+          </Button>
+
+          {treelines.map((treeline) => (
+            <TreeItem key={treeline.id} nodeId={treeline.id} label={`Line ${treeline.id}`}>
+              <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
+                Create Workflow
+              </Button>
+              {treeline.workflows.map((workflow) => (
+                <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
+              ))}
+            </TreeItem>
+          ))}
+
+        </TreeView>
+
+        <h1>{projectName}</h1>
+        <FileInput
+          type="file"
+          onChange={(event) => setSUFiles(event.target.files)}
+        />
+
+        <Button type='submit'>
+          {loading ? 'uploading...' : 'Upload'}
         </Button>
 
-        {treelines.map((treeline) => (
-          <TreeItem key={treeline.id} nodeId={treeline.id} label={`Line ${treeline.id}`}>
-            <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
-              Create Workflow
-            </Button>
-            {treeline.workflows.map((workflow) => (
-              <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
-            ))}
-          </TreeItem>
-        ))}
+        <Button onClick={openDataWindow}>
+          Display Seismic Data
+        </Button>
+      </Container>
 
-        <TreeItem nodeId="5" label="Documents">
-          <TreeItem nodeId="10" label="OSS" />
-          <TreeItem nodeId="6" label="MUI">
-            <TreeItem nodeId="8" label="index.js" />
-          </TreeItem>
-        </TreeItem>
-      </TreeView>
+      <ConsoleContainer>
+        <TreeView
+          aria-label="file system navigator"
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+          sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+          >
 
-      <h1>{projectName}</h1>
-      <FileInput
-        type="file"
-        onChange={(event) => setSUFiles(event.target.files)}
-      />
-
-      <Button type='submit'>
-        {loading ? 'uploading...' : 'Upload'}
-      </Button>
-
-      <Button onClick={openDataWindow}>
-        Display Seismic Data
-      </Button>
-    </Container>
+          <Button>
+            Create Console
+          </Button>
+          
+        </TreeView>
+      </ConsoleContainer>
+    </div>
+    
   )
 }
