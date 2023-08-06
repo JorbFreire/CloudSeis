@@ -13,13 +13,13 @@ export const Container = styled.form`
 `
 
 export const ConsoleContainer = styled.div`
-  background-color: #6A5ACD;
+  background-color: #808080;
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Align at the bottom */
-  align-items: center;
-  /* position: fixed; */
+  justify-content: flex-end; 
+  align-items: left;
+  position: fixed;
   bottom: 0; 
   width: 100%;
   height: 20vh;
@@ -28,7 +28,19 @@ export const ConsoleContainer = styled.div`
 `
 
 export const VariableContainer = styled.div`
-
+  background-color: #808080;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0; 
+  width: 25%;
+  height: 35vh;
+  gap: 8px;
+  z-index: 10;
 `
 
 export const FileInput = styled.input``

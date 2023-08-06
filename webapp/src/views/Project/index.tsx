@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react'
 import api from '../../services/api'
 import { useNavigate } from '@tanstack/react-location'
-import { Container, FileInput, Button, ConsoleContainer } from './styles'
+import { Container, FileInput, Button, ConsoleContainer, VariableContainer } from './styles'
 
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -87,61 +87,81 @@ export default function Project({ projectName }: IProjectProps) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-      <Container onSubmit={submitFiles}>
-        <TreeView
-          aria-label="file system navigator"
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-          sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-        >
-          <Button onClick={createLine}>
-            Create Line
-          </Button>
-
-          {treelines.map((treeline) => (
-            <TreeItem key={treeline.id} nodeId={treeline.id} label={`Line ${treeline.id}`}>
-              <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
-                Create Workflow
-              </Button>
-              {treeline.workflows.map((workflow) => (
-                <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
-              ))}
-            </TreeItem>
-          ))}
-
-        </TreeView>
-
-        <h1>{projectName}</h1>
-        <FileInput
-          type="file"
-          onChange={(event) => setSUFiles(event.target.files)}
-        />
-
-        <Button type='submit'>
-          {loading ? 'uploading...' : 'Upload'}
-        </Button>
-
-        <Button onClick={openDataWindow}>
-          Display Seismic Data
-        </Button>
-      </Container>
-
-      <ConsoleContainer>
-        <TreeView
-          aria-label="file system navigator"
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-          sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+    <div>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '80vh' }}>
+        <Container onSubmit={submitFiles}>
+          <TreeView
+            aria-label="file system navigator"
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
           >
+            <Button onClick={createLine}>
+              Create Line
+            </Button>
 
-          <Button>
-            Create Console
+            {treelines.map((treeline) => (
+              <TreeItem key={treeline.id} nodeId={treeline.id} label={`Line ${treeline.id}`}>
+                <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
+                  Create Workflow
+                </Button>
+                {treeline.workflows.map((workflow) => (
+                  <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
+                ))}
+              </TreeItem>
+            ))}
+
+          </TreeView>
+
+          <h1>{projectName}</h1>
+          <FileInput
+            type="file"
+            onChange={(event) => setSUFiles(event.target.files)}
+          />
+
+          <Button type='submit'>
+            {loading ? 'uploading...' : 'Upload'}
           </Button>
-          
-        </TreeView>
-      </ConsoleContainer>
+
+          <Button onClick={openDataWindow}>
+            Display Seismic Data
+          </Button>
+        </Container>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <VariableContainer>
+        <TreeView
+            aria-label="Variables"
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            sx={{ height: 240, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}
+            >
+
+            <h4>
+              BotoView
+            </h4>
+            
+          </TreeView>
+        </VariableContainer>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+        <ConsoleContainer>
+            <TreeView
+              aria-label="Console"
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpandIcon={<ChevronRightIcon />}
+              sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+              >
+
+              <h4>
+                Console
+              </h4>
+              
+            </TreeView>
+          </ConsoleContainer>
+      </div>
     </div>
-    
   )
 }
