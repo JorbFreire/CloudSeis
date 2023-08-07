@@ -22,9 +22,31 @@ pip3 install -r requirements.txt
 flask run
 ```
 
+
+#### Database
+To create an SQLite database for dev env run:
+```bash
+flask db migrate
+``` 
+It will return an error because there is no change to create a new migration, 
+but it shall create a ``db.sqlite3`` file if not already existent.
+<br />
+<br />
+
+*(not sure if the next step is required)*
+
+To run the migrations, run on your terminal in the server folder:
+```bash
+flask db upgrade
+```
+To create a new migration:
+```bash
+flask db migrate -m 'Nigration Name'
+```
+
 ### Run the Webapp
 
-Once inside the `webapp` folder, install its dependencies and run the dev environment as shown below.
+Once inside the `Webapp` folder, install its dependencies and run the dev environment as shown below.
 ```bash
 yarn
 ```
