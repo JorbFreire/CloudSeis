@@ -41,7 +41,7 @@ flask db upgrade
 ```
 To create a new migration:
 ```bash
-flask db migrate -m 'Nigration Name'
+flask db migrate -m 'Migration Name'
 ```
 
 ### Run the Webapp
