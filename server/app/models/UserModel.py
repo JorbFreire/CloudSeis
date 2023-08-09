@@ -1,5 +1,6 @@
 import sqlalchemy as dbTypes
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
+from typing import List
 
 from ..database.connection import database
 from .SeismicProjectModel import SeismicProjectModel
@@ -13,6 +14,5 @@ class UserModel(database.Model): # type: ignore
 	email = dbTypes.Column(dbTypes.String)
 	password = dbTypes.Column(dbTypes.String)
 
-	seismicProjectIds = dbTypes.ForeignKey("seismic_projects_table.id")
-	seismicProjects = relationship(SeismicProjectModel)
+	seismicProjects: Mapped[List[SeismicProjectModel]] = relationship(SeismicProjectModel)
 

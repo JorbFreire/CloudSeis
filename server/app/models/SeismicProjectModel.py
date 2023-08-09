@@ -1,5 +1,6 @@
 import sqlalchemy as dbTypes
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
+from typing import List
 
 from ..database.connection import database
 from .SeismicLineModel import SeismicLineModel
@@ -11,6 +12,9 @@ class SeismicProjectModel(database.Model): # type: ignore
 	id = dbTypes.Column(dbTypes.Integer, primary_key=True)
 	name = dbTypes.Column(dbTypes.String)
 
-	seismicLineIds = dbTypes.ForeignKey("seismic_lines_table.id")
-	seismicLines = relationship(SeismicLineModel)
+	userId = dbTypes.Column( dbTypes.ForeignKey( \
+		"users_table.id", \
+		name="FK_users_table_seismic_projects_table" \
+	))
+	seismicLines: Mapped[List[SeismicLineModel]] = relationship(SeismicLineModel)
 

@@ -8,7 +8,11 @@ class SeismicComandModel(database.Model): # type: ignore
 
 	id = dbTypes.Column(dbTypes.Integer, primary_key=True)
 	name = dbTypes.Column(dbTypes.String)
-
 	# stringfied JSON 
 	parameters = dbTypes.Column(dbTypes.Text)
+
+	seismicCommandId = dbTypes.Column(dbTypes.ForeignKey( \
+		"seismic_workflows_table.id", \
+		name="FK_seismic_workflows_table_seismic_commands_table") \
+	)
 
