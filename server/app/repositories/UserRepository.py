@@ -1,31 +1,60 @@
+from uuid import uuid4, UUID
+
 from ..database.connection import database
 from ..models.UserModel import UserModel
+from ..errors.AppError import AppError
+
 
 class UserRepository:
+    def showAll(self):
+        users: list[UserModel] = UserModel.query.all()
+        if not users:
+            raise AppError("There are no users", 404)
+
+        return [user.getAttributes() for user in users]
+
+
     def show(self, id) -> UserModel:
-        user = UserModel.query.filter_by(id=id).first()
-        return user
+        user = UserModel.query.filter_by(id=UUID(id)).first()
 
-    def create(self, newUserData) -> UserModel:
-        user = UserModel(newUserData)
-        database.session.add(user)
+        if not user:
+            raise AppError("User does not exist", 404)
+
+        return user.getAttributes()
+
+
+    def create(self, newUserData):
+        user = UserModel.query.filter_by(email=newUserData["email"]).first()
+        if user:
+            raise AppError("Email alredy used")
+
+        newId = uuid4()
+        newUser = UserModel(id=newId, name=newUserData["name"], email=newUserData["email"], password=newUserData["password"])
+        database.session.add(newUser)
         database.session.commit()
-        return user
+        return newUser.getAttributes()
 
-    def update(self, id, newUserData) -> UserModel:
-        user = UserModel.query.filter_by(id=id).first()
 
-        if newUserData.name:
-            user.name = newUserData.name
-        if newUserData.email:
-            user.email = newUserData.email
+    def update(self, id, newUserData):
+        user = UserModel.query.filter_by(id=UUID(id)).first()
+        if not user:
+            raise AppError("User does not exist", 404)
+
+        if "name" in newUserData:
+            user.name = newUserData["name"]
+        if "email" in newUserData:
+            user.email = newUserData["email"]
 
         database.session.commit()
-        return user
+        return user.getAttributes()
+
 
     def delete(self, id):
-        user = UserModel.query.filter_by(id=id).first()
+        user = UserModel.query.filter_by(id=UUID(id)).first()
+        if not user:
+            raise AppError("User does not exist", 404)
+
         database.session.delete(user)
         database.session.commit()
-        pass
+        return user.getAttributes()
 

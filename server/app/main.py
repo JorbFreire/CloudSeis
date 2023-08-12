@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from os import path, getcwd
 
 from .database.connection import database, migrate
 from .routes import router
+from .errors.AppError import AppError
 
 database_root_path = path.join(getcwd(), 'app/database')
 migrations_root_path = path.join(database_root_path, 'migrations')
@@ -19,6 +20,17 @@ database.init_app(app)
 migrate.init_app(app, database, migrations_root_path)
 
 app.register_blueprint(router)
+
+
+@app.errorhandler(AppError)
+def handle_app_exception(error):
+  return jsonify({ "Error": error.message }), error.statusCode
+app.register_error_handler(AppError, handle_app_exception)
+
+@app.errorhandler(Exception)
+def handle_generic_exception(error):
+  return jsonify({ "Error": "Internal server error" }), 500
+app.register_error_handler(Exception, handle_generic_exception)
 
 
 if __name__ == "main":

@@ -9,10 +9,13 @@ from .SeismicProjectModel import SeismicProjectModel
 class UserModel(database.Model): # type: ignore
 	__tablename__ = "users_table"
 
-	id = dbTypes.Column(dbTypes.Integer, primary_key=True)
+	id = dbTypes.Column(dbTypes.Uuid, primary_key=True)
 	name = dbTypes.Column(dbTypes.String)
 	email = dbTypes.Column(dbTypes.String)
 	password = dbTypes.Column(dbTypes.String)
 
 	seismicProjects: Mapped[List[SeismicProjectModel]] = relationship(SeismicProjectModel)
+
+	def getAttributes(self) -> dict[str, str]:
+		return {"id": self.id, "name": self.name, "email": self.email}
 
