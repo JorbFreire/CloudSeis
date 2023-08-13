@@ -13,3 +13,12 @@ def showPlotHtmlTags(unique_filename):
         "div": div
     })
 
+
+@plotRouter.route("/wiggle/<unique_filename>", methods=['GET'])
+def showWigglePlotHtmlTags(unique_filename):
+    script, div = plotRepository.wiggle(unique_filename)
+    return jsonify({
+        "script": script,
+        "div": div
+    })
+

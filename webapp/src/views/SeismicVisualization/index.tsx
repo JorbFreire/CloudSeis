@@ -13,7 +13,7 @@ export default function SeismicVisualization({ unique_filename }: SeismicVisuali
   useEffect(() => {
     const getPlotHTML = async () => {
       try {
-        const response = await api.get(`/get-plot/${unique_filename}`)
+        const response = await api.get(`/get-plot/wiggle/${unique_filename}`)
         setPlotDiv(response.data.div)
         setPlotScript(response.data.script)
       } catch (error) {
