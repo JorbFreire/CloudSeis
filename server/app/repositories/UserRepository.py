@@ -14,7 +14,7 @@ class UserRepository:
         return [user.getAttributes() for user in users]
 
 
-    def show(self, id) -> UserModel:
+    def showById(self, id) -> UserModel:
         user = UserModel.query.filter_by(id=UUID(id)).first()
 
         if not user:
@@ -29,7 +29,12 @@ class UserRepository:
             raise AppError("Email alredy used")
 
         newId = uuid4()
-        newUser = UserModel(id=newId, name=newUserData["name"], email=newUserData["email"], password=newUserData["password"])
+        newUser = UserModel(
+            id=newId,
+            name=newUserData["name"],
+            email=newUserData["email"],
+            password=newUserData["password"]
+        )
         database.session.add(newUser)
         database.session.commit()
         return newUser.getAttributes()
