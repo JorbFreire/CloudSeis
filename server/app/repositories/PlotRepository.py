@@ -38,26 +38,31 @@ class PlotRepository:
 
 	def wiggle(self, unique_filename, sample_positions=None, trace_positions=None, color='black', stretch_factor=0.15):
 		file_path = getFilePath(unique_filename)
-		suData = readsu(file_path).traces
+		suData = readsu(file_path)
+		traces = suData.traces
 
 		# Input check
-		suData, sample_positions, trace_positions, trace_spacing = self._wiggle_input_pre_processing(suData, sample_positions, trace_positions, stretch_factor)    
-		number_of_traces = suData.shape[1]
+		traces, sample_positions, trace_positions, trace_spacing = self._wiggle_input_pre_processing(traces, sample_positions, trace_positions, stretch_factor)    
+		number_of_traces = traces.shape[1]
 
 		plot = figure(
 			x_range=(trace_positions[0] - trace_spacing, trace_positions[-1] + trace_spacing),
 			y_range=(sample_positions[-1], sample_positions[0]),
 			x_axis_location='above',
 		)
-		
+
 		for trace_index in range(number_of_traces):
-			trace = suData[:, trace_index]
+			trace = traces[:, trace_index]
 			offset = trace_positions[trace_index]
 			plot.line(x=trace + offset, y=sample_positions, color=color)
 
-		return plot
+		print("before components(plot)")
+		script, div = components(plot)
+
+		print("pre return")
+		return script, div
 	
-	def _wiggle_input_pre_processing(data, sample_positions, trace_positions, stretch_factor):
+	def _wiggle_input_pre_processing(self, data, sample_positions, trace_positions, stretch_factor):
 		# Input check for data
 		if type(data).__module__ != np.__name__:
 			raise TypeError("data must be a numpy array")

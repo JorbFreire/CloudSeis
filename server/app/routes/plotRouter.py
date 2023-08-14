@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from time import time
 
 from ..repositories.PlotRepository import PlotRepository
 
@@ -16,7 +17,12 @@ def showPlotHtmlTags(unique_filename):
 
 @plotRouter.route("/wiggle/<unique_filename>", methods=['GET'])
 def showWigglePlotHtmlTags(unique_filename):
+    print("showWigglePlotHtmlTags")
+    start = time()
     script, div = plotRepository.wiggle(unique_filename)
+    end = time()
+    print(div)
+    print(end - start)
     return jsonify({
         "script": script,
         "div": div

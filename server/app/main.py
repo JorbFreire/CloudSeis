@@ -27,11 +27,6 @@ def handle_app_exception(error):
   return jsonify({ "Error": error.message }), error.statusCode
 app.register_error_handler(AppError, handle_app_exception)
 
-@app.errorhandler(Exception)
-def handle_generic_exception(error):
-  return jsonify({ "Error": "Internal server error" }), 500
-app.register_error_handler(Exception, handle_generic_exception)
-
 
 if __name__ == "main":
   app.run(debug=True)
