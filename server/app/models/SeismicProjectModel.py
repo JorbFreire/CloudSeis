@@ -18,3 +18,11 @@ class SeismicProjectModel(database.Model): # type: ignore
 	))
 	seismicLines: Mapped[List[SeismicLineModel]] = relationship(SeismicLineModel)
 
+	def getAttributes(self) -> dict[str, str]:
+		return {
+			"id": self.id,
+			"userId": self.userId,
+			"name": self.name,
+			"seismicLines": self.seismicLines,
+		}
+
