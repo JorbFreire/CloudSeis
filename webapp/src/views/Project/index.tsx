@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react'
 import api from '../../services/api'
 import { useNavigate } from '@tanstack/react-location'
-import { Container, FileInput, Button } from './styles'
+import { Container, FileInput, Button, ConsoleContainer, VariableContainer, Text } from './styles'
 
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,7 +14,7 @@ interface IProjectProps {
 }
 
 interface ITreeline {
-  id: string
+  id: string 
 }
 
 export default function Project({ projectName }: IProjectProps) {
@@ -23,6 +23,7 @@ export default function Project({ projectName }: IProjectProps) {
   const [lastFileName, setLastFileName] = useState("")
   const [loading, setLoading] = useState(false)
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
+  const [nextId, setNextId] = useState(1) 
 
   const openDataWindow = () => navigate({ to: `/seismic-visualization/${lastFileName}` })
 
@@ -49,57 +50,71 @@ export default function Project({ projectName }: IProjectProps) {
     }
   }
 
-  const treeView = () => {
-    const tempTreelines = treelines
-    tempTreelines.push({id: `${Math.random()}`})
+  const createLine = () => {
+    const newLine = {
+      id: String(nextId),
+    }
 
-    setTreelines([...tempTreelines])
+    setTreelines((prevTreelines) => [...prevTreelines, newLine])
+    setNextId((prevId) => prevId + 1) 
+    console.log("Created Line")
   }
 
   return (
-  
-    <Container onSubmit={submitFiles}>
-
-      <TreeView
-        aria-label="file system navigator"
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-        sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-      >
-
-        <Button onClick={treeView}>
-          Create Line
-        </Button>
-
-          {treelines.map((treeline) => (
+    <div>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '80vh' }}>
+        <Container onSubmit={submitFiles}>
+          <TreeView
+            aria-label="file system navigator"
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+          >
+            <Button onClick={createLine}>
+              Create Line
+            </Button>
+            
+            {treelines.map((treeline) => (
             <TreeItem nodeId={treeline.id} label={`Line ${treeline.id}`}>
               <Button className='workFlowButton'>Create Workflow</Button>
             </TreeItem>
-          ))}
-        
+            ))}
 
+          </TreeView>
 
-        <TreeItem nodeId="5" label="Documents">
-          <TreeItem nodeId="10" label="OSS" />
-          <TreeItem nodeId="6" label="MUI">
-            <TreeItem nodeId="8" label="index.js" />
-          </TreeItem>
-        </TreeItem>
-      </TreeView>
+          <h1>{projectName}</h1>
+          <FileInput
+            type="file"
+            onChange={(event) => setSUFiles(event.target.files)}
+          />
 
-      <h1>{projectName}</h1>
-      <FileInput
-        type="file"
-        onChange={(event) => setSUFiles(event.target.files)}
-      />
+          <Button type='submit'>
+            {loading ? 'uploading...' : 'Upload'}
+          </Button>
 
-      <Button type='submit'>
-        {loading ? 'uploading...' : 'Upload'}
-      </Button>
+          <Button onClick={openDataWindow}>
+            Display Seismic Data
+          </Button>
+        </Container>
+      </div>
 
-      <Button onClick={openDataWindow}>
-        Display Seismic Data
-      </Button>
-    </Container>
+        <VariableContainer>
+          <div style={{ height: 240, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}>
+
+            <Text>
+              BotoView
+            </Text>
+            
+          </div>
+        </VariableContainer>
+
+        <ConsoleContainer>
+          <div style={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}>
+            <Text>
+              Console
+            </Text>
+          </div>
+        </ConsoleContainer>
+    </div>
   )
 }
