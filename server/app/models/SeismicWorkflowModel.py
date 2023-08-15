@@ -19,3 +19,18 @@ class SeismicWorkflowModel(database.Model): # type: ignore
 	))
 	seismicCommands: Mapped[List[SeismicComandModel]] = relationship(SeismicComandModel)
 
+	def getResumedAttributes(self) -> dict[str, str | list[dict[str, str]]]:
+		return {
+			"id": self.id,
+			"name": self.name,
+		}
+
+	def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
+		return {
+			"id": self.id,
+			"seismicLineId": self.seismicProjectId,
+			"name": self.name,
+			"seismic_file_name": self.seismic_file_name,
+			"seismicCommands": [command.getAttributes() for command in self.seismicCommands],
+		}
+
