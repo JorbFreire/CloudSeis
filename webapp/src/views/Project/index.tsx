@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react'
 import api from '../../services/api'
 import { useNavigate } from '@tanstack/react-location'
-import { Container, FileInput, Button, ConsoleContainer, VariableContainer } from './styles'
+import { Container, FileInput, Button, ConsoleContainer, VariableContainer, Text } from './styles'
 
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,12 +14,7 @@ interface IProjectProps {
 }
 
 interface ITreeline {
-  id: string
-  workflows: Array<IWorkflow> 
-}
-
-interface IWorkflow {
-  id: string
+  id: string 
 }
 
 export default function Project({ projectName }: IProjectProps) {
@@ -29,7 +24,6 @@ export default function Project({ projectName }: IProjectProps) {
   const [loading, setLoading] = useState(false)
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
   const [nextId, setNextId] = useState(1) 
-  const [nextWorkflowId, setNextWorkflowId] = useState(1) 
 
   const openDataWindow = () => navigate({ to: `/seismic-visualization/${lastFileName}` })
 
@@ -59,31 +53,11 @@ export default function Project({ projectName }: IProjectProps) {
   const createLine = () => {
     const newLine = {
       id: String(nextId),
-      workflows: [] 
     }
 
     setTreelines((prevTreelines) => [...prevTreelines, newLine])
     setNextId((prevId) => prevId + 1) 
-  }
-
-  const createWorkflow = (lineId: string) => {
-    const newWorkflow = {
-      id: String(nextWorkflowId)
-    }
-
-    setTreelines((prevTreelines) =>
-      prevTreelines.map((treeline) => {
-        if (treeline.id === lineId) {
-          return {
-            ...treeline,
-            workflows: [...treeline.workflows, newWorkflow] 
-          }
-        }
-        return treeline
-      })
-    )
-
-    setNextWorkflowId((prevId) => prevId + 1) 
+    console.log("Created Line")
   }
 
   return (
@@ -99,16 +73,11 @@ export default function Project({ projectName }: IProjectProps) {
             <Button onClick={createLine}>
               Create Line
             </Button>
-
+            
             {treelines.map((treeline) => (
-              <TreeItem key={treeline.id} nodeId={treeline.id} label={`Line ${treeline.id}`}>
-                <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
-                  Create Workflow
-                </Button>
-                {treeline.workflows.map((workflow) => (
-                  <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
-                ))}
-              </TreeItem>
+            <TreeItem nodeId={treeline.id} label={`Line ${treeline.id}`}>
+              <Button className='workFlowButton'>Create Workflow</Button>
+            </TreeItem>
             ))}
 
           </TreeView>
@@ -129,39 +98,23 @@ export default function Project({ projectName }: IProjectProps) {
         </Container>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <VariableContainer>
-        <TreeView
-            aria-label="Variables"
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            sx={{ height: 240, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}
-            >
+          <div style={{ height: 240, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}>
 
-            <h4>
+            <Text>
               BotoView
-            </h4>
+            </Text>
             
-          </TreeView>
+          </div>
         </VariableContainer>
-      </div>
 
-      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
         <ConsoleContainer>
-            <TreeView
-              aria-label="Console"
-              defaultCollapseIcon={<ExpandMoreIcon />}
-              defaultExpandIcon={<ChevronRightIcon />}
-              sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-              >
-
-              <h4>
-                Console
-              </h4>
-              
-            </TreeView>
-          </ConsoleContainer>
-      </div>
+          <div style={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}>
+            <Text>
+              Console
+            </Text>
+          </div>
+        </ConsoleContainer>
     </div>
   )
 }

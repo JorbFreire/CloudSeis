@@ -33,7 +33,7 @@ export const VariableContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start; 
-  align-items: center;
+  align-items: left;
   position: fixed;
   top: 0;
   right: 0; 
@@ -52,4 +52,9 @@ export const Button = styled.button`
   padding: 8px 16px;
   margin-top: 8px;
   margin-bottom: 8px;
+`
+
+export const Text = styled.text`
+  color: white;
+  padding: 8px 8px;
 `
