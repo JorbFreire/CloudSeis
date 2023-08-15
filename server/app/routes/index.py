@@ -11,6 +11,7 @@ from .seismicComandRouter import seismicComandRouter
 
 router = Blueprint("routes", __name__)
 
+# todo: add body data validator for each route
 router.register_blueprint(suFileRouter)
 router.register_blueprint(plotRouter)
 router.register_blueprint(userRouter)

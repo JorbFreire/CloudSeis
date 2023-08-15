@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 
 from ..repositories.SeismicWorkflowRepository import SeismicWorkflowRepository
 
-seismicWorkflowRouter = Blueprint("seismic-workflow-routes", __name__, url_prefix="/seismicWorkflow")
+seismicWorkflowRouter = Blueprint("seismic-workflow-routes", __name__, url_prefix="/seismic-workflow")
 seismicWorkflowRepository = SeismicWorkflowRepository()
 
 @seismicWorkflowRouter.route("/show/<id>", methods=['GET'])
@@ -36,10 +36,10 @@ def updateSeismicWorkflow(id):
         id,
         data["name"]
     )
-    return jsonify({ updatedSeismicWorkflow })
+    return jsonify(updatedSeismicWorkflow)
 
 @seismicWorkflowRouter.route("/delete/<id>", methods=['DELETE'])
 def deleteSeismicWorkflow(id):
     seismicWorkflow = seismicWorkflowRepository.delete(id)
-    return jsonify({ seismicWorkflow })
+    return jsonify(seismicWorkflow)
 

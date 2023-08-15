@@ -5,7 +5,7 @@ from ..repositories.SeismicLineRepository import SeismicLineRepository
 seismicLineRouter = Blueprint("seismic-line-routes", __name__, url_prefix="/seismic-line")
 seismicLineRepository = SeismicLineRepository()
 
-@seismicLineRouter.route("/show/<seismicProjectId>", methods=['GET'])
+@seismicLineRouter.route("/list/<seismicProjectId>", methods=['GET'])
 def showSeismicLine(seismicProjectId):
     seismicLine = seismicLineRepository.showBySeismicProjectId(seismicProjectId)
     return jsonify(seismicLine)
@@ -35,7 +35,7 @@ def updateSeismicLine(seismicLineId):
     updatedSeismicLine = seismicLineRepository.update(
         seismicLineId, data["name"]
     )
-    return jsonify({ updatedSeismicLine })
+    return jsonify(updatedSeismicLine)
 
 @seismicLineRouter.route("/delete/<id>", methods=['DELETE'])
 def deleteSeismicLine(id):
