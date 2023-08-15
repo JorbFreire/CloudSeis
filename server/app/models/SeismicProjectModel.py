@@ -23,6 +23,5 @@ class SeismicProjectModel(database.Model): # type: ignore
 			"id": self.id,
 			"userId": self.userId,
 			"name": self.name,
-			"seismicLines": self.seismicLines,
 		}
 
