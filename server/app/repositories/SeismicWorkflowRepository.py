@@ -5,17 +5,17 @@ from ..errors.AppError import AppError
 
 class SeismicWorkflowRepository:
     def showById(self, id):
-        seismicLine = SeismicLineModel.query.filter_by(id=id).first()
-        if not seismicLine:
+        workflow = SeismicWorkflowModel.query.filter_by(id=id).first()
+        if not workflow:
             raise AppError("Workflow does not exist", 404)
 
-        return seismicLine.getAttributes()
+        return workflow.getAttributes()
 
 
     def create(self, seismicLineId, newWorkflowName):
         seismicLine = SeismicLineModel.query.filter_by(id=seismicLineId).first()
         if not seismicLine:
-            raise AppError("Seismic Project does not exist", 404)
+            raise AppError("Seismic Line does not exist", 404)
 
         newWorkflow = SeismicWorkflowModel(
             seismicLineId=seismicLine.id,
