@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react'
 import api from '../../services/api'
 import { useNavigate } from '@tanstack/react-location'
-import { Container, FileInput, Button, ConsoleContainer, VariableContainer, Text } from './styles'
+import { Container, FileInput, Button, ConsoleContainer, VariableContainer } from './styles'
 
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,7 +14,12 @@ interface IProjectProps {
 }
 
 interface ITreeline {
-  id: string 
+  id: string
+  workflows: Array<IWorkflow> 
+}
+
+interface IWorkflow {
+  id: string
 }
 
 export default function Project({ projectName }: IProjectProps) {
@@ -24,6 +29,10 @@ export default function Project({ projectName }: IProjectProps) {
   const [loading, setLoading] = useState(false)
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
   const [nextId, setNextId] = useState(1) 
+  const [nextWorkflowId, setNextWorkflowId] = useState(1)
+  const [totalWorkflows, setTotalWorkflows] = useState(0)
+
+  const currentTotalWorkflows = totalWorkflows;
 
   const openDataWindow = () => navigate({ to: `/seismic-visualization/${lastFileName}` })
 
@@ -53,11 +62,36 @@ export default function Project({ projectName }: IProjectProps) {
   const createLine = () => {
     const newLine = {
       id: String(nextId),
+      workflows: [] 
     }
 
     setTreelines((prevTreelines) => [...prevTreelines, newLine])
     setNextId((prevId) => prevId + 1) 
-    console.log("Created Line")
+  }
+
+  const createWorkflow = (lineId: string) => {
+    const newWorkflow = {
+      id: String(nextWorkflowId)
+    }
+
+    setTreelines((prevTreelines) =>
+      prevTreelines.map((treeline) => {
+        if (treeline.id === lineId) {
+          return {
+            ...treeline,
+            workflows: [...treeline.workflows, newWorkflow] 
+          }
+        }
+        return treeline
+      })
+    )
+
+    setNextWorkflowId((prevId) => prevId + 1)
+    setTotalWorkflows((prevTotal) => prevTotal + 1)
+
+    console.log("Updated Treelines:", treelines);
+
+    console.log("Total Workflows:", totalWorkflows);
   }
 
   return (
@@ -73,11 +107,16 @@ export default function Project({ projectName }: IProjectProps) {
             <Button onClick={createLine}>
               Create Line
             </Button>
-            
+
             {treelines.map((treeline) => (
-            <TreeItem nodeId={treeline.id} label={`Line ${treeline.id}`}>
-              <Button className='workFlowButton'>Create Workflow</Button>
-            </TreeItem>
+              <TreeItem key={treeline.id} nodeId={treeline.id} label={`Line ${treeline.id}`}>
+                <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
+                  Create Workflow
+                </Button>
+                {treeline.workflows.map((workflow) => (
+                  <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
+                ))}
+              </TreeItem>
             ))}
 
           </TreeView>
@@ -98,23 +137,50 @@ export default function Project({ projectName }: IProjectProps) {
         </Container>
       </div>
 
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <VariableContainer>
-          <div style={{ height: 240, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}>
+        <TreeView
+            aria-label="Variables"
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            sx={{ height: 240, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}
+            >
 
-            <Text>
+            <h4>
               BotoView
-            </Text>
+            </h4>
             
-          </div>
+          </TreeView>
         </VariableContainer>
+      </div>
 
+      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
         <ConsoleContainer>
-          <div style={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}>
-            <Text>
-              Console
-            </Text>
-          </div>
-        </ConsoleContainer>
+            <TreeView
+              aria-label="Console"
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpandIcon={<ChevronRightIcon />}
+              sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+              >
+
+              <h4>
+                Console
+              </h4>
+              
+            </TreeView>
+          </ConsoleContainer>
+      </div>
+      
+      {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
+        <div
+          key={index}
+          style={{ border: '1px solid black', margin: '10px', padding: '10px', backgroundColor: 'blue' }}
+        >
+          <h1>Workflow</h1>
+          Workflow {index + 1} Content
+        </div>
+      ))}
+
     </div>
   )
 }
