@@ -10,8 +10,8 @@ def showSeismicWorkflow(id):
     seismicWorkflow = seismicWorkflowRepository.showById(id)
     return jsonify(seismicWorkflow)
 
-@seismicWorkflowRouter.route("/create/<lineId>", methods=['POST'])
-def createSeismicWorkflow(lineId):
+@seismicWorkflowRouter.route("/create", methods=['POST'])
+def createSeismicWorkflow():
     data = request.get_json()
     if data == None:
         return jsonify(
@@ -19,7 +19,7 @@ def createSeismicWorkflow(lineId):
             status=400
         )
     newSeismicWorkflow = seismicWorkflowRepository.create(
-        lineId,
+        data["lineId"],
         data["name"]
     )
     return jsonify(newSeismicWorkflow)

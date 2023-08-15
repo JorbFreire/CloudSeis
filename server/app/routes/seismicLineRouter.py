@@ -10,8 +10,8 @@ def showSeismicLine(seismicProjectId):
     seismicLine = seismicLineRepository.showBySeismicProjectId(seismicProjectId)
     return jsonify(seismicLine)
 
-@seismicLineRouter.route("/create/<seismicProjectId>", methods=['POST'])
-def createSeismicLine(seismicProjectId):
+@seismicLineRouter.route("/create", methods=['POST'])
+def createSeismicLine():
     data = request.get_json()
     if data == None:
         return jsonify(
@@ -19,7 +19,7 @@ def createSeismicLine(seismicProjectId):
             status=400
         )
     newSeismicLine = seismicLineRepository.create(
-        seismicProjectId,
+        data["seismicProjectId"],
         data["name"]
     )
     return jsonify(newSeismicLine)
