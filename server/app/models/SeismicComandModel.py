@@ -16,3 +16,11 @@ class SeismicComandModel(database.Model): # type: ignore
 		name="FK_seismic_workflows_table_seismic_commands_table") \
 	)
 
+	def getAttributes(self) -> dict[str, str]:
+		return {
+			"id": self.id,
+			"seismicCommandId": self.seismicProjectId,
+			"name": self.name,
+			"parameters": self.parameters
+		}
+

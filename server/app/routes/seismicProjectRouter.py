@@ -5,10 +5,10 @@ from ..repositories.SeismicProjectRepository import SeismicProjectRepository
 seismicProjectRouter = Blueprint("seismic-project-routes", __name__, url_prefix="/seismic-project")
 seismicProjectRepository = SeismicProjectRepository()
 
-@seismicProjectRouter.route("/show", methods=['GET'])
-def showSeismicProject(seismicProjectId):
-    seismicProject = seismicProjectRepository.show(seismicProjectId)
-    return jsonify({ seismicProject })
+@seismicProjectRouter.route("/list/<userId>", methods=['GET'])
+def showSeismicProject(userId):
+    seismicProject = seismicProjectRepository.showByUserId(userId)
+    return jsonify(seismicProject)
 
 @seismicProjectRouter.route("/create", methods=['POST'])
 def createSeismicProject():
@@ -18,10 +18,10 @@ def createSeismicProject():
             {"Error": "No body"}, 
             status=400
         )
-    newSeismicProject = seismicProjectRepository.create(data.seismicProject)
-    return jsonify({ newSeismicProject })
+    newSeismicProject = seismicProjectRepository.create(data["userId"], data["name"])
+    return jsonify(newSeismicProject)
 
-@seismicProjectRouter.route("/update", methods=['PUT'])
+@seismicProjectRouter.route("/update/<seismicProjectId>", methods=['PUT'])
 def updateSeismicProject(seismicProjectId):
     data = request.get_json()
     if data == None:
@@ -29,11 +29,11 @@ def updateSeismicProject(seismicProjectId):
             {"Error": "No body"}, 
             status=400
         )
-    updatedSeismicProject = seismicProjectRepository.update(seismicProjectId, data.seismicProject)
-    return jsonify({ updatedSeismicProject })
+    updatedSeismicProject = seismicProjectRepository.updateName(seismicProjectId, data["name"])
+    return jsonify(updatedSeismicProject)
 
-@seismicProjectRouter.route("/delete", methods=['DELETE'])
+@seismicProjectRouter.route("/delete/<seismicProjectId>", methods=['DELETE'])
 def deleteSeismicProject(seismicProjectId):
     seismicProject = seismicProjectRepository.delete(seismicProjectId)
-    return jsonify({ seismicProject })
+    return jsonify(seismicProject)
 

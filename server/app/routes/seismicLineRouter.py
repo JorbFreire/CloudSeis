@@ -2,13 +2,13 @@ from flask import Blueprint, request, jsonify
 
 from ..repositories.SeismicLineRepository import SeismicLineRepository
 
-seismicLineRouter = Blueprint("seismic-line-routes", __name__, url_prefix="/seismicLine")
+seismicLineRouter = Blueprint("seismic-line-routes", __name__, url_prefix="/seismic-line")
 seismicLineRepository = SeismicLineRepository()
 
-@seismicLineRouter.route("/show", methods=['GET'])
-def showSeismicLine(seismicLineId):
-    seismicLine = seismicLineRepository.show(seismicLineId)
-    return jsonify({ seismicLine })
+@seismicLineRouter.route("/list/<seismicProjectId>", methods=['GET'])
+def showSeismicLine(seismicProjectId):
+    seismicLine = seismicLineRepository.showBySeismicProjectId(seismicProjectId)
+    return jsonify(seismicLine)
 
 @seismicLineRouter.route("/create", methods=['POST'])
 def createSeismicLine():
@@ -18,8 +18,11 @@ def createSeismicLine():
             {"Error": "No body"}, 
             status=400
         )
-    newSeismicLine = seismicLineRepository.create(data.seismicLine)
-    return jsonify({ newSeismicLine })
+    newSeismicLine = seismicLineRepository.create(
+        data["seismicProjectId"],
+        data["name"]
+    )
+    return jsonify(newSeismicLine)
 
 @seismicLineRouter.route("/update", methods=['PUT'])
 def updateSeismicLine(seismicLineId):
@@ -29,11 +32,13 @@ def updateSeismicLine(seismicLineId):
             {"Error": "No body"}, 
             status=400
         )
-    updatedSeismicLine = seismicLineRepository.update(seismicLineId, data.seismicLine)
-    return jsonify({ updatedSeismicLine })
+    updatedSeismicLine = seismicLineRepository.update(
+        seismicLineId, data["name"]
+    )
+    return jsonify(updatedSeismicLine)
 
-@seismicLineRouter.route("/delete", methods=['DELETE'])
-def deleteSeismicLine(seismicLineId):
-    seismicLine = seismicLineRepository.delete(seismicLineId)
-    return jsonify({ seismicLine })
+@seismicLineRouter.route("/delete/<id>", methods=['DELETE'])
+def deleteSeismicLine(id):
+    seismicLine = seismicLineRepository.delete(id)
+    return jsonify(seismicLine)
 

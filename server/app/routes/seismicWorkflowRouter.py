@@ -2,13 +2,13 @@ from flask import Blueprint, request, jsonify
 
 from ..repositories.SeismicWorkflowRepository import SeismicWorkflowRepository
 
-seismicWorkflowRouter = Blueprint("seismic-workflow-routes", __name__, url_prefix="/seismicWorkflow")
+seismicWorkflowRouter = Blueprint("seismic-workflow-routes", __name__, url_prefix="/seismic-workflow")
 seismicWorkflowRepository = SeismicWorkflowRepository()
 
-@seismicWorkflowRouter.route("/show", methods=['GET'])
-def showSeismicWorkflow(seismicWorkflowId):
-    seismicWorkflow = seismicWorkflowRepository.show(seismicWorkflowId)
-    return jsonify({ seismicWorkflow })
+@seismicWorkflowRouter.route("/show/<id>", methods=['GET'])
+def showSeismicWorkflow(id):
+    seismicWorkflow = seismicWorkflowRepository.showById(id)
+    return jsonify(seismicWorkflow)
 
 @seismicWorkflowRouter.route("/create", methods=['POST'])
 def createSeismicWorkflow():
@@ -18,22 +18,28 @@ def createSeismicWorkflow():
             {"Error": "No body"}, 
             status=400
         )
-    newSeismicWorkflow = seismicWorkflowRepository.create(data.seismicWorkflow)
-    return jsonify({ newSeismicWorkflow })
+    newSeismicWorkflow = seismicWorkflowRepository.create(
+        data["lineId"],
+        data["name"]
+    )
+    return jsonify(newSeismicWorkflow)
 
-@seismicWorkflowRouter.route("/update", methods=['PUT'])
-def updateSeismicWorkflow(seismicWorkflowId):
+@seismicWorkflowRouter.route("/update/<id>", methods=['PUT'])
+def updateSeismicWorkflow(id):
     data = request.get_json()
     if data == None:
         return jsonify(
-            {"Error": "No body"}, 
+            {"Error": "No body"},
             status=400
         )
-    updatedSeismicWorkflow = seismicWorkflowRepository.update(seismicWorkflowId, data.seismicWorkflow)
-    return jsonify({ updatedSeismicWorkflow })
+    updatedSeismicWorkflow = seismicWorkflowRepository.updateName(
+        id,
+        data["name"]
+    )
+    return jsonify(updatedSeismicWorkflow)
 
-@seismicWorkflowRouter.route("/delete", methods=['DELETE'])
-def deleteSeismicWorkflow(seismicWorkflowId):
-    seismicWorkflow = seismicWorkflowRepository.delete(seismicWorkflowId)
-    return jsonify({ seismicWorkflow })
+@seismicWorkflowRouter.route("/delete/<id>", methods=['DELETE'])
+def deleteSeismicWorkflow(id):
+    seismicWorkflow = seismicWorkflowRepository.delete(id)
+    return jsonify(seismicWorkflow)
 

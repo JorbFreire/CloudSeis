@@ -15,7 +15,7 @@ def listUsers():
 
 @userRouter.route("/show/<userId>", methods=['GET'])
 def showUser(userId):
-    user = userRepository.show(userId)
+    user = userRepository.showById(userId)
     return jsonify(user)
 
 
