@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Container = styled.form`
+export const Container = styled.div`
   background-color: #4F4F4F;
   color: #fff;
   display: flex;
