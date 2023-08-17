@@ -12,21 +12,6 @@ export const Container = styled.form`
   gap: 8px;
 `
 
-export const ConsoleContainer = styled.div`
-  background-color: #808080;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; 
-  align-items: left;
-  position: fixed;
-  bottom: 0; 
-  width: 100%;
-  height: 20vh;
-  gap: 8px;
-  z-index: 10;
-`
-
 export const VariableContainer = styled.div`
   background-color: #808080;
   color: #fff;
@@ -42,8 +27,6 @@ export const VariableContainer = styled.div`
   gap: 8px;
   z-index: 10;
 `
-
-export const FileInput = styled.input``
 
 export const Button = styled.button`
   background-color: #C0C0C0;

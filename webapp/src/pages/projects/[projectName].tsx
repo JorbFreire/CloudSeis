@@ -5,6 +5,9 @@ export default function ProjectPage() {
   const { params } = useMatch()
 
   return (
-    <ProjectView projectName={params.projectName} />
+    <ProjectView
+      projectName={params.projectName}
+      projectId={params.projectId}
+    />
   )
 }
