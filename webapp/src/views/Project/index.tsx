@@ -23,7 +23,6 @@ interface IWorkflow {
 }
 
 export default function Project({ projectName }: IProjectProps) {
-
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
   const [nextId, setNextId] = useState(1)
   const [nextWorkflowId, setNextWorkflowId] = useState(1)
@@ -100,18 +99,9 @@ export default function Project({ projectName }: IProjectProps) {
 
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <VariableContainer>
-          <TreeView
-            aria-label="Variables"
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            sx={{ height: 240, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}
-          >
-
-            <h4>
-              BotoView
-            </h4>
-
-          </TreeView>
+          <h4>
+            BotoView
+          </h4>
         </VariableContainer>
       </div>
 
