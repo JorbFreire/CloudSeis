@@ -1,0 +1,21 @@
+_id: req_bc6881fce9b940848cd378787e550df7
+type: Request
+parentId: fld_067d86fae7004551a0c983a71f92e435
+modified: 1691812437510
+created: 1691809133716
+url: "{{ _.base_url }}/user/show/a43c20bc-e639-45fe-bc5a-2023e9006215"
+name: show
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1690566226585
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

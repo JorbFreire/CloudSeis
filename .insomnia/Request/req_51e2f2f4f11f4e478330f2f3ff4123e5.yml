@@ -1,0 +1,28 @@
+_id: req_51e2f2f4f11f4e478330f2f3ff4123e5
+type: Request
+parentId: fld_067d86fae7004551a0c983a71f92e435
+modified: 1691812475354
+created: 1691812419024
+url: "{{ _.base_url }}/user/update/a43c20bc-e639-45fe-bc5a-2023e9006215"
+name: Update
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email": "email@update1.com"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1690690833733
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

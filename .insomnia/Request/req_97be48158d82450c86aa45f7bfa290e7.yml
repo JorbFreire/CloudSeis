@@ -1,0 +1,21 @@
+_id: req_97be48158d82450c86aa45f7bfa290e7
+type: Request
+parentId: fld_3c3ab88ab5334613876b61eb82ebc68e
+modified: 1674168080574
+created: 1674167954831
+url: "{{ _.base_url }}/su-file"
+name: show
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1674167985498.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

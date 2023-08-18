@@ -1,0 +1,21 @@
+_id: req_6bffcbd09dc4453dbab4cbc00216de05
+type: Request
+parentId: fld_909066f24b0d4a6ea80f447d4e730230
+modified: 1690145871753
+created: 1689444762253
+url: "{{ _.base_url }}/get-plot/marmousi_CS_23072023_175425.su"
+name: show
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1689444762253
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

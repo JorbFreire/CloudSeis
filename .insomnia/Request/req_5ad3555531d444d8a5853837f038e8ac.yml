@@ -1,0 +1,28 @@
+_id: req_5ad3555531d444d8a5853837f038e8ac
+type: Request
+parentId: fld_ff4b05d2fe4d46f188d3b73ef305bc0e
+modified: 1692317370190
+created: 1692050881303
+url: "{{ _.base_url }}/line/update/1"
+name: update
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "NEW PROJECTaaaa"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1690690833733
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

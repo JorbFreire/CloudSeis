@@ -1,0 +1,31 @@
+_id: req_7f799d56a9d34fd9af50035755632a52
+type: Request
+parentId: fld_3c3ab88ab5334613876b61eb82ebc68e
+modified: 1689446936661
+created: 1674168025331
+url: "{{ _.base_url }}/su-file"
+name: create
+description: ""
+method: POST
+body:
+  mimeType: multipart/form-data
+  params:
+    - id: pair_60b8eab57010420391afa65867f2b205
+      name: file
+      value: ""
+      description: ""
+      type: file
+      fileName: \\wsl$\Ubuntu\home\jorb\code\boto\marmousi_CS.su
+parameters: []
+headers:
+  - name: Content-Type
+    value: multipart/form-data
+authentication: {}
+metaSortKey: -1673819010459.25
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
