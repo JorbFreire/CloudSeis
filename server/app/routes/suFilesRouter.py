@@ -1,11 +1,12 @@
 from flask import Blueprint, send_file, request, jsonify
 
-from ..repositories.SeismicFileRepository import SeismicFileRepository
+from ..repositories.FileRepository import FileRepository
 
 suFileRouter = Blueprint("su-file-routes", __name__, url_prefix="/su-file")
-seismicFileRepository = SeismicFileRepository()
+fileRepository = FileRepository()
 
-# ? note sure if this "/ should be keep or not" 
+
+# ? note sure if this "/ should be keep or not"
 @suFileRouter.route("/", methods=['GET'])
 def showSuFile():
     try:
@@ -14,12 +15,12 @@ def showSuFile():
         return str(error)
 
 
-# ? note sure if this "/ should be keep or not" 
+# ? note sure if this "/ should be keep or not"
 @suFileRouter.route("/", methods=['POST'])
 def createSuFile():
     file = request.files['file']
-    unique_filename = seismicFileRepository.create(file)
-    return { "unique_filename": unique_filename }
+    unique_filename = fileRepository.create(file)
+    return {"unique_filename": unique_filename}
 
 
 @suFileRouter.route("/<unique_filename>/filters", methods=['PUT'])
@@ -27,13 +28,12 @@ def updateSuFile(unique_filename):
     data = request.get_json()
     if data == None:
         return jsonify(
-            {"Error": "No body"}, 
+            {"Error": "No body"},
             status=400
         )
 
     updateOptions = data["updateOptions"]
-    process_output = seismicFileRepository.update(unique_filename, updateOptions)
+    process_output = fileRepository.update(unique_filename, updateOptions)
     return jsonify({
         "process_output": process_output
     })
-

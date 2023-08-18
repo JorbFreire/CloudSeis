@@ -7,42 +7,34 @@ import TreeItem from '@mui/lab/TreeItem';
 
 import Console from '../../components/Console'
 import SUFIleInput from '../../components/SUFIleInput'
+import { createNewLine } from '../../services/lineServices'
+import { createNewWorkflow } from '../../services/workflowServices'
 import { Container, Button, VariableContainer } from './styles'
 interface IProjectProps {
   projectName?: string
   projectId?: string
 }
 
-interface ITreeline {
-  id: string
-  workflows: Array<IWorkflow>
-}
-
-interface IWorkflow {
-  id: string
-}
-
 export default function Project({ projectName }: IProjectProps) {
-  const [treelines, setTreelines] = useState<Array<ITreeline>>([])
+  const [treelines, setTreelines] = useState<Array<ILine>>([])
   const [nextId, setNextId] = useState(1)
   const [nextWorkflowId, setNextWorkflowId] = useState(1)
   const [totalWorkflows, setTotalWorkflows] = useState(0)
 
   const currentTotalWorkflows = totalWorkflows;
 
-  const createLine = () => {
-    const newLine = {
-      id: String(nextId),
-      workflows: []
+  const createLine = async () => {
+    const newLine = await createNewLine("1", `Workflow ${nextId}`)
+    if (newLine) {
+      setTreelines((prevTreelines) => [...prevTreelines, newLine])
+      setNextId((prevId) => prevId + 1)
     }
-
-    setTreelines((prevTreelines) => [...prevTreelines, newLine])
-    setNextId((prevId) => prevId + 1)
   }
 
   const createWorkflow = (lineId: string) => {
     const newWorkflow = {
-      id: String(nextWorkflowId)
+      id: String(nextWorkflowId),
+      name: "name"
     }
 
     setTreelines((prevTreelines) =>
