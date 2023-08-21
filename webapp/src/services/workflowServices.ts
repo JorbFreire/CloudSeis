@@ -10,9 +10,10 @@ export async function getWorkflowByID(id: string): Promise<IWorkflow | null> {
   }
 }
 
-export async function createNewWorkflow(projectID: string, name: string): Promise<IWorkflow | null> {
+export async function createNewWorkflow(lineId: string, name: string): Promise<IWorkflow | null> {
   try {
-    const response = await api.post<ILine>(`/workflow/create/${projectID}`, {
+    const response = await api.post<ILine>(`/workflow/create`, {
+      lineId,
       name
     })
     return response.data

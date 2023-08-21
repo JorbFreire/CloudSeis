@@ -10,9 +10,10 @@ export async function getLinesByProjectID(projectID: string): Promise<Array<ILin
   }
 }
 
-export async function createNewLine(projectID: string, name: string): Promise<ILine | null> {
+export async function createNewLine(projectId: string, name: string): Promise<ILine | null> {
   try {
-    const response = await api.post<ILine>(`/line/list/${projectID}`, {
+    const response = await api.post<ILine>(`/line/create`, {
+      projectId,
       name
     })
     return response.data

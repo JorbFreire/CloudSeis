@@ -22,7 +22,7 @@ class WorkflowRepository:
         newWorkflow = WorkflowModel(
             lineId=line.id,
             name=newWorkflowName,
-            seismic_file_name=""
+            file_name=""
         )
         database.session.add(newWorkflow)
         database.session.commit()

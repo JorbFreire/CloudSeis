@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -7,13 +7,15 @@ import TreeItem from '@mui/lab/TreeItem';
 
 import Console from '../../components/Console'
 import SUFIleInput from '../../components/SUFIleInput'
-import { createNewLine } from '../../services/lineServices'
+import { getLinesByProjectID, createNewLine } from '../../services/lineServices'
 import { createNewWorkflow } from '../../services/workflowServices'
 import { Container, Button, VariableContainer } from './styles'
 interface IProjectProps {
   projectName?: string
   projectId?: string
 }
+
+const mockProjectId = "1"
 
 export default function Project({ projectName }: IProjectProps) {
   const [treelines, setTreelines] = useState<Array<ILine>>([])
@@ -24,30 +26,28 @@ export default function Project({ projectName }: IProjectProps) {
   const currentTotalWorkflows = totalWorkflows;
 
   const createLine = async () => {
-    const newLine = await createNewLine("1", `Workflow ${nextId}`)
+    const newLine = await createNewLine(mockProjectId, `Line ${nextId}`)
     if (newLine) {
       setTreelines((prevTreelines) => [...prevTreelines, newLine])
       setNextId((prevId) => prevId + 1)
     }
   }
 
-  const createWorkflow = (lineId: string) => {
-    const newWorkflow = {
-      id: String(nextWorkflowId),
-      name: "name"
-    }
+  const createWorkflow = async (lineId: string) => {
+    const newWorkflow = await createNewWorkflow(lineId, `Workflow ${nextId}`)
 
-    setTreelines((prevTreelines) =>
-      prevTreelines.map((treeline) => {
-        if (treeline.id === lineId) {
-          return {
-            ...treeline,
-            workflows: [...treeline.workflows, newWorkflow]
+    if (newWorkflow)
+      setTreelines((prevTreelines) =>
+        prevTreelines.map((treeline) => {
+          if (treeline.id === lineId) {
+            return {
+              ...treeline,
+              workflows: [...treeline.workflows, newWorkflow]
+            }
           }
-        }
-        return treeline
-      })
-    )
+          return treeline
+        })
+      )
 
     setNextWorkflowId((prevId) => prevId + 1)
     setTotalWorkflows((prevTotal) => prevTotal + 1)
@@ -56,6 +56,13 @@ export default function Project({ projectName }: IProjectProps) {
 
     console.log("Total Workflows:", totalWorkflows);
   }
+
+  useEffect(() => {
+    (async () => {
+      const fetchedLines = await getLinesByProjectID(mockProjectId)
+      setTreelines(fetchedLines)
+    })()
+  }, [])
 
   return (
     <div>
@@ -77,7 +84,7 @@ export default function Project({ projectName }: IProjectProps) {
                   Create Workflow
                 </Button>
                 {treeline.workflows.map((workflow) => (
-                  <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
+                  <TreeItem key={`w${workflow.id}`} nodeId={`w${workflow.id}`} label={`Workflow ${workflow.id}`} />
                 ))}
               </TreeItem>
             ))}
