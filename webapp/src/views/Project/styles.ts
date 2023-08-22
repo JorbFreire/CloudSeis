@@ -41,3 +41,12 @@ export const Text = styled.text`
   color: white;
   padding: 8px 8px;
 `
+
+const StyledColumns = styled.div`
+  display: grid;
+  background-color: 1fr 1fr 1fr;
+  margin: 10vh auto;
+  width: 80%;
+  height: 80vh;
+  gap: 8px;
+`

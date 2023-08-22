@@ -8,6 +8,7 @@ import TreeItem from '@mui/lab/TreeItem';
 import Console from '../../components/Console'
 import SUFIleInput from '../../components/SUFIleInput'
 import { Container, Button, VariableContainer } from './styles'
+
 import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd'
 
 interface IProjectProps {
@@ -145,27 +146,34 @@ export default function Project({ projectName }: IProjectProps) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
-            <Droppable key={index} droppableId={`Variables${index}`}>
-              {(provided) => (
-                <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
-                  {variables.map(({ id, name }, variableIndex) => (
-                    <Draggable key={id} draggableId={`Variable${variableIndex}-${id}`} index={variableIndex}>
-                      {(provided) => (
-                        <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                          <p>
-                            {name}
-                          </p>
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
+            <div style={{ display:'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}>
+              <Droppable key={index} droppableId={`Variables${index}`}>
+                {(provided) => (
+                  <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
+                    {variables.map(({ id, name }, variableIndex) => (
+                      <div style={{ border: '1px solid black', margin: '10px', padding: '10px', backgroundColor: 'white' }}>
+                        <Draggable key={id} draggableId={`Variable${variableIndex}-${id}`} index={variableIndex}>
+                          {(provided) => (
+                            <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                              <p>
+                                {name}
+                              </p>
+                            </li>
+                          )}
+                        </Draggable>
+                      </div>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            </div>
           ))}
         </DragDropContext>
       </div>
+
+            
+
     </div>
   )
 }
