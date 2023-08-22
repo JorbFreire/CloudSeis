@@ -49,7 +49,9 @@ export default function Project({ projectName }: IProjectProps) {
   const [nextId, setNextId] = useState(1)
   const [nextWorkflowId, setNextWorkflowId] = useState(1)
   const [totalWorkflows, setTotalWorkflows] = useState(0)
+
   const [variables, updateVariables] = useState(seismicUnixVariables)
+  const [emptyListItems, setEmptyListItems] = useState<Array<{ id: string; name: string }>>([])
 
   const currentTotalWorkflows = totalWorkflows;
 
@@ -90,13 +92,18 @@ export default function Project({ projectName }: IProjectProps) {
 
   function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
-
-    const items = Array.from(variables)
-    const [reoredItems] = items.splice(result.source.index, 1)
-    items.splice(result.destination.index, 0, reoredItems)
-
-    updateVariables(items)
+  
+    const items = Array.from(variables);
+    const [draggedItem] = items.splice(result.source.index, 1);
+  
+    if (result.destination.droppableId === 'emptyDroppable') {
+      setEmptyListItems(prevItems => [...prevItems, draggedItem]);
+    } else {
+      items.splice(result.destination.index, 0, draggedItem);
+      updateVariables(items);
+    }
   }
+  
 
   return (
     <div>
@@ -172,14 +179,24 @@ export default function Project({ projectName }: IProjectProps) {
               <div style={{ display:'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}></div>
               <h3>SuBlocks</h3>
               <Droppable droppableId="emptyDroppable">
-                {(provided) => (
-                  
-                    <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
-                      {/* Render empty droppable area */}
-                      {provided.placeholder}
-                    </ul>
-                  
-                )}
+              {(provided) => (
+                <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
+                  {emptyListItems.map((item, index) => (
+                    <div
+                      key={`empty-item-${index}`}
+                      style={{
+                        border: '1px solid black',
+                        margin: '10px',
+                        padding: '10px',
+                        backgroundColor: 'lightblue'
+                      }}
+                    >
+                      <p>{item.name}</p>
+                    </div>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
               </Droppable>
               
             </div>
