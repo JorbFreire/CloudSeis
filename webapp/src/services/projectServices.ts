@@ -2,7 +2,7 @@ import api from "./api"
 
 export async function getProjectsByUserID(userID: string): Promise<Array<IProject> | []> {
   try {
-    const response = await api.get<Array<IProject>>(`/seismic-project/list/${userID}`)
+    const response = await api.get<Array<IProject>>(`/project/list/${userID}`)
     return response.data
   } catch (error) {
     console.error(error)
@@ -12,7 +12,7 @@ export async function getProjectsByUserID(userID: string): Promise<Array<IProjec
 
 export async function createNewProject(userID: string, name: string): Promise<IProject | null> {
   try {
-    const response = await api.post<IProject>(`/seismic-project/create/${userID}`, {
+    const response = await api.post<IProject>(`/project/create/${userID}`, {
       name
     })
     return response.data

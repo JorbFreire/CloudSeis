@@ -4,10 +4,10 @@ from .suFilesRouter import suFileRouter
 from .plotRouter import plotRouter
 from .userRouter import userRouter
 
-from .seismicProjectRouter import seismicProjectRouter
-from .seismicLineRouter import seismicLineRouter
-from .seismicWorkflowRouter import seismicWorkflowRouter
-from .seismicComandRouter import seismicComandRouter
+from .projectRouter import projectRouter
+from .lineRouter import lineRouter
+from .workflowRouter import workflowRouter
+from .commandRouter import commandRouter
 
 router = Blueprint("routes", __name__)
 
@@ -16,8 +16,7 @@ router.register_blueprint(suFileRouter)
 router.register_blueprint(plotRouter)
 router.register_blueprint(userRouter)
 
-router.register_blueprint(seismicProjectRouter)
-router.register_blueprint(seismicLineRouter)
-router.register_blueprint(seismicWorkflowRouter)
-router.register_blueprint(seismicComandRouter)
-
+router.register_blueprint(projectRouter)
+router.register_blueprint(lineRouter)
+router.register_blueprint(workflowRouter)
+router.register_blueprint(commandRouter)
