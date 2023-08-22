@@ -166,7 +166,6 @@ export default function Project({ projectName }: IProjectProps) {
           ))}
         </DragDropContext>
       </div>
-
     </div>
   )
 }
