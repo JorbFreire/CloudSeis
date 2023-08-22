@@ -147,6 +147,7 @@ export default function Project({ projectName }: IProjectProps) {
         <DragDropContext onDragEnd={handleOnDragEnd}>
           {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
             <div style={{ display:'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}>
+              <h3>Variables</h3>
               <Droppable key={index} droppableId={`Variables${index}`}>
                 {(provided) => (
                   <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
@@ -160,19 +161,31 @@ export default function Project({ projectName }: IProjectProps) {
                               </p>
                             </li>
                           )}
-                        </Draggable>
+                        </Draggable> 
                       </div>
                     ))}
                     {provided.placeholder}
                   </ul>
                 )}
               </Droppable>
+
+              <div style={{ display:'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}></div>
+              <h3>SuBlocks</h3>
+              <Droppable droppableId="emptyDroppable">
+                {(provided) => (
+                  
+                    <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
+                      {/* Render empty droppable area */}
+                      {provided.placeholder}
+                    </ul>
+                  
+                )}
+              </Droppable>
+              
             </div>
           ))}
         </DragDropContext>
       </div>
-
-            
 
     </div>
   )
