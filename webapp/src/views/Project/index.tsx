@@ -8,6 +8,8 @@ import TreeItem from '@mui/lab/TreeItem';
 import Console from '../../components/Console'
 import SUFIleInput from '../../components/SUFIleInput'
 import { Container, Button, VariableContainer } from './styles'
+import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd'
+
 interface IProjectProps {
   projectName?: string
   projectId?: string
@@ -22,11 +24,31 @@ interface IWorkflow {
   id: string
 }
 
+const seismicUnixVariables = [
+  {
+    id: 'suinput',
+    name: 'suinput'
+  },
+  {
+    id: 'sugain',
+    name: 'sugain'
+  },
+  {
+    id: 'sufilter',
+    name: 'sufilter'
+  },
+  {
+    id: 'suwind',
+    name: 'suwind'
+  }
+]
+
 export default function Project({ projectName }: IProjectProps) {
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
   const [nextId, setNextId] = useState(1)
   const [nextWorkflowId, setNextWorkflowId] = useState(1)
   const [totalWorkflows, setTotalWorkflows] = useState(0)
+  const [variables, updateVariables] = useState(seismicUnixVariables)
 
   const currentTotalWorkflows = totalWorkflows;
 
@@ -65,9 +87,19 @@ export default function Project({ projectName }: IProjectProps) {
     console.log("Total Workflows:", totalWorkflows);
   }
 
+  function handleOnDragEnd(result: DropResult) {
+    if (!result.destination) return;
+
+    const items = Array.from(variables)
+    const [reoredItems] = items.splice(result.source.index, 1)
+    items.splice(result.destination.index, 0, reoredItems)
+
+    updateVariables(items)
+  }
+
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '80vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column'}}>
         <Container>
           <TreeView
             aria-label="file system navigator"
@@ -84,8 +116,9 @@ export default function Project({ projectName }: IProjectProps) {
                 <Button className='workFlowButton' onClick={() => createWorkflow(treeline.id)}>
                   Create Workflow
                 </Button>
+                {/* tree item nodeId can never be equal inside the same tree view */}
                 {treeline.workflows.map((workflow) => (
-                  <TreeItem key={workflow.id} nodeId={workflow.id} label={`Workflow ${workflow.id}`} />
+                  <TreeItem key={`w${workflow.id}`} nodeId={`w${workflow.id}`} label={`Workflow ${workflow.id}`} />
                 ))}
               </TreeItem>
             ))}
@@ -97,7 +130,7 @@ export default function Project({ projectName }: IProjectProps) {
         </Container>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column'}}>
         <VariableContainer>
           <h4>
             BotoView
@@ -105,19 +138,34 @@ export default function Project({ projectName }: IProjectProps) {
         </VariableContainer>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'row'}}>
         <Console messages={[]} />
       </div>
 
-      {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
-        <div
-          key={index}
-          style={{ border: '1px solid black', margin: '10px', padding: '10px', backgroundColor: 'blue' }}
-        >
-          <h1>Workflow</h1>
-          Workflow {index + 1} Content
-        </div>
-      ))}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
+            <Droppable key={index} droppableId={`Variables${index}`}>
+              {(provided) => (
+                <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
+                  {variables.map(({ id, name }, variableIndex) => (
+                    <Draggable key={id} draggableId={`Variable${variableIndex}-${id}`} index={variableIndex}>
+                      {(provided) => (
+                        <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                          <p>
+                            {name}
+                          </p>
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+          ))}
+        </DragDropContext>
+      </div>
 
     </div>
   )
