@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
 
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -7,6 +8,8 @@ import TreeItem from '@mui/lab/TreeItem';
 
 import Console from '../../components/Console'
 import SUFIleInput from '../../components/SUFIleInput'
+import { getLinesByProjectID, createNewLine } from '../../services/lineServices'
+import { getWorkflowByID, createNewWorkflow } from '../../services/workflowServices'
 import { Container, Button, VariableContainer } from './styles'
 
 import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd'
@@ -44,6 +47,8 @@ const seismicUnixVariables = [
   }
 ]
 
+const mockProjectId = "1"
+
 export default function Project({ projectName }: IProjectProps) {
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
   const [nextId, setNextId] = useState(1)
@@ -55,39 +60,32 @@ export default function Project({ projectName }: IProjectProps) {
 
   const currentTotalWorkflows = totalWorkflows;
 
-  const createLine = () => {
-    const newLine = {
-      id: String(nextId),
-      workflows: []
+  const createLine = async () => {
+    const newLine = await createNewLine("1", `Workflow ${nextId}`)
+    if (newLine) {
+      setTreelines((prevTreelines) => [...prevTreelines, newLine])
+      setNextId((prevId) => prevId + 1)
     }
-
-    setTreelines((prevTreelines) => [...prevTreelines, newLine])
-    setNextId((prevId) => prevId + 1)
   }
 
-  const createWorkflow = (lineId: string) => {
-    const newWorkflow = {
-      id: String(nextWorkflowId)
-    }
+  const createWorkflow = async (lineId: string) => {
+    const newWorkflow = await createNewWorkflow(lineId, `Workflow ${nextId}`)
 
-    setTreelines((prevTreelines) =>
-      prevTreelines.map((treeline) => {
-        if (treeline.id === lineId) {
-          return {
-            ...treeline,
-            workflows: [...treeline.workflows, newWorkflow]
+    if (newWorkflow)
+      setTreelines((prevTreelines) =>
+        prevTreelines.map((treeline) => {
+          if (treeline.id === lineId) {
+            return {
+              ...treeline,
+              workflows: [...treeline.workflows, newWorkflow]
+            }
           }
-        }
-        return treeline
-      })
-    )
+          return treeline
+        })
+      )
 
     setNextWorkflowId((prevId) => prevId + 1)
     setTotalWorkflows((prevTotal) => prevTotal + 1)
-
-    console.log("Updated Treelines:", treelines);
-
-    console.log("Total Workflows:", totalWorkflows);
   }
 
   function handleOnDragEnd(result: DropResult) {
@@ -104,6 +102,12 @@ export default function Project({ projectName }: IProjectProps) {
     }
   }
   
+  useEffect(() => {
+    (async () => {
+      const fetchedLines = await getLinesByProjectID(mockProjectId)
+      setTreelines(fetchedLines)
+    })()
+  }, [])
 
   return (
     <div>
