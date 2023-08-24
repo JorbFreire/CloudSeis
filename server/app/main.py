@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['UPLOAD_FOLDER'] = "static"
-app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///' + path.join(database_root_path, 'db.sqlite3') 
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://admin:mysecretpassword@localhost:5432/admin"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 database.init_app(app)
@@ -24,10 +24,11 @@ app.register_blueprint(router)
 
 @app.errorhandler(AppError)
 def handle_app_exception(error):
-  return jsonify({ "Error": error.message }), error.statusCode
+    return jsonify({"Error": error.message}), error.statusCode
+
+
 app.register_error_handler(AppError, handle_app_exception)
 
 
 if __name__ == "main":
-  app.run(debug=True)
-
+    app.run(debug=True)

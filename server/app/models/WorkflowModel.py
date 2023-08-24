@@ -4,6 +4,7 @@ from typing import List
 
 from ..database.connection import database
 from .CommandModel import CommandModel
+from .OrderedCommandsListModel import OrderedCommandsListModel
 
 
 class WorkflowModel(database.Model):  # type: ignore
@@ -21,6 +22,10 @@ class WorkflowModel(database.Model):  # type: ignore
         List[CommandModel]
     ] = relationship(CommandModel)
 
+    orderedCommandsList: Mapped[
+        List[CommandModel]
+    ] = relationship(OrderedCommandsListModel)
+
     def getResumedAttributes(self) -> dict[str, str | list[dict[str, str]]]:
         return {
             "id": self.id,
@@ -34,4 +39,5 @@ class WorkflowModel(database.Model):  # type: ignore
             "name": self.name,
             "file_name": self.file_name,
             "commands": [command.getAttributes() for command in self.commands],
+            "orderedCommands": self.orderedCommandsList.getCommands(),
         }
