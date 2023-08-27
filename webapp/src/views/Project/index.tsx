@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 
-
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
 
 import Console from '../../components/Console'
+import CommandOptionsDrawer from 'components/CommandOptionsDrawer';
 import SUFIleInput from '../../components/SUFIleInput'
 import { getLinesByProjectID, createNewLine } from '../../services/lineServices'
 import { getWorkflowByID, createNewWorkflow } from '../../services/workflowServices'
@@ -51,6 +51,7 @@ const mockProjectId = "1"
 
 export default function Project({ projectName }: IProjectProps) {
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
+  const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
   const [nextId, setNextId] = useState(1)
@@ -122,6 +123,9 @@ export default function Project({ projectName }: IProjectProps) {
             defaultExpandIcon={<ChevronRightIcon />}
             sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
           >
+            <Button onClick={() => setIsOptionsDrawerOpen(!isOptionsDrawerOpen)}>
+              {isOptionsDrawerOpen ? "Fechar " : "Abrir "} Parametros
+            </Button>
             <Button onClick={() => setIsConsoleOpen(!isConsoleOpen)}>
               {isConsoleOpen ? "Fechar " : "Abrir "} Console
             </Button>
@@ -148,17 +152,11 @@ export default function Project({ projectName }: IProjectProps) {
         </Container>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <VariableContainer>
-          <h4>
-            BotoView
-          </h4>
-        </VariableContainer>
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <Console isOpen={isConsoleOpen} setIsOpen={setIsConsoleOpen} />
-      </div>
+      <Console isOpen={isConsoleOpen} setIsOpen={setIsConsoleOpen} />
+      <CommandOptionsDrawer
+        isOpen={isOptionsDrawerOpen}
+        setIsOpen={setIsOptionsDrawerOpen}
+      />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
