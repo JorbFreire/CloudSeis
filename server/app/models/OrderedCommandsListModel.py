@@ -1,5 +1,4 @@
 import sqlalchemy as dbTypes
-from sqlalchemy import select
 
 
 from ..database.connection import database
@@ -22,12 +21,13 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
     commandIds = dbTypes.Column(dbTypes.ARRAY(dbTypes.Integer))
 
     def getCommands(self) -> list[dict[str, str]]:
-        if not self.commandsIds[0]:
+        if len(self.commandIds) is 0:
             return []
         commands = CommandModel.query.filter(
             CommandModel.id.in_(self.commandIds)
-        )
-        return commands
+        ).all()
+
+        return [command.getAttributes() for command in commands]
 
     def getAttributes(self) -> dict[str, str | list[int]]:
         return {

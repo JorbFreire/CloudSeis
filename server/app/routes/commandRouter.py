@@ -13,7 +13,7 @@ commandRepository = CommandRepository()
 @commandRouter.route("/show", methods=['GET'])
 def showCommand(id):
     command = commandRepository.show(id)
-    return jsonify({command})
+    return jsonify(command)
 
 
 @commandRouter.route("/create", methods=['POST'])
@@ -24,8 +24,8 @@ def createCommand():
             {"Error": "No body"},
             status=400
         )
-    newCommand = commandRepository.create(data.command)
-    return jsonify({newCommand})
+    newCommand = commandRepository.create(data["workflowId"])
+    return jsonify(newCommand)
 
 
 @commandRouter.route("/update", methods=['PUT'])
@@ -36,11 +36,11 @@ def updateCommand(id):
             {"Error": "No body"},
             status=400
         )
-    updatedCommand = commandRepository.update(id, data.command)
-    return jsonify({updatedCommand})
+    updatedCommand = commandRepository.update(id, data["command"])
+    return jsonify(updatedCommand)
 
 
 @commandRouter.route("/delete", methods=['DELETE'])
 def deleteCommand(id):
     command = commandRepository.delete(id)
-    return jsonify({command})
+    return jsonify(command)

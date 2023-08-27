@@ -13,7 +13,6 @@ class UserRepository:
 
         return [user.getAttributes() for user in users]
 
-
     def showById(self, id) -> UserModel:
         user = UserModel.query.filter_by(id=UUID(id)).first()
 
@@ -22,12 +21,10 @@ class UserRepository:
 
         return user.getAttributes()
 
-
     def create(self, newUserData):
         user = UserModel.query.filter_by(email=newUserData["email"]).first()
         if user:
             raise AppError("Email alredy used")
-
         newId = uuid4()
         newUser = UserModel(
             id=newId,
@@ -38,7 +35,6 @@ class UserRepository:
         database.session.add(newUser)
         database.session.commit()
         return newUser.getAttributes()
-
 
     def update(self, id, newUserData):
         user = UserModel.query.filter_by(id=UUID(id)).first()
@@ -53,7 +49,6 @@ class UserRepository:
         database.session.commit()
         return user.getAttributes()
 
-
     def delete(self, id):
         user = UserModel.query.filter_by(id=UUID(id)).first()
         if not user:
@@ -62,4 +57,3 @@ class UserRepository:
         database.session.delete(user)
         database.session.commit()
         return user.getAttributes()
-
