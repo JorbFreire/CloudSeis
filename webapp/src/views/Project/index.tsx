@@ -50,6 +50,8 @@ const seismicUnixVariables = [
 const mockProjectId = "1"
 
 export default function Project({ projectName }: IProjectProps) {
+  const [isConsoleOpen, setIsConsoleOpen] = useState(true)
+
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
   const [nextId, setNextId] = useState(1)
   const [nextWorkflowId, setNextWorkflowId] = useState(1)
@@ -59,6 +61,7 @@ export default function Project({ projectName }: IProjectProps) {
   const [emptyListItems, setEmptyListItems] = useState<Array<{ id: string; name: string }>>([])
 
   const currentTotalWorkflows = totalWorkflows;
+
 
   const createLine = async () => {
     const newLine = await createNewLine("1", `Workflow ${nextId}`)
@@ -90,10 +93,10 @@ export default function Project({ projectName }: IProjectProps) {
 
   function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
-  
+
     const items = Array.from(variables);
     const [draggedItem] = items.splice(result.source.index, 1);
-  
+
     if (result.destination.droppableId === 'emptyDroppable') {
       setEmptyListItems(prevItems => [...prevItems, draggedItem]);
     } else {
@@ -101,7 +104,7 @@ export default function Project({ projectName }: IProjectProps) {
       updateVariables(items);
     }
   }
-  
+
   useEffect(() => {
     (async () => {
       const fetchedLines = await getLinesByProjectID(mockProjectId)
@@ -111,7 +114,7 @@ export default function Project({ projectName }: IProjectProps) {
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column'}}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Container>
           <TreeView
             aria-label="file system navigator"
@@ -119,6 +122,9 @@ export default function Project({ projectName }: IProjectProps) {
             defaultExpandIcon={<ChevronRightIcon />}
             sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
           >
+            <Button onClick={() => setIsConsoleOpen(!isConsoleOpen)}>
+              {isConsoleOpen ? "Fechar " : "Abrir "} Console
+            </Button>
             <Button onClick={createLine}>
               Create Line
             </Button>
@@ -142,7 +148,7 @@ export default function Project({ projectName }: IProjectProps) {
         </Container>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column'}}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <VariableContainer>
           <h4>
             BotoView
@@ -150,14 +156,14 @@ export default function Project({ projectName }: IProjectProps) {
         </VariableContainer>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'row'}}>
-        <Console messages={[]} />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <Console isOpen={isConsoleOpen} setIsOpen={setIsConsoleOpen} />
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
-            <div style={{ display:'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}>
+            <div style={{ display: 'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}>
               <h3>Variables</h3>
               <Droppable key={index} droppableId={`Variables${index}`}>
                 {(provided) => (
@@ -172,7 +178,7 @@ export default function Project({ projectName }: IProjectProps) {
                               </p>
                             </li>
                           )}
-                        </Draggable> 
+                        </Draggable>
                       </div>
                     ))}
                     {provided.placeholder}
@@ -180,29 +186,29 @@ export default function Project({ projectName }: IProjectProps) {
                 )}
               </Droppable>
 
-              <div style={{ display:'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}></div>
+              <div style={{ display: 'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}></div>
               <h3>SuBlocks</h3>
               <Droppable droppableId="emptyDroppable">
-              {(provided) => (
-                <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
-                  {emptyListItems.map((item, index) => (
-                    <div
-                      key={`empty-item-${index}`}
-                      style={{
-                        border: '1px solid black',
-                        margin: '10px',
-                        padding: '10px',
-                        backgroundColor: 'lightblue'
-                      }}
-                    >
-                      <p>{item.name}</p>
-                    </div>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
+                {(provided) => (
+                  <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
+                    {emptyListItems.map((item, index) => (
+                      <div
+                        key={`empty-item-${index}`}
+                        style={{
+                          border: '1px solid black',
+                          margin: '10px',
+                          padding: '10px',
+                          backgroundColor: 'lightblue'
+                        }}
+                      >
+                        <p>{item.name}</p>
+                      </div>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
               </Droppable>
-              
+
             </div>
           ))}
         </DragDropContext>
