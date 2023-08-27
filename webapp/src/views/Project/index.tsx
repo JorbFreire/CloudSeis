@@ -28,25 +28,6 @@ interface IWorkflow {
   id: string
 }
 
-const seismicUnixVariables = [
-  {
-    id: 'suinput',
-    name: 'suinput'
-  },
-  {
-    id: 'sugain',
-    name: 'sugain'
-  },
-  {
-    id: 'sufilter',
-    name: 'sufilter'
-  },
-  {
-    id: 'suwind',
-    name: 'suwind'
-  }
-]
-
 const mockProjectId = "1"
 
 export default function Project({ projectName }: IProjectProps) {
@@ -54,9 +35,6 @@ export default function Project({ projectName }: IProjectProps) {
   const [nextId, setNextId] = useState(1)
   const [nextWorkflowId, setNextWorkflowId] = useState(1)
   const [totalWorkflows, setTotalWorkflows] = useState(0)
-
-  const [variables, updateVariables] = useState(seismicUnixVariables)
-  const [emptyListItems, setEmptyListItems] = useState<Array<{ id: string; name: string }>>([])
 
   const currentTotalWorkflows = totalWorkflows;
 
@@ -86,20 +64,6 @@ export default function Project({ projectName }: IProjectProps) {
 
     setNextWorkflowId((prevId) => prevId + 1)
     setTotalWorkflows((prevTotal) => prevTotal + 1)
-  }
-
-  function handleOnDragEnd(result: DropResult) {
-    if (!result.destination) return;
-  
-    const items = Array.from(variables);
-    const [draggedItem] = items.splice(result.source.index, 1);
-  
-    if (result.destination.droppableId === 'emptyDroppable') {
-      setEmptyListItems(prevItems => [...prevItems, draggedItem]);
-    } else {
-      items.splice(result.destination.index, 0, draggedItem);
-      updateVariables(items);
-    }
   }
   
   useEffect(() => {
@@ -155,16 +119,15 @@ export default function Project({ projectName }: IProjectProps) {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-        <DragDropContext onDragEnd={handleOnDragEnd}>
           {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
             <div style={{ display:'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}>
               <h3>Variables</h3>
               <Droppable key={index} droppableId={`Variables${index}`}>
                 {(provided) => (
                   <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
-                    {variables.map(({ id, name }, variableIndex) => (
+                    {seimicUnixBlocks.map(({ id, name }, seimicUnixBlocksIndex) => (
                       <div style={{ border: '1px solid black', margin: '10px', padding: '10px', backgroundColor: 'white' }}>
-                        <Draggable key={id} draggableId={`Variable${variableIndex}-${id}`} index={variableIndex}>
+                        <Draggable key={id} draggableId={`Variable${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
                           {(provided) => (
                             <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                               <p>
@@ -205,7 +168,6 @@ export default function Project({ projectName }: IProjectProps) {
               
             </div>
           ))}
-        </DragDropContext>
       </div>
 
     </div>
