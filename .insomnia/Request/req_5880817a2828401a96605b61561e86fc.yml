@@ -1,0 +1,21 @@
+_id: req_5880817a2828401a96605b61561e86fc
+type: Request
+parentId: fld_84bf894543c744ee80c44c2adf5d57c5
+modified: 1692317404191
+created: 1692048545847
+url: "{{ _.base_url }}/project/list/8e5c7947-028c-4e30-9093-bb67d33cc12d"
+name: list
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1690441619437
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

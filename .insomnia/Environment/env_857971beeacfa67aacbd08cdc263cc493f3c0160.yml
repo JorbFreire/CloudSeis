@@ -1,0 +1,18 @@
+_id: env_857971beeacfa67aacbd08cdc263cc493f3c0160
+type: Environment
+parentId: wrk_5b43592548e043b3a9223b806c5dc324
+modified: 1691807391704
+created: 1674167906163
+name: Base Environment
+data:
+  heroku: https://boto-api.herokuapp.com
+  local: http://localhost:5000
+  base_url: http://localhost:5000
+dataPropertyOrder:
+  "&":
+    - heroku
+    - local
+    - base_url
+color: null
+isPrivate: false
+metaSortKey: 1674167906163

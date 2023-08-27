@@ -1,0 +1,31 @@
+_id: req_140eb79ee5db43caad13c721da0c52e9
+type: Request
+parentId: fld_ff4b05d2fe4d46f188d3b73ef305bc0e
+modified: 1692317326551
+created: 1692050881282
+url: "{{ _.base_url }}/line/create"
+name: create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "NEW LINE!",
+    	"seismicProjectId": "2"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.2
+authentication: {}
+metaSortKey: -1691438476671
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

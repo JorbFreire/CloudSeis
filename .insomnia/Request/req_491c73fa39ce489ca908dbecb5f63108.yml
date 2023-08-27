@@ -1,0 +1,21 @@
+_id: req_491c73fa39ce489ca908dbecb5f63108
+type: Request
+parentId: fld_5e471a96905e42dbace5520ed059b76f
+modified: 1692317362971
+created: 1692133481782
+url: "{{ _.base_url }}/workflow/show/2"
+name: show
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1690441619437
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

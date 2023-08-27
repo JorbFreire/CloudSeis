@@ -1,0 +1,31 @@
+_id: req_db2815ed4607403d9d06c1e1395ef1c4
+type: Request
+parentId: fld_5e471a96905e42dbace5520ed059b76f
+modified: 1692317366574
+created: 1692133481773
+url: "{{ _.base_url }}/workflow/create"
+name: create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "NEW WORKFLOW!",
+    	"lineId": "7"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.2
+authentication: {}
+metaSortKey: -1691438476671
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
