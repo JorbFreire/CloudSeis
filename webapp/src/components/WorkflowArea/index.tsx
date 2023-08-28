@@ -30,11 +30,11 @@ export default function WorkflowArea({
       <DroppableWrapper>
         <CloseButton onClick={closeWorkFlow}> Fechar </CloseButton>
         <h3>Programas Disponiveis</h3>
-        <Droppable key={workflowId} isDropDisabled={true} droppableId={`Variables${workflowId}`}>
+        <Droppable key={workflowId} isDropDisabled={true} droppableId={`w${workflowId}`}>
           {(provided) => (
             <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
               {seimicUnixBlocks.map(({ name }, seimicUnixBlocksIndex) => (
-                <Draggable key={name} draggableId={`Variable${seimicUnixBlocksIndex}-${name}`} index={seimicUnixBlocksIndex}>
+                <Draggable key={name} draggableId={`w${seimicUnixBlocksIndex}-${name}`} index={seimicUnixBlocksIndex}>
                   {(provided) => (
                     <UnixBlockItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
                       {name}

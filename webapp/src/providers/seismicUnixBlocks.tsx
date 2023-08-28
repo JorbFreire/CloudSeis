@@ -23,7 +23,7 @@ const SeismicUnixBlocksContext = createContext<ISeismicUnixBlocksContext>({
 })
 
 export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBlocksProviderProps) {
-  const seismicUnixCommand: seismicUnixBlocksType = [
+  const seimicUnixBlocks: seismicUnixBlocksType = [
     {
       name: 'suinput'
     },
@@ -38,7 +38,6 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
     }
   ]
 
-  const [seimicUnixBlocks, _] = useState<seismicUnixBlocksType>(seismicUnixCommand)
   const [emptyListItems, setEmptyListItems] = useState<Array<ICommand>>([])
 
   async function handleOnDragEnd(result: DropResult) {
@@ -46,10 +45,17 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
 
     const items = [...seimicUnixBlocks];
     const [draggedItem] = items.splice(result.source.index, 1);
-    const newCommand = await createNewCommand()
+    console.log("---------- result.source.droppableId ----------")
+    console.log(result.source.droppableId)
+    const newCommand = await createNewCommand(
+      result.source.droppableId,
+      draggedItem.name
+    )
 
+    if (!newCommand)
+      return;
     if (result.destination.droppableId === 'emptyDroppable')
-      setEmptyListItems(prevItems => [...prevItems, draggedItem]);
+      setEmptyListItems(prevItems => [...prevItems, newCommand]);
   }
 
   return (

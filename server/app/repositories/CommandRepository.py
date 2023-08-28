@@ -10,7 +10,7 @@ class CommandRepository:
     def show(self, id):
         pass
 
-    def create(self, workflowId):
+    def create(self, workflowId, name):
         workflow = WorkflowModel.query.filter_by(
             id=workflowId
         ).first()
@@ -22,8 +22,8 @@ class CommandRepository:
         ).first()
 
         newCommand = CommandModel(
-            name="new command",
-            parameters="parameters",
+            name=name,
+            parameters="",
             workflowId=workflowId
         )
         database.session.add(newCommand)
