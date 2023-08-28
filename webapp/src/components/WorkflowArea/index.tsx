@@ -9,6 +9,7 @@ import {
   UnixBlockItem,
   EditUnixParamsButton
 } from './styles';
+import { getWorkflowByID } from 'services/workflowServices';
 
 interface IWorkflowAreaProps {
   workflowId: string
@@ -19,12 +20,20 @@ export default function WorkflowArea({
   workflowId,
   setSelectedWorkFlowsIds
 }: IWorkflowAreaProps) {
-  const { seimicUnixBlocks, emptyListItems } = useSeismicUnixBlocks()
+  const { seimicUnixBlocks, commandList, setCommandList } = useSeismicUnixBlocks()
+
   const closeWorkFlow = () => {
     setSelectedWorkFlowsIds((prev) =>
       prev.filter(value => value !== workflowId)
     )
   }
+
+  const loadWorkflow = async () => {
+    const workflow = await getWorkflowByID(workflowId)
+    if (workflow)
+      setCommandList(workflow.commands)
+  }
+
   return (
     <Container>
       <DroppableWrapper>
@@ -53,7 +62,7 @@ export default function WorkflowArea({
         <Droppable droppableId="emptyDroppable">
           {(provided) => (
             <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
-              {emptyListItems.map(({ id, name }, seimicUnixBlocksIndex) => (
+              {commandList.map(({ id, name }, seimicUnixBlocksIndex) => (
                 <Draggable key={id} draggableId={`Workflow${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
                   {(provided) => (
                     <UnixBlockItem

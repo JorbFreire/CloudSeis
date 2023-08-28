@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { createNewCommand } from 'services/commandServices'
 
@@ -14,12 +14,14 @@ interface ISeismicUnixBlocksProviderProps {
 
 interface ISeismicUnixBlocksContext {
   seimicUnixBlocks: seismicUnixBlocksType,
-  emptyListItems: Array<ICommand>,
+  commandList: Array<ICommand>,
+  setCommandList: Dispatch<SetStateAction<Array<ICommand>>>
 }
 
 const SeismicUnixBlocksContext = createContext<ISeismicUnixBlocksContext>({
   seimicUnixBlocks: [],
-  emptyListItems: [],
+  commandList: [],
+  setCommandList: () => undefined
 })
 
 export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBlocksProviderProps) {
@@ -38,7 +40,7 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
     }
   ]
 
-  const [emptyListItems, setEmptyListItems] = useState<Array<ICommand>>([])
+  const [commandList, setCommandList] = useState<Array<ICommand>>([])
 
   async function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
@@ -55,14 +57,15 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
     if (!newCommand)
       return;
     if (result.destination.droppableId === 'emptyDroppable')
-      setEmptyListItems(prevItems => [...prevItems, newCommand]);
+      setCommandList(prevItems => [...prevItems, newCommand]);
   }
 
   return (
     <SeismicUnixBlocksContext.Provider
       value={{
         seimicUnixBlocks,
-        emptyListItems,
+        commandList,
+        setCommandList
       }}
     >
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -76,6 +79,6 @@ export function useSeismicUnixBlocks(): ISeismicUnixBlocksContext {
   const context = useContext(SeismicUnixBlocksContext)
   if (!context)
     throw new Error('useSeismicUnixBlocks must be used within a SeismicUnixBlocksProvider')
-  const { seimicUnixBlocks, emptyListItems } = context
-  return { seimicUnixBlocks, emptyListItems }
+  const { seimicUnixBlocks, commandList, setCommandList } = context
+  return { seimicUnixBlocks, commandList, setCommandList }
 }
