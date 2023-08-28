@@ -10,8 +10,8 @@ import CommandOptionsDrawer from 'components/CommandOptionsDrawer';
 import WorkflowArea from 'components/WorkflowArea';
 import SUFIleInput from '../../components/SUFIleInput'
 import { getLinesByProjectID, createNewLine } from '../../services/lineServices'
-import { getWorkflowByID, createNewWorkflow } from '../../services/workflowServices'
-import { Container, ProjectMenuBox, Button, VariableContainer } from './styles'
+import { createNewWorkflow } from '../../services/workflowServices'
+import { Container, ProjectMenuBox, Button } from './styles'
 
 
 interface IProjectProps {
@@ -35,12 +35,8 @@ export default function Project({ projectName }: IProjectProps) {
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
   const [treelines, setTreelines] = useState<Array<ITreeline>>([])
+  const [selectedWorkFlowsIds, setSelectedWorkFlowsIds] = useState<Array<string>>([])
   const [nextId, setNextId] = useState(1)
-  const [nextWorkflowId, setNextWorkflowId] = useState(1)
-  const [totalWorkflows, setTotalWorkflows] = useState(0)
-
-  const currentTotalWorkflows = totalWorkflows;
-
 
   const createLine = async () => {
     const newLine = await createNewLine("1", `Workflow ${nextId}`)
@@ -65,9 +61,6 @@ export default function Project({ projectName }: IProjectProps) {
           return treeline
         })
       )
-
-    setNextWorkflowId((prevId) => prevId + 1)
-    setTotalWorkflows((prevTotal) => prevTotal + 1)
   }
 
   useEffect(() => {
@@ -104,7 +97,12 @@ export default function Project({ projectName }: IProjectProps) {
                 </Button>
                 {/* tree item nodeId can never be equal inside the same tree view */}
                 {treeline.workflows.map((workflow) => (
-                  <TreeItem key={`w${workflow.id}`} nodeId={`w${workflow.id}`} label={`Workflow ${workflow.id}`} />
+                  <TreeItem
+                    onClick={() => setSelectedWorkFlowsIds((prev) => [...prev, workflow.id])}
+                    key={`w${workflow.id}`}
+                    nodeId={`w${workflow.id}`}
+                    label={`Workflow ${workflow.id}`}
+                  />
                 ))}
               </TreeItem>
             ))}
@@ -115,8 +113,11 @@ export default function Project({ projectName }: IProjectProps) {
           <h1>{projectName}</h1>
         </ProjectMenuBox>
 
-        {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
-          <WorkflowArea index={index} />
+        {selectedWorkFlowsIds.map((selectedWorkFlowsId) => (
+          <WorkflowArea
+            workflowId={selectedWorkFlowsId}
+            setSelectedWorkFlowsIds={setSelectedWorkFlowsIds}
+          />
         ))}
       </Container>
 

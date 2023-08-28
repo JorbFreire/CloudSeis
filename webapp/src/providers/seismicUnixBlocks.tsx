@@ -1,27 +1,20 @@
 import { createContext, useContext, useState } from 'react'
-import type { ReactNode, Dispatch, SetStateAction } from 'react'
-import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd'
+import type { ReactNode } from 'react'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
+import { createNewCommand } from 'services/commandServices'
 
 
 type seismicUnixBlocksType =
   Array<{
-    id: string,
     name: string
   }>
-
-type readonlySeismicUnixBlocksType =
-  Array<{
-    readonly id: string,
-    readonly name: string
-  }>
-
 interface ISeismicUnixBlocksProviderProps {
   children: ReactNode | Array<ReactNode>
 }
 
 interface ISeismicUnixBlocksContext {
   seimicUnixBlocks: seismicUnixBlocksType,
-  emptyListItems: seismicUnixBlocksType,
+  emptyListItems: Array<ICommand>,
 }
 
 const SeismicUnixBlocksContext = createContext<ISeismicUnixBlocksContext>({
@@ -30,34 +23,30 @@ const SeismicUnixBlocksContext = createContext<ISeismicUnixBlocksContext>({
 })
 
 export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBlocksProviderProps) {
-  const seismicUnixCommand: readonlySeismicUnixBlocksType = [
+  const seismicUnixCommand: seismicUnixBlocksType = [
     {
-      id: 'suinput',
       name: 'suinput'
     },
     {
-      id: 'sugain',
       name: 'sugain'
     },
     {
-      id: 'sufilter',
       name: 'sufilter'
     },
     {
-      id: 'suwind',
       name: 'suwind'
     }
   ]
 
-  const [seimicUnixBlocks, updateSeimicUnixBlocks] = useState<seismicUnixBlocksType>(seismicUnixCommand)
-  const [emptyListItems, setEmptyListItems] = useState<seismicUnixBlocksType>([])
+  const [seimicUnixBlocks, _] = useState<seismicUnixBlocksType>(seismicUnixCommand)
+  const [emptyListItems, setEmptyListItems] = useState<Array<ICommand>>([])
 
-  function handleOnDragEnd(result: DropResult) {
+  async function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
 
     const items = [...seimicUnixBlocks];
-    // this is splice is afecting a point and should only afect a copy
     const [draggedItem] = items.splice(result.source.index, 1);
+    const newCommand = await createNewCommand()
 
     if (result.destination.droppableId === 'emptyDroppable')
       setEmptyListItems(prevItems => [...prevItems, draggedItem]);

@@ -10,6 +10,12 @@ export const Container = styled.div`
   background-color: grey;
 `
 
+export const CloseButton = styled.button`
+  background-color: #AA4344;
+  color: #fff;
+  padding: 4px;
+`
+
 export const DroppableWrapper = styled.div``
 
 export const UnixBlockItem = styled.div`

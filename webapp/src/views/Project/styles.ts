@@ -17,22 +17,6 @@ export const ProjectMenuBox = styled.div`
   gap: 8px;
 `
 
-export const VariableContainer = styled.div`
-  background-color: #808080;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; 
-  align-items: left;
-  position: fixed;
-  top: 0;
-  right: 0; 
-  width: 25%;
-  height: 35vh;
-  gap: 8px;
-  z-index: 10;
-`
-
 export const Button = styled.button`
   background-color: #C0C0C0;
   color: #000;

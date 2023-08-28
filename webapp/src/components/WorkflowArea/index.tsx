@@ -1,29 +1,40 @@
+import type { Dispatch, SetStateAction } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { useSeismicUnixBlocks } from 'providers/seismicUnixBlocks';
 
 import {
   Container,
+  CloseButton,
   DroppableWrapper,
   UnixBlockItem,
   EditUnixParamsButton
 } from './styles';
 
 interface IWorkflowAreaProps {
-  index: number
+  workflowId: string
+  setSelectedWorkFlowsIds: Dispatch<SetStateAction<Array<string>>>
 }
 
-export default function WorkflowArea({ index }: IWorkflowAreaProps) {
+export default function WorkflowArea({
+  workflowId,
+  setSelectedWorkFlowsIds
+}: IWorkflowAreaProps) {
   const { seimicUnixBlocks, emptyListItems } = useSeismicUnixBlocks()
-
+  const closeWorkFlow = () => {
+    setSelectedWorkFlowsIds((prev) =>
+      prev.filter(value => value !== workflowId)
+    )
+  }
   return (
     <Container>
       <DroppableWrapper>
+        <CloseButton onClick={closeWorkFlow}> Fechar </CloseButton>
         <h3>Programas Disponiveis</h3>
-        <Droppable key={index} isDropDisabled={true} droppableId={`Variables${index}`}>
+        <Droppable key={workflowId} isDropDisabled={true} droppableId={`Variables${workflowId}`}>
           {(provided) => (
             <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
-              {seimicUnixBlocks.map(({ id, name }, seimicUnixBlocksIndex) => (
-                <Draggable key={id} draggableId={`Variable${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
+              {seimicUnixBlocks.map(({ name }, seimicUnixBlocksIndex) => (
+                <Draggable key={name} draggableId={`Variable${seimicUnixBlocksIndex}-${name}`} index={seimicUnixBlocksIndex}>
                   {(provided) => (
                     <UnixBlockItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
                       {name}
@@ -37,10 +48,6 @@ export default function WorkflowArea({ index }: IWorkflowAreaProps) {
         </Droppable>
       </DroppableWrapper>
 
-      <button onClick={() => console.log(seimicUnixBlocks)}>
-        log
-      </button>
-
       <DroppableWrapper>
         <h3>Workflow</h3>
         <Droppable droppableId="emptyDroppable">
@@ -50,7 +57,7 @@ export default function WorkflowArea({ index }: IWorkflowAreaProps) {
                 <Draggable key={id} draggableId={`Workflow${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
                   {(provided) => (
                     <UnixBlockItem
-                      key={`empty-item-${index}`}
+                      key={`empty-item-${workflowId}`}
                       style={{
                         backgroundColor: 'lightblue'
                       }}

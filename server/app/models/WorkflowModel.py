@@ -38,6 +38,5 @@ class WorkflowModel(database.Model):  # type: ignore
             "lineId": self.lineId,
             "name": self.name,
             "file_name": self.file_name,
-            "commands": [command.getAttributes() for command in self.commands],
-            "orderedCommands": [ordered.getCommands() for ordered in self.orderedCommandsList],
+            "commands": self.orderedCommandsList[0].ordered.getCommands(),
         }
