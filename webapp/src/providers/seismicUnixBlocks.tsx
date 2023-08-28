@@ -9,6 +9,12 @@ type seismicUnixBlocksType =
     name: string
   }>
 
+type readonlySeismicUnixBlocksType =
+  Array<{
+    readonly id: string,
+    readonly name: string
+  }>
+
 interface ISeismicUnixBlocksProviderProps {
   children: ReactNode | Array<ReactNode>
 }
@@ -24,7 +30,7 @@ const SeismicUnixBlocksContext = createContext<ISeismicUnixBlocksContext>({
 })
 
 export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBlocksProviderProps) {
-  const seismicUnixCommand = [
+  const seismicUnixCommand: readonlySeismicUnixBlocksType = [
     {
       id: 'suinput',
       name: 'suinput'
@@ -49,15 +55,12 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
   function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
 
-    const items = seimicUnixBlocks;
+    const items = [...seimicUnixBlocks];
+    // this is splice is afecting a point and should only afect a copy
     const [draggedItem] = items.splice(result.source.index, 1);
 
-    if (result.destination.droppableId === 'emptyDroppable') {
+    if (result.destination.droppableId === 'emptyDroppable')
       setEmptyListItems(prevItems => [...prevItems, draggedItem]);
-    } else {
-      items.splice(result.destination.index, 0, draggedItem);
-      updateSeimicUnixBlocks(items);
-    }
   }
 
   return (

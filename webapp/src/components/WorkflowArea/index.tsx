@@ -1,6 +1,13 @@
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { useSeismicUnixBlocks } from 'providers/seismicUnixBlocks';
 
+import {
+  Container,
+  DroppableWrapper,
+  UnixBlockItem,
+  EditUnixParamsButton
+} from './styles';
+
 interface IWorkflowAreaProps {
   index: number
 }
@@ -9,52 +16,61 @@ export default function WorkflowArea({ index }: IWorkflowAreaProps) {
   const { seimicUnixBlocks, emptyListItems } = useSeismicUnixBlocks()
 
   return (
-    <div style={{ display: 'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}>
-      <h3>Variables</h3>
-      <Droppable key={index} droppableId={`Variables${index}`}>
-        {(provided) => (
-          <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
-            {seimicUnixBlocks.map(({ id, name }, seimicUnixBlocksIndex) => (
-              <div style={{ border: '1px solid black', margin: '10px', padding: '10px', backgroundColor: 'white' }}>
+    <Container>
+      <DroppableWrapper>
+        <h3>Programas Disponiveis</h3>
+        <Droppable key={index} isDropDisabled={true} droppableId={`Variables${index}`}>
+          {(provided) => (
+            <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
+              {seimicUnixBlocks.map(({ id, name }, seimicUnixBlocksIndex) => (
                 <Draggable key={id} draggableId={`Variable${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
                   {(provided) => (
-                    <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                      <p>
-                        {name}
-                      </p>
-                    </li>
+                    <UnixBlockItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                      {name}
+                    </UnixBlockItem>
                   )}
                 </Draggable>
-              </div>
-            ))}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DroppableWrapper>
 
-      <div style={{ display: 'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}></div>
-      <h3>SuBlocks</h3>
-      <Droppable droppableId="emptyDroppable">
-        {(provided) => (
-          <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
-            {emptyListItems.map((item, index) => (
-              <div
-                key={`empty-item-${index}`}
-                style={{
-                  border: '1px solid black',
-                  margin: '10px',
-                  padding: '10px',
-                  backgroundColor: 'lightblue'
-                }}
-              >
-                <p>{item.name}</p>
-              </div>
-            ))}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
+      <button onClick={() => console.log(seimicUnixBlocks)}>
+        log
+      </button>
 
-    </div>
+      <DroppableWrapper>
+        <h3>Workflow</h3>
+        <Droppable droppableId="emptyDroppable">
+          {(provided) => (
+            <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
+              {emptyListItems.map(({ id, name }, seimicUnixBlocksIndex) => (
+                <Draggable key={id} draggableId={`Workflow${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
+                  {(provided) => (
+                    <UnixBlockItem
+                      key={`empty-item-${index}`}
+                      style={{
+                        backgroundColor: 'lightblue'
+                      }}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      {name}
+                      <EditUnixParamsButton>
+                        Editar Parametros
+                      </EditUnixParamsButton>
+                    </UnixBlockItem>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DroppableWrapper>
+    </Container>
   )
 }
