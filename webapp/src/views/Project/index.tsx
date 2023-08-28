@@ -7,12 +7,12 @@ import TreeItem from '@mui/lab/TreeItem';
 
 import Console from '../../components/Console'
 import CommandOptionsDrawer from 'components/CommandOptionsDrawer';
+import WorkflowArea from 'components/WorkflowArea';
 import SUFIleInput from '../../components/SUFIleInput'
 import { getLinesByProjectID, createNewLine } from '../../services/lineServices'
 import { getWorkflowByID, createNewWorkflow } from '../../services/workflowServices'
-import { Container, Button, VariableContainer } from './styles'
+import { Container, ProjectMenuBox, Button, VariableContainer } from './styles'
 
-import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd'
 
 interface IProjectProps {
   projectName?: string
@@ -78,9 +78,9 @@ export default function Project({ projectName }: IProjectProps) {
   }, [])
 
   return (
-    <div>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Container>
+    <>
+      <Container>
+        <ProjectMenuBox>
           <TreeView
             aria-label="file system navigator"
             defaultCollapseIcon={<ExpandMoreIcon />}
@@ -113,67 +113,19 @@ export default function Project({ projectName }: IProjectProps) {
           </TreeView>
 
           <h1>{projectName}</h1>
-        </Container>
-      </div>
+        </ProjectMenuBox>
+
+        {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
+          <WorkflowArea index={index} />
+        ))}
+      </Container>
+
 
       <Console isOpen={isConsoleOpen} setIsOpen={setIsConsoleOpen} />
       <CommandOptionsDrawer
         isOpen={isOptionsDrawerOpen}
         setIsOpen={setIsOptionsDrawerOpen}
       />
-
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-        {Array.from({ length: currentTotalWorkflows }).map((_, index) => (
-          <div style={{ display: 'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}>
-            <h3>Variables</h3>
-            <Droppable key={index} droppableId={`Variables${index}`}>
-              {(provided) => (
-                <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
-                  {seimicUnixBlocks.map(({ id, name }, seimicUnixBlocksIndex) => (
-                    <div style={{ border: '1px solid black', margin: '10px', padding: '10px', backgroundColor: 'white' }}>
-                      <Draggable key={id} draggableId={`Variable${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
-                        {(provided) => (
-                          <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                            <p>
-                              {name}
-                            </p>
-                          </li>
-                        )}
-                      </Draggable>
-                    </div>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-
-            <div style={{ display: 'flex', margin: '10px', padding: '10px', backgroundColor: 'grey' }}></div>
-            <h3>SuBlocks</h3>
-            <Droppable droppableId="emptyDroppable">
-              {(provided) => (
-                <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
-                  {emptyListItems.map((item, index) => (
-                    <div
-                      key={`empty-item-${index}`}
-                      style={{
-                        border: '1px solid black',
-                        margin: '10px',
-                        padding: '10px',
-                        backgroundColor: 'lightblue'
-                      }}
-                    >
-                      <p>{item.name}</p>
-                    </div>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-
-          </div>
-        ))}
-      </div>
-
-    </div>
+    </>
   )
 }

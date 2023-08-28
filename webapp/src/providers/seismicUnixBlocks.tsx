@@ -8,7 +8,6 @@ type seismicUnixBlocksType =
     id: string,
     name: string
   }>
-type setseismicUnixBlocksType = Dispatch<SetStateAction<seismicUnixBlocksType>>
 
 interface ISeismicUnixBlocksProviderProps {
   children: ReactNode | Array<ReactNode>
@@ -16,16 +15,12 @@ interface ISeismicUnixBlocksProviderProps {
 
 interface ISeismicUnixBlocksContext {
   seimicUnixBlocks: seismicUnixBlocksType,
-  updateSeimicUnixBlocks: setseismicUnixBlocksType,
   emptyListItems: seismicUnixBlocksType,
-  setEmptyListItems: setseismicUnixBlocksType
 }
 
 const SeismicUnixBlocksContext = createContext<ISeismicUnixBlocksContext>({
   seimicUnixBlocks: [],
-  updateSeimicUnixBlocks: () => undefined,
   emptyListItems: [],
-  setEmptyListItems: () => undefined,
 })
 
 export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBlocksProviderProps) {
@@ -69,9 +64,7 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
     <SeismicUnixBlocksContext.Provider
       value={{
         seimicUnixBlocks,
-        updateSeimicUnixBlocks,
         emptyListItems,
-        setEmptyListItems
       }}
     >
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -79,4 +72,12 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
       </DragDropContext>
     </SeismicUnixBlocksContext.Provider>
   )
+}
+
+export function useSeismicUnixBlocks(): ISeismicUnixBlocksContext {
+  const context = useContext(SeismicUnixBlocksContext)
+  if (!context)
+    throw new Error('useSeismicUnixBlocks must be used within a SeismicUnixBlocksProvider')
+  const { seimicUnixBlocks, emptyListItems } = context
+  return { seimicUnixBlocks, emptyListItems }
 }
