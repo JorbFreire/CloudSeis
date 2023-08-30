@@ -51,7 +51,9 @@ class FileRepository:
             seismicUnixCommandsQueue, source_file_path, changed_file_path)
         try:
             process_output = subprocess.check_output(
-                seismicUnixProcessString, shell=True)
+                seismicUnixProcessString,
+                shell=True
+            )
             return str(process_output)
         except Exception as error:
             return str(error)

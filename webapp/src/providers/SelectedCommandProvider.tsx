@@ -12,11 +12,13 @@ interface ISelectedCommandProviderProps {
 interface ISelectedCommandProviderContext {
   selectedCommand: selectedCommandType
   setSelectedCommand: setSelectedCommandType,
+  updateCommandParams: (prop: string) => undefined | void
 }
 
 const SelectedCommandProviderContext = createContext<ISelectedCommandProviderContext>({
   selectedCommand: undefined,
   setSelectedCommand: () => undefined,
+  updateCommandParams: () => undefined
 });
 
 export default function SelectedCommandProvider({ children }: ISelectedCommandProviderProps) {
@@ -38,6 +40,7 @@ export default function SelectedCommandProvider({ children }: ISelectedCommandPr
       value={{
         selectedCommand,
         setSelectedCommand,
+        updateCommandParams
       }}
     >
       {children}
@@ -45,10 +48,10 @@ export default function SelectedCommandProvider({ children }: ISelectedCommandPr
   )
 }
 
-export function useSelectedCommand(): [selectedCommandType, setSelectedCommandType] {
+export function useSelectedCommand(): ISelectedCommandProviderContext {
   const context = useContext(SelectedCommandProviderContext)
   if (!context)
     throw new Error('useSelectedCommand must be used within a SelectedCommandProvider')
-  const { selectedCommand, setSelectedCommand } = context
-  return [selectedCommand, setSelectedCommand]
+  const { selectedCommand, setSelectedCommand, updateCommandParams } = context
+  return { selectedCommand, setSelectedCommand, updateCommandParams }
 }

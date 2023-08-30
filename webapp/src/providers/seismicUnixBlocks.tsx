@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import { createNewCommand } from 'services/commandServices'
+import { createNewCommand, updateCommandsOrder } from 'services/commandServices'
 
 
 type seismicUnixBlocksType =
@@ -43,20 +43,43 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
   const [commandList, setCommandList] = useState<Array<ICommand>>([])
 
   async function handleOnDragEnd(result: DropResult) {
-    if (!result.destination) return;
+    if (!result.destination || result.reason === "CANCEL") return;
 
-    const items = [...seimicUnixBlocks];
-    const [draggedItem] = items.splice(result.source.index, 1);
-    const workflowId = result.source.droppableId.replace("w", "")
-    const newCommand = await createNewCommand(
-      workflowId,
-      draggedItem.name
-    )
+    const isCreateCommandTrigger = Boolean(result.draggableId.includes("unix-blocks-list"))
+    const isOrderUpdateTrigger = !isCreateCommandTrigger
 
-    if (!newCommand)
-      return;
-    if (result.destination.droppableId === 'emptyDroppable')
-      setCommandList(prevItems => [...prevItems, newCommand]);
+    const workflowId = result.source.droppableId.replaceAll("w", "")
+    const commandIndex = result.source.index
+
+    if (isOrderUpdateTrigger) {
+      const newIndex = result.destination.index
+      if (newIndex == commandIndex) return;
+
+      const newCommandList = [...commandList]
+
+      const draggedItem = newCommandList.splice(commandIndex, 1)
+      newCommandList.splice(newIndex, 0, draggedItem[0])
+
+      const newOrder = newCommandList.map((command) => command.id)
+      await updateCommandsOrder(workflowId, newOrder)
+
+      setCommandList(newCommandList)
+    }
+
+    if (isCreateCommandTrigger) {
+      const items = [...seimicUnixBlocks];
+      const [draggedItem] = items.splice(commandIndex, 1);
+
+      const newCommand = await createNewCommand(
+        workflowId,
+        draggedItem.name
+      )
+
+      if (!newCommand)
+        return;
+      if (result.destination.droppableId.includes("wwww"))
+        setCommandList(prevItems => [...prevItems, newCommand]);
+    }
   }
 
   return (

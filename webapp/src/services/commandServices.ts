@@ -12,3 +12,36 @@ export async function createNewCommand(workflowId: string, name: string): Promis
     return null
   }
 }
+
+export async function updateCommand(id: string, newParameters: string): Promise<ICommand | null> {
+  try {
+    const response = await api.put<ICommand>(`/command/update`, {
+      id,
+      parameters: newParameters
+    })
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export async function updateCommandsOrder(
+  workflowId: string,
+  newOrder: listOfCommandIdsType
+): Promise<IOrderedCommandsList | null> {
+  console.log("workflowId")
+  console.log(workflowId)
+  console.log("newOrder")
+  console.log(newOrder)
+  try {
+    const response = await api.put<IOrderedCommandsList>(`/command/order`, {
+      workflowId,
+      newOrder
+    })
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
