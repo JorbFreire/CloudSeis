@@ -47,10 +47,9 @@ export default function SeismicUnixBlocksProvider({ children }: ISeismicUnixBloc
 
     const items = [...seimicUnixBlocks];
     const [draggedItem] = items.splice(result.source.index, 1);
-    console.log("---------- result.source.droppableId ----------")
-    console.log(result.source.droppableId)
+    const workflowId = result.source.droppableId.replace("w", "")
     const newCommand = await createNewCommand(
-      result.source.droppableId,
+      workflowId,
       draggedItem.name
     )
 

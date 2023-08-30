@@ -29,14 +29,17 @@ def createCommand():
 
 
 @commandRouter.route("/update", methods=['PUT'])
-def updateCommand(id):
+def updateCommand():
     data = request.get_json()
     if data == None:
         return jsonify(
             {"Error": "No body"},
             status=400
         )
-    updatedCommand = commandRepository.update(id, data["command"])
+    updatedCommand = commandRepository.updateParameters(
+        data["id"],
+        data["command"]
+    )
     return jsonify(updatedCommand)
 
 

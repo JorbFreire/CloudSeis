@@ -1,7 +1,8 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 import type { ReactNode, Dispatch, SetStateAction } from 'react'
+import { updateCommand } from 'services/commandServices'
 
-type selectedCommandType = Array<string> | undefined
+type selectedCommandType = ICommand | undefined
 type setSelectedCommandType = Dispatch<SetStateAction<selectedCommandType>>
 
 interface ISelectedCommandProviderProps {
@@ -14,16 +15,23 @@ interface ISelectedCommandProviderContext {
 }
 
 const SelectedCommandProviderContext = createContext<ISelectedCommandProviderContext>({
-  selectedCommand: [],
+  selectedCommand: undefined,
   setSelectedCommand: () => undefined,
 });
 
 export default function SelectedCommandProvider({ children }: ISelectedCommandProviderProps) {
   const [selectedCommand, setSelectedCommand] = useState<selectedCommandType>([])
 
-  useEffect(() => {
+  // isso provavelmente vai no unix block provider, 
+  // chamando o selecetedCommand de dentro
+  // Tem q pensar um pouco mais pra ver a melhor rota
 
-  }, [])
+  // Tem q atualizar o update commando no backend também
+  const updateCommandParams = (newParameters: string) => {
+    if (!selectedCommand)
+      return;
+    updateCommand(selectedCommand.id, newParameters)
+  }
 
   return (
     <SelectedCommandProviderContext.Provider

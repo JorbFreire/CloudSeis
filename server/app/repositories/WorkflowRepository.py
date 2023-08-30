@@ -3,6 +3,9 @@ from ..models.LineModel import LineModel
 from ..models.WorkflowModel import WorkflowModel
 from ..models.OrderedCommandsListModel import OrderedCommandsListModel
 from ..errors.AppError import AppError
+from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
+
+orderedCommandsListRepository = OrderedCommandsListRepository()
 
 
 class WorkflowRepository:
@@ -20,7 +23,6 @@ class WorkflowRepository:
         if not line:
             raise AppError("Line does not exist", 404)
 
-        print("before create newWorkflow")
         newWorkflow = WorkflowModel(
             lineId=line.id,
             name=newWorkflowName,
@@ -29,12 +31,7 @@ class WorkflowRepository:
         database.session.add(newWorkflow)
         database.session.commit()
 
-        orderedCommandsList = OrderedCommandsListModel(
-            workflowId=newWorkflow.id,
-            commandIds=[],
-        )
-        database.session.add(orderedCommandsList)
-        database.session.commit()
+        orderedCommandsListRepository.create(newWorkflow.id)
 
         return newWorkflow.getAttributes()
 

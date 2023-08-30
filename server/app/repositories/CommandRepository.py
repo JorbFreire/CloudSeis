@@ -29,17 +29,23 @@ class CommandRepository:
         database.session.add(newCommand)
         database.session.commit()
 
-        print('orderedCommandsList["commandIds"]')
-        print(orderedCommandsList.commandIds)
         newCommandsList = copy(orderedCommandsList.commandIds)
         newCommandsList.append(newCommand.id)
         orderedCommandsList.commandIds = newCommandsList
+
         database.session.commit()
 
         return newCommand.getAttributes()
 
-    def update(self, id, newCommandData):
-        pass
+    def updateParameters(self, id, newParameters):
+        command = CommandModel.query.filter_by(id).first()
+        if not command:
+            raise AppError("Command does not exist", 404)
+
+        command.parameters = newParameters
+        database.session.commit()
+
+        return command.getAttributes()
 
     def delete(self, id):
         pass
