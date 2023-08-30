@@ -1,6 +1,9 @@
 from flask import Blueprint, request, jsonify
 
 from ..repositories.CommandRepository import CommandRepository
+from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
+
+orderedCommandsListRepository = OrderedCommandsListRepository()
 
 commandRouter = Blueprint(
     "command-routes",
@@ -42,6 +45,19 @@ def updateCommand():
     )
     return jsonify(updatedCommand)
 
+@commandRouter.route("/order", methods=['PUT'])
+def updateCommand():
+    data = request.get_json()
+    if data == None:
+        return jsonify(
+            {"Error": "No body"},
+            status=400
+        )
+    updatedCommandList = orderedCommandsListRepository.update(
+        data["workflowId"],
+        data["newOrder"]
+    )
+    return jsonify(updatedCommandList)
 
 @commandRouter.route("/delete", methods=['DELETE'])
 def deleteCommand(id):

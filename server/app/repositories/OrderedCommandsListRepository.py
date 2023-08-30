@@ -12,9 +12,9 @@ class OrderedCommandsListRepository:
         database.session.add(orderedCommandsList)
         database.session.commit()
 
-    def update(self, id, newOrder):
-        orderedCommandsList = OrderedCommandsListModel.query.filter_by(
-            id
+    def update(self, workflowId, newOrder):
+        orderedCommandsList = OrderedCommandsListModel.query.filter_by_workflowId(
+            workflowId=workflowId
         ).first()
         if not orderedCommandsList:
             raise AppError("OrderedComandsList does not exist")
