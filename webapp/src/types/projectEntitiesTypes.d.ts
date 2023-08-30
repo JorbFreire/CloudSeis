@@ -18,3 +18,11 @@ declare interface ICommand extends IgenericEntitiesType {
   parameters: string
   workflowId: number
 }
+
+declare type listOfCommandIdsType = Array<string>
+
+declare interface IOrderedCommandsList {
+  id: string
+  workflowId: string
+  commandIds: listOfCommandIdsType
+}
