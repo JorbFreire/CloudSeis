@@ -30,10 +30,6 @@ export async function updateCommandsOrder(
   workflowId: string,
   newOrder: listOfCommandIdsType
 ): Promise<IOrderedCommandsList | null> {
-  console.log("workflowId")
-  console.log(workflowId)
-  console.log("newOrder")
-  console.log(newOrder)
   try {
     const response = await api.put<IOrderedCommandsList>(`/command/order`, {
       workflowId,
