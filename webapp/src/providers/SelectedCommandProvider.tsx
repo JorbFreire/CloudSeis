@@ -22,7 +22,7 @@ const SelectedCommandProviderContext = createContext<ISelectedCommandProviderCon
 });
 
 export default function SelectedCommandProvider({ children }: ISelectedCommandProviderProps) {
-  const [selectedCommand, setSelectedCommand] = useState<selectedCommandType>([])
+  const [selectedCommand, setSelectedCommand] = useState<selectedCommandType>(undefined)
 
   // isso provavelmente vai no unix block provider, 
   // chamando o selecetedCommand de dentro

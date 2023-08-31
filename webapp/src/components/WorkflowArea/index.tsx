@@ -1,6 +1,7 @@
-import type { Dispatch, SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { useSeismicUnixBlocks } from 'providers/seismicUnixBlocks';
+import { useSelectedCommand } from 'providers/SelectedCommandProvider';
 
 import {
   Container,
@@ -21,6 +22,7 @@ export default function WorkflowArea({
   setSelectedWorkFlowsIds
 }: IWorkflowAreaProps) {
   const { seimicUnixBlocks, commandList, setCommandList } = useSeismicUnixBlocks()
+  const { setSelectedCommand } = useSelectedCommand()
 
   const closeWorkFlow = () => {
     setSelectedWorkFlowsIds((prev) =>
@@ -33,6 +35,10 @@ export default function WorkflowArea({
     if (workflow)
       setCommandList(workflow.commands)
   }
+
+  useEffect(() => {
+    loadWorkflow()
+  }, [workflowId])
 
   return (
     <Container>
@@ -62,8 +68,8 @@ export default function WorkflowArea({
         <Droppable droppableId={`wwww${workflowId}`}>
           {(provided) => (
             <ul className="empty-droppable" {...provided.droppableProps} ref={provided.innerRef}>
-              {commandList.map(({ id, name }, seimicUnixBlocksIndex) => (
-                <Draggable key={id} draggableId={`Workflow${seimicUnixBlocksIndex}-${id}`} index={seimicUnixBlocksIndex}>
+              {commandList.map((command, seimicUnixBlocksIndex) => (
+                <Draggable key={command.id} draggableId={`Workflow${workflowId}${seimicUnixBlocksIndex}-${command.id}`} index={seimicUnixBlocksIndex}>
                   {(provided) => (
                     <UnixBlockItem
                       key={`empty-item-${workflowId}`}
@@ -74,8 +80,8 @@ export default function WorkflowArea({
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      {name}
-                      <EditUnixParamsButton>
+                      {command.name}
+                      <EditUnixParamsButton onClick={() => setSelectedCommand(command)}>
                         Editar Parametros
                       </EditUnixParamsButton>
                     </UnixBlockItem>
