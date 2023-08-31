@@ -4,6 +4,7 @@ import { Routes } from 'generouted/react-location'
 
 import ConsoleLogsProvider from 'providers/ConsoleLogsProvider'
 import SeismicUnixBlocks from 'providers/seismicUnixBlocks'
+import SelectedCommandProvider from 'providers/SelectedCommandProvider'
 import './index.css'
 
 
@@ -11,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ConsoleLogsProvider>
       <SeismicUnixBlocks>
-        <Routes />
+        <SelectedCommandProvider>
+          <Routes />
+        </SelectedCommandProvider>
       </SeismicUnixBlocks>
     </ConsoleLogsProvider>
   </React.StrictMode>

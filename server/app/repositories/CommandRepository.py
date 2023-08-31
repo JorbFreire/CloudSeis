@@ -38,7 +38,7 @@ class CommandRepository:
         return newCommand.getAttributes()
 
     def updateParameters(self, id, newParameters):
-        command = CommandModel.query.filter_by(id).first()
+        command = CommandModel.query.filter_by(id=id).first()
         if not command:
             raise AppError("Command does not exist", 404)
 

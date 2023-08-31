@@ -16,7 +16,7 @@ export default function GenericDrawer({
 }: IGenericDrawerProps) {
   const drawerWidth = useMemo(() => {
     if (anchor === "right")
-      return 240
+      return 480
     return 'auto'
   }, [anchor])
 
@@ -31,6 +31,8 @@ export default function GenericDrawer({
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          gap: "8px",
+          padding: "8px",
         },
       }}
       variant="persistent"

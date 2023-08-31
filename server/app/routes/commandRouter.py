@@ -45,7 +45,7 @@ def updateCommand():
         )
     updatedCommand = commandRepository.updateParameters(
         data["id"],
-        data["command"]
+        data["parameters"]
     )
     return jsonify(updatedCommand)
 

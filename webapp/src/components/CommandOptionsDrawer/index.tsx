@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
+import { TextField, Button } from '@mui/material';
 
 import { useSelectedCommand } from 'providers/SelectedCommandProvider';
 import GenericDrawer from "../GenericDrawer"
@@ -42,12 +43,13 @@ export default function CommandOptionsDrawer({
       setIsOpen={setIsOpen}
       anchor='right'
     >
-      <h1>Command</h1>
-      {Object.entries(parameters).map((key, parameter: any) => (
-        <input
+      <h1>Parametros {selectedCommand?.name}</h1>
+
+      {Object.entries(parameters).map(([key, value]: any) => (
+        <TextField
           type="text"
-          placeholder={parameter.name}
-          value={parameter.value}
+          placeholder={key}
+          value={value}
           onChange={(event) => updateInput(event.target.value, key)}
         />
       ))}

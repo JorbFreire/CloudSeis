@@ -49,7 +49,7 @@ export default function WorkflowArea({
           {(provided) => (
             <ul className="variables" {...provided.droppableProps} ref={provided.innerRef}>
               {seimicUnixBlocks.map(({ name }, seimicUnixBlocksIndex) => (
-                <Draggable key={name} draggableId={`unix-blocks-list${seimicUnixBlocksIndex}-${name}`} index={seimicUnixBlocksIndex}>
+                <Draggable key={name} draggableId={`unix-blocks-list${workflowId}${seimicUnixBlocksIndex}-${name}`} index={seimicUnixBlocksIndex}>
                   {(provided) => (
                     <UnixBlockItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
                       {name}
@@ -81,7 +81,11 @@ export default function WorkflowArea({
                       {...provided.dragHandleProps}
                     >
                       {command.name}
-                      <EditUnixParamsButton onClick={() => setSelectedCommand(command)}>
+                      <EditUnixParamsButton onClick={() => {
+                        console.log("FOI")
+                        console.log(command)
+                        setSelectedCommand(command)
+                      }}>
                         Editar Parametros
                       </EditUnixParamsButton>
                     </UnixBlockItem>
