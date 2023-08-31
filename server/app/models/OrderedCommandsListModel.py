@@ -23,9 +23,12 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
     def getCommands(self) -> list[dict[str, str]]:
         if len(self.commandIds) is 0:
             return []
-        commands = CommandModel.query.filter(
-            CommandModel.id.in_(self.commandIds)
-        ).all()
+        commands = []
+        for id in self.commandIds:
+            command = CommandModel.query.filter_by(
+                id=id
+            ).first()
+            commands.append(command)
 
         return [command.getAttributes() for command in commands]
 
