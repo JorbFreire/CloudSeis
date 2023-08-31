@@ -1,10 +1,16 @@
 import api from "./api"
+import { getEmptyParams } from "./getEmptyParams"
 
-export async function createNewCommand(workflowId: string, name: string): Promise<ICommand | null> {
+export async function createNewCommand(
+  workflowId: string,
+  name: string,
+): Promise<ICommand | null> {
+  const emptyParameters = getEmptyParams(name)
   try {
     const response = await api.post<ICommand>(`/command/create`, {
       workflowId,
-      name
+      name,
+      parameters: JSON.stringify(emptyParameters)
     })
     return response.data
   } catch (error) {

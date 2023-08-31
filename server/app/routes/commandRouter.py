@@ -27,7 +27,11 @@ def createCommand():
             {"Error": "No body"},
             status=400
         )
-    newCommand = commandRepository.create(data["workflowId"], data["name"])
+    newCommand = commandRepository.create(
+        data["workflowId"],
+        data["name"],
+        data["parameters"]
+    )
     return jsonify(newCommand)
 
 

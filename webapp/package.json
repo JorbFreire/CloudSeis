@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-location": "^3.3.4",
     "styled-components": "^5.3.6",
+    "use-debounce": "^9.0.4",
     "vite-tsconfig-paths": "^4.0.1"
   },
   "devDependencies": {

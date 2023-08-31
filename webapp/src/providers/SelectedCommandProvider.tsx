@@ -12,7 +12,7 @@ interface ISelectedCommandProviderProps {
 interface ISelectedCommandProviderContext {
   selectedCommand: selectedCommandType
   setSelectedCommand: setSelectedCommandType,
-  updateCommandParams: (prop: string) => undefined | void
+  updateCommandParams: (newParameters: string) => undefined | void
 }
 
 const SelectedCommandProviderContext = createContext<ISelectedCommandProviderContext>({
