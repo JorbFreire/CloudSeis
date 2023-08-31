@@ -70,7 +70,8 @@ def previous_shot():
 
 
 def get_perc_trace(trace, perc):
-    return np.clip(trace, a_min=None, a_max=np.percentile(trace, perc))
+    clip_value = np.percentile(np.abs(trace), perc)
+    return np.clip(trace, a_min=-clip_value, a_max=clip_value)
 
 
 def select_plot_mode_handler():
