@@ -50,7 +50,7 @@ def updateCommand():
     return jsonify(updatedCommand)
 
 @commandRouter.route("/order", methods=['PUT'])
-def updateCommand():
+def updateOrder():
     data = request.get_json()
     if data == None:
         return jsonify(

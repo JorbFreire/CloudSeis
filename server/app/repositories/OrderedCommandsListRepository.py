@@ -13,7 +13,7 @@ class OrderedCommandsListRepository:
         database.session.commit()
 
     def update(self, workflowId, newOrder):
-        orderedCommandsList = OrderedCommandsListModel.query.filter_by_workflowId(
+        orderedCommandsList = OrderedCommandsListModel.query.filter_by(
             workflowId=workflowId
         ).first()
         if not orderedCommandsList:
