@@ -22,6 +22,8 @@ class FileRepository:
     def _getAllParameters(self, parameters) -> str:
         parametersProcessString = ""
         for parameterKey, parameterValues in parameters.items():
+            if not parameterValues:
+                continue
             parametersProcessString += f' {parameterKey}='
             parametersProcessString += self._getParameter(parameterValues)
         return parametersProcessString
@@ -31,7 +33,8 @@ class FileRepository:
         for seismicUnixProgram in commandsQueue:
             seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
             seismicUnixProcessString += self._getAllParameters(
-                seismicUnixProgram["parameters"])
+                seismicUnixProgram["parameters"]
+            )
             seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
         return seismicUnixProcessString
 

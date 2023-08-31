@@ -3,17 +3,19 @@ import { useNavigate } from '@tanstack/react-location'
 
 import api from '../../services/api'
 import { Container, FileInput, Button } from './styles'
+import { useSelectedCommand } from 'providers/SelectedCommandProvider'
 
 interface ISUFileInput {
   projectName: string
 }
 export default function SUFileInput({ projectName }: ISUFileInput) {
   const navigate = useNavigate()
+  const { suFileName, setSuFileName } = useSelectedCommand()
+
   const [SUFiles, setSUFiles] = useState<FileList | null>()
-  const [lastFileName, setLastFileName] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const openDataWindow = () => navigate({ to: `/seismic-visualization/${lastFileName}` })
+  const openDataWindow = () => navigate({ to: `/seismic-visualization/${suFileName}` })
 
   const submitFiles = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -29,7 +31,7 @@ export default function SUFileInput({ projectName }: ISUFileInput) {
             'Content-Type': 'multipart/form-data'
           }
         })
-        setLastFileName(response.data.unique_filename)
+        setSuFileName(response.data.unique_filename)
       } catch (error) {
         console.error(error)
       }

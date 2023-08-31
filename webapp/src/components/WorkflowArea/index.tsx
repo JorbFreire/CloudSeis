@@ -5,12 +5,16 @@ import { useSelectedCommand } from 'providers/SelectedCommandProvider';
 
 import {
   Container,
+  ActionsContainer,
   CloseButton,
+  ExecuteButton,
   DroppableWrapper,
   UnixBlockItem,
   EditUnixParamsButton
 } from './styles';
 import { getWorkflowByID } from 'services/workflowServices';
+import { updateFile } from 'services/fileServices';
+import { suCommandsQueue } from 'types/seismicUnixTypes';
 
 interface IWorkflowAreaProps {
   workflowId: string
@@ -22,7 +26,7 @@ export default function WorkflowArea({
   setSelectedWorkFlowsIds
 }: IWorkflowAreaProps) {
   const { seimicUnixBlocks, commandList, setCommandList } = useSeismicUnixBlocks()
-  const { setSelectedCommand } = useSelectedCommand()
+  const { setSelectedCommand, suFileName } = useSelectedCommand()
 
   const closeWorkFlow = () => {
     setSelectedWorkFlowsIds((prev) =>
@@ -42,8 +46,15 @@ export default function WorkflowArea({
 
   return (
     <Container>
-      <DroppableWrapper>
+      <ActionsContainer>
         <CloseButton onClick={closeWorkFlow}> Fechar </CloseButton>
+        {/* this type convertion break type safety, but shall work for now */}
+        <ExecuteButton onClick={() => updateFile(suFileName, commandList as unknown as suCommandsQueue)}>
+          Executar
+        </ExecuteButton>
+      </ActionsContainer>
+
+      <DroppableWrapper>
         <h3>Programas Disponiveis</h3>
         <Droppable key={workflowId} isDropDisabled={true} droppableId={`w${workflowId}`}>
           {(provided) => (

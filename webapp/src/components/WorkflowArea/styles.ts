@@ -1,19 +1,36 @@
 import styled from "styled-components";
+import Button from "@mui/material/Button";
 
 export const Container = styled.div`
+  position: relative;
   display: flex;
   width: fit-content;
   flex-direction: row;
   margin: 10px;
-  padding: 10px;
   gap: 40px;
   background-color: grey;
+
+  & > :not(:first-child) {
+    padding: 10px;
+    padding-top: 64px;
+  }
 `
 
-export const CloseButton = styled.button`
-  background-color: #AA4344;
-  color: #fff;
-  padding: 4px;
+export const ActionsContainer = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`
+
+export const CloseButton = styled(Button)`
+  background-color: #AA4344 !important;
+  color: #fff !important;
+`
+
+export const ExecuteButton = styled(Button)`
+  background-color: #3065AC !important;
+  color: #fff !important;
 `
 
 export const DroppableWrapper = styled.div``

@@ -32,8 +32,8 @@ def updateSuFile(unique_filename):
             status=400
         )
 
-    updateOptions = data["updateOptions"]
-    process_output = fileRepository.update(unique_filename, updateOptions)
+    seismicUnixCommandsQueue = data["seismicUnixCommandsQueue"]
+    process_output = fileRepository.update(unique_filename, seismicUnixCommandsQueue)
     return jsonify({
         "process_output": process_output
     })
