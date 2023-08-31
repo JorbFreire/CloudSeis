@@ -1,4 +1,5 @@
 import numpy as np
+from os import getcwd
 from seismicio import readsu
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
@@ -98,7 +99,16 @@ def apply_perc():
     wiggle_source.data = {"xs": xs_list, "ys": ys_list}
 
 
-sudata = readsu("/volume1/Seismic/dados_teste/marmousi_CS.su")
+def getFilePath(unique_filename):
+	# todo: abstract the ".su" here and stop using as part of "unique_filename"
+
+	file_path = getcwd() + '/../server/static/' + unique_filename
+	return file_path
+
+document = curdoc()
+suFileName = document.session_context.request.arguments["file_name"][0].decode('UTF-8')
+
+sudata = readsu(getFilePath(suFileName))
 traces = sudata.traces
 headers = sudata.headers
 
@@ -146,6 +156,6 @@ label_current_shot = Paragraph(text=f"Shot gather: {current_shot + 1}")
 inputs = column(
     label_current_shot, button_next_shot, button_previous_shot, perc_input, button_perc
 )
-document = curdoc()
+
 document.add_root(row(inputs, Tabs(tabs=[wiggle_tab, image_tab])))
 document.title = "Seismic Visualizer"

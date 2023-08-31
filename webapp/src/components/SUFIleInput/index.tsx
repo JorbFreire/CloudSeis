@@ -15,7 +15,7 @@ export default function SUFileInput({ projectName }: ISUFileInput) {
   const [SUFiles, setSUFiles] = useState<FileList | null>()
   const [loading, setLoading] = useState(false)
 
-  const openDataWindow = () => navigate({ to: `/seismic-visualization/${suFileName}` })
+  const openDataWindow = () => window.open(`http://localhost:5006/visualizer?file_name=${suFileName}`)
 
   const submitFiles = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

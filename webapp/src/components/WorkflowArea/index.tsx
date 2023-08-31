@@ -1,4 +1,5 @@
 import { useEffect, type Dispatch, type SetStateAction } from 'react';
+import { useNavigate } from '@tanstack/react-location'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { useSeismicUnixBlocks } from 'providers/seismicUnixBlocks';
 import { useSelectedCommand } from 'providers/SelectedCommandProvider';
@@ -25,6 +26,7 @@ export default function WorkflowArea({
   workflowId,
   setSelectedWorkFlowsIds
 }: IWorkflowAreaProps) {
+  const navigate = useNavigate()
   const { seimicUnixBlocks, commandList, setCommandList } = useSeismicUnixBlocks()
   const { setSelectedCommand, suFileName } = useSelectedCommand()
 
@@ -40,6 +42,11 @@ export default function WorkflowArea({
       setCommandList(workflow.commands)
   }
 
+  const executeWorkflow = async () => {
+    await updateFile(suFileName, commandList as unknown as suCommandsQueue)
+    window.open(`http://localhost:5006/visualizer?file_name=2${suFileName}`)
+  }
+
   useEffect(() => {
     loadWorkflow()
   }, [workflowId])
@@ -49,7 +56,7 @@ export default function WorkflowArea({
       <ActionsContainer>
         <CloseButton onClick={closeWorkFlow}> Fechar </CloseButton>
         {/* this type convertion break type safety, but shall work for now */}
-        <ExecuteButton onClick={() => updateFile(suFileName, commandList as unknown as suCommandsQueue)}>
+        <ExecuteButton onClick={() => executeWorkflow()}>
           Executar
         </ExecuteButton>
       </ActionsContainer>
