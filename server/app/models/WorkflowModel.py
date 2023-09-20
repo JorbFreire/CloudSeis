@@ -14,10 +14,6 @@ class WorkflowModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     file_name = dbTypes.Column(dbTypes.String)
 
-    lineId = dbTypes.Column(dbTypes.ForeignKey(
-        "lines_table.id",
-        name="FK_lines_table_workflows_table"
-    ))
     commands: Mapped[
         List[CommandModel]
     ] = relationship(CommandModel)
@@ -35,7 +31,7 @@ class WorkflowModel(database.Model):  # type: ignore
     def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
         return {
             "id": self.id,
-            "lineId": self.lineId,
+            "parent": self.workflowParentAssociationId.getIds(),
             "name": self.name,
             "file_name": self.file_name,
             "commands": self.orderedCommandsList[0].getCommands(),

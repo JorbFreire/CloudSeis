@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, Mapped
 from typing import List
 
 from ..database.connection import database
+from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 from .WorkflowModel import WorkflowModel
 
 
@@ -16,14 +17,25 @@ class LineModel(database.Model):  # type: ignore
         "projects_table.id",
         name="FK_projects_table_lines_table"
     ))
-    workflows: Mapped[
-        List[WorkflowModel]
-    ] = relationship(WorkflowModel)
+    workflowParentAssociations: Mapped[
+        List[WorkflowParentsAssociationModel]
+    ] = relationship(secondary=WorkflowParentsAssociationModel)
+
+    def _getWorkflows(self) -> list[dict[str, str]]:
+        if len(self.workflowParentAssociations) is 0:
+            return []
+        workflows = WorkflowModel.query.filter(
+            WorkflowModel.lineId.in_(
+                [association.workflowId for association in self.workflowParentAssociations]
+            )
+        ).all()
+        return [workflow.getResumedAttributes() for workflow in workflows]
+        
 
     def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
         return {
             "id": self.id,
             "projectId": self.projectId,
             "name": self.name,
-            "workflows": [workflow.getResumedAttributes() for workflow in self.workflows],
+            "workflows": self._getWorkflows()
         }
