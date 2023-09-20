@@ -11,4 +11,4 @@ dbConfig = {
 	"port": "5432"
 }
 
-db_uri = f"postgresql://{dbConfig['user']}:${dbConfig['password']}@{dbConfig['host']}:{dbConfig['port']}/{dbConfig['dbname']}"
+db_uri = f"postgresql://{dbConfig['user']}:{dbConfig['password']}@{dbConfig['host']}:{dbConfig['port']}/{dbConfig['dbname']}"
