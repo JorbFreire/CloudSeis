@@ -31,7 +31,6 @@ class WorkflowModel(database.Model):  # type: ignore
     def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
         return {
             "id": self.id,
-            "parent": self.workflowParentAssociationId.getIds(),
             "name": self.name,
             "file_name": self.file_name,
             "commands": self.orderedCommandsList[0].getCommands(),

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from ..repositories.WorkflowRepository import WorkflowRepository
+from ..errors.AppError import AppError
 
 workflowRouter = Blueprint(
     "workflow-routes",
@@ -20,14 +21,9 @@ def showWorkflow(id):
 def createWorkflow():
     data = request.get_json()
     if data == None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
-    newWorkflow = workflowRepository.create(
-        data["lineId"],
-        data["name"]
-    )
+        raise AppError("No body", 400)
+
+    newWorkflow = workflowRepository.create(data)
     return jsonify(newWorkflow)
 
 
@@ -35,10 +31,8 @@ def createWorkflow():
 def updateWorkflow(id):
     data = request.get_json()
     if data == None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
+        raise AppError("No body", 400)
+
     updatedWorkflow = workflowRepository.updateName(
         id,
         data["name"]

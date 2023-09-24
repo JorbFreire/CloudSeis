@@ -1,10 +1,11 @@
 from ..database.connection import database
-from ..models.LineModel import LineModel
 from ..models.WorkflowModel import WorkflowModel
-from ..models.OrderedCommandsListModel import OrderedCommandsListModel
 from ..errors.AppError import AppError
 from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
+from ..repositories.WorkflowParentsAssociationRepository import WorkflowParentsAssociationRepository
 
+
+workflowParentsAssociationRepository = WorkflowParentsAssociationRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
 
 
@@ -16,21 +17,18 @@ class WorkflowRepository:
 
         return workflow.getAttributes()
 
-    def create(self, lineId, newWorkflowName):
-        line = LineModel.query.filter_by(
-            id=lineId
-        ).first()
-        if not line:
-            raise AppError("Line does not exist", 404)
-
-        newWorkflow = WorkflowModel(
-            lineId=line.id,
-            name=newWorkflowName,
-            file_name=""
-        )
+    def create(self, newWorkflowData):
+        newWorkflow = WorkflowModel({
+            "name": newWorkflowData["name"],
+            "file_name": ""
+        })
         database.session.add(newWorkflow)
         database.session.commit()
-
+        
+        workflowParentsAssociationRepository.create(
+            newWorkflow["id"],
+            newWorkflow["parent"]
+        )
         orderedCommandsListRepository.create(newWorkflow.id)
 
         return newWorkflow.getAttributes()
