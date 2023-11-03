@@ -1,7 +1,7 @@
 _id: req_69af9ed7968043e0a6da06ea6837a315
 type: Request
 parentId: fld_84bf894543c744ee80c44c2adf5d57c5
-modified: 1692317431449
+modified: 1699038253921
 created: 1692048545826
 url: "{{ _.base_url }}/project/create"
 name: create
@@ -12,7 +12,7 @@ body:
   text: |-
     {
     	"name": "NEW PROJECT",
-    	"userId": "8e5c7947-028c-4e30-9093-bb67d33cc12d"
+    	"userId": "74b72923-597f-4de7-b087-fdb75d7ab1b1"
     }
 parameters: []
 headers:

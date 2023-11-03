@@ -1,7 +1,7 @@
 _id: req_db2815ed4607403d9d06c1e1395ef1c4
 type: Request
 parentId: fld_5e471a96905e42dbace5520ed059b76f
-modified: 1692317366574
+modified: 1699041975241
 created: 1692133481773
 url: "{{ _.base_url }}/workflow/create"
 name: create
@@ -12,7 +12,10 @@ body:
   text: |-
     {
     	"name": "NEW WORKFLOW!",
-    	"lineId": "7"
+    	"parent": {
+    		"parentId": "1",
+    		"parentType": "lineId"
+    	}
     }
 parameters: []
 headers:
