@@ -1,5 +1,4 @@
 import sqlalchemy as dbTypes
-from sqlalchemy.orm import relationship, Mapped
 from typing import List
 
 from ..database.connection import database

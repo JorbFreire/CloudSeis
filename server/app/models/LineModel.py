@@ -25,12 +25,11 @@ class LineModel(database.Model):  # type: ignore
         if len(self.workflowParentAssociations) is 0:
             return []
         workflows = WorkflowModel.query.filter(
-            WorkflowModel.lineId.in_(
+            WorkflowModel.id.in_(
                 [association.workflowId for association in self.workflowParentAssociations]
             )
         ).all()
         return [workflow.getResumedAttributes() for workflow in workflows]
-
 
     def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
         return {

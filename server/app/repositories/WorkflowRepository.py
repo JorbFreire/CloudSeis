@@ -31,7 +31,7 @@ class WorkflowRepository:
         database.session.add(newWorkflow)
         database.session.commit()
 
-        newWorkflowId = newWorkflow.getResumedAttributes()["id"]
+        newWorkflowId = newWorkflow.id
         workflowParentsAssociationRepository.create(
             newWorkflowId,
             newWorkflowData["parent"]
