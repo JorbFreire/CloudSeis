@@ -17,11 +17,11 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
         primary_key=True
     )
     lineId = dbTypes.Column(dbTypes.ForeignKey(
-        "projects_table.id",
+        "lines_table.id",
         name="FK_workflow_parents_association_table_lines_table"
     ))
     projectId = dbTypes.Column(dbTypes.ForeignKey(
-        "lines_table.id",
+        "projects_table.id",
         name="FK_workflow_parents_association_table_projects_table"
     ))
 
@@ -30,4 +30,4 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
             "projectId": self.projectId,
             "lineId": self.lineId,
             "workflowId": self.workflowId,
-		}
+        }

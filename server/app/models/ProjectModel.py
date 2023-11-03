@@ -21,7 +21,7 @@ class ProjectModel(database.Model):  # type: ignore
 
     workflowParentAssociations: Mapped[
         List[WorkflowParentsAssociationModel]
-    ] = relationship(secondary=WorkflowParentsAssociationModel)
+    ] = relationship(WorkflowParentsAssociationModel)
 
     lines: Mapped[
         List[LineModel]

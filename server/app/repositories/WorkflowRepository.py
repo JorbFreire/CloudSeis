@@ -18,16 +18,23 @@ class WorkflowRepository:
         return workflow.getAttributes()
 
     def create(self, newWorkflowData):
-        newWorkflow = WorkflowModel({
-            "name": newWorkflowData["name"],
-            "file_name": ""
-        })
+        parentType = newWorkflowData["parent"]["parentType"]
+        if parentType != "lineId" and parentType != "projectId":
+            raise AppError(
+                "'parentType' must be either 'lineId' or 'projectId'"
+            )
+
+        newWorkflow = WorkflowModel(
+            name=newWorkflowData["name"],
+            file_name=""
+        )
         database.session.add(newWorkflow)
         database.session.commit()
-        
+
+        newWorkflowId = newWorkflow.getResumedAttributes()["id"]
         workflowParentsAssociationRepository.create(
-            newWorkflow["id"],
-            newWorkflow["parent"]
+            newWorkflowId,
+            newWorkflowData["parent"]
         )
         orderedCommandsListRepository.create(newWorkflow.id)
 

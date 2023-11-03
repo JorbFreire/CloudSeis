@@ -35,7 +35,7 @@ def updateWorkflow(id):
 
     updatedWorkflow = workflowRepository.updateName(
         id,
-        data["name"]
+        data
     )
     return jsonify(updatedWorkflow)
 

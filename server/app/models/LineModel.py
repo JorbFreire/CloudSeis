@@ -19,7 +19,7 @@ class LineModel(database.Model):  # type: ignore
     ))
     workflowParentAssociations: Mapped[
         List[WorkflowParentsAssociationModel]
-    ] = relationship(secondary=WorkflowParentsAssociationModel)
+    ] = relationship(WorkflowParentsAssociationModel)
 
     def _getWorkflows(self) -> list[dict[str, str]]:
         if len(self.workflowParentAssociations) is 0:
@@ -30,7 +30,7 @@ class LineModel(database.Model):  # type: ignore
             )
         ).all()
         return [workflow.getResumedAttributes() for workflow in workflows]
-        
+
 
     def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
         return {
