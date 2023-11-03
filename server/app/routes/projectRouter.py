@@ -44,3 +44,10 @@ def updateProject(id):
 def deleteProject(id):
     project = projectRepository.delete(id)
     return jsonify(project)
+
+
+# * It does not include workflows inside lines
+@projectRouter.route("/root-workflows/list/<id>", methods=['GET'])
+def listProjectRootWorkflows(id):
+    projectWorkflows = projectRepository.listWorkflowsByProjectId(id)
+    return jsonify(projectWorkflows)

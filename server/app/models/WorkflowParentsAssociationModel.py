@@ -1,5 +1,4 @@
 import sqlalchemy as dbTypes
-from typing import List
 
 from ..database.connection import database
 from .WorkflowModel import WorkflowModel
