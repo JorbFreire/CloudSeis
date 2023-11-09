@@ -1,25 +1,11 @@
 import pytest
 import unittest
-from server.app.create_app import create_app
-
-
-def _app():
-    app = create_app("test")
-
-    return app
-
-
-def _client():
-    return _app().test_client()
-
-
-def _runner(self):
-    return self._app().test_cli_runner()
+import json
 
 
 class TestProjectRouter(unittest.TestCase):
     url_prefix = "/project"
-    client = _client()
+    client = pytest.client
     user_id = "74b72923-597f-4de7-b087-fdb75d7ab1b1"
 
     def test_empty_get(self):
@@ -30,15 +16,17 @@ class TestProjectRouter(unittest.TestCase):
 
     def test_new_project(self):
         expected_response = {
-            "id": 1,
             "name": "NEW PROJECT",
             "userId": self.user_id
         }
         response = self.client.post(
             f"{self.url_prefix}/create",
-            data={
+            json={
                 "name": "NEW PROJECT",
                 "userId": "74b72923-597f-4de7-b087-fdb75d7ab1b1"
             }
         )
-        assert expected_response in response.data
+        reponse_dict = json.loads(response.data.decode())
+        assert isinstance(reponse_dict["id"], int)
+        assert expected_response["name"] == reponse_dict["name"]
+        assert expected_response["userId"] == reponse_dict["userId"]
