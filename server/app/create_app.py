@@ -10,7 +10,7 @@ from .routes import router
 from .errors.AppError import AppError
 
 
-def create_app(mode: Literal["production", "development", "test"]):
+def create_app(mode: Literal["production", "development", "test"] = "development"):
     app = Flask(__name__)
     app.config['UPLOAD_FOLDER'] = upload_folder
     app.config['SQLALCHEMY_DATABASE_URI'] = get_db_uri(mode)
