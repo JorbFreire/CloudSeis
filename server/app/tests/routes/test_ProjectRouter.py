@@ -1,14 +1,13 @@
 import pytest
 import unittest
 from server.app.database.connection import database
-from ..conftest import _app
+from ..conftest import _app, get_root_user_id
 
 
 class TestProjectRouter(unittest.TestCase):
     url_prefix = "/project"
     client = pytest.client
-    # todo: the user_id should not be hard coded
-    user_id = "8a694264-b1de-48b6-9c53-5cdfa6d2829f"
+    user_id = get_root_user_id()
     created_projects: list[dict] = []
 
     @pytest.fixture(autouse=True, scope='class')
@@ -77,6 +76,5 @@ class TestProjectRouter(unittest.TestCase):
     @pytest.mark.run(order=6)
     def test_clean_up_database(self):
         with _app.app_context():
-            database.session.commit()
-            database.session.remove()
             database.drop_all()
+            database.create_all()

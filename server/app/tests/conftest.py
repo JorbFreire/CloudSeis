@@ -17,4 +17,15 @@ def pytest_configure():
     pytest.client = _client()
 
 
-# @pytest.fixture
+# this function cant be runned twice before reset the database
+def get_root_user_id():
+    response = pytest.client.post(
+        "/user/create",
+        json={
+            "name": "user-root",
+            "email": "user_root@email.com",
+            "password": "password123"
+        }
+    )
+    user_id = response.json["id"]
+    return user_id

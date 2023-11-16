@@ -43,4 +43,3 @@ def updateUser(userId):
 def deleteUser(userId):
     user = userRepository.delete(userId)
     return jsonify(user)
-
