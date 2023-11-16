@@ -1,46 +1,55 @@
 import pytest
 import unittest
-import json
+from server.app.database.connection import database
+from ..conftest import _app
 
 
 class TestProjectRouter(unittest.TestCase):
     url_prefix = "/project"
     client = pytest.client
-    user_id = "74b72923-597f-4de7-b087-fdb75d7ab1b1"
+    # todo: the user_id should not be hard coded
+    user_id = "8a694264-b1de-48b6-9c53-5cdfa6d2829f"
     created_projects: list[dict] = []
 
+    @pytest.fixture(autouse=True, scope='class')
+    def _init_database(self):
+        with _app.app_context():
+            database.create_all()
+
+    @pytest.mark.run(order=1)
     def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no Projects for this user"
         }
         response = self.client.get(f"{self.url_prefix}/list/{self.user_id}")
         assert response.status_code == 404
-        assert response.json["error"] == expected_response_data["error"]
+        assert response.json["Error"] == expected_response_data["Error"]
 
-    # ! it should run 5 time, but aparently not doing it
-    @pytest.mark.parametrize('execution_number', range(5))
+    @pytest.mark.run(order=2)
     def test_create_new_project(self):
-        expected_response_data = {
-            "name": "NEW PROJECT",
-            "userId": self.user_id
-        }
-        response = self.client.post(
-            f"{self.url_prefix}/create",
-            json={
-                "name": "NEW PROJECT",
+        for i in range(3):
+            expected_response_data = {
+                "name": f'NEW PROJECT-{i}',
                 "userId": self.user_id
             }
-        )
-        assert response.status_code == 200
-        assert isinstance(response.json["id"], int)
-        assert expected_response_data["name"] == response.json["name"]
-        assert expected_response_data["userId"] == response.json["userId"]
-        self.created_projects.append(response.json)
+            response = self.client.post(
+                f"{self.url_prefix}/create",
+                json={
+                    "name": f'NEW PROJECT-{i}',
+                    "userId": self.user_id
+                }
+            )
+            assert response.status_code == 200
+            assert isinstance(response.json["id"], int)
+            assert expected_response_data["name"] == response.json["name"]
+            assert expected_response_data["userId"] == response.json["userId"]
+            self.created_projects.append(response.json)
 
+    @pytest.mark.run(order=3)
     def test_update_project_name(self):
         new_name = "name changed"
-        response = self.client.post(
-            # ! [2] is out of range, but should not. Problem on "test_create_new_project"
+        self.created_projects[2]["name"] = new_name
+        response = self.client.put(
             f"{self.url_prefix}/update/{self.created_projects[2]['id']}",
             json={
                 "name": new_name,
@@ -49,12 +58,14 @@ class TestProjectRouter(unittest.TestCase):
         assert response.status_code == 200
         assert response.json == self.created_projects[2]
 
+    @pytest.mark.run(order=4)
     def test_list_projects(self):
         response = self.client.get(f"{self.url_prefix}/list/{self.user_id}")
         assert response.status_code == 200
         assert isinstance(response.json, list)
         assert response.json == self.created_projects
 
+    @pytest.mark.run(order=5)
     def test_delete_project(self):
         for project in self.created_projects:
             response = self.client.delete(
@@ -62,3 +73,10 @@ class TestProjectRouter(unittest.TestCase):
             )
             response.status == 200
             assert response.json == project
+
+    @pytest.mark.run(order=6)
+    def test_clean_up_database(self):
+        with _app.app_context():
+            database.session.commit()
+            database.session.remove()
+            database.drop_all()
