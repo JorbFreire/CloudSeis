@@ -1,13 +1,14 @@
 import pytest
 import unittest
 from server.app.database.connection import database
-from ..conftest import _app, get_root_user_id
+from ..conftest import _app
+from ..utils import get_test_user_id
 
 
 class TestProjectRouter(unittest.TestCase):
     url_prefix = "/project"
     client = pytest.client
-    user_id = get_root_user_id()
+    user_id = get_test_user_id()
     created_projects: list[dict] = []
 
     @pytest.fixture(autouse=True, scope='class')
