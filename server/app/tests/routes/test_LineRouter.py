@@ -16,7 +16,7 @@ class TestProjectRouter(unittest.TestCase):
         with _app.app_context():
             database.create_all()
 
-    @pytest.mark.run(order=1)
+    @pytest.mark.run(order=21)
     def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no Lines for this project"
@@ -25,7 +25,7 @@ class TestProjectRouter(unittest.TestCase):
         assert response.status_code == 404
         assert response.json["Error"] == expected_response_data["Error"]
 
-    @pytest.mark.run(order=2)
+    @pytest.mark.run(order=22)
     def test_create_new_project(self):
         for i in range(3):
             expected_response_data = {
@@ -45,14 +45,14 @@ class TestProjectRouter(unittest.TestCase):
             assert expected_response_data["projectId"] == response.json["projectId"]
             self.created_lines.append(response.json)
 
-    @pytest.mark.run(order=4)
+    @pytest.mark.run(order=24)
     def test_list_projects(self):
         response = self.client.get(f"{self.url_prefix}/list/{self.project_id}")
         assert response.status_code == 200
         assert isinstance(response.json, list)
         assert response.json == self.created_lines
 
-    @pytest.mark.run(order=5)
+    @pytest.mark.run(order=25)
     def test_delete_project(self):
         for line in self.created_lines:
             response = self.client.delete(
@@ -61,7 +61,7 @@ class TestProjectRouter(unittest.TestCase):
             response.status == 200
             assert response.json == line
 
-    @pytest.mark.run(order=6)
+    @pytest.mark.run(order=26)
     def test_clean_up_database(self):
         with _app.app_context():
             database.drop_all()

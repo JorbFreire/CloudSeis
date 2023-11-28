@@ -14,7 +14,7 @@ class TestUserRouter(unittest.TestCase):
         with _app.app_context():
             database.create_all()
 
-    @pytest.mark.run(order=11)
+    @pytest.mark.run(order=1)
     def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no users"
@@ -27,7 +27,7 @@ class TestUserRouter(unittest.TestCase):
         assert response.json["Error"] == expected_response_data["Error"]
 
     # todo: test weak password and repeated email
-    @pytest.mark.run(order=12)
+    @pytest.mark.run(order=2)
     def test_create_new_user(self):
         for i in range(3):
             expected_response_data = {
@@ -51,14 +51,14 @@ class TestUserRouter(unittest.TestCase):
             assert expected_response_data["email"] == response.json["email"]
             self.created_users.append(response.json)
 
-    @pytest.mark.run(order=13)
+    @pytest.mark.run(order=3)
     def test_list_users(self):
         response = self.client.get(f"{self.url_prefix}/list")
         assert response.status_code == 200
         assert isinstance(response.json, list)
         assert response.json == self.created_users
 
-    @pytest.mark.run(order=14)
+    @pytest.mark.run(order=4)
     def test_delete_user(self):
         for user in self.created_users:
             response = self.client.delete(
@@ -67,7 +67,7 @@ class TestUserRouter(unittest.TestCase):
             response.status == 200
             assert response.json == user
 
-    @pytest.mark.run(order=15)
+    @pytest.mark.run(order=5)
     def test_clean_up_database(self):
         with _app.app_context():
             database.drop_all()
