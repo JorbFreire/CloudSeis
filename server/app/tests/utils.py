@@ -31,14 +31,14 @@ def get_test_project_data(name="project"):
     return project_data, user_data
 
 
-def get_test_line_id(name="line") -> [int, int]:
-    projectId = get_test_project_data(name=name)["id"]
+def get_test_line_data(name="line"):
+    project_data, user_data = get_test_project_data(name=name)
     response = pytest.client.post(
         "/line/create",
         json={
             "name": "line-test",
-            "projectId": projectId,
+            "projectId": project_data["id"],
         }
     )
-    lineId = response.json["id"]
-    return [projectId, lineId]
+    line_data = response.json
+    return line_data, project_data, user_data
