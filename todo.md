@@ -3,8 +3,10 @@
 [X] Test User Routes
 [X] Test Project routes
 [X] Test Line Routes
-[ ] Test Workflow routes
+[x] Test Workflow routes
 [ ] Test Workflow listing on projects and lines
+[ ] Fix workflow delete route
+[ ] Fix workflow get route when not found
 
  - [ ] Build command register interface
    - [ ] Generate type json-like file
