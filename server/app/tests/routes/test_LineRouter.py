@@ -1,20 +1,31 @@
 import pytest
 import unittest
 from server.app.database.connection import database
+from server.app.models.UserModel import UserModel
+from server.app.models.ProjectModel import ProjectModel
 from ..conftest import _app
-from ..utils import get_test_project_id
+from ..utils import get_test_project_data
 
 
-class TestProjectRouter(unittest.TestCase):
+class TestLinetRouter(unittest.TestCase):
     url_prefix = "/line"
     client = pytest.client
-    project_id = get_test_project_id()
+    project_data, user_data = get_test_project_data()
+    project_id = project_data["id"]
     created_lines: list[dict] = []
 
+    #! this fixture implementation shall be checked to be
+    #! fully adopted on ent-to-end tests at this app
     @pytest.fixture(autouse=True, scope='class')
     def _init_database(self):
         with _app.app_context():
-            database.create_all()
+            with database.session.begin():
+                database.create_all()
+                user = UserModel(**self.user_data)
+                project = ProjectModel(**self.project_data)
+                database.session.add(user)
+                database.session.add(project)
+                database.session.commit()
 
     @pytest.mark.run(order=21)
     def test_empty_get(self):
@@ -26,7 +37,7 @@ class TestProjectRouter(unittest.TestCase):
         assert response.json["Error"] == expected_response_data["Error"]
 
     @pytest.mark.run(order=22)
-    def test_create_new_project(self):
+    def test_create_new_line(self):
         for i in range(3):
             expected_response_data = {
                 "name": f'NEW LINE-{i}',
@@ -46,14 +57,14 @@ class TestProjectRouter(unittest.TestCase):
             self.created_lines.append(response.json)
 
     @pytest.mark.run(order=24)
-    def test_list_projects(self):
+    def test_list_lines(self):
         response = self.client.get(f"{self.url_prefix}/list/{self.project_id}")
         assert response.status_code == 200
         assert isinstance(response.json, list)
         assert response.json == self.created_lines
 
     @pytest.mark.run(order=25)
-    def test_delete_project(self):
+    def test_delete_line(self):
         for line in self.created_lines:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{line['id']}"

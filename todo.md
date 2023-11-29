@@ -2,9 +2,15 @@
 
 [X] Test User Routes
 [X] Test Project routes
-[ ] Test Line Routes
+[X] Test Line Routes
 [ ] Test Workflow routes
 [ ] Test Workflow listing on projects and lines
+
+ - [ ] Build command register interface
+   - [ ] Generate type json-like file
+   - [ ] Do it on a friendly web interface
+   - [ ] Create user levels
+   - [ ] Send files to the server
 
 ### Next features:
 
