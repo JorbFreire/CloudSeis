@@ -33,4 +33,8 @@ dbConfigOptions = {
 
 def get_db_uri(mode: modeKeyType):
     dbConfig = dbConfigOptions[mode]
-    return f"postgresql://{dbConfig['user']}:{dbConfig['password']}@{dbConfig['host']}:{dbConfig['port']}/{dbConfig['dbname']}"
+    dbConfigString = f"postgresql://{dbConfig['user']}:{dbConfig['password']}@{dbConfig['host']}"
+    if "port" in dbConfig:
+        dbConfigString = f"{dbConfigString}:{dbConfig['port']}"
+    dbConfigString = f"{dbConfigString}/{dbConfig['dbname']}"
+    return dbConfigString
