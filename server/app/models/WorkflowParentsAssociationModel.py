@@ -3,7 +3,6 @@ import sqlalchemy as dbTypes
 from ..database.connection import database
 from .WorkflowModel import WorkflowModel
 
-
 class WorkflowParentsAssociationModel(database.Model):  # type: ignore
     __tablename__ = "workflow_parents_association_table"
 
@@ -14,6 +13,11 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
         ),
         primary_key=True
     )
+    datasetId = dbTypes.Column(dbTypes.ForeignKey(
+        "datasets_table.id",
+        name="FK_workflow_parents_association_table_dataset_table"
+    ))
+    # Feature de ser filho ou de project ou de line
     lineId = dbTypes.Column(dbTypes.ForeignKey(
         "lines_table.id",
         name="FK_workflow_parents_association_table_lines_table"
@@ -22,8 +26,8 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
         "projects_table.id",
         name="FK_workflow_parents_association_table_projects_table"
     ))
-
-    def getAttributes(self) -> dict[str, str]:
+    
+    def getAttributes(self):
         return {
             "projectId": self.projectId,
             "lineId": self.lineId,

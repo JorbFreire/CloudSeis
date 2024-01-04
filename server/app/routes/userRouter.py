@@ -6,7 +6,6 @@ from ..errors.AppError import AppError
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
 
-
 @userRouter.route("/list", methods=['GET'])
 def listUsers():
     users = userRepository.showAll()

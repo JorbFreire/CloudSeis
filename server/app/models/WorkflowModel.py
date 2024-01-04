@@ -22,13 +22,13 @@ class WorkflowModel(database.Model):  # type: ignore
         List[CommandModel]
     ] = relationship(OrderedCommandsListModel)
 
-    def getResumedAttributes(self) -> dict[str, str | list[dict[str, str]]]:
+    def getResumedAttributes(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,
         }
 
-    def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
+    def getAttributes(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,

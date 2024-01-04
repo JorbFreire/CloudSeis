@@ -19,7 +19,7 @@ class WorkflowRepository:
 
     def create(self, newWorkflowData):
         parentType = newWorkflowData["parent"]["parentType"]
-        if parentType != "lineId" and parentType != "projectId":
+        if parentType != "lineId" and parentType != "projectId" and parentType != "datasetId":
             raise AppError(
                 "'parentType' must be either 'lineId' or 'projectId'"
             )
