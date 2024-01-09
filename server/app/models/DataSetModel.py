@@ -1,3 +1,5 @@
+# DataSetModel.py
+
 import sqlalchemy as dbTypes
 from sqlalchemy.orm import relationship, Mapped
 from typing import List
@@ -7,9 +9,9 @@ from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 from .WorkflowModel import WorkflowModel
 # Projeto
     # Dataset
-
+        # .su1
         # .su2
-  # Workflow djdj
+    # Workflow1
     # Workflow2
 
 class DataSet(database.Model):

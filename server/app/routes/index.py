@@ -8,6 +8,7 @@ from .projectRouter import projectRouter
 from .lineRouter import lineRouter
 from .workflowRouter import workflowRouter
 from .commandRouter import commandRouter
+from .datasetRouter import datasetRouter
 
 router = Blueprint("routes", __name__)
 
@@ -20,3 +21,5 @@ router.register_blueprint(projectRouter)
 router.register_blueprint(lineRouter)
 router.register_blueprint(workflowRouter)
 router.register_blueprint(commandRouter)
+
+router.register_blueprint(datasetRouter)
