@@ -1,5 +1,3 @@
-# DataSetModel.py
-
 import sqlalchemy as dbTypes
 from sqlalchemy.orm import relationship, Mapped
 from typing import List
@@ -7,31 +5,25 @@ from typing import List
 from ..database.connection import database
 from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 from .WorkflowModel import WorkflowModel
-# Projeto
-    # Dataset
-        # .su1
-        # .su2
-    # Workflow1
-    # Workflow2
 
-class DataSet(database.Model):
+class DataSetModel(database.Model):
     __tablename__ = "datasets_table"
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
-    currentSate = dbTypes.Column(dbTypes.String)
 
     projectId = dbTypes.Column(dbTypes.ForeignKey(
         "datasets_table.id",
         name="FK_projects_datasets"
     ))
 
+    # Nao tem nada incrementando isso
     workflowParentAssociations: Mapped[
         List[WorkflowParentsAssociationModel]
     ] = relationship(WorkflowParentsAssociationModel)
 
     def _getWorkflows(self) -> list[dict[str, str]]:
-        if len(self.workflowParentAssociations) == 0:
-            return []
+        # if len(self.workflowParentAssociations) == 0: # Sempre é 0
+        #     return []
         workflows = WorkflowModel.query.filter().all()
         return [workflow.getResumedAttributes() for workflow in workflows]
 
@@ -39,6 +31,4 @@ class DataSet(database.Model):
         return {
             "id": self.id,
             "workflows": self._getWorkflows(),
-            "currentSate": self.currentSate
         }
-

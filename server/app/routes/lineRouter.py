@@ -24,6 +24,11 @@ def createLine():
             {"Error": "No body"},
             status=400
         )
+    elif "name" not in data or "projectId" not in data:
+        return jsonify(
+            {"Error": "Invalid body"},
+            status=400
+        )
     newLine = lineRepository.create(
         data["projectId"],
         data["name"]

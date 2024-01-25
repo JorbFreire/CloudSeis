@@ -23,6 +23,8 @@ def createUser():
     data = request.get_json()
     if data == None:
         raise AppError("No body", 400)
+    elif "name" not in data or "email" not in data or "password" not in data: # ?
+        raise AppError("Ivalid body", 400)
 
     newUser = userRepository.create(data)
     return jsonify(newUser)

@@ -4,10 +4,8 @@ from ..errors.AppError import AppError
 from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
 from ..repositories.WorkflowParentsAssociationRepository import WorkflowParentsAssociationRepository
 
-
 workflowParentsAssociationRepository = WorkflowParentsAssociationRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
-
 
 class WorkflowRepository:
     def showById(self, id):
@@ -21,7 +19,7 @@ class WorkflowRepository:
         parentType = newWorkflowData["parent"]["parentType"]
         if parentType != "lineId" and parentType != "projectId" and parentType != "datasetId":
             raise AppError(
-                "'parentType' must be either 'lineId' or 'projectId'"
+                "parentType must be either 'lineId' or 'projectId'"
             )
 
         newWorkflow = WorkflowModel(
@@ -39,9 +37,6 @@ class WorkflowRepository:
         orderedCommandsListRepository.create(newWorkflow.id)
 
         return newWorkflow.getAttributes()
-
-    def updateName(self, id, newWorkflowName):
-        pass
 
     def delete(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()

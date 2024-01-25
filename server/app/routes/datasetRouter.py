@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from ..repositories.DatasetRepository import DatasetRepository
+from ..errors.AppError import AppError
 
 datasetRouter = Blueprint("dataset-routes", __name__, url_prefix="/dataset")
 datasetRepository = DatasetRepository()
@@ -9,12 +10,17 @@ datasetRepository = DatasetRepository()
 def createDataset():
     data = request.get_json()
     if data is None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
+        raise AppError("No body", 400)
+    elif "projectId" not in data or "workflowId" not in data:
+        raise AppError("Ivalid Body", 400) # Not sure if its 400 error
     newDataset = datasetRepository.create(data["projectId"], data["workflowId"])
     return jsonify(newDataset)
+
+# Delete method, not sure
+@datasetRouter.route("/delete", methods=['DELETE'])
+def deleteDataset():
+    dataset = datasetRepository.delete()
+    return jsonify(dataset)
 
 @datasetRouter.route("/show/<id>", methods=['GET'])
 def showDataset(id):
