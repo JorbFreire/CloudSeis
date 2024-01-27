@@ -5,12 +5,11 @@ from ..repositories.FileRepository import FileRepository
 suFileRouter = Blueprint("su-file-routes", __name__, url_prefix="/su-file")
 fileRepository = FileRepository()
 
-
 # ? note sure if this "/ should be keep or not"
 @suFileRouter.route("/", methods=['GET'])
 def showSuFile():
     try:
-        return send_file('../static/marmousi_CS.su')
+        return send_file('../static/marmousi_CS.su') # Faz o download ??
     except Exception as error:
         return str(error)
 

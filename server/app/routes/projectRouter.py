@@ -24,6 +24,11 @@ def createProject():
             {"Error": "No body"},
             status=400
         )
+    elif "name" not in data or "userId" not in data:
+        return jsonify(
+            {"Error": "Invalid body"},
+            status=400
+        )
     newProject = projectRepository.create(data["userId"], data["name"])
     return jsonify(newProject)
 
