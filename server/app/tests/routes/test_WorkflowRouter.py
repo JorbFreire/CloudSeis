@@ -32,7 +32,7 @@ class TestWorkflowRouter(unittest.TestCase):
     @pytest.mark.run(order=2)
     def test_create_new_workflow_with_bad_parent(self):
         expected_response_data = {
-            "Error": "'parentType' must be either 'lineId' or 'projectId'"
+            "Error": "'parentType' must be either 'lineId', 'projectId' or 'datasetId'"
         }
         request_data = {
             "name": f'NEW BAD WORKFLOW',
@@ -63,11 +63,10 @@ class TestWorkflowRouter(unittest.TestCase):
             f"{self.url_prefix}/create",
             json=request_data
         )
-        print("response.json")
-        print(response.json)
         assert response.status_code == 404
         assert response.json["Error"] == expected_response_data["Error"]
 
+    # todo: test bad request cases with dateset to block manual dataset
     def test_create_new_workflow_with_inexistent_line(self):
         expected_response_data = {
             "Error": "Line does not exist"
@@ -132,6 +131,7 @@ class TestWorkflowRouter(unittest.TestCase):
                     },
                 }
             )
+            print(self.project_data)
             assert response.status_code == 200
             assert isinstance(response.json["id"], int)
             assert response.json["name"] == expected_response_data["name"]

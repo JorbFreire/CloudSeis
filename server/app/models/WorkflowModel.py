@@ -5,6 +5,7 @@ from typing import List
 from ..database.connection import database
 from .CommandModel import CommandModel
 from .OrderedCommandsListModel import OrderedCommandsListModel
+from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 
 class WorkflowModel(database.Model):  # type: ignore
@@ -21,6 +22,10 @@ class WorkflowModel(database.Model):  # type: ignore
     orderedCommandsList: Mapped[
         List[CommandModel]
     ] = relationship(OrderedCommandsListModel)
+
+    workflowParent: Mapped[
+        WorkflowParentsAssociationModel
+    ] = relationship(WorkflowParentsAssociationModel, cascade="all, delete-orphan")
 
     def getResumedAttributes(self) -> dict:
         return {

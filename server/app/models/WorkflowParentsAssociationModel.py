@@ -1,7 +1,7 @@
 import sqlalchemy as dbTypes
 
 from ..database.connection import database
-from .WorkflowModel import WorkflowModel
+
 
 class WorkflowParentsAssociationModel(database.Model):  # type: ignore
     __tablename__ = "workflow_parents_association_table"
@@ -26,7 +26,7 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
         "projects_table.id",
         name="FK_workflow_parents_association_table_projects_table"
     ))
-    
+
     def getAttributes(self):
         return {
             "projectId": self.projectId,
