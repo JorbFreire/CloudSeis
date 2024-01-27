@@ -5,12 +5,18 @@ from ..models.WorkflowModel import WorkflowModel
 from .WorkflowRepository import WorkflowRepository
 
 workflowRepository = WorkflowRepository()
+
+
 class DatasetRepository():
 
     def create(self, projectId, workflowId) -> dict:
-        dataset = DataSetModel()
-        dataset.projectId = projectId
+        dataset = DataSetModel(
+            projectId=projectId
+        )
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+        database.session.add(dataset)
+        database.session.commit()
+
         workflowRepository.create({
             "name": "NEW NEWDATASET",
             "parent": {
@@ -18,11 +24,10 @@ class DatasetRepository():
                 "parentType": "datasetId"
             }
         })
-        database.session.add(dataset)
         database.session.add(workflow)
         database.session.commit()
         return dataset.getAttributes()
-    
+
     def showById(self, id):
         dataset = DataSetModel.query.filter_by(id=id).first()
         if not dataset:
