@@ -30,7 +30,7 @@ class TestWorkflowRouter(unittest.TestCase):
         assert response.json["Error"] == expected_response_data["Error"]
 
     @pytest.mark.run(order=2)
-    def test_create_new_project_with_bad_parent(self):
+    def test_create_new_workflow_with_bad_parent(self):
         expected_response_data = {
             "Error": "'parentType' must be either 'lineId' or 'projectId'"
         }
@@ -48,7 +48,7 @@ class TestWorkflowRouter(unittest.TestCase):
         assert response.status_code == 400
         assert response.json["Error"] == expected_response_data["Error"]
 
-    def test_create_new_project_with_inexistent_project(self):
+    def test_create_new_workflow_with_inexistent_project(self):
         expected_response_data = {
             "Error": "Project does not exist"
         }
@@ -68,7 +68,7 @@ class TestWorkflowRouter(unittest.TestCase):
         assert response.status_code == 404
         assert response.json["Error"] == expected_response_data["Error"]
 
-    def test_create_new_project_with_inexistent_line(self):
+    def test_create_new_workflow_with_inexistent_line(self):
         expected_response_data = {
             "Error": "Line does not exist"
         }
@@ -87,7 +87,7 @@ class TestWorkflowRouter(unittest.TestCase):
         assert response.json["Error"] == expected_response_data["Error"]
 
     @pytest.mark.run(order=2)
-    def test_create_new_project_at_line(self):
+    def test_create_new_workflow_at_line(self):
         for i in range(3):
             expected_response_data = {
                 "name": f'NEW WORKFLOW-{i}',
@@ -113,7 +113,7 @@ class TestWorkflowRouter(unittest.TestCase):
             self.created_workflows.append(response.json)
 
     @pytest.mark.run(order=2)
-    def test_create_new_project_at_project(self):
+    def test_create_new_workflow_at_project(self):
         for i in range(3):
             expected_response_data = {
                 "name": f'NEW WORKFLOW-{i}',
