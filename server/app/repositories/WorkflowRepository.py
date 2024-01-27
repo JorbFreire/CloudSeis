@@ -1,10 +1,15 @@
 from ..database.connection import database
-from ..models.LineModel import LineModel
 from ..models.WorkflowModel import WorkflowModel
-from ..models.OrderedCommandsListModel import OrderedCommandsListModel
+
+from ..models.ProjectModel import ProjectModel
+from ..models.LineModel import LineModel
+from ..models.DataSetModel import DataSetModel
+
 from ..errors.AppError import AppError
 from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
+from ..repositories.WorkflowParentsAssociationRepository import WorkflowParentsAssociationRepository
 
+workflowParentsAssociationRepository = WorkflowParentsAssociationRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
 
 
@@ -16,27 +21,42 @@ class WorkflowRepository:
 
         return workflow.getAttributes()
 
-    def create(self, lineId, newWorkflowName):
-        line = LineModel.query.filter_by(
-            id=lineId
-        ).first()
-        if not line:
-            raise AppError("Line does not exist", 404)
+    def create(self, newWorkflowData):
+        parentType = newWorkflowData["parent"]["parentType"]
+        parentId = newWorkflowData["parent"]["parentId"]
+
+        if parentType == "lineId":
+            parent = LineModel.query.filter_by(id=parentId).first()
+            if not parent:
+                raise AppError("Line does not exist", 404)
+        elif parentType == "projectId":
+            parent = ProjectModel.query.filter_by(id=parentId).first()
+            if not parent:
+                raise AppError("Project does not exist", 404)
+        elif parentType == "datasetId":
+            parent = DataSetModel.query.filter_by(id=parentId).first()
+            if not parent:
+                raise AppError("DataSet does not exist", 404)
+        else:
+            raise AppError(
+                "'parentType' must be either 'lineId', 'projectId' or 'datasetId'"
+            )
 
         newWorkflow = WorkflowModel(
-            lineId=line.id,
-            name=newWorkflowName,
+            name=newWorkflowData["name"],
             file_name=""
         )
         database.session.add(newWorkflow)
         database.session.commit()
 
+        newWorkflowId = newWorkflow.id
+        workflowParentsAssociationRepository.create(
+            newWorkflowId,
+            newWorkflowData["parent"]
+        )
         orderedCommandsListRepository.create(newWorkflow.id)
 
         return newWorkflow.getAttributes()
-
-    def updateName(self, id, newWorkflowName):
-        pass
 
     def delete(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()

@@ -1,4 +1,4 @@
-import os
+from os import path
 import subprocess
 from datetime import datetime
 from ..getFilePath import getFilePath
@@ -43,7 +43,7 @@ class FileRepository:
         unique_filename = unique_filename + \
             datetime.now().strftime("%d%m%Y_%H%M%S") + ".su"
 
-        file.save(os.path.join("static", unique_filename))
+        file.save(path.join("static", unique_filename))
         return unique_filename
 
     def update(self, unique_filename, seismicUnixCommandsQueue) -> str:

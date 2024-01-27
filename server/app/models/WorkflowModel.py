@@ -5,6 +5,7 @@ from typing import List
 from ..database.connection import database
 from .CommandModel import CommandModel
 from .OrderedCommandsListModel import OrderedCommandsListModel
+from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 
 class WorkflowModel(database.Model):  # type: ignore
@@ -14,10 +15,6 @@ class WorkflowModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     file_name = dbTypes.Column(dbTypes.String)
 
-    lineId = dbTypes.Column(dbTypes.ForeignKey(
-        "lines_table.id",
-        name="FK_lines_table_workflows_table"
-    ))
     commands: Mapped[
         List[CommandModel]
     ] = relationship(CommandModel)
@@ -26,16 +23,19 @@ class WorkflowModel(database.Model):  # type: ignore
         List[CommandModel]
     ] = relationship(OrderedCommandsListModel)
 
-    def getResumedAttributes(self) -> dict[str, str | list[dict[str, str]]]:
+    workflowParent: Mapped[
+        WorkflowParentsAssociationModel
+    ] = relationship(WorkflowParentsAssociationModel, cascade="all, delete-orphan")
+
+    def getResumedAttributes(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,
         }
 
-    def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
+    def getAttributes(self) -> dict:
         return {
             "id": self.id,
-            "lineId": self.lineId,
             "name": self.name,
             "file_name": self.file_name,
             "commands": self.orderedCommandsList[0].getCommands(),
