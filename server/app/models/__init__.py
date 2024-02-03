@@ -5,3 +5,5 @@ from .WorkflowModel import WorkflowModel
 from .UserModel import UserModel
 from .OrderedCommandsListModel import OrderedCommandsListModel
 from .DataSetModel import DataSetModel
+from .ProgramModel import ProgramModel
+from .ParameterModel import ParameterModel
