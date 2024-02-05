@@ -1,3 +1,4 @@
+from flask.cli import AppGroup
 from typing import Literal
 from flask import Flask, jsonify
 from flask_cors import CORS
@@ -8,6 +9,19 @@ from .database.connection import database, migrate
 
 from .routes import router
 from .errors.AppError import AppError
+from .cli import populate_database_programs_table, new_default_programs_from_database
+
+database_cli = AppGroup('db')
+
+
+@database_cli.command('populate-programs')
+def populate_programs():
+    populate_database_programs_table()
+
+
+@database_cli.command('new-default-programs-from-database')
+def new_default_programs():
+    new_default_programs_from_database()
 
 
 def create_app(mode: Literal["production", "development", "test"] = "development"):
@@ -23,6 +37,8 @@ def create_app(mode: Literal["production", "development", "test"] = "development
         app.config.update({
             "TESTING": True,
         })
+
+    app.cli.add_command(database_cli)
 
     app.register_blueprint(router)
     CORS(app)

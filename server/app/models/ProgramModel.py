@@ -10,6 +10,7 @@ class ProgramModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     description = dbTypes.Column(dbTypes.String)
     path_to_executable_file = dbTypes.Column(dbTypes.String)
+    # create "groups_table" and relate it
 
     def getAttributes(self) -> dict[str, str | dict[str, str]]:
         return {
