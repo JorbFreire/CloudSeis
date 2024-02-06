@@ -4,8 +4,10 @@ from ..models.ProgramModel import ProgramModel
 from ..models.ParameterModel import ParameterModel
 from ..database.connection import database
 
+from .get_CLI_file_path import get_CLI_file_path
+
 programsArray = []
-with open("./default_programs.json") as file:
+with open(get_CLI_file_path()) as file:
     programsArray = json.loads(file.read())
 
 
