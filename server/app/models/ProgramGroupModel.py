@@ -1,25 +1,26 @@
 import sqlalchemy as dbTypes
+from sqlalchemy.orm import relationship, Mapped
+from typing import List
 
 from ..database.connection import database
+from .ProgramModel import ProgramModel
 
 
-class ProgramModel(database.Model):  # type: ignore
-    __tablename__ = "programs_table"
+class ProgramGroupModel(database.Model):  # type: ignore
+    __tablename__ = "program_groups_table"
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
     description = dbTypes.Column(dbTypes.String)
-    path_to_executable_file = dbTypes.Column(dbTypes.String)
 
-    groupId = dbTypes.Column(dbTypes.ForeignKey(
-        "program_groups_table.id",
-        name="FK_program_groups_table_programs_table"
-    ))
+    programs: Mapped[
+        List[ProgramModel]
+    ] = relationship(ProgramModel)
 
     def getAttributes(self) -> dict[str, str | dict[str, str]]:
         return {
             "id": self.id,
             "name": self.name,
             "description": self.description,
-            "path_to_executable_file": self.path_to_executable_file,
+            "programs": [program.getAttributes() for program in self.programs]
         }
