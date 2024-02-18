@@ -1,6 +1,9 @@
 import sqlalchemy as dbTypes
+from sqlalchemy.orm import relationship, Mapped
+from typing import List
 
 from ..database.connection import database
+from .ParameterModel import ParameterModel
 
 
 class ProgramModel(database.Model):  # type: ignore
@@ -19,7 +22,7 @@ class ProgramModel(database.Model):  # type: ignore
         name="FK_program_groups_table_programs_table"
     ))
 
-    def getAttributes(self) -> dict[str, str | dict[str, str]]:
+    def getAttributes(self) -> dict[str, str]:
         return {
             "id": self.id,
             "name": self.name,

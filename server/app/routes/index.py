@@ -12,7 +12,8 @@ from .commandRouter import commandRouter
 from .datasetRouter import datasetRouter
 
 from .programRouter import programRouter
-from .programGroupsRouter import programGroupsRouter
+from .programGroupRouter import programGroupRouter
+from .parameterRouter import parameterRouter
 
 router = Blueprint("routes", __name__)
 
@@ -29,4 +30,5 @@ router.register_blueprint(commandRouter)
 router.register_blueprint(datasetRouter)
 
 router.register_blueprint(programRouter)
-router.register_blueprint(programGroupsRouter)
+router.register_blueprint(programGroupRouter)
+router.register_blueprint(parameterRouter)

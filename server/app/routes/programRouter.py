@@ -13,13 +13,13 @@ def listPrograms(groupId):
     return jsonify(programs)
 
 
-@programRouter.route("/create", methods=['POST'])
-def createProgram():
+@programRouter.route("/create/<groupId>", methods=['POST'])
+def createProgram(groupId):
     data = request.get_json()
     if data == None:
         raise AppError("No body", 400)
 
-    newProgram = programRepository.create(data["groupId"], data["program"])
+    newProgram = programRepository.create(groupId, data)
     return jsonify(newProgram)
 
 

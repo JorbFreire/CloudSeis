@@ -14,7 +14,7 @@ class ProgramGroupRepository:
     def create(self, newGroupData):
         newProgramGroup = ProgramGroupModel(
             name=newGroupData["name"],
-            description=newGroupData["decription"] if newGroupData["decription"] else ""
+            description=newGroupData["description"] if newGroupData["description"] else ""
         )
         database.session.add(newProgramGroup)
         database.session.commit()

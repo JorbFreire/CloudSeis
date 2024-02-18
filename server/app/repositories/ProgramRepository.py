@@ -4,7 +4,7 @@ from ..models.ProgramModel import ProgramModel
 from ..errors.AppError import AppError
 
 
-class LineRepository:
+class ProgramRepository:
     def showByGroupId(self, groupId):
         programs = ProgramModel.query.filter_by(groupId=groupId).all()
         if not programs:
@@ -17,7 +17,7 @@ class LineRepository:
             id=groupId
         ).first()
         if not programGroup:
-            raise AppError("Project does not exist", 404)
+            raise AppError("Program Group does not exist", 404)
 
         newProgram = ProgramModel(
             name=newProgramData["name"],
