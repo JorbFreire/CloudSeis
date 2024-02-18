@@ -23,9 +23,6 @@ class DataSetModel(database.Model):
         List[WorkflowParentsAssociationModel]
     ] = relationship(WorkflowParentsAssociationModel)
 
-    orderedCommands: Mapped[
-        List[OrderedCommandsListModel]
-    ] = relationship(OrderedCommandsListModel)
 
     def _getWorkflows(self) -> list[dict[str, str]]:
         if len(self.workflowParentAssociations) == 0:
@@ -35,19 +32,10 @@ class DataSetModel(database.Model):
                 [association.workflowId for association in self.workflowParentAssociations]
             )
         ).all()
-        return [workflow.getResumedAttributes() for workflow in workflows]
-
-    def _getCommands(self):
-        commands = CommandModel.query.filter(
-            CommandModel.id._in(
-                [command.workflowId for command in self.orderedCommands]
-            )
-        )
-        return [command.getAttributes() for command in commands]
+        return [workflow.getAttributes() for workflow in workflows]
 
     def getAttributes(self) -> dict:
         return {
             "id": self.id,
-            "workflows": self._getWorkflows(),
-            "commands": self._getCommands()
+            "workflows": self._getWorkflows()
         }
