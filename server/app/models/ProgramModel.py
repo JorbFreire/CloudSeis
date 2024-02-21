@@ -1,9 +1,6 @@
 import sqlalchemy as dbTypes
-from sqlalchemy.orm import relationship, Mapped
-from typing import List
 
 from ..database.connection import database
-from .ParameterModel import ParameterModel
 
 
 class ProgramModel(database.Model):  # type: ignore
@@ -28,4 +25,5 @@ class ProgramModel(database.Model):  # type: ignore
             "name": self.name,
             "description": self.description,
             "path_to_executable_file": self.path_to_executable_file,
+            "groupId": self.groupId
         }

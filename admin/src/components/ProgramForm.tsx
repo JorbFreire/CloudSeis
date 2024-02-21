@@ -5,6 +5,8 @@ import TextField from '@mui/material/TextField'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 import ParameterForm from './ParameterForm';
 import GroupFormDialog from './GroupFormDialog';
@@ -23,18 +25,23 @@ export default function ProgramForm() {
   const [programDescription, setProgramDescription] = useState("")
   // todo: add checkbox to alow upload a binary file or use a command
   const [programPath, setProgramPath] = useState("")
-  const [groupId, setGroupId] = useState<number>(1)
+  const [groupId, setGroupId] = useState<number | null>(null)
 
   useEffect(() => {
+    console.log("selectedProgram.groupId")
+    console.log(selectedProgram)
+    console.log("***")
     if (!selectedProgram) {
       setProgramName("")
       setProgramDescription("")
       setProgramPath("")
+      setGroupId(null)
       return
     }
     setProgramName(selectedProgram.name)
     setProgramDescription(selectedProgram.description)
     setProgramPath(selectedProgram.path_to_executable_file)
+    setGroupId(selectedProgram.groupId)
   }, [selectedProgram])
 
   return (
@@ -55,25 +62,29 @@ export default function ProgramForm() {
         value={programPath}
         onChange={(event) => setProgramPath(event.target.value)}
       />
-      <Select
-        label="Grupo"
-        value={groupId}
-        onChange={(event) => setGroupId(event.target.value as number)}
-      >
-        {programGroups.map(group => (
-          <MenuItem key={group.id} value={group.id}>
-            {group.name}
-          </MenuItem>
-        ))}
-        <Button onClick={() => setOpenGroupFormDialog(true)}>
-          Novo Grupo
-        </Button>
-      </Select>
+      <FormControl>
+        <InputLabel id="groupId-select">Grupo</InputLabel>
+        <Select
+          label="Grupo"
+          value={groupId}
+          onChange={(event) => setGroupId(event.target.value as number)}
+          labelId="groupId-select"
+        >
+          {programGroups.map(group => (
+            <MenuItem key={group.id} value={group.id}>
+              {group.name}
+            </MenuItem>
+          ))}
+          <Button onClick={() => setOpenGroupFormDialog(true)}>
+            Novo Grupo
+          </Button>
+        </Select>
+      </FormControl>
 
       <Stack direction="row" sx={{ gap: "8px" }} >
         <Button
           variant="contained"
-          onClick={() => createNewProgram(
+          onClick={() => groupId && createNewProgram(
             groupId,
             {
               name: programName,

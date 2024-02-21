@@ -13,6 +13,7 @@ interface IGenericProgramConstructor {
 
 declare interface IGenericProgram extends IGenericProgramConstructor {
   id: number
+  groupId: number
   // parameters: Array<IParameter>
 }
 
