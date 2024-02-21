@@ -19,11 +19,11 @@ class ParameterRepository:
         if not program:
             raise AppError("Program does not exist", 404)
 
-        newProgram = ProgramModel(
+        newProgram = ParameterModel(
             name=newParameterData["name"],
             description=newParameterData["description"],
             input_type=newParameterData["input_type"],
-            programId=newParameterData["programId"]
+            programId=programId
         )
         database.session.add(newProgram)
         database.session.commit()
