@@ -29,8 +29,19 @@ class ParameterRepository:
         database.session.commit()
         return newProgram.getAttributes()
 
-    def update(self):
-        pass
+    def update(self, parameterId, parameterNewData):
+        parameter = ParameterModel.query.filter_by(
+            id=parameterId
+        ).first()
+        if not parameter:
+            raise AppError("Parameter does not exist", 404)
+
+        parameter.name = parameterNewData["name"]
+        parameter.description = parameterNewData["description"]
+        parameter.input_type = parameterNewData["input_type"]
+
+        database.session.commit()
+        return parameter.getAttributes()
 
     def delete(self, id):
         parameter = ParameterModel.query.filter_by(id=id).first()

@@ -3,6 +3,8 @@ declare interface IParameter {
   name: string
   description: string
   input_type: string
+  // *** "hasChanges" shall not be sent to database ***
+  hasChanges?: boolean
 }
 
 interface IGenericProgramConstructor {
