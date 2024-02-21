@@ -9,11 +9,11 @@ interface IGenericProgramConstructor {
   name: string
   description: string
   path_to_executable_file: string
+  groupId: number
 }
 
 declare interface IGenericProgram extends IGenericProgramConstructor {
   id: number
-  groupId: number
   // parameters: Array<IParameter>
 }
 

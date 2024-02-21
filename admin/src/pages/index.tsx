@@ -2,23 +2,31 @@ import Grid from '@mui/material/Grid'
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
 import ProgramForm from '../components/ProgramForm';
+import TreeItemWithAction from '../components/TreeItemWithAction';
 import { useProgramGroups } from '../providers/GroupsProvider'
 import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider'
 
 export default function Home() {
-  const { programGroups } = useProgramGroups()
+  const { programGroups, deleteProgramGroup } = useProgramGroups()
   const { setSelectedProgram } = useSelectedProgramCommand()
 
   return (
     <Grid container sx={{ height: "100%" }}>
       <Grid item xs={2}>
-        <TreeView>
+        <TreeView
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
           {programGroups.map(group => (
-            <TreeItem
+            <TreeItemWithAction
               key={`group-${group.id}`}
               nodeId={`group-${group.id}`}
-              label={group.name}
+              labelText={group.name}
+              deleteAction={() => deleteProgramGroup(group.id)}
             >
               {group.programs.map(program => (
                 <TreeItem
@@ -28,7 +36,7 @@ export default function Home() {
                   onClick={() => setSelectedProgram(program)}
                 />
               ))}
-            </TreeItem>
+            </TreeItemWithAction>
           ))}
         </TreeView>
       </Grid>

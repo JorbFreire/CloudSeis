@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import { getGroups, createNewGroup } from '../services/programGroupServices'
+import { getGroups, createNewGroup, deleteGroup } from '../services/programGroupServices'
 
 interface IGroupsProviderProps {
   children: ReactNode | Array<ReactNode>
@@ -9,11 +9,13 @@ interface IGroupsProviderProps {
 interface IGroupsContext {
   programGroups: Array<IProgramsGroup>
   createProgramGroup: (newGroupData: IProgramsGroupConstructor) => undefined | void
+  deleteProgramGroup: (groupId: number) => undefined | void
 }
 
 const GroupsContext = createContext<IGroupsContext>({
   programGroups: [],
   createProgramGroup: () => undefined,
+  deleteProgramGroup: () => undefined,
 });
 
 export default function GroupsProvider({ children }: IGroupsProviderProps) {
@@ -22,6 +24,18 @@ export default function GroupsProvider({ children }: IGroupsProviderProps) {
   const createProgramGroup = (newGroupData: IProgramsGroupConstructor) => {
     createNewGroup(newGroupData).then(newGroup => newGroup && setProgramGroups([...programGroups, newGroup]))
   }
+
+  const deleteProgramGroup = (groupId: number) => {
+    deleteGroup(groupId).then((responseData) => {
+      if(responseData) {
+        const newProgramGroups = [...programGroups].filter(
+          oldGroup => oldGroup.id !== groupId
+        )
+        setProgramGroups(newProgramGroups)
+      }
+    })
+  }
+
 
   useEffect(() => {
     getGroups().then(allGroups => allGroups && setProgramGroups(allGroups))
@@ -32,6 +46,7 @@ export default function GroupsProvider({ children }: IGroupsProviderProps) {
       value={{
         programGroups,
         createProgramGroup,
+        deleteProgramGroup
       }}
     >
       {children}
@@ -47,9 +62,11 @@ export function useProgramGroups(): IGroupsContext {
   const {
     programGroups,
     createProgramGroup,
+    deleteProgramGroup,
   } = context
   return {
     programGroups,
     createProgramGroup,
+    deleteProgramGroup,
   }
 }

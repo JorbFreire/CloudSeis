@@ -23,7 +23,7 @@ class ProgramRepository:
             name=newProgramData["name"],
             description=newProgramData["description"],
             path_to_executable_file=newProgramData["path_to_executable_file"],
-            groupId=newProgramData["groupId"] if newProgramData["groupId"] else ""
+            groupId=newProgramData["groupId"]
         )
         database.session.add(newProgram)
         database.session.commit()

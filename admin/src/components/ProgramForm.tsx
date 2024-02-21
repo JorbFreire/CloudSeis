@@ -28,9 +28,6 @@ export default function ProgramForm() {
   const [groupId, setGroupId] = useState<number | null>(null)
 
   useEffect(() => {
-    console.log("selectedProgram.groupId")
-    console.log(selectedProgram)
-    console.log("***")
     if (!selectedProgram) {
       setProgramName("")
       setProgramDescription("")
@@ -89,7 +86,8 @@ export default function ProgramForm() {
             {
               name: programName,
               description: programDescription,
-              path_to_executable_file: programPath
+              path_to_executable_file: programPath,
+              groupId: groupId
             }
           )}
         >
