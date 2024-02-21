@@ -44,8 +44,10 @@ export default function ParameterForm() {
 
   useEffect(() => {
     parametersDebounced.forEach((paremeter) => {
-      if(paremeter.hasChanges)
+      if(paremeter.hasChanges) {
+        console.log("achou um parametro com mudanças")
         updateParameter(paremeter)
+      }
     })
   }, [parametersDebounced])
 
@@ -82,7 +84,7 @@ export default function ParameterForm() {
               onChange={(event) => updateParameterField({index, key: "isRequired", newIsRequiredValue: event.target.checked})}
             />
           }
-          label="Label"
+          label={parameter.isRequired ? "Obrigatorio" : "Opcioonal"}
         />
 
         <DeleteButton
