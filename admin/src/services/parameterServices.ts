@@ -14,11 +14,7 @@ export async function createNewParameter(
   programId: number
 ): Promise<IParameter | null> {
   try {
-    const response = await api.post<IParameter>(`/programs/parameters/create/${programId}`, {
-      name: "",
-      description: "",
-      input_type: "",
-    })
+    const response = await api.post<IParameter>(`/programs/parameters/create/${programId}`)
     return response.data
   } catch (error) {
     console.error(error)
@@ -30,10 +26,11 @@ export async function updateParameter(
   parameterInfo: IParameter
 ): Promise<IParameter | null> {
   try {
-    const response = await api.post<IParameter>(`/programs/parameters/update/${parameterInfo.id}`, {
+    const response = await api.put<IParameter>(`/programs/parameters/update/${parameterInfo.id}`, {
       name: parameterInfo.name,
       description: parameterInfo.description,
       input_type: parameterInfo.input_type,
+      isRequired: parameterInfo.isRequired,
     })
     return response.data
   } catch (error) {

@@ -24,4 +24,5 @@ class ParameterModel(database.Model):  # type: ignore
             "name": self.name,
             "description": self.description,
             "input_type": self.input_type,
+            "isRequired": self.isRequired,
         }
