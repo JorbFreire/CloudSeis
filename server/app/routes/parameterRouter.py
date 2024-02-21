@@ -19,11 +19,7 @@ def listPrograms(programId):
 
 @parameterRouter.route("/create/<programId>", methods=['POST'])
 def createProgram(programId):
-    data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
-
-    newParameter = parameterRepository.create(programId, data)
+    newParameter = parameterRepository.create(programId)
     return jsonify(newParameter)
 
 

@@ -12,7 +12,7 @@ class ParameterRepository:
 
         return [parameter.getAttributes() for parameter in parameters]
 
-    def create(self, programId, newParameterData):
+    def create(self, programId):
         program = ProgramModel.query.filter_by(
             id=programId
         ).first()
@@ -20,9 +20,10 @@ class ParameterRepository:
             raise AppError("Program does not exist", 404)
 
         newProgram = ParameterModel(
-            name=newParameterData["name"],
-            description=newParameterData["description"],
-            input_type=newParameterData["input_type"],
+            name="",
+            description="",
+            input_type="",
+            isRequired=False,
             programId=programId
         )
         database.session.add(newProgram)
@@ -39,6 +40,7 @@ class ParameterRepository:
         parameter.name = parameterNewData["name"]
         parameter.description = parameterNewData["description"]
         parameter.input_type = parameterNewData["input_type"]
+        parameter.isRequired = parameterNewData["isRequired"]
 
         database.session.commit()
         return parameter.getAttributes()

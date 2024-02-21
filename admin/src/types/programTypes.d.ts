@@ -3,6 +3,7 @@ declare interface IParameter {
   name: string
   description: string
   input_type: string
+  isRequired: boolean
   // *** "hasChanges" shall not be sent to database ***
   hasChanges?: boolean
 }

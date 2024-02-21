@@ -11,6 +11,7 @@ class ParameterModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     description = dbTypes.Column(dbTypes.String)
     input_type = dbTypes.Column(dbTypes.String)
+    isRequired = dbTypes.Column(dbTypes.Boolean)
 
     programId = dbTypes.Column(dbTypes.ForeignKey(
         "programs_table.id",

@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Switch from '@mui/material/Switch'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
 
@@ -16,13 +18,20 @@ export default function ParameterForm() {
   const [parameters, setParamenters] = useState<Array<IParameter>>([])
   const [parametersDebounced] = useDebounce(parameters, 2000)
 
-  const updateParameterField = (
-    index: number,
-    key: "name" | "input_type" | "description",
-    newValue: string,
-  ) => {
-    const newParameters = [...parameters];
-    newParameters[index][key] = newValue
+  interface IupdateParameterFieldProps {
+    index: number
+    key: "name" | "input_type" | "description" | "isRequired"
+    newValue?: string
+    newIsRequiredValue?: boolean
+  }
+
+  const updateParameterField = ({ index, key, newValue, newIsRequiredValue }: IupdateParameterFieldProps) => {
+    const newParameters = [...parameters]
+    if(key == "isRequired")
+      newParameters[index][key] = Boolean(newIsRequiredValue)
+    else
+      newParameters[index][key] = String(newValue)
+
     newParameters[index].hasChanges = true
     setParamenters(newParameters)
   }
@@ -54,18 +63,28 @@ export default function ParameterForm() {
         <TextField
           label="Nome do Parametro"
           value={parameter.name}
-          onChange={(event) => updateParameterField(index, "name", event.target.value)}
+          onChange={(event) => updateParameterField({index, key: "name", newValue: event.target.value})}
         />
         <TextField
           label="Tipo do parametro"
           value={parameter.input_type}
-          onChange={(event) => updateParameterField(index, "input_type", event.target.value)}
+          onChange={(event) => updateParameterField({index, key: "input_type", newValue: event.target.value})}
         />
         <TextField
           label="Descrição do Parametro"
           value={parameter.description}
-          onChange={(event) => updateParameterField(index, "description", event.target.value)}
+          onChange={(event) => updateParameterField({index, key: "description", newValue: event.target.value})}
         />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={parameter.isRequired}
+              onChange={(event) => updateParameterField({index, key: "isRequired", newIsRequiredValue: event.target.checked})}
+            />
+          }
+          label="Label"
+        />
+
         <DeleteButton
           onClick={() => {
             const newParameters = [...parameters]
