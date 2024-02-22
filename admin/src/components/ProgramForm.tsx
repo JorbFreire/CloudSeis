@@ -10,7 +10,8 @@ import FormControl from '@mui/material/FormControl';
 
 import ParameterForm from './ParameterForm';
 import GroupFormDialog from './GroupFormDialog';
-import { createNewProgram, deleteProgram } from '../services/programServices'
+import ProgramCommandOrFileInput from './ProgramCommandOrFileInput';
+import { createNewProgram, updateProgram, deleteProgram } from '../services/programServices'
 import { useProgramGroups } from '../providers/GroupsProvider'
 import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider'
 
@@ -23,9 +24,34 @@ export default function ProgramForm() {
 
   const [programName, setProgramName] = useState("")
   const [programDescription, setProgramDescription] = useState("")
-  // todo: add checkbox to alow upload a binary file or use a command
   const [programPath, setProgramPath] = useState("")
   const [groupId, setGroupId] = useState<number | null>(null)
+
+  const [customProgram, setCustomProgram] = useState<File | null>(null)
+
+  const submitProgram = () => {
+    if(groupId && !selectedProgram) {
+      createNewProgram(
+        groupId,
+        {
+          name: programName,
+          description: programDescription,
+          path_to_executable_file: programPath,
+          groupId: groupId
+        }
+      )
+    }
+    if(groupId && selectedProgram)
+    updateProgram(
+      selectedProgram.id,
+      {
+        name: programName,
+        description: programDescription,
+        path_to_executable_file: programPath,
+        groupId: groupId
+      }
+    )
+  }
 
   useEffect(() => {
     if (!selectedProgram) {
@@ -54,10 +80,10 @@ export default function ProgramForm() {
         onChange={(event) => setProgramDescription(event.target.value)}
       />
       {/* todo: add checkbox to alow upload a binary file or use a command */}
-      <TextField
-        label="Commando ou caminho do Programa"
-        value={programPath}
-        onChange={(event) => setProgramPath(event.target.value)}
+      <ProgramCommandOrFileInput
+        programPath={programPath}
+        setProgramPath={setProgramPath}
+        setCustomProgram={setCustomProgram}
       />
       <FormControl>
         <InputLabel id="groupId-select">Grupo</InputLabel>
@@ -79,18 +105,7 @@ export default function ProgramForm() {
       </FormControl>
 
       <Stack direction="row" sx={{ gap: "8px" }} >
-        <Button
-          variant="contained"
-          onClick={() => groupId && createNewProgram(
-            groupId,
-            {
-              name: programName,
-              description: programDescription,
-              path_to_executable_file: programPath,
-              groupId: groupId
-            }
-          )}
-        >
+        <Button variant="contained" onClick={submitProgram}>
           Salvar {!selectedProgram && " Novo Programa"}
         </Button>
         {selectedProgram && (

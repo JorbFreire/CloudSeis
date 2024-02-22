@@ -23,13 +23,13 @@ def createProgram(groupId):
     return jsonify(newProgram)
 
 
-@programRouter.route("/update", methods=['PUT'])
-def updateProgram():
+@programRouter.route("/update/<programId>", methods=['PUT'])
+def updateProgram(programId):
     data = request.get_json()
     if data == None:
         raise AppError("No body", 400)
 
-    updatedProgram = programRepository.update()
+    updatedProgram = programRepository.update(programId, data)
     return jsonify(updatedProgram)
 
 

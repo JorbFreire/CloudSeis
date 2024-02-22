@@ -2,8 +2,7 @@ import type { ReactNode } from 'react';
 
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import Box from '@mui/material/Box'
-import { IconButton } from '@mui/material';
-import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import DeleteButton from '../components/DeleteButton';
 
 interface ILabelContentProps {
   labelText: string
@@ -28,11 +27,8 @@ const LabelContent = ({
   >
     {labelText}
 
-    <IconButton
-      onClick={() => deleteAction()}
-    >
-      <DeleteForeverRoundedIcon />
-    </IconButton>
+
+    <DeleteButton onClick={deleteAction} size='small' />
   </Box>
 )
 

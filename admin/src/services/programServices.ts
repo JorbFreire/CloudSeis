@@ -25,6 +25,21 @@ export async function createNewProgram(
   }
 }
 
+export async function updateProgram(
+  programId: number,
+  programData: IGenericProgramConstructor
+): Promise<IGenericProgram | null> {
+  try {
+    const response = await api.put<IGenericProgram>(`/programs/update/${programId}`, {
+      ...programData
+    })
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
 export async function deleteProgram(programId: number): Promise<IGenericProgram | null> {
   try {
     const response = await api.delete(`/programs/delete/${programId}`)

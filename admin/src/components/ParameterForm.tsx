@@ -8,8 +8,13 @@ import Switch from '@mui/material/Switch'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
 
-import DeleteButton from './DeleteButton';
-import { getParameters, createNewParameter, updateParameter } from '../services/parameterServices';
+import DeleteButton from "./DeleteButton";
+import {
+  getParameters,
+  createNewParameter,
+  updateParameter,
+  deleteParameter
+} from '../services/parameterServices';
 import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider';
 
 export default function ParameterForm() {
@@ -61,6 +66,7 @@ export default function ParameterForm() {
         direction="row"
         key={index}
         spacing={2}
+        sx={{alignItems: "center"}}
       >
         <TextField
           label="Nome do Parametro"
@@ -76,6 +82,7 @@ export default function ParameterForm() {
           label="Descrição do Parametro"
           value={parameter.description}
           onChange={(event) => updateParameterField({index, key: "description", newValue: event.target.value})}
+          fullWidth
         />
         <FormControlLabel
           control={
@@ -85,13 +92,16 @@ export default function ParameterForm() {
             />
           }
           label={parameter.isRequired ? "Obrigatorio" : "Opcioonal"}
+          sx={{width: "192px"}}
         />
 
         <DeleteButton
           onClick={() => {
-            const newParameters = [...parameters]
-            newParameters.splice(index, 1)
-            setParamenters(newParameters)
+            deleteParameter(index).then(() => {
+              const newParameters = [...parameters]
+              newParameters.splice(index, 1)
+              setParamenters(newParameters)
+            })
           }}
         />
       </Stack>

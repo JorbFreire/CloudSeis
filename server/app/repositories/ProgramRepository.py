@@ -29,8 +29,20 @@ class ProgramRepository:
         database.session.commit()
         return newProgram.getAttributes()
 
-    def update(self):
-        pass
+    def update(self, programId, programNewData):
+        program = ProgramModel.query.filter_by(
+            id=programId
+        ).first()
+        if not program:
+            raise AppError("Program does not exist", 404)
+
+        programNewData.name = programNewData["name"]
+        programNewData.description = programNewData["description"]
+        programNewData.path_to_executable_file = programNewData["path_to_executable_file"]
+        programNewData.groupId = programNewData["groupId"]
+
+        database.session.commit()
+        return program.getAttributes()
 
     def delete(self, id):
         program = ProgramModel.query.filter_by(id=id).first()
