@@ -27,29 +27,27 @@ export default function ProgramForm() {
   const [programPath, setProgramPath] = useState("")
   const [groupId, setGroupId] = useState<number | null>(null)
 
-  const [customProgram, setCustomProgram] = useState<File | null>(null)
+  const [customProgram, setCustomProgram] = useState<FileList | null>(null)
 
   const submitProgram = () => {
-    if(groupId && !selectedProgram) {
-      createNewProgram(
-        groupId,
-        {
-          name: programName,
-          description: programDescription,
-          path_to_executable_file: programPath,
-          groupId: groupId
-        }
-      )
+    if(!groupId) return
+    const programData = {
+      name: programName,
+      description: programDescription,
+      path_to_executable_file: programPath,
+      groupId: groupId
     }
-    if(groupId && selectedProgram)
-    updateProgram(
-      selectedProgram.id,
-      {
-        name: programName,
-        description: programDescription,
-        path_to_executable_file: programPath,
-        groupId: groupId
-      }
+    if(selectedProgram)
+      return updateProgram(
+        selectedProgram.id,
+        customProgram,
+        programData
+      )
+
+    return createNewProgram(
+      groupId,
+      customProgram,
+      programData
     )
   }
 

@@ -14,7 +14,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUploadRounded';
 interface IProgramCommandOrFileInputProps {
   programPath: string
   setProgramPath: Dispatch< SetStateAction<string> >
-  setCustomProgram: Dispatch< SetStateAction<File | null> >
+  setCustomProgram: Dispatch< SetStateAction<FileList | null> >
 }
 
 export default function  ProgramCommandOrFileInput({
@@ -49,9 +49,10 @@ export default function  ProgramCommandOrFileInput({
           Upload do programa
           <input
             type="file"
-            onChange={(event) => event.currentTarget.files && 
-              setCustomProgram(event.currentTarget.files[0])
-            }
+            onChange={(event) => {
+              if(event.target.files)
+                setCustomProgram(event.target.files)
+            }}
             style={{
               clip: 'rect(0 0 0 0)',
               overflow: 'hidden',

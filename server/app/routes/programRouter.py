@@ -1,10 +1,12 @@
 from flask import Blueprint, request, jsonify
 
 from ..repositories.ProgramRepository import ProgramRepository
+from ..repositories.ProgramFileRepository import ProgramFileRepository
 from ..errors.AppError import AppError
 
 programRouter = Blueprint("program-routes", __name__, url_prefix="/programs")
 programRepository = ProgramRepository()
+programFileRepository = ProgramFileRepository()
 
 
 @programRouter.route("/list/<groupId>", methods=['GET'])
@@ -19,6 +21,11 @@ def createProgram(groupId):
     if data == None:
         raise AppError("No body", 400)
 
+    if ('file' in request.files):
+        file = request.files['file']
+        unique_filename = programFileRepository.create(file)
+        data["path_to_executable_file"] = unique_filename
+
     newProgram = programRepository.create(groupId, data)
     return jsonify(newProgram)
 
@@ -28,6 +35,11 @@ def updateProgram(programId):
     data = request.get_json()
     if data == None:
         raise AppError("No body", 400)
+
+    if ('file' in request.files):
+        file = request.files['file']
+        unique_filename = programFileRepository.create(file)
+        data["path_to_executable_file"] = unique_filename
 
     updatedProgram = programRepository.update(programId, data)
     return jsonify(updatedProgram)

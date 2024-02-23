@@ -12,12 +12,27 @@ export async function getPrograms(groupId: number): Promise<Array<IGenericProgra
 
 export async function createNewProgram(
   groupId: number,
+  customProgram: FileList | null,
   programData: IGenericProgramConstructor
 ): Promise<IGenericProgram | null> {
   try {
-    const response = await api.post<IGenericProgram>(`/programs/create/${groupId}`, {
-      ...programData
+    const formData = new FormData()
+    Object.keys(programData).forEach((keyString) => {
+      const key = keyString as GenericProgramConstructorKeysType
+      formData.append(key, programData[key].toString())
     })
+    if(customProgram)
+      formData.append("file", customProgram[0])
+
+    const response = await api.post<IGenericProgram>(
+      `/programs/create/${groupId}`,
+      programData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
     return response.data
   } catch (error) {
     console.error(error)
@@ -27,12 +42,27 @@ export async function createNewProgram(
 
 export async function updateProgram(
   programId: number,
+  customProgram: FileList | null,
   programData: IGenericProgramConstructor
 ): Promise<IGenericProgram | null> {
   try {
-    const response = await api.put<IGenericProgram>(`/programs/update/${programId}`, {
-      ...programData
+    const formData = new FormData()
+    Object.keys(programData).forEach((keyString) => {
+      const key = keyString as GenericProgramConstructorKeysType
+      formData.append(key, programData[key].toString())
     })
+    if(customProgram)
+      formData.append("file", customProgram[0])
+
+    const response = await api.put<IGenericProgram>(
+      `/programs/update/${programId}`,
+      programData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
     return response.data
   } catch (error) {
     console.error(error)

@@ -8,7 +8,8 @@ declare interface IParameter {
   hasChanges?: boolean
 }
 
-interface IGenericProgramConstructor {
+declare type GenericProgramConstructorKeysType = "name" | "description" | "path_to_executable_file" | "groupId"
+declare interface IGenericProgramConstructor {
   name: string
   description: string
   path_to_executable_file: string
@@ -25,7 +26,7 @@ declare interface IProgramsGroupConstructor {
   description: string
 }
 
-  declare interface IProgramsGroup extends IProgramsGroupConstructor {
+declare interface IProgramsGroup extends IProgramsGroupConstructor {
   id: number
   programs: Array<IGenericProgram>  
 }
