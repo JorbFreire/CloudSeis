@@ -17,7 +17,7 @@ def listPrograms(groupId):
 
 @programRouter.route("/create/<groupId>", methods=['POST'])
 def createProgram(groupId):
-    data = request.get_json()
+    data = request.form
     if data == None:
         raise AppError("No body", 400)
 
@@ -32,7 +32,7 @@ def createProgram(groupId):
 
 @programRouter.route("/update/<programId>", methods=['PUT'])
 def updateProgram(programId):
-    data = request.get_json()
+    data = request.form
     if data == None:
         raise AppError("No body", 400)
 
