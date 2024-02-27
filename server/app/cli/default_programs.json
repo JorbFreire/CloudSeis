@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Default 1",
+    "description": "about the program",
+    "path_to_executable_file": "some/path",
+    "parameters": [
+      {
+        "name": "parameter name",
+        "description": "about the parameter",
+        "input_type": "string"
+      },
+      {
+        "name": "parameter name",
+        "description": "about the parameter",
+        "input_type": "string"
+      }
+    ]
+  },
+  {
+    "name": "Default 2",
+    "description": "about the program",
+    "path_to_executable_file": "some/path",
+    "parameters": [
+      {
+        "name": "parameter name",
+        "description": "about the parameter",
+        "input_type": "string"
+      },
+      {
+        "name": "parameter name",
+        "description": "about the parameter",
+        "input_type": "string"
+      }
+    ]
+  },
+  {
+    "name": "Default 3",
+    "description": "about the program",
+    "path_to_executable_file": "some/path",
+    "parameters": [
+      {
+        "name": "parameter name",
+        "description": "about the parameter",
+        "input_type": "string"
+      },
+      {
+        "name": "parameter name",
+        "description": "about the parameter",
+        "input_type": "string"
+      }
+    ]
+  }
+]

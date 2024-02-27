@@ -1,7 +1,7 @@
 from os import path
 import subprocess
 from datetime import datetime
-from ..getFilePath import getFilePath
+from ..getFilePath import getSuFilePath
 
 
 class FileRepository:
@@ -47,11 +47,12 @@ class FileRepository:
         return unique_filename
 
     def update(self, unique_filename, seismicUnixCommandsQueue) -> str:
-        source_file_path = getFilePath(unique_filename)
+        source_file_path = getSuFilePath(unique_filename)
         # todo: dynamically change the name of the file
-        changed_file_path = getFilePath(f'2{unique_filename}')
+        changed_file_path = getSuFilePath(f'2{unique_filename}')
         seismicUnixProcessString = self._getSemicUnixCommandString(
-            seismicUnixCommandsQueue, source_file_path, changed_file_path)
+            seismicUnixCommandsQueue, source_file_path, changed_file_path
+        )
         try:
             process_output = subprocess.check_output(
                 seismicUnixProcessString,
