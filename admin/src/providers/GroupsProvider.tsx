@@ -10,12 +10,16 @@ interface IGroupsContext {
   programGroups: Array<IProgramsGroup>
   createProgramGroup: (newGroupData: IProgramsGroupConstructor) => undefined | void
   deleteProgramGroup: (groupId: number) => undefined | void
+  addNewProgramOnGroup: (program: IGenericProgram) => undefined | void
+  updateProgramOnGroup: (program: IGenericProgram) => undefined | void
 }
 
 const GroupsContext = createContext<IGroupsContext>({
   programGroups: [],
   createProgramGroup: () => undefined,
   deleteProgramGroup: () => undefined,
+  addNewProgramOnGroup: () => undefined,
+  updateProgramOnGroup: () => undefined,
 });
 
 export default function GroupsProvider({ children }: IGroupsProviderProps) {
@@ -36,6 +40,27 @@ export default function GroupsProvider({ children }: IGroupsProviderProps) {
     })
   }
 
+  const addNewProgramOnGroup = (newProgram: IGenericProgram) => {
+    const tempProgramGroups = programGroups.map((group) => {
+      if(group.id == newProgram.groupId)
+        group.programs.push(newProgram)
+      return group
+    })
+    setProgramGroups(tempProgramGroups)
+  }
+
+  const updateProgramOnGroup = (updatedProgram: IGenericProgram) => {
+    const tempProgramGroups = programGroups.map((group) => {
+      if(group.id == updatedProgram.groupId)
+        group.programs = group.programs.map((program) => {
+          if(program.id == updatedProgram.id)
+            program = updatedProgram
+          return program
+        })
+        return group
+    })
+    setProgramGroups(tempProgramGroups)
+  }
 
   useEffect(() => {
     getGroups().then(allGroups => allGroups && setProgramGroups(allGroups))
@@ -46,7 +71,9 @@ export default function GroupsProvider({ children }: IGroupsProviderProps) {
       value={{
         programGroups,
         createProgramGroup,
-        deleteProgramGroup
+        deleteProgramGroup,
+        addNewProgramOnGroup,
+        updateProgramOnGroup
       }}
     >
       {children}
@@ -63,10 +90,14 @@ export function useProgramGroups(): IGroupsContext {
     programGroups,
     createProgramGroup,
     deleteProgramGroup,
+    addNewProgramOnGroup,
+    updateProgramOnGroup,
   } = context
   return {
     programGroups,
     createProgramGroup,
     deleteProgramGroup,
+    addNewProgramOnGroup,
+    updateProgramOnGroup,
   }
 }

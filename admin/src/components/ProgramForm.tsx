@@ -17,7 +17,7 @@ import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider'
 
 
 export default function ProgramForm() {
-  const { programGroups } = useProgramGroups()
+  const { programGroups, addNewProgramOnGroup, updateProgramOnGroup } = useProgramGroups()
   const { selectedProgram } = useSelectedProgramCommand()
 
   const [openGroupFormDialog, setOpenGroupFormDialog] = useState<boolean>(false)
@@ -31,24 +31,26 @@ export default function ProgramForm() {
 
   const submitProgram = () => {
     if(!groupId) return
+    // update state on setProgramGroups
     const programData = {
       name: programName,
       description: programDescription,
       path_to_executable_file: programPath,
       groupId: groupId
     }
+
     if(selectedProgram)
       return updateProgram(
         selectedProgram.id,
         customProgram,
         programData
-      )
+      ).then((updatedProgram) => updatedProgram && updateProgramOnGroup(updatedProgram))
 
     return createNewProgram(
       groupId,
       customProgram,
       programData
-    )
+    ).then((newProgram) => newProgram && addNewProgramOnGroup(newProgram))
   }
 
   useEffect(() => {
