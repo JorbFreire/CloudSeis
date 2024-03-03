@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useMemo } from 'react'
-import { Drawer } from "@mui/material"
+import Drawer from "@mui/material/Drawer"
 
 interface IGenericDrawerProps {
   isOpen: boolean
@@ -33,6 +33,7 @@ export default function GenericDrawer({
           boxSizing: 'border-box',
           gap: "8px",
           padding: "8px",
+          zIndex: 0,
         },
       }}
       variant="persistent"

@@ -1,9 +1,11 @@
 declare interface IgenericEntitiesType {
-  id: string
+  id: number
   name: string
 }
 
-declare interface IProject extends IgenericEntitiesType { }
+declare interface IProject extends IgenericEntitiesType {
+  userId: string
+}
 
 declare interface ILine extends IgenericEntitiesType {
   workflows: Array<IWorkflow>
