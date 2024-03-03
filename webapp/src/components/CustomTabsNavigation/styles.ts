@@ -1,76 +1,84 @@
 import styled from "styled-components";
-
 import Tab from '@mui/material/Tab';
 
-export type orientationType = 'horizontal' | 'vertical'
+import type {
+  colorType,
+  orientationType,
+} from "./styleGetters"
+
+import {
+  getContainerDirection,
+  getCustumTabOrientationStyles,
+  getContentOrientationStyles,
+  getCustomTabColorStyles,
+  getContentColorStyles,
+} from './styleGetters'
+
+
 interface IContainerProps {
-  orientation: orientationType
+  $orientation: orientationType
 }
 
-function getContainerDirection(orientation: orientationType) {
-  if (orientation == "horizontal")
-    return "column"
-  if (orientation == "vertical")
-    return "row"
+interface ICustomTabProps extends IContainerProps {
+  $color: colorType
+}
+interface ITabContentProps extends IContainerProps {
+  $color: colorType
 }
 
 export const Container = styled.div<IContainerProps>`
   display: flex;
-  flex-direction: ${({ orientation }) => getContainerDirection(orientation)};
+  flex-direction: ${({ $orientation }) => getContainerDirection($orientation)};
   height: 100%;
   .MuiTabs-indicator {
     display: none;
   }
 `
 
-export const TabContent = styled.div`
-  height: 100%;
-  width: 100%;
-  background-color: #355F55;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 -8px 16px 4px #0000003F;
+export const TabContent = styled.div<ITabContentProps>`
   z-index: 2;
+  height: 100%;
+  ${({ $orientation }) => getContentOrientationStyles($orientation)}
+  ${({ $color }) => getContentColorStyles($color)}
 `
 
-export const CustomTab = styled(Tab)`
-  &.MuiTab-root {
-    background-color: #5B867C;
-    border-radius: 8px 8px 0 0;
-    margin-left: 2px;
-    max-width: 256px;
-
+export const CustomTab = styled(Tab) <ICustomTabProps>`
+  &.MuiTab-root.MuiButtonBase-root {
     display: flex;
-    white-space: nowrap;
-    /* overflow: hidden; */
-    overflow: hidden;
-    text-align: start;
     align-items: flex-start;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 256px;    
+    
+    ${({ $orientation }) => getCustumTabOrientationStyles($orientation)}
+    ${({ $color }) => getCustomTabColorStyles($color)}
+
+    .MuiTouchRipple-root {
+      z-index: 3;
+    }
 
     ::after {
-      content: ''; /* Create pseudo-element */
+      content: '';
       position: absolute;
       right: 0;
-      width: 16px;
+      width: 32px;
       height: 100%;
-      background: linear-gradient(to left, #5B867C 32%, #0000 100%);
     }
 
     :not(.Mui-selected){
       opacity: 86%;
-      margin-top: 8px;
+      :hover {
+        opacity: 100%;
+      }
     }
-    :hover {
-      opacity: 100%;
-    }
+
     &.Mui-selected {
-      background-color: #355F55;
-      color: #fff;
+      cursor: auto;
+      z-index: 10;
       box-shadow: 0 -8px 16px 4px #0000003F;
-      z-index: 3;
+      .MuiTouchRipple-root {
+        display: none;
+      }
     }
   }
-`
-
-export const TabLabel = styled.span`
-  background-color: red;
 `

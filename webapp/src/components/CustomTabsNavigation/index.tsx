@@ -7,12 +7,12 @@ import {
   Container,
   TabContent,
   CustomTab,
-  TabLabel,
 } from './styles'
-import type { orientationType } from './styles'
+import type { colorType, orientationType } from "./styleGetters"
 
 interface ICustomTabsNavigationProps {
   tabs: Array<IgenericEntitiesType>
+  color?: colorType
   orientation?: orientationType
   selectedTab: number
   setSelectedTab: Dispatch<SetStateAction<number>>
@@ -20,12 +20,13 @@ interface ICustomTabsNavigationProps {
 
 export default function CustomTabsNavigation({
   tabs,
+  color = "primary",
   orientation = "horizontal",
   selectedTab,
   setSelectedTab,
 }: ICustomTabsNavigationProps) {
   return (
-    <Container orientation={orientation}>
+    <Container $orientation={orientation}>
       <Tabs
         value={selectedTab}
         onChange={(_, newId) => setSelectedTab(newId)}
@@ -38,13 +39,20 @@ export default function CustomTabsNavigation({
             <CustomTab
               value={tab.id}
               label={tab.name}
+              $color={color}
+              $orientation={orientation}
             />
           </Tooltip>
         ))}
       </Tabs>
+
       {tabs.map(
         (tab) => selectedTab == tab.id && (
-          <TabContent key={tab.id}>
+          <TabContent
+            key={tab.id}
+            $color={color}
+            $orientation={orientation}
+          >
           </TabContent>
         )
       )}

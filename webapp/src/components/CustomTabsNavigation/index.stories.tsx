@@ -23,11 +23,11 @@ type Story = StoryObj<typeof meta>;
 function getTabs(amount: number) {
   const tabs = Array(amount).fill({}).map((_, index) => (
     {
-      id: index + 1,
+      id: index,
       name: `tab ${index}`,
     }
   ))
-  if (tabs.length >= 2)
+  if (tabs.length > 2)
     tabs[2].name = tabs[2].name.concat(
       " ",
       "have a really really really long name"
@@ -39,7 +39,7 @@ export const FewTabs: Story = {
   args: {
     selectedTab: 1,
     tabs: getTabs(5),
-    setSelectedTab: () => undefined
+    setSelectedTab: () => undefined,
   },
 };
 
@@ -47,6 +47,6 @@ export const ManyTabs: Story = {
   args: {
     selectedTab: 1,
     tabs: getTabs(30),
-    setSelectedTab: () => undefined
+    setSelectedTab: () => undefined,
   },
 };
