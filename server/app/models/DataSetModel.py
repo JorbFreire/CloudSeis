@@ -4,9 +4,7 @@ from typing import List
 
 from ..database.connection import database
 from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
-from .OrderedCommandsListModel import OrderedCommandsListModel
 from .WorkflowModel import WorkflowModel
-from .CommandModel import CommandModel 
 
 
 class DataSetModel(database.Model):
@@ -15,7 +13,7 @@ class DataSetModel(database.Model):
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
 
     projectId = dbTypes.Column(dbTypes.ForeignKey(
-        "datasets_table.id",
+        "projects_table.id",
         name="FK_projects_datasets"
     ))
 

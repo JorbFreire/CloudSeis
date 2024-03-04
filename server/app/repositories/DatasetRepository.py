@@ -17,7 +17,7 @@ class DatasetRepository():
             projectId=projectId
         )
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
-        commands = CommandModel.query.filter_by(workflowId=workflowId)
+        commands = CommandModel.query.filter_by(workflowId=workflowId).all()
         database.session.add(dataset)
         database.session.commit()
 
@@ -35,9 +35,9 @@ class DatasetRepository():
                 command.name,
                 command.parameters
             )
+            database.session.add(commands)
 
         database.session.add(workflow)
-        database.session.add(commands)
         database.session.commit()
 
         return dataset.getAttributes()
