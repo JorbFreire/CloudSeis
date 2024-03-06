@@ -18,5 +18,9 @@ class UserModel(database.Model):  # type: ignore
         List[ProjectModel]
     ] = relationship(ProjectModel)
 
-    def getAttributes(self) -> dict[str, str]:
-        return {"id": self.id, "name": self.name, "email": self.email}
+    def getAttributes(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email
+        }

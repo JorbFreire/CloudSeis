@@ -6,6 +6,27 @@ from ..errors.AppError import AppError
 
 
 class UserRepository:
+
+    def login(self, email, password) -> UserModel:
+        user = UserModel.query.filter_by(email=email).first()
+        if not user:
+            raise AppError("User not found", 404) 
+            # Redirect to create route
+        if user.password != password:
+            raise AppError("Incorrect password", 404)
+
+        return user
+    
+    def logout(self, id, password) -> UserModel:
+        user = UserModel.query.filter_by(id=UUID(id)).first()
+        if not user:
+            raise AppError("User not found", 404) 
+
+        if user.password != password:
+            raise AppError("Incorrect password", 404)
+
+        return user
+
     def showAll(self):
         users: list[UserModel] = UserModel.query.all()
         if not users:
