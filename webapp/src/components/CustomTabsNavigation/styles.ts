@@ -1,29 +1,32 @@
-import styled from "styled-components";
-import Tab from '@mui/material/Tab';
+import styled, { css } from "styled-components";
 
-import type {
-  colorType,
-  orientationType,
-} from "./styleGetters"
-
-import {
-  getContainerDirection,
-  getCustumTabOrientationStyles,
-  getContentOrientationStyles,
-  getCustomTabColorStyles,
-  getContentColorStyles,
-} from './styleGetters'
-
-
-interface IContainerProps {
-  $orientation: orientationType
+export function getContainerDirection($orientation: navigationOrientationType) {
+  if ($orientation == "horizontal")
+    return "column"
+  if ($orientation == "vertical")
+    return "row"
 }
 
-interface ICustomTabProps extends IContainerProps {
-  $color: colorType
+export function getContentOrientationStyles($orientation: navigationOrientationType) {
+  if ($orientation == "horizontal")
+    return css`
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+    `
+  if ($orientation == "vertical")
+    return css`width: calc( 100% - 256px );`
 }
-interface ITabContentProps extends IContainerProps {
-  $color: colorType
+
+export function getContentColorStyles($color: navigationColorType) {
+  if ($color == "white")
+    return css`
+      border-radius: 0;
+      border-left: 2px solid #fff;
+    `
+  return css`
+    background-color: #355F55;
+    box-shadow: 0 -8px 16px 4px #0000003F;
+  `
 }
 
 export const Container = styled.div<IContainerProps>`
@@ -40,45 +43,4 @@ export const TabContent = styled.div<ITabContentProps>`
   height: 100%;
   ${({ $orientation }) => getContentOrientationStyles($orientation)}
   ${({ $color }) => getContentColorStyles($color)}
-`
-
-export const CustomTab = styled(Tab) <ICustomTabProps>`
-  &.MuiTab-root.MuiButtonBase-root {
-    display: flex;
-    align-items: flex-start;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 256px;    
-    
-    ${({ $orientation }) => getCustumTabOrientationStyles($orientation)}
-    ${({ $color }) => getCustomTabColorStyles($color)}
-
-    .MuiTouchRipple-root {
-      z-index: 3;
-    }
-
-    ::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      width: 32px;
-      height: 100%;
-    }
-
-    :not(.Mui-selected){
-      opacity: 86%;
-      :hover {
-        opacity: 100%;
-      }
-    }
-
-    &.Mui-selected {
-      cursor: auto;
-      z-index: 10;
-      box-shadow: 0 -8px 16px 4px #0000003F;
-      .MuiTouchRipple-root {
-        display: none;
-      }
-    }
-  }
 `
