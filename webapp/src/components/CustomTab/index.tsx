@@ -1,4 +1,7 @@
+import { useSortable } from '@dnd-kit/sortable';
 import Tooltip from '@mui/material/Tooltip';
+import { CSS } from '@dnd-kit/utilities';
+
 import { Container } from './styles'
 
 export default function CustomTab({
@@ -7,15 +10,32 @@ export default function CustomTab({
   $color,
   $orientation
 }: ICustomTabProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: value });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
-    <Tooltip title={label} key={value}>
+    <Tooltip title={label} >
       <Container
         value={value}
         label={label}
         $color={$color}
         $orientation={$orientation}
+
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
       />
     </Tooltip>
-
   )
 }
