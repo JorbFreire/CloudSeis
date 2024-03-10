@@ -36,7 +36,7 @@ function getModifiers(orientation: navigationOrientationType) {
 
 export default function DefaultDNDList({
   children,
-  orientation,
+  orientation = "horizontal",
   items,
   setItems,
 }: IDefaultDNDListProps) {
@@ -47,6 +47,7 @@ export default function DefaultDNDList({
     })
   );
 
+  // ! issue: item with id "0" cant be drag
   function handleDragEnd(event: any) {
     const { active, over } = event;
 

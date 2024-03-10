@@ -4,11 +4,12 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { Container } from './styles'
 
+// todo: turn into generic and make two tab components
 export default function CustomTab({
   value,
   label,
-  $color,
-  $orientation
+  $color = "primary",
+  $orientation = "horizontal",
 }: ICustomTabProps) {
   const {
     attributes,

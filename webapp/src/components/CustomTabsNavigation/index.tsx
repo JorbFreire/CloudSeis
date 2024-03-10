@@ -12,10 +12,10 @@ import {
 interface ICustomTabsNavigationProps {
   tabs: Array<IgenericEntitiesType>
   setTabs: Dispatch<SetStateAction<Array<IgenericEntitiesType>>>
-  color?: navigationColorType
-  orientation?: navigationOrientationType
   selectedTab: number
   setSelectedTab: Dispatch<SetStateAction<number>>
+  color?: navigationColorType
+  orientation?: navigationOrientationType
   CustomDndContext?: ComponentType<IDefaultDNDListProps>
 }
 

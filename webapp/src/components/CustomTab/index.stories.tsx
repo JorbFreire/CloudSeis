@@ -13,6 +13,28 @@ const meta = {
       </div>
     ),
   ],
+  argTypes: {
+    value: {
+      control: "number",
+      description: "Key used to interactivity (drag and drop and tab selection)",
+    },
+    label: {
+      control: "text",
+      description: "Label to the Tab and it's tooltip",
+    },
+    $color: {
+      control: 'select',
+      options: ['primary', 'seconday', 'white'],
+      description: 'Color pattern from theme to use, avaliable options: `primary`, `seconday`, `white`',
+      defaultValue: "primary",
+    },
+    $orientation: {
+      control: 'select',
+      options: ['vertical', 'horizontal'],
+      description: 'Orientation from parent container list. avaliable options: `horizontal`, `vertical`',
+      defaultValue: "horizontal",
+    },
+  },
   tags: ['autodocs'],
 } satisfies Meta<typeof CustomTab>;
 
@@ -20,7 +42,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const FewTabs: Story = {
+export const Tab: Story = {
   args: {
     value: 1,
     label: "Tab title",

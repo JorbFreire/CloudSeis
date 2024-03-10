@@ -12,7 +12,7 @@ type itemsListType = Array<itemType>
 
 export interface IDefaultDNDListProps {
   children: ReactNode
-  orientation: navigationOrientationType
+  orientation?: navigationOrientationType
   items: itemsListType
   setItems: Dispatch<SetStateAction<itemsListType>>
 }
