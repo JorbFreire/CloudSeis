@@ -1,3 +1,4 @@
+// *** generic entities also represets for of "resumed" version of entities ***
 declare interface IgenericEntitiesType {
   id: number
   name: string

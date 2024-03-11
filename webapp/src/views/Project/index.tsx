@@ -6,11 +6,20 @@ import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 
+import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
+
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
 import ProjectTab from 'components/ProjectTab';
-import WorkflowTab from 'components/WorkflowTab';
-import { Container, FloatButton } from './styles'
+import CustomTabsNavigation from 'components/CustomTabsNavigation';
+import DefaultDNDList from 'components/DefaultDNDList';
+
+
+import {
+  Container,
+  ProjectsContainer,
+  FloatButton,
+} from './styles'
 
 interface IProjectProps {
   projectName?: string
@@ -18,14 +27,30 @@ interface IProjectProps {
 }
 
 export default function Project({ projectName }: IProjectProps) {
+  const {
+    selectedWorkflows,
+    setSelectedWorkflows,
+    singleSelectedWorkflowId,
+    setSingleSelectedWorkflowId,
+  } = useSelectedWorkflows()
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
+
 
   return (
     <>
       <Container>
         <ProjectTab />
-        <WorkflowTab />
+
+        <ProjectsContainer>
+          <CustomTabsNavigation
+            tabs={selectedWorkflows}
+            setTabs={setSelectedWorkflows}
+            selectedTab={singleSelectedWorkflowId}
+            setSelectedTab={setSingleSelectedWorkflowId}
+            CustomDndContext={DefaultDNDList}
+          />
+        </ProjectsContainer>
 
         <FloatButton
           $top='16px'
