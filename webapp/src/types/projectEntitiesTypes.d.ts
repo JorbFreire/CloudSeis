@@ -9,11 +9,11 @@ declare interface IProject extends IgenericEntitiesType {
 }
 
 declare interface ILine extends IgenericEntitiesType {
-  workflows: Array<IWorkflow>
+  projectId: number
+  workflows: Array<IResumedWorkflow>
 }
 
-declare interface IWorkflow extends IgenericEntitiesType {
-  commands: Array<ICommand>
+declare interface IResumedWorkflow extends IgenericEntitiesType {
 }
 
 declare interface ICommand extends IgenericEntitiesType {

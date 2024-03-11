@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/lab": "^5.0.0-alpha.119",
     "@mui/material": "^5.11.8",
+    "@mui/x-tree-view": "^6.17.0",
     "@tanstack/react-location": "^3.7.4",
     "@types/styled-components": "^5.1.26",
     "axios": "^1.2.3",
