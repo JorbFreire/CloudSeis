@@ -8,7 +8,10 @@ from ..validations.tokenValidation import generateToken, verifyToken, private_ke
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
 
-token = None
+
+# todo:
+# verify user and its token feature
+# encrypty password
 
 @userRouter.route("/login", methods=['GET'])
 def loginUser():
@@ -16,25 +19,9 @@ def loginUser():
     if not validateData("email", "password", data=data):
         raise AppError("Invalid body or data", 400)
 
-    user = userRepository.login(data["email"], data["password"])
-    global token
+    userRepository.login(data["email"], data["password"])
     token = generateToken(data, private_key)
-    return jsonify(user.getAttributes())
-
-
-@userRouter.route("/logout/<userId>", methods=['GET'])
-def logoutUser(userId):
-    data = request.get_json()
-    if not validateData("password", data=data):
-        raise AppError("Invalid body or data", 400)
-
-    global token
-    if not verifyToken(token, private_key):
-        raise AppError("Unauthorized", 401)
-
-    user = userRepository.logout(userId, data["password"])
-    token = None
-    return jsonify(user.getAttributes())
+    return jsonify(token)
 
 
 @userRouter.route("/create", methods=['POST'])
@@ -49,8 +36,6 @@ def createUser():
         raise AppError("Invalid password", 400)
 
     newUser = userRepository.create(data)
-    global token
-    token = generateToken(data, private_key)
     return jsonify(newUser)
 
 
@@ -69,8 +54,9 @@ def showUser(userId):
 @userRouter.route("/update/<userId>", methods=['PUT'])
 def updateUser(userId):
     data = request.get_json()
+    token = request.headers.get('Authorization')
+    token = str(token).replace("Bearer ", "")
 
-    global token
     if not verifyToken(token, private_key):
         raise AppError("Unauthorized", 401)
 
@@ -80,7 +66,9 @@ def updateUser(userId):
 
 @userRouter.route("/delete/<userId>", methods=['DELETE'])
 def deleteUser(userId):
-    global token
+    token = request.headers.get('Authorization')
+    token = str(token).replace("Bearer ", "")
+
     if not verifyToken(token, private_key):
         raise AppError("Unauthorized", 401)
 
