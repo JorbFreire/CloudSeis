@@ -3,8 +3,8 @@ import type { ReactNode, Dispatch, SetStateAction } from 'react'
 
 type selectedWorkflowsType = Array<IgenericEntitiesType>
 type setSelectedWorkflowsType = Dispatch<SetStateAction<selectedWorkflowsType>>
-type singleSelectedWorkflowIdType = number
-type setSingleSelectedWorkflowIdType = Dispatch<SetStateAction<number>>
+type singleSelectedWorkflowIdType = number | undefined
+type setSingleSelectedWorkflowIdType = Dispatch<SetStateAction<singleSelectedWorkflowIdType>>
 
 type useSelectedWorkflowsType = {
   selectedWorkflows: selectedWorkflowsType,
@@ -27,13 +27,13 @@ interface ISelectedWorkflowsProviderContext {
 const SelectedWorkflowsProviderContext = createContext<ISelectedWorkflowsProviderContext>({
   selectedWorkflows: [],
   setSelectedWorkflows: () => undefined,
-  singleSelectedWorkflowId: 0,
+  singleSelectedWorkflowId: undefined,
   setSingleSelectedWorkflowId: () => undefined,
 });
 
 export default function SelectedWorkflowsProvider({ children }: ISelectedWorkflowsProviderProps) {
   const [selectedWorkflows, setSelectedWorkflows] = useState<selectedWorkflowsType>([])
-  const [singleSelectedWorkflowId, setSingleSelectedWorkflowId] = useState<number>(0)
+  const [singleSelectedWorkflowId, setSingleSelectedWorkflowId] = useState<singleSelectedWorkflowIdType>(undefined)
 
   return (
     <SelectedWorkflowsProviderContext.Provider

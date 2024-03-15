@@ -12,8 +12,8 @@ import {
 interface ICustomTabsNavigationProps {
   tabs: Array<IgenericEntitiesType>
   setTabs: Dispatch<SetStateAction<Array<IgenericEntitiesType>>>
-  selectedTab: number
-  setSelectedTab: Dispatch<SetStateAction<number>>
+  selectedTab: number | undefined
+  setSelectedTab: Dispatch<SetStateAction<number | undefined>>
   color?: navigationColorType
   orientation?: navigationOrientationType
   CustomDndContext?: ComponentType<IDefaultDNDListProps>
@@ -27,22 +27,23 @@ export default function CustomTabsNavigation({
   selectedTab,
   setSelectedTab,
   // *** render empty element by default when no DndContextProvided
-  CustomDndContext = ({ children }) => (<>{children}</>),
+  CustomDndContext = ({ children }) => (children),
 }: ICustomTabsNavigationProps) {
-  return (
+
+  return Boolean(tabs.length) && (
     <Container $orientation={orientation}>
-      <Tabs
-        value={selectedTab}
-        onChange={(_, newId) => setSelectedTab(newId)}
-        variant="scrollable"
-        scrollButtons="auto"
+      {/* *** CustomDndContext is passed by optional props *** */}
+      <CustomDndContext
         orientation={orientation}
+        items={tabs}
+        setItems={setTabs}
       >
-        {/* *** CustomDndContext is passed by props and optional *** */}
-        <CustomDndContext
+        <Tabs
+          value={selectedTab}
+          onChange={(_, newId) => setSelectedTab(newId)}
+          variant="scrollable"
+          scrollButtons="auto"
           orientation={orientation}
-          items={tabs}
-          setItems={setTabs}
         >
           {tabs.map((tab) => (
             <CustomTab
@@ -53,8 +54,8 @@ export default function CustomTabsNavigation({
               $orientation={orientation}
             />
           ))}
-        </CustomDndContext>
-      </Tabs>
+        </Tabs>
+      </CustomDndContext>
 
       {tabs.map(
         (tab) => selectedTab == tab.id && (

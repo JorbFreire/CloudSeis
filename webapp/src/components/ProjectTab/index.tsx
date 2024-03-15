@@ -27,31 +27,50 @@ const mockLinesList: Array<ILine> = Array(10).fill({}).map((_, index) => (
 
 export default function ProjectTab() {
   const {
+    selectedWorkflows,
     setSelectedWorkflows,
+    singleSelectedWorkflowId,
     setSingleSelectedWorkflowId
   } = useSelectedWorkflows()
 
   const [expanded, setExpanded] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>("");
 
-  const handleToggle = (event: SyntheticEvent, nodeIds: string[]) => {
-    setExpanded(nodeIds);
+  const handleToggle = (_: SyntheticEvent, nodeId: string[]) => {
+    setExpanded(nodeId);
   };
 
-  const handleSelect = (event: SyntheticEvent, nodeIds: string) => {
-    if (nodeIds.includes("workflow")) {
-      const [_, id] = nodeIds.split("-")
-      setSelectedWorkflows((oldState) => [
-        ...oldState,
-        {
-          id: Number(id),
-          name: "a",
-        }
-      ])
-      setSingleSelectedWorkflowId(Number(id))
-      setSelected(nodeIds);
+  const handleSelect = (_: SyntheticEvent, nodeId: string) => {
+    if (!nodeId.includes("workflow"))
+      return
+    const [key, id, name] = nodeId.split("-")
+
+    if (singleSelectedWorkflowId != undefined) {
+      const isAlredySingleSelected = id == singleSelectedWorkflowId.toString();
+      if (isAlredySingleSelected)
+        return
     }
+
+    if (key !== "workflow" || !id || !name)
+      return
+
+    const isAlredySelected = selectedWorkflows.findIndex(
+      (element) => element.id == Number(id)
+    ) > 0
+    if (isAlredySelected)
+      return
+
+    setSelectedWorkflows((oldState) => [
+      ...oldState,
+      {
+        id: Number(id),
+        name: name,
+      }
+    ])
+    setSelected(nodeId);
+    setSingleSelectedWorkflowId(Number(id))
   };
+
 
   return (
     <Container>
@@ -72,7 +91,7 @@ export default function ProjectTab() {
               {line.workflows.map((workflow) => (
                 <TreeItem
                   key={workflow.id}
-                  nodeId={`workflow-${workflow.id}`}
+                  nodeId={`workflow-${workflow.id}-${workflow.name}`}
                   label={workflow.name}
                 />
               ))}
@@ -85,7 +104,7 @@ export default function ProjectTab() {
               {line.workflows.map((workflow) => (
                 <TreeItem
                   key={workflow.id}
-                  nodeId={`dataset-${workflow.id}`}
+                  nodeId={`dataset-${workflow.id}-${workflow.name}`}
                   label={workflow.name}
                 />
               ))}

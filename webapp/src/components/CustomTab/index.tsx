@@ -10,6 +10,8 @@ export default function CustomTab({
   label,
   $color = "primary",
   $orientation = "horizontal",
+  // *** for some reason, "...props" is necessery for tabs component ***
+  ...props
 }: ICustomTabProps) {
   const {
     attributes,
@@ -27,6 +29,7 @@ export default function CustomTab({
   return (
     <Tooltip title={label} >
       <Container
+        {...props}
         value={value}
         label={label}
         $color={$color}
