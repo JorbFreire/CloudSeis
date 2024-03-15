@@ -1,11 +1,17 @@
 from ..database.connection import database
 from ..models.WorkflowModel import WorkflowModel
+
+from ..models.ProjectModel import ProjectModel
+from ..models.LineModel import LineModel
+from ..models.DataSetModel import DataSetModel
+
 from ..errors.AppError import AppError
 from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
 from ..repositories.WorkflowParentsAssociationRepository import WorkflowParentsAssociationRepository
 
 workflowParentsAssociationRepository = WorkflowParentsAssociationRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
+
 
 class WorkflowRepository:
     def showById(self, id):
@@ -17,9 +23,23 @@ class WorkflowRepository:
 
     def create(self, newWorkflowData):
         parentType = newWorkflowData["parent"]["parentType"]
-        if parentType != "lineId" and parentType != "projectId" and parentType != "datasetId":
+        parentId = newWorkflowData["parent"]["parentId"]
+
+        if parentType == "lineId":
+            parent = LineModel.query.filter_by(id=parentId).first()
+            if not parent:
+                raise AppError("Line does not exist", 404)
+        elif parentType == "projectId":
+            parent = ProjectModel.query.filter_by(id=parentId).first()
+            if not parent:
+                raise AppError("Project does not exist", 404)
+        elif parentType == "datasetId":
+            parent = DataSetModel.query.filter_by(id=parentId).first()
+            if not parent:
+                raise AppError("DataSet does not exist", 404)
+        else:
             raise AppError(
-                "parentType must be either 'lineId' or 'projectId'"
+                "'parentType' must be either 'lineId', 'projectId' or 'datasetId'"
             )
 
         newWorkflow = WorkflowModel(

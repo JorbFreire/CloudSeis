@@ -1,7 +1,7 @@
 _id: req_140eb79ee5db43caad13c721da0c52e9
 type: Request
 parentId: fld_ff4b05d2fe4d46f188d3b73ef305bc0e
-modified: 1692317326551
+modified: 1699041964068
 created: 1692050881282
 url: "{{ _.base_url }}/line/create"
 name: create
@@ -12,7 +12,7 @@ body:
   text: |-
     {
     	"name": "NEW LINE!",
-    	"seismicProjectId": "2"
+    	"projectId": "1"
     }
 parameters: []
 headers:

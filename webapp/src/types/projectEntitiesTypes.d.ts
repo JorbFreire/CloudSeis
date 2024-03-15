@@ -1,16 +1,19 @@
+// *** generic entities also represets for of "resumed" version of entities ***
 declare interface IgenericEntitiesType {
-  id: string
+  id: number
   name: string
 }
 
-declare interface IProject extends IgenericEntitiesType { }
-
-declare interface ILine extends IgenericEntitiesType {
-  workflows: Array<IWorkflow>
+declare interface IProject extends IgenericEntitiesType {
+  userId: string
 }
 
-declare interface IWorkflow extends IgenericEntitiesType {
-  commands: Array<ICommand>
+declare interface ILine extends IgenericEntitiesType {
+  projectId: number
+  workflows: Array<IResumedWorkflow>
+}
+
+declare interface IResumedWorkflow extends IgenericEntitiesType {
 }
 
 declare interface ICommand extends IgenericEntitiesType {

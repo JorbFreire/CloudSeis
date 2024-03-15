@@ -11,3 +11,12 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: mysecretpassword
 
+  server:
+    build: ./server
+    ports:
+      - "8000:5000"
+
+  webapp:
+    build: ./webapp
+    ports:
+      - "5173:5173"

@@ -1,3 +1,4 @@
+from flask.cli import AppGroup
 from typing import Literal
 from flask import Flask, jsonify
 from flask_cors import CORS

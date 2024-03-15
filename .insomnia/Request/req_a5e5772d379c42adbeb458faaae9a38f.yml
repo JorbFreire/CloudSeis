@@ -1,7 +1,7 @@
 _id: req_a5e5772d379c42adbeb458faaae9a38f
 type: Request
 parentId: fld_067d86fae7004551a0c983a71f92e435
-modified: 1692048515095
+modified: 1699036471324
 created: 1691438476671
 url: "{{ _.base_url }}/user/create"
 name: create
@@ -11,9 +11,9 @@ body:
   mimeType: application/json
   text: |-
     {
-    	"name": "my name",
-    	"email": "email20@gmail.com",
-    	"password": "password"
+    	"name": "my name3",
+    	"email": "email30@gmail.com",
+    	"password": "password3"
     }
 parameters: []
 headers:

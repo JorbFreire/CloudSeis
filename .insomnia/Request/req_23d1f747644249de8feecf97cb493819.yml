@@ -1,0 +1,21 @@
+_id: req_23d1f747644249de8feecf97cb493819
+type: Request
+parentId: fld_84bf894543c744ee80c44c2adf5d57c5
+modified: 1699048984406
+created: 1699047857316
+url: "{{ _.base_url }}/project/root-workflows/list/1"
+name: list workflows
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1690659681946
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
