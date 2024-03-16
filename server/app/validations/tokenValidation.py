@@ -1,32 +1,35 @@
 from jwt import encode, decode
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
+from logging import error
+
+from ..errors.AppError import AppError
 
 private_key = "private_key"
-public_key = "public_key"
 
-def generateToken(payload: dict, key: str) -> str | None:
+def generateToken(payload: dict) -> str | None:
     try:
-        token = encode(payload=payload, key=key, algorithm="HS256")
+        token = encode(payload=payload, key=private_key, algorithm="HS256")
     except Exception as e:
-        print(e)
+        error(f"Unexpected error during token generation: {e}")
         return None
 
     return token
 
-def verifyToken(token, key) -> bool:
+def verifyToken(token, id) -> AppError | None:
     if not token:
-        return False
+        raise AppError("No token", 404)
 
     try:
-        decode(token, key=key, algorithms=["HS256"])
+        payload = decode(token, key=private_key, algorithms=["HS256"])
     except InvalidSignatureError as e:
-        print(f"Failed in token verification: {e}")
-        return False
+        error(f"Failed in token verification: {e}")
+        raise AppError("Invalid Token Signature", 401)
     except ExpiredSignatureError as e:
-        print(f"Token out of validation {e}")
-        return False
+        error(f"Token out of validation {e}")
+        raise AppError("Expired Token", 401)
+    except Exception as e:
+        error(f"Unexpected error during token verification: {e}")
+        raise AppError("Unauthorized", 401)
 
-    return True
-
-if __name__ == "__main__":
-    pass
+    if id != payload.get('id'):
+        raise AppError("Unauthorized", 401)

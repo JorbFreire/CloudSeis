@@ -1,18 +1,14 @@
 from re import search
 
-def validateData(*expected_data: str, data: dict[str, str]) -> bool:
-    return all(key in expected_data for key in data)
+from ..errors.AppError import AppError
 
-def emailRegex(email: str) -> bool:
-    pattern = r"@([a-zA-Z0-9.-]+)\."
-    if search(pattern, email):
-        return True
-    else:
-        return False
+def validateData(*expected_data: str, data: dict[str, str]) -> AppError | None:
+    if not all(key in expected_data for key in data):
+        raise AppError("Invalide body", 401)
 
-def passwordRegex(password: str) -> bool:
-    pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-    if search(pattern, password):
-        return True
-    else:
-        return False
+def credentialsRegex(email: str, password: str) -> AppError | None:
+    emailPattern = r"@([a-zA-Z0-9.-]+)\." 
+    passwordPattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+
+    if not search(emailPattern, email) or not search(passwordPattern, password):
+        raise AppError("Invalid Credentials", 401)

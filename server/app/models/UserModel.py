@@ -20,7 +20,7 @@ class UserModel(database.Model):  # type: ignore
 
     def getAttributes(self) -> dict:
         return {
-            "id": self.id,
+            "id": str(self.id),
             "name": self.name,
             "email": self.email
         }

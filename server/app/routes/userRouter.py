@@ -2,25 +2,24 @@ from flask import Blueprint, request, jsonify
 
 from ..repositories.UserRepository import UserRepository
 from ..errors.AppError import AppError
-from ..validations.userValidation import validateData, emailRegex, passwordRegex
-from ..validations.tokenValidation import generateToken, verifyToken, private_key
+from ..validations.userValidation import validateData, credentialsRegex
+from ..validations.tokenValidation import generateToken, verifyToken
 
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
 
 
 # todo:
-# verify user and its token feature
 # encrypty password
 
 @userRouter.route("/login", methods=['GET'])
 def loginUser():
     data = request.get_json()
-    if not validateData("email", "password", data=data):
-        raise AppError("Invalid body or data", 400)
 
-    userRepository.login(data["email"], data["password"])
-    token = generateToken(data, private_key)
+    validateData("email", "password", data=data)
+
+    user = userRepository.login(data["email"], data["password"])
+    token = generateToken(user)
     return jsonify(token)
 
 
@@ -28,12 +27,8 @@ def loginUser():
 def createUser():
     data = request.get_json()
 
-    if not validateData("name", "email", "password", data=data):
-        raise AppError("Invalid body or data", 400)
-    if not emailRegex(data["email"]):
-        raise AppError("Invalide email", 400)
-    if not passwordRegex(data["password"]):
-        raise AppError("Invalid password", 400)
+    validateData("name", "email", "password", data=data)
+    credentialsRegex(data["email"], data["password"])
 
     newUser = userRepository.create(data)
     return jsonify(newUser)
@@ -56,9 +51,7 @@ def updateUser(userId):
     data = request.get_json()
     token = request.headers.get('Authorization')
     token = str(token).replace("Bearer ", "")
-
-    if not verifyToken(token, private_key):
-        raise AppError("Unauthorized", 401)
+    verifyToken(token, userId)
 
     updatedUser = userRepository.update(userId, data)
     return jsonify(updatedUser)
@@ -69,8 +62,7 @@ def deleteUser(userId):
     token = request.headers.get('Authorization')
     token = str(token).replace("Bearer ", "")
 
-    if not verifyToken(token, private_key):
-        raise AppError("Unauthorized", 401)
+    verifyToken(token, userId)
 
     user = userRepository.delete(userId)
     return jsonify(user)
