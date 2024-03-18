@@ -2,55 +2,35 @@ from flask import Blueprint, request, jsonify
 
 from ..repositories.UserRepository import UserRepository
 from ..errors.AppError import AppError
-from ..validations.userValidation import validateData, emailRegex, passwordRegex
-from ..validations.tokenValidation import generateToken, verifyToken, private_key
+from ..validations.userValidation import validateData, credentialsRegex
+from ..validations.tokenValidation import generateToken, verifyToken
 
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
 
-token = None
+
+# todo:
+# encrypty password
 
 @userRouter.route("/login", methods=['GET'])
 def loginUser():
     data = request.get_json()
-    if not validateData("email", "password", data=data):
-        raise AppError("Invalid body or data", 400)
+
+    validateData("email", "password", data=data)
 
     user = userRepository.login(data["email"], data["password"])
-    global token
-    token = generateToken(data, private_key)
-    return jsonify(user.getAttributes())
-
-
-@userRouter.route("/logout/<userId>", methods=['GET'])
-def logoutUser(userId):
-    data = request.get_json()
-    if not validateData("password", data=data):
-        raise AppError("Invalid body or data", 400)
-
-    global token
-    if not verifyToken(token, private_key):
-        raise AppError("Unauthorized", 401)
-
-    user = userRepository.logout(userId, data["password"])
-    token = None
-    return jsonify(user.getAttributes())
+    token = generateToken(user)
+    return jsonify(token)
 
 
 @userRouter.route("/create", methods=['POST'])
 def createUser():
     data = request.get_json()
 
-    if not validateData("name", "email", "password", data=data):
-        raise AppError("Invalid body or data", 400)
-    if not emailRegex(data["email"]):
-        raise AppError("Invalide email", 400)
-    if not passwordRegex(data["password"]):
-        raise AppError("Invalid password", 400)
+    validateData("name", "email", "password", data=data)
+    credentialsRegex(data["email"], data["password"])
 
     newUser = userRepository.create(data)
-    global token
-    token = generateToken(data, private_key)
     return jsonify(newUser)
 
 
@@ -69,10 +49,9 @@ def showUser(userId):
 @userRouter.route("/update/<userId>", methods=['PUT'])
 def updateUser(userId):
     data = request.get_json()
-
-    global token
-    if not verifyToken(token, private_key):
-        raise AppError("Unauthorized", 401)
+    token = request.headers.get('Authorization')
+    token = str(token).replace("Bearer ", "")
+    verifyToken(token, userId)
 
     updatedUser = userRepository.update(userId, data)
     return jsonify(updatedUser)
@@ -80,9 +59,10 @@ def updateUser(userId):
 
 @userRouter.route("/delete/<userId>", methods=['DELETE'])
 def deleteUser(userId):
-    global token
-    if not verifyToken(token, private_key):
-        raise AppError("Unauthorized", 401)
+    token = request.headers.get('Authorization')
+    token = str(token).replace("Bearer ", "")
+
+    verifyToken(token, userId)
 
     user = userRepository.delete(userId)
     return jsonify(user)
