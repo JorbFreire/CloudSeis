@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from ..repositories.UserRepository import UserRepository
 from ..errors.AppError import AppError
 from ..validations.userValidation import validateData, credentialsRegex
-from ..validations.tokenValidation import generateToken, verifyToken
+from ..middlewares.requireAuthentication import requireAuthentication
 
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
@@ -11,17 +11,6 @@ userRepository = UserRepository()
 
 # todo:
 # encrypty password
-
-@userRouter.route("/login", methods=['GET'])
-def loginUser():
-    data = request.get_json()
-
-    validateData("email", "password", data=data)
-
-    user = userRepository.login(data["email"], data["password"])
-    token = generateToken(user)
-    return jsonify(token)
-
 
 @userRouter.route("/create", methods=['POST'])
 def createUser():
@@ -47,22 +36,16 @@ def showUser(userId):
 
 
 @userRouter.route("/update/<userId>", methods=['PUT'])
+@requireAuthentication
 def updateUser(userId):
     data = request.get_json()
-    token = request.headers.get('Authorization')
-    token = str(token).replace("Bearer ", "")
-    verifyToken(token, userId)
 
     updatedUser = userRepository.update(userId, data)
     return jsonify(updatedUser)
 
 
 @userRouter.route("/delete/<userId>", methods=['DELETE'])
+@requireAuthentication
 def deleteUser(userId):
-    token = request.headers.get('Authorization')
-    token = str(token).replace("Bearer ", "")
-
-    verifyToken(token, userId)
-
     user = userRepository.delete(userId)
     return jsonify(user)

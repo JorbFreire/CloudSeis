@@ -6,14 +6,6 @@ from ..errors.AppError import AppError
 
 
 class UserRepository:
-
-    def login(self, email, password) -> dict:
-        user = UserModel.query.filter_by(email=email).first()
-        if not user or user.password != password:
-            raise AppError("Invalid email or password", 401)
-        else:
-            return user.getAttributes()
-
     def showAll(self) -> list[dict]:
         users: list[UserModel] = UserModel.query.all()
         if not users:

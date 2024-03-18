@@ -2,6 +2,7 @@ from flask import Blueprint
 
 from .suFilesRouter import suFileRouter
 from .userRouter import userRouter
+from .sessionRouter import sessionRouter
 
 from .projectRouter import projectRouter
 from .lineRouter import lineRouter
@@ -19,6 +20,7 @@ router = Blueprint("routes", __name__)
 # todo: add body data validator for each route
 router.register_blueprint(suFileRouter)
 router.register_blueprint(userRouter)
+router.register_blueprint(sessionRouter)
 
 router.register_blueprint(projectRouter)
 router.register_blueprint(lineRouter)
