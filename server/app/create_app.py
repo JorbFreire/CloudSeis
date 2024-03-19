@@ -9,6 +9,7 @@ from .database.connection import database, migrate
 
 from .routes import router
 from .errors.AppError import AppError
+from .errors.AuthError import AuthError
 
 
 def create_app(mode: Literal["production", "development", "test"] = "development"):
@@ -32,5 +33,13 @@ def create_app(mode: Literal["production", "development", "test"] = "development
     def handle_app_exception(error):
         return jsonify({"Error": error.message}), error.statusCode
 
+    @app.errorhandler(AuthError)
+    def handle_auth_exception(error):
+        message = "Not authenticated"
+        if mode == "development":
+            message = error.message
+        return jsonify({"Error": message}), error.statusCode
+
     app.register_error_handler(AppError, handle_app_exception)
+    app.register_error_handler(AuthError, handle_auth_exception)
     return app

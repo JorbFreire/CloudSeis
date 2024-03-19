@@ -19,7 +19,7 @@ class SessionRepository:
                 algorithm="HS256"
             )
         except:
-            return AuthError("Could not generate token")
+            raise AuthError("Could not generate token")
 
         return token
 
