@@ -15,6 +15,11 @@ class WorkflowModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     file_name = dbTypes.Column(dbTypes.String)
 
+    owner_email = dbTypes.Column(dbTypes.ForeignKey(
+        "users_table.email",
+        name="FK_users_table_workflows_table"
+    ))
+
     commands: Mapped[
         List[CommandModel]
     ] = relationship(CommandModel)

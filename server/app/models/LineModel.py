@@ -13,6 +13,11 @@ class LineModel(database.Model):  # type: ignore
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
 
+    owner_email = dbTypes.Column(dbTypes.ForeignKey(
+        "users_table.email",
+        name="FK_users_table_lines_table"
+    ))
+
     projectId = dbTypes.Column(dbTypes.ForeignKey(
         "projects_table.id",
         name="FK_projects_table_lines_table"

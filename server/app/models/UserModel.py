@@ -11,7 +11,7 @@ class UserModel(database.Model):  # type: ignore
 
     id = dbTypes.Column(dbTypes.Uuid, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
-    email = dbTypes.Column(dbTypes.String)
+    email = dbTypes.Column(dbTypes.String, unique=True)
     password = dbTypes.Column(dbTypes.String)
     is_admin = dbTypes.Column(dbTypes.Boolean)
 

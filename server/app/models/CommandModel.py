@@ -11,6 +11,11 @@ class CommandModel(database.Model):  # type: ignore
     # stringfied JSON
     parameters = dbTypes.Column(dbTypes.Text)
 
+    owner_email = dbTypes.Column(dbTypes.ForeignKey(
+        "users_table.email",
+        name="FK_users_table_commands_table"
+    ))
+
     workflowId = dbTypes.Column(dbTypes.ForeignKey(
         "workflows_table.id",
         name="FK_workflows_table_commands_table"
