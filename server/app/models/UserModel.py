@@ -13,6 +13,7 @@ class UserModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     email = dbTypes.Column(dbTypes.String)
     password = dbTypes.Column(dbTypes.String)
+    is_admin = dbTypes.Column(dbTypes.Boolean)
 
     projects: Mapped[
         List[ProjectModel]

@@ -6,10 +6,11 @@ from typing import Callable
 
 def decorator_factory(
         decorator_name_modifier,
-        decorator: Callable[[Callable], Callable]
+        decorator: Callable[[Callable], Callable],
+        **factory_kwargs
 ) -> Callable[[Callable], any]:
     def modified_decorator(*args, **kwargs):
-        decorated_function = decorator(*args, **kwargs)
+        decorated_function = decorator(*args, **kwargs, **factory_kwargs)
         decorated_function.__name__ = f"{decorator_name_modifier}_{id(decorated_function)}"
         return decorated_function
     return modified_decorator

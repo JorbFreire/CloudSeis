@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify
 
 from ..middlewares.decoratorsFactory import decorator_factory
-from ..repositories.UserRepository import UserRepository
-from ..errors.AppError import AppError
-from ..validations.userValidation import validateData, credentialsRegex
 from ..middlewares.requireAuthentication import requireAuthentication
+
+from ..repositories.UserRepository import UserRepository
+from ..validations.userValidation import validateData, credentialsRegex
 
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
@@ -24,6 +24,7 @@ def createUser():
     return jsonify(newUser)
 
 
+# *** debug route, could be turned of on production
 @userRouter.route("/list", methods=['GET'])
 def listUsers():
     users = userRepository.showAll()
@@ -36,16 +37,15 @@ def showUser(userId):
     return jsonify(user)
 
 
-@userRouter.route("/update/<userId>", methods=['PUT'])
+@userRouter.route("/update", methods=['PUT'])
 @decorator_factory("PUT", requireAuthentication)
 def updateUser(userId):
     data = request.get_json()
-
     updatedUser = userRepository.update(userId, data)
     return jsonify(updatedUser)
 
 
-@userRouter.route("/delete/<userId>", methods=['DELETE'])
+@userRouter.route("/delete", methods=['DELETE'])
 @decorator_factory("DELETE", requireAuthentication)
 def deleteUser(userId):
     user = userRepository.delete(userId)

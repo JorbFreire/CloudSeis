@@ -1,16 +1,18 @@
+from uuid import UUID
+
 from flask import request
 from jwt import decode
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 
+from ..models.UserModel import UserModel
 from ..errors.AuthError import AuthError
 
 
 private_key = "private_key"
 
 
-def requireAuthentication(routeFunction):
+def requireAuthentication(routeFunction, isAdminRequired=False):
     def wrapper(*args, **kwargs):
-        userId = kwargs.get('userId')
         token = request.headers.get('Authorization')
 
         if not token:
@@ -27,9 +29,13 @@ def requireAuthentication(routeFunction):
         except Exception:
             raise AuthError()
 
-        if userId != payload.get('id'):
-            raise AuthError()
+        user = UserModel.query.filter_by(id=UUID(payload.id)).first()
 
-        response = routeFunction(*args, **kwargs)
+        if isAdminRequired and not user["is_admin"]:
+            raise AuthError("Must be admin")
+
+        # *** "payload.id" will be the first argument of any function using
+        # *** "requireAuthentication" using this as decorator
+        response = routeFunction(payload.id, *args, **kwargs)
         return response
     return wrapper
