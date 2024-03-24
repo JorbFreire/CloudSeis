@@ -24,8 +24,6 @@ class TestWorkflowRouter(unittest.TestCase):
             "Error": "Workflow does not exist"
         }
         response = self.client.get(f"{self.url_prefix}/show/1")
-        print("workflow")
-        print(response)
         assert response.status_code == 404
         assert response.json["Error"] == expected_response_data["Error"]
 

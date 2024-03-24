@@ -2,9 +2,10 @@ from flask import Blueprint, request, jsonify
 
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
+from ..middlewares.validateRequestBody import validateRequestBody
 
+from ..serializers.UserSerializer import UserCreateSchema, UserUpdateSchema
 from ..repositories.UserRepository import UserRepository
-from ..validations.userValidation import validateData, credentialsRegex
 
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
@@ -14,11 +15,9 @@ userRepository = UserRepository()
 # encrypty password
 
 @userRouter.route("/create", methods=['POST'])
+@decorator_factory(validateRequestBody, SerializerSchema=UserCreateSchema)
 def createUser():
     data = request.get_json()
-
-    validateData("name", "email", "password", data=data)
-    credentialsRegex(data["email"], data["password"])
 
     newUser = userRepository.create(data)
     return jsonify(newUser)
@@ -38,7 +37,8 @@ def showUser(userId):
 
 
 @userRouter.route("/update", methods=['PUT'])
-@decorator_factory("PUT", requireAuthentication)
+@decorator_factory(validateRequestBody, SerializerSchema=UserUpdateSchema)
+@decorator_factory(requireAuthentication)
 def updateUser(userId):
     data = request.get_json()
     updatedUser = userRepository.update(userId, data)
@@ -46,7 +46,8 @@ def updateUser(userId):
 
 
 @userRouter.route("/delete", methods=['DELETE'])
-@decorator_factory("DELETE", requireAuthentication)
+@decorator_factory(validateRequestBody, SerializerSchema=UserCreateSchema)
+@decorator_factory(requireAuthentication)
 def deleteUser(userId):
     user = userRepository.delete(userId)
     return jsonify(user)
