@@ -3,7 +3,7 @@ from marshmallow import Schema, fields
 
 class LineListSchema(Schema):
     # *** route params
-    lineId = fields.Number(required=True)
+    projectId = fields.Number(required=True)
 
 
 class LineCreateSchema(Schema):
@@ -11,9 +11,10 @@ class LineCreateSchema(Schema):
     projectId = fields.Number(required=True)
 
 
-class LineUpdateSchema(LineListSchema):
+class LineDeleteSchema(Schema):
+    # *** route params
+    projectId = fields.Number(required=True)
+
+
+class LineUpdateSchema(LineDeleteSchema):
     name = fields.String(required=True)
-
-
-class LineDeleteSchema(LineListSchema):
-    pass
