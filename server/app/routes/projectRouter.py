@@ -5,7 +5,7 @@ from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
 
 from ..repositories.ProjectRepository import ProjectRepository
-from ..serializers.ProjectSerializer import ProjectListSchema, ProjectListWorkflowsSchema, ProjectCreateSchema, ProjectUpdateSchema, ProjectDeleteSchema
+from ..serializers.ProjectSerializer import ProjectListWorkflowsSchema, ProjectCreateSchema, ProjectUpdateSchema, ProjectDeleteSchema
 
 projectRouter = Blueprint(
     "project-routes",
@@ -16,7 +16,6 @@ projectRepository = ProjectRepository()
 
 
 @projectRouter.route("/list", methods=['GET'])
-@decorator_factory(validateRequestBody, SerializerSchema=ProjectListSchema)
 @decorator_factory(requireAuthentication)
 def showProject(userId):
     project = projectRepository.showByUserId(userId)

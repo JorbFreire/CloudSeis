@@ -30,6 +30,7 @@ def listUsers():
     return jsonify(users)
 
 
+# *** maybe also a debug function that could be turned of on production ***
 @userRouter.route("/show/<userId>", methods=['GET'])
 def showUser(userId):
     user = userRepository.showById(userId)
@@ -46,7 +47,6 @@ def updateUser(userId):
 
 
 @userRouter.route("/delete", methods=['DELETE'])
-@decorator_factory(validateRequestBody, SerializerSchema=UserCreateSchema)
 @decorator_factory(requireAuthentication)
 def deleteUser(userId):
     user = userRepository.delete(userId)

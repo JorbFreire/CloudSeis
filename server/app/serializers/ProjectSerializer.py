@@ -6,10 +6,6 @@ class ProjectListWorkflowsSchema(Schema):
     id = fields.Number(required=True)
 
 
-class ProjectListSchema(Schema):
-    pass
-
-
 class ProjectCreateSchema(Schema):
     name = fields.String(required=True)
 
