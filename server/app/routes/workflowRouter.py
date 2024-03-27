@@ -1,7 +1,11 @@
 from flask import Blueprint, request, jsonify
 
+from ..middlewares.decoratorsFactory import decorator_factory
+from ..middlewares.requireAuthentication import requireAuthentication
+from ..middlewares.validateRequestBody import validateRequestBody
+
+from ..serializers.WorkflowSerializer import WorkflowShowSchema, WorkflowCreateSchema, WorkflowUpdateSchema, WorkflowDeleteSchema
 from ..repositories.WorkflowRepository import WorkflowRepository
-from ..errors.AppError import AppError
 
 workflowRouter = Blueprint(
     "workflow-routes",
@@ -12,27 +16,27 @@ workflowRepository = WorkflowRepository()
 
 
 @workflowRouter.route("/show/<id>", methods=['GET'])
-def showWorkflow(id):
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowShowSchema)
+@decorator_factory(requireAuthentication)
+def showWorkflow(_, id):
     workflow = workflowRepository.showById(id)
     return jsonify(workflow)
 
 
 @workflowRouter.route("/create", methods=['POST'])
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowCreateSchema)
+@decorator_factory(requireAuthentication)
 def createWorkflow():
     data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
-
     newWorkflow = workflowRepository.create(data)
     return jsonify(newWorkflow)
 
 
 @workflowRouter.route("/update/<id>", methods=['PUT'])
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowUpdateSchema)
+@decorator_factory(requireAuthentication)
 def updateWorkflow(id):
     data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
-
     updatedWorkflow = workflowRepository.updateName(
         id,
         data
@@ -41,6 +45,8 @@ def updateWorkflow(id):
 
 
 @workflowRouter.route("/delete/<id>", methods=['DELETE'])
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowDeleteSchema)
+@decorator_factory(requireAuthentication)
 def deleteWorkflow(id):
     workflow = workflowRepository.delete(id)
     return jsonify(workflow)
