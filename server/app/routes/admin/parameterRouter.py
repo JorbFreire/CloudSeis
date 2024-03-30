@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
-from ..repositories.ParameterRepository import ParameterRepository
-from ..errors.AppError import AppError
+from ...repositories.ParameterRepository import ParameterRepository
+from ...errors.AppError import AppError
 
 parameterRouter = Blueprint(
     "program-parameter-routes",

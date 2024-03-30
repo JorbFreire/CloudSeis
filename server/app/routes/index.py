@@ -11,13 +11,13 @@ from .commandRouter import commandRouter
 
 from .datasetRouter import datasetRouter
 
-from .programRouter import programRouter
-from .programGroupRouter import programGroupRouter
-from .parameterRouter import parameterRouter
+from .admin.programRouter import programRouter
+from .admin.programGroupRouter import programGroupRouter
+from .admin.parameterRouter import parameterRouter
 
 router = Blueprint("routes", __name__)
 
-# todo: add body data validator for each route
+# todo: improve suFileRouter
 router.register_blueprint(suFileRouter)
 router.register_blueprint(userRouter)
 router.register_blueprint(sessionRouter)
@@ -29,6 +29,7 @@ router.register_blueprint(commandRouter)
 
 router.register_blueprint(datasetRouter)
 
+# *** Admin based Routes ***
 router.register_blueprint(programRouter)
 router.register_blueprint(programGroupRouter)
 router.register_blueprint(parameterRouter)
