@@ -14,7 +14,7 @@ class SessionRepository:
 
         try:
             token = encode(
-                payload=user,
+                payload=user.getAttributes(),
                 key=private_key,
                 algorithm="HS256"
             )

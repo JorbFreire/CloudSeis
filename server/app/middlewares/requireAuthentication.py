@@ -29,13 +29,13 @@ def requireAuthentication(routeFunction, isAdminRequired=False):
         except Exception:
             raise AuthError()
 
-        user = UserModel.query.filter_by(id=UUID(payload.id)).first()
+        user = UserModel.query.filter_by(id=UUID(payload["id"])).first()
 
         if isAdminRequired and not user["is_admin"]:
             raise AuthError("Must be admin")
 
         # *** "payload.id" will be the first argument of any function
         # *** using "requireAuthentication" as decorator
-        response = routeFunction(payload.id, *args, **kwargs)
+        response = routeFunction(payload["id"], *args, **kwargs)
         return response
     return wrapper
