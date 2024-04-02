@@ -1,8 +1,11 @@
 from flask import Blueprint, request, jsonify
 
+
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 
+from ..models.ProjectModel import ProjectModel
+from ..models.LineModel import LineModel
 from ..repositories.LineRepository import LineRepository
 
 lineRouter = Blueprint(
@@ -20,7 +23,7 @@ def showLine(projectId):
 
 
 @lineRouter.route("/create", methods=['POST'])
-@decorator_factory("DELETE", requireAuthentication)
+@decorator_factory("DELETE", requireAuthentication) # Line creation depends on ProjectModel
 def createLine(userId):
     data = request.get_json()
     if data == None:
@@ -42,7 +45,7 @@ def createLine(userId):
 
 @lineRouter.route("/update", methods=['PUT'])
 @decorator_factory("DELETE", requireAuthentication)
-def updateLine(userId, lineId):
+def updateLine(userId):
     data = request.get_json()
     if data == None:
         return jsonify(
@@ -50,7 +53,7 @@ def updateLine(userId, lineId):
             status=400
         )
     updatedLine = lineRepository.update(
-        lineId, data["name"]
+        data["lineId"], data["name"]
     )
     return jsonify(updatedLine)
 

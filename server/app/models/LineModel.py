@@ -27,7 +27,7 @@ class LineModel(database.Model):  # type: ignore
     ] = relationship(WorkflowParentsAssociationModel)
 
     def _getWorkflows(self) -> list[dict[str, str]]:
-        if len(self.workflowParentAssociations) is 0:
+        if len(self.workflowParentAssociations) == 0:
             return []
         workflows = WorkflowModel.query.filter(
             WorkflowModel.id.in_(

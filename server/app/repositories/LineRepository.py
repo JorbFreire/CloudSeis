@@ -1,4 +1,5 @@
 from ..database.connection import database
+from ..models.UserModel import UserModel
 from ..models.ProjectModel import ProjectModel
 from ..models.LineModel import LineModel
 from ..errors.AppError import AppError
@@ -19,10 +20,17 @@ class LineRepository:
         if not project:
             raise AppError("Project does not exist", 404)
 
+        ## Ask about this feature
+        ## Needs to assign owner_email to the user email
+
+        # user = UserModel.query.filter_by(id=projectId).first()
+
         newLine = LineModel(
             name=newLineName,
             projectId=project.id
+            # owner_email=user.email
         )
+
         database.session.add(newLine)
         database.session.commit()
         return newLine.getAttributes()
