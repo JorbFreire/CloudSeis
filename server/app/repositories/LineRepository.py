@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from ..database.connection import database
 from ..models.UserModel import UserModel
 from ..models.ProjectModel import ProjectModel
@@ -13,22 +15,19 @@ class LineRepository:
 
         return [line.getAttributes() for line in lines]
 
-    def create(self, projectId, newLineName):
+    def create(self, userId, projectId, newLineName):
         project = ProjectModel.query.filter_by(
             id=projectId
         ).first()
         if not project:
             raise AppError("Project does not exist", 404)
 
-        ## Ask about this feature
-        ## Needs to assign owner_email to the user email
-
-        # user = UserModel.query.filter_by(id=projectId).first()
+        user = UserModel.query.filter_by(id=UUID(userId)).first()
 
         newLine = LineModel(
             name=newLineName,
-            projectId=project.id
-            # owner_email=user.email
+            projectId=project.id,
+            owner_email=user.email
         )
 
         database.session.add(newLine)
@@ -36,7 +35,13 @@ class LineRepository:
         return newLine.getAttributes()
 
     def update(self, id, newLineData):
-        pass
+        line = LineModel.query.filter_by(id=id).first()
+        if not line:
+            raise AppError("Line does not exist", 404)
+
+        line.name = newLineData
+
+        return line.getAttributes()
 
     def delete(self, id):
         line = LineModel.query.filter_by(id=id).first()

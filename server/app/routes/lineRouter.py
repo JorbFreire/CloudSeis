@@ -4,7 +4,6 @@ from flask import Blueprint, request, jsonify
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 
-from ..models.ProjectModel import ProjectModel
 from ..models.LineModel import LineModel
 from ..repositories.LineRepository import LineRepository
 
@@ -23,7 +22,7 @@ def showLine(projectId):
 
 
 @lineRouter.route("/create", methods=['POST'])
-@decorator_factory("DELETE", requireAuthentication) # Line creation depends on ProjectModel
+@decorator_factory(requireAuthentication) # Line creation depends on ProjectModel
 def createLine(userId):
     data = request.get_json()
     if data == None:
@@ -37,6 +36,7 @@ def createLine(userId):
             status=400
         )
     newLine = lineRepository.create(
+        userId,
         data["projectId"],
         data["name"]
     )
@@ -44,7 +44,7 @@ def createLine(userId):
 
 
 @lineRouter.route("/update", methods=['PUT'])
-@decorator_factory("DELETE", requireAuthentication)
+@decorator_factory(requireAuthentication, routeModel=LineModel)
 def updateLine(userId):
     data = request.get_json()
     if data == None:
@@ -58,8 +58,9 @@ def updateLine(userId):
     return jsonify(updatedLine)
 
 
-@lineRouter.route("/delete/<lineId>", methods=['DELETE'])
-@decorator_factory("DELETE", requireAuthentication)
-def deleteLine(userId, lineId):
-    line = lineRepository.delete(lineId)
+@lineRouter.route("/delete", methods=['DELETE'])
+@decorator_factory(requireAuthentication, routeModel=LineModel)
+def deleteLine(userId):
+    data = request.get_json()
+    line = lineRepository.delete(data["lineId"])
     return jsonify(line)
