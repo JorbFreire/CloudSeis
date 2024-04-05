@@ -15,5 +15,5 @@ sessionRepository = SessionRepository()
 def create():
     data = request.get_json()
 
-    token = sessionRepository.login(data["email"], data["password"])
+    token = sessionRepository.createSession(data["email"], data["password"])
     return jsonify(token)

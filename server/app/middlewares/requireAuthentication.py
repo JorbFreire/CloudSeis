@@ -26,16 +26,17 @@ def requireAuthentication(routeFunction, isAdminRequired=False):
             raise AuthError("Invalid Token Signature")
         except ExpiredSignatureError:
             raise AuthError("Expired Token")
-        except Exception:
+        except:
             raise AuthError()
 
-        user = UserModel.query.filter_by(id=UUID(payload.id)).first()
+        userId = payload["id"]
+        user = UserModel.query.filter_by(id=UUID(userId)).first()
 
         if isAdminRequired and not user["is_admin"]:
             raise AuthError("Must be admin")
 
         # *** "payload.id" will be the first argument of any function
         # *** using "requireAuthentication" as decorator
-        response = routeFunction(payload.id, *args, **kwargs)
+        response = routeFunction(userId, *args, **kwargs)
         return response
     return wrapper

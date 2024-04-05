@@ -14,7 +14,7 @@ class SessionRepository:
 
         try:
             token = encode(
-                payload=user,
+                payload=user.getAttributes(),
                 key=private_key,
                 algorithm="HS256"
             )
@@ -23,6 +23,6 @@ class SessionRepository:
 
         return token
 
-    # revalidateSession shall be implemented but is not a priority
+    # todo: revalidateSession shall be implemented but is not a priority
     def revalidateSession(self):
         pass

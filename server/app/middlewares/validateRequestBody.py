@@ -14,5 +14,6 @@ def validateRequestBody(routeFunction, SerializerSchema):
         # *** excluded and ignored, not raising any error.
         SerializerSchema(unknown=EXCLUDE).load(data)
 
-        routeFunction(*args, **kwargs)
+        response = routeFunction(*args, **kwargs)
+        return response
     return wrapper

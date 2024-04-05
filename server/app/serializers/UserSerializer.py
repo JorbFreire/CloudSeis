@@ -5,7 +5,7 @@ from ..errors.FormatError import FormatError
 
 
 def validatePassword(password: str):
-    passwordPattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+    passwordPattern = r"^.{8,}$"
 
     if not search(passwordPattern, password):
         raise FormatError("Invalid Credentials")
