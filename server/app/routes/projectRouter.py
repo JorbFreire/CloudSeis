@@ -41,7 +41,6 @@ def updateProject(_, id):
 
 
 @projectRouter.route("/delete/<id>", methods=['DELETE'])
-@decorator_factory(validateRequestBody, SerializerSchema=ProjectDeleteSchema)
 @decorator_factory(requireAuthentication)
 def deleteProject(_, id):
     project = projectRepository.delete(id)

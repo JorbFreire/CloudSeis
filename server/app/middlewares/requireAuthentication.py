@@ -11,7 +11,7 @@ from ..errors.AuthError import AuthError
 private_key = "private_key"
 
 
-def requireAuthentication(routeFunction, isAdminRequired=False):
+def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False):
     def wrapper(*args, **kwargs):
         token = request.headers.get('Authorization')
 
@@ -32,8 +32,16 @@ def requireAuthentication(routeFunction, isAdminRequired=False):
         userId = payload["id"]
         user = UserModel.query.filter_by(id=UUID(userId)).first()
 
-        if isAdminRequired and not user["is_admin"]:
+        if isAdminRequired and not user.is_admin:
             raise AuthError("Must be admin")
+
+        # Really bad implementation
+        if routeModel:
+            modelObject = routeModel.query.filter_by(
+                owner_email=user.email
+            ).first()
+            if not modelObject:
+                raise AuthError("Unauthorized")  # change mensage
 
         # *** "payload.id" will be the first argument of any function
         # *** using "requireAuthentication" as decorator
