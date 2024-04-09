@@ -3,6 +3,7 @@ from uuid import uuid4, UUID
 from ..database.connection import database
 from ..models.UserModel import UserModel
 from ..errors.AppError import AppError
+from ..hash.hash import hashPassword
 
 
 class UserRepository:
@@ -26,11 +27,13 @@ class UserRepository:
         if user:
             raise AppError("Email alredy used")
         newId = uuid4()
+        hashedPassword = hashPassword(newUserData["password"])
         newUser = UserModel(
             id=newId,
             name=newUserData["name"],
             email=newUserData["email"],
-            password=newUserData["password"]
+            password=newUserData["password"],
+            hashPassword=hashedPassword
         )
         database.session.add(newUser)
         database.session.commit()

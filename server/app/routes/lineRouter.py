@@ -51,7 +51,7 @@ def updateLine(_, lineId):
 
 
 @lineRouter.route("/delete/<lineId>", methods=['DELETE'])
-@decorator_factory(validateRequestBody, SerializerSchema=LineDeleteSchema)
+# @decorator_factory(validateRequestBody, SerializerSchema=LineDeleteSchema)
 @decorator_factory(requireAuthentication, routeModel=LineModel)
 def deleteLine(_, lineId):
     line = lineRepository.delete(lineId)

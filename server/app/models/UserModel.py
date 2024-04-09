@@ -13,6 +13,7 @@ class UserModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     email = dbTypes.Column(dbTypes.String, unique=True)
     password = dbTypes.Column(dbTypes.String)
+    hashPassword = dbTypes.Column(dbTypes.LargeBinary, unique=True)
     is_admin = dbTypes.Column(dbTypes.Boolean)
 
     projects: Mapped[
@@ -23,5 +24,6 @@ class UserModel(database.Model):  # type: ignore
         return {
             "id": str(self.id),
             "name": self.name,
-            "email": self.email
+            "email": self.email,
+            "password": self.password # !Take this OFF!
         }

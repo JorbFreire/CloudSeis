@@ -49,7 +49,7 @@ def deleteProject(_, id):
 
 # * It does not include workflows inside lines
 @projectRouter.route("/root-workflows/list/<id>", methods=['GET'])
-@decorator_factory(validateRequestBody, SerializerSchema=ProjectListWorkflowsSchema)
+# @decorator_factory(validateRequestBody, SerializerSchema=ProjectListWorkflowsSchema)
 @decorator_factory(requireAuthentication)
 def listProjectRootWorkflows(_, id):
     projectWorkflows = projectRepository.listWorkflowsByProjectId(id)

@@ -20,7 +20,7 @@ workflowRepository = WorkflowRepository()
 
 
 @workflowRouter.route("/show/<id>", methods=['GET'])
-@decorator_factory(validateRequestBody, SerializerSchema=WorkflowShowSchema)
+# @decorator_factory(validateRequestBody, SerializerSchema=WorkflowShowSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def showWorkflow(_, id):
     workflow = workflowRepository.showById(id)
@@ -50,7 +50,7 @@ def updateWorkflow(userId):
 
 
 @workflowRouter.route("/delete/<id>", methods=['DELETE'])
-@decorator_factory(validateRequestBody, SerializerSchema=WorkflowDeleteSchema)
+# @decorator_factory(validateRequestBody, SerializerSchema=WorkflowDeleteSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def deleteWorkflow(_, id):
     workflow = workflowRepository.delete(id)
