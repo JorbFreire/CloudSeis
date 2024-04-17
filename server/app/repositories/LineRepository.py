@@ -40,6 +40,7 @@ class LineRepository:
             raise AppError("Line does not exist", 404)
 
         line.name = newLineData
+        database.session.commit()
 
         return line.getAttributes()
 

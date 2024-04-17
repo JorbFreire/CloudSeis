@@ -7,7 +7,7 @@ from ..middlewares.validateRequestBody import validateRequestBody
 
 from ..models.LineModel import LineModel
 from ..repositories.LineRepository import LineRepository
-from ..serializers.LineSerializer import LineListSchema, LineCreateSchema, LineUpdateSchema, LineDeleteSchema
+from ..serializers.LineSerializer import LineCreateSchema, LineUpdateSchema
 
 lineRouter = Blueprint(
     "line-routes",
@@ -18,7 +18,6 @@ lineRepository = LineRepository()
 
 
 @lineRouter.route("/list/<projectId>", methods=['GET'])
-@decorator_factory(validateRequestBody, SerializerSchema=LineListSchema)
 @decorator_factory(requireAuthentication)
 def listLines(_, projectId):
     line = lineRepository.showByProjectId(projectId)
@@ -51,7 +50,6 @@ def updateLine(_, lineId):
 
 
 @lineRouter.route("/delete/<lineId>", methods=['DELETE'])
-@decorator_factory(validateRequestBody, SerializerSchema=LineDeleteSchema)
 @decorator_factory(requireAuthentication, routeModel=LineModel)
 def deleteLine(_, lineId):
     line = lineRepository.delete(lineId)
