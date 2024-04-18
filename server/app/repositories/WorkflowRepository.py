@@ -1,4 +1,6 @@
+from uuid import UUID
 from ..database.connection import database
+from ..models.UserModel import UserModel
 from ..models.WorkflowModel import WorkflowModel
 
 from ..models.ProjectModel import ProjectModel
@@ -21,9 +23,13 @@ class WorkflowRepository:
 
         return workflow.getAttributes()
 
-    def create(self, newWorkflowData):
+    def create(self, userId, newWorkflowData):
         parentType = newWorkflowData["parent"]["parentType"]
         parentId = newWorkflowData["parent"]["parentId"]
+
+        user = UserModel.query.filter_by(id=UUID(userId)).first()
+        if not user:
+            raise AppError("User does not exist", 404)
 
         if parentType == "lineId":
             parent = LineModel.query.filter_by(id=parentId).first()
@@ -44,7 +50,8 @@ class WorkflowRepository:
 
         newWorkflow = WorkflowModel(
             name=newWorkflowData["name"],
-            file_name=""
+            file_name="",
+            owner_email=user.email
         )
         database.session.add(newWorkflow)
         database.session.commit()
@@ -58,6 +65,9 @@ class WorkflowRepository:
 
         return newWorkflow.getAttributes()
 
+    def update(self):
+        pass
+        
     def delete(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()
         if not workflow:

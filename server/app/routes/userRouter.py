@@ -1,46 +1,53 @@
 from flask import Blueprint, request, jsonify
 
+from ..middlewares.decoratorsFactory import decorator_factory
+from ..middlewares.requireAuthentication import requireAuthentication
+from ..middlewares.validateRequestBody import validateRequestBody
+
+from ..serializers.UserSerializer import UserCreateSchema, UserUpdateSchema
 from ..repositories.UserRepository import UserRepository
-from ..errors.AppError import AppError
 
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
 
+
+# todo:
+# encrypty password
+
+@userRouter.route("/create", methods=['POST'])
+@decorator_factory(validateRequestBody, SerializerSchema=UserCreateSchema)
+def createUser():
+    data = request.get_json()
+
+    newUser = userRepository.create(data)
+    return jsonify(newUser)
+
+
+# *** debug route, could be turned of on production
 @userRouter.route("/list", methods=['GET'])
 def listUsers():
     users = userRepository.showAll()
     return jsonify(users)
 
 
+# *** maybe also a debug function that could be turned of on production ***
 @userRouter.route("/show/<userId>", methods=['GET'])
 def showUser(userId):
     user = userRepository.showById(userId)
     return jsonify(user)
 
 
-@userRouter.route("/create", methods=['POST'])
-def createUser():
-    data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
-    elif "name" not in data or "email" not in data or "password" not in data: # ?
-        raise AppError("Ivalid body", 400)
-
-    newUser = userRepository.create(data)
-    return jsonify(newUser)
-
-
-@userRouter.route("/update/<userId>", methods=['PUT'])
+@userRouter.route("/update", methods=['PUT'])
+@decorator_factory(validateRequestBody, SerializerSchema=UserUpdateSchema)
+@decorator_factory(requireAuthentication)
 def updateUser(userId):
     data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
-
     updatedUser = userRepository.update(userId, data)
     return jsonify(updatedUser)
 
 
-@userRouter.route("/delete/<userId>", methods=['DELETE'])
+@userRouter.route("/delete", methods=['DELETE'])
+@decorator_factory(requireAuthentication)
 def deleteUser(userId):
     user = userRepository.delete(userId)
     return jsonify(user)

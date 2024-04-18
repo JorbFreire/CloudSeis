@@ -18,6 +18,11 @@ export const Container = styled.div`
   height: 100vh;
 `
 
+export const ProjectsContainer = styled.div`
+  display: flex;
+  width: calc(100% - (256px * 2));
+`
+
 export const FloatButton = styled(Fab) <IFloatButtonProps>`
   position: absolute !important;
   background-color: red;

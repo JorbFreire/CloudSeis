@@ -23,11 +23,9 @@ def createDataset():
     return jsonify(newDataset)
 
 # Delete method, not sure
-
-
-@datasetRouter.route("/delete", methods=['DELETE'])
-def deleteDataset():
-    dataset = datasetRepository.delete()
+@datasetRouter.route("/delete/<id>", methods=['DELETE'])
+def deleteDataset(id):
+    dataset = datasetRepository.delete(id)
     return jsonify(dataset)
 
 

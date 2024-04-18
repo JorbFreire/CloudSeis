@@ -1,6 +1,13 @@
 from flask import Blueprint, request, jsonify
 
+
+from ..middlewares.decoratorsFactory import decorator_factory
+from ..middlewares.requireAuthentication import requireAuthentication
+from ..middlewares.validateRequestBody import validateRequestBody
+
+from ..models.LineModel import LineModel
 from ..repositories.LineRepository import LineRepository
+from ..serializers.LineSerializer import LineCreateSchema, LineUpdateSchema
 
 lineRouter = Blueprint(
     "line-routes",
@@ -11,46 +18,39 @@ lineRepository = LineRepository()
 
 
 @lineRouter.route("/list/<projectId>", methods=['GET'])
-def showLine(projectId):
+@decorator_factory(requireAuthentication)
+def listLines(_, projectId):
     line = lineRepository.showByProjectId(projectId)
     return jsonify(line)
 
 
-@lineRouter.route("/create", methods=['POST'])
-def createLine():
+@lineRouter.route("/create/<projectId>", methods=['POST'])
+@decorator_factory(validateRequestBody, SerializerSchema=LineCreateSchema)
+@decorator_factory(requireAuthentication)
+def createLine(userId, projectId):
     data = request.get_json()
-    if data == None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
-    elif "name" not in data or "projectId" not in data:
-        return jsonify(
-            {"Error": "Invalid body"},
-            status=400
-        )
     newLine = lineRepository.create(
-        data["projectId"],
+        userId,
+        projectId,
         data["name"]
     )
     return jsonify(newLine)
 
 
-@lineRouter.route("/update", methods=['PUT'])
-def updateLine(lineId):
+@lineRouter.route("/update/<lineId>", methods=['PUT'])
+@decorator_factory(validateRequestBody, SerializerSchema=LineUpdateSchema)
+@decorator_factory(requireAuthentication, routeModel=LineModel)
+def updateLine(_, lineId):
     data = request.get_json()
-    if data == None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
     updatedLine = lineRepository.update(
-        lineId, data["name"]
+        lineId,
+        data["name"]
     )
     return jsonify(updatedLine)
 
 
-@lineRouter.route("/delete/<id>", methods=['DELETE'])
-def deleteLine(id):
-    line = lineRepository.delete(id)
+@lineRouter.route("/delete/<lineId>", methods=['DELETE'])
+@decorator_factory(requireAuthentication, routeModel=LineModel)
+def deleteLine(_, lineId):
+    line = lineRepository.delete(lineId)
     return jsonify(line)

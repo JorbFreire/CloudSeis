@@ -13,7 +13,7 @@ class DataSetModel(database.Model):
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
 
     projectId = dbTypes.Column(dbTypes.ForeignKey(
-        "datasets_table.id",
+        "projects_table.id",
         name="FK_projects_datasets"
     ))
 
@@ -21,18 +21,19 @@ class DataSetModel(database.Model):
         List[WorkflowParentsAssociationModel]
     ] = relationship(WorkflowParentsAssociationModel)
 
+
     def _getWorkflows(self) -> list[dict[str, str]]:
-        if len(self.workflowParentAssociations) is 0:
+        if len(self.workflowParentAssociations) == 0:
             return []
         workflows = WorkflowModel.query.filter(
             WorkflowModel.id.in_(
                 [association.workflowId for association in self.workflowParentAssociations]
             )
         ).all()
-        return [workflow.getResumedAttributes() for workflow in workflows]
+        return [workflow.getAttributes() for workflow in workflows]
 
     def getAttributes(self) -> dict:
         return {
             "id": self.id,
-            "workflows": self._getWorkflows(),
+            "workflows": self._getWorkflows()
         }

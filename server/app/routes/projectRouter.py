@@ -1,6 +1,11 @@
 from flask import Blueprint, request, jsonify
 
+from ..middlewares.decoratorsFactory import decorator_factory
+from ..middlewares.requireAuthentication import requireAuthentication
+from ..middlewares.validateRequestBody import validateRequestBody
+
 from ..repositories.ProjectRepository import ProjectRepository
+from ..serializers.ProjectSerializer import ProjectListWorkflowsSchema, ProjectCreateSchema, ProjectUpdateSchema, ProjectDeleteSchema
 
 projectRouter = Blueprint(
     "project-routes",
@@ -10,49 +15,42 @@ projectRouter = Blueprint(
 projectRepository = ProjectRepository()
 
 
-@projectRouter.route("/list/<userId>", methods=['GET'])
+@projectRouter.route("/list", methods=['GET'])
+@decorator_factory(requireAuthentication)
 def showProject(userId):
     project = projectRepository.showByUserId(userId)
     return jsonify(project)
 
 
 @projectRouter.route("/create", methods=['POST'])
-def createProject():
+@decorator_factory(validateRequestBody, SerializerSchema=ProjectCreateSchema)
+@decorator_factory(requireAuthentication)
+def createProject(userId):
     data = request.get_json()
-    if data == None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
-    elif "name" not in data or "userId" not in data:
-        return jsonify(
-            {"Error": "Invalid body"},
-            status=400
-        )
-    newProject = projectRepository.create(data["userId"], data["name"])
+    newProject = projectRepository.create(userId, data["name"])
     return jsonify(newProject)
 
 
 @projectRouter.route("/update/<id>", methods=['PUT'])
-def updateProject(id):
+@decorator_factory(validateRequestBody, SerializerSchema=ProjectUpdateSchema)
+@decorator_factory(requireAuthentication)
+def updateProject(_, id):
     data = request.get_json()
-    if data == None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
     updatedProject = projectRepository.updateName(id, data["name"])
     return jsonify(updatedProject)
 
 
 @projectRouter.route("/delete/<id>", methods=['DELETE'])
-def deleteProject(id):
+@decorator_factory(requireAuthentication)
+def deleteProject(_, id):
     project = projectRepository.delete(id)
     return jsonify(project)
 
 
 # * It does not include workflows inside lines
 @projectRouter.route("/root-workflows/list/<id>", methods=['GET'])
-def listProjectRootWorkflows(id):
+@decorator_factory(validateRequestBody, SerializerSchema=ProjectListWorkflowsSchema)
+@decorator_factory(requireAuthentication)
+def listProjectRootWorkflows(_, id):
     projectWorkflows = projectRepository.listWorkflowsByProjectId(id)
     return jsonify(projectWorkflows)

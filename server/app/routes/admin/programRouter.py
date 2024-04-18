@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 
-from ..repositories.ProgramRepository import ProgramRepository
-from ..repositories.ProgramFileRepository import ProgramFileRepository
-from ..errors.AppError import AppError
+from ...repositories.ProgramRepository import ProgramRepository
+from ...repositories.ProgramFileRepository import ProgramFileRepository
+from ...errors.AppError import AppError
 
 programRouter = Blueprint("program-routes", __name__, url_prefix="/programs")
 programRepository = ProgramRepository()

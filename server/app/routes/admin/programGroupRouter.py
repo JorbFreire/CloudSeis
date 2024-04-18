@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
-from ..repositories.ProgramGroupRepository import ProgramGroupRepository
-from ..errors.AppError import AppError
+from ...repositories.ProgramGroupRepository import ProgramGroupRepository
+from ...errors.AppError import AppError
 
 programGroupRouter = Blueprint(
     "programs-groups-routes",
