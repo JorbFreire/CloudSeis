@@ -51,3 +51,8 @@ class LineRepository:
         database.session.delete(line)
         database.session.commit()
         return line.getAttributes()
+
+    # DEBUG METHOD
+    def listAllDebug(self):
+        lines = LineModel.query.all()
+        return [line.getAttributes() for line in lines]

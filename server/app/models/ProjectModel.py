@@ -25,11 +25,11 @@ class ProjectModel(database.Model):  # type: ignore
 
     lines: Mapped[
         List[LineModel]
-    ] = relationship(LineModel)
+    ] = relationship(LineModel, cascade='all, delete-orphan')
 
 
     def getWorkflows(self) -> list[dict[str, str]]:
-        if len(self.workflowParentAssociations) is 0:
+        if len(self.workflowParentAssociations) == 0:
             return []
         workflows = WorkflowModel.query.filter(
             WorkflowModel.projectId.in_(

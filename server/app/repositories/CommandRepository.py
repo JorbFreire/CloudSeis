@@ -1,3 +1,5 @@
+from uuid import UUID
+from ..models.UserModel import UserModel
 from ..database.connection import database
 from ..models.CommandModel import CommandModel
 from ..models.OrderedCommandsListModel import OrderedCommandsListModel
@@ -10,7 +12,11 @@ class CommandRepository:
     def show(self, id):
         pass
 
-    def create(self, workflowId, name, parameters):
+    def create(self, userId, workflowId, name, parameters):
+        user = UserModel.query.filter_by(id=UUID(userId)).first()
+        if not user:
+            raise AppError("User does not exist", 404)
+
         workflow = WorkflowModel.query.filter_by(
             id=workflowId
         ).first()
@@ -24,7 +30,8 @@ class CommandRepository:
         newCommand = CommandModel(
             name=name,
             parameters=parameters,
-            workflowId=workflowId
+            workflowId=workflowId,
+            owner_email=user.email
         )
         database.session.add(newCommand)
         database.session.commit()

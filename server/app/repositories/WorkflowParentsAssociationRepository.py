@@ -43,3 +43,10 @@ class WorkflowParentsAssociationRepository:
         database.session.commit()
 
         return newAssociation.getAttributes()
+
+    # def delete(self, workflowId):
+    #     workflow = WorkflowParentsAssociationModel.query.filter_by(workflowId=workflowId).first()
+    #     if not workflow:
+    #         raise AppError("Workflow does not exist", 404)
+    #     database.session.delete(workflow)
+    #     database.session.commit()

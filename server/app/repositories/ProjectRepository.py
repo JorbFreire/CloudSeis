@@ -65,7 +65,7 @@ class ProjectRepository:
             projectId=projectId
         ).all()
 
-        if len(workflowParentAssociations) is 0:
+        if len(workflowParentAssociations) == 0:
             return []
         workflows = WorkflowModel.query.filter(
             WorkflowModel.id.in_(
@@ -74,3 +74,8 @@ class ProjectRepository:
         ).all()
 
         return [workflow.getResumedAttributes() for workflow in workflows]
+
+    #DEBUG METHOD
+    def listAllDebug(self):
+        projects = ProjectModel.query.all()
+        return [project.getAttributes() for project in projects]
