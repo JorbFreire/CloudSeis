@@ -6,6 +6,11 @@ from ..database.connection import database
 class WorkflowParentsAssociationModel(database.Model):  # type: ignore
     __tablename__ = "workflow_parents_association_table"
 
+    owner_email = dbTypes.Column(dbTypes.ForeignKey(
+        "users_table.email",
+        name="FK_users_table_workflows_table"
+    ))
+
     workflowId = dbTypes.Column(
         dbTypes.ForeignKey(
             "workflows_table.id",

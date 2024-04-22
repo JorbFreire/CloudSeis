@@ -10,6 +10,7 @@ from ..middlewares.validateRequestBody import validateRequestBody
 from ..serializers.WorkflowSerializer import WorkflowShowSchema, WorkflowCreateSchema, WorkflowUpdateSchema, WorkflowDeleteSchema
 from ..repositories.WorkflowRepository import WorkflowRepository
 from ..models.WorkflowModel import WorkflowModel
+from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
@@ -31,12 +32,13 @@ def showWorkflow(_, id):
 
 
 # should have an id of line or project to work in the param route
-@workflowRouter.route("/create", methods=['POST'])
+@workflowRouter.route("/create/<parentId>", methods=['POST'])
 # @decorator_factory(validateRequestBody, SerializerSchema=WorkflowCreateSchema)
-@decorator_factory(requireAuthentication) #, routeModel=ProjectModel | LineModel) # Depends on the data
-def createWorkflow(userId):
+# , routeModel=ProjectModel | LineModel) # Depends on the data
+@decorator_factory(requireAuthentication, routeModel=WorkflowParentsAssociationModel)
+def createWorkflow(userId, parentId):
     data = request.get_json()
-    newWorkflow = workflowRepository.create(userId, data)
+    newWorkflow = workflowRepository.create(userId, data, parentId)
     return jsonify(newWorkflow)
 
 
