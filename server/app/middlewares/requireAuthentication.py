@@ -40,11 +40,13 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
             modelId = int(list(kwargs.values())[0])
             modelObject = routeModel.query.filter_by(id=modelId).first()
             if not modelObject:
-                raise AuthError("No instance found with this Id") # change message
-            userAttr = modelObject.owner_email if hasattr(modelObject, 'owner_email') else modelObject.userId
+                # change message
+                raise AuthError("No instance found with this Id")
+            userAttr = modelObject.owner_email if hasattr(
+                modelObject, 'owner_email') else modelObject.userId
             if userAttr != user.email and userAttr != user.id:
-                raise AuthError("Unauthorized by required auth")  # change message
-
+                # change message
+                raise AuthError("Unauthorized by required auth")
 
         # *** "payload.id" will be the first argument of any function
         # *** using "requireAuthentication" as decorator
