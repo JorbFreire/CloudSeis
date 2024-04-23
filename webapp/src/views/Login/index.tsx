@@ -8,6 +8,8 @@ import { validateToken, createNewSession } from "services/sessionServices";
 import {
   Container,
   LoginForm,
+  LinksBox,
+  Link
 } from "./styles"
 
 
@@ -42,20 +44,32 @@ export default function Login() {
       <LoginForm onSubmit={submitLogin}>
         <TextField
           type="email"
+          label="E-mail"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
         <TextField
           type="password"
+          label="Password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
+
         <LoadingButton
           variant="contained"
           loading={isLoading}
         >
           Login
         </LoadingButton>
+
+        <LinksBox>
+          <Link href="/account-recovery">
+            Esqueci minha senha
+          </Link>
+          <Link href="request-access">
+            Solicitar acesso
+          </Link>
+        </LinksBox>
       </LoginForm>
     </Container>
   )

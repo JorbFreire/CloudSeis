@@ -1,5 +1,7 @@
+import Login from 'views/Login'
+
 export default function LoginPage() {
   return (
-    <h1>Login page</h1>
+    <Login />
   )
 }
