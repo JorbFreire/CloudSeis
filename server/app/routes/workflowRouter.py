@@ -34,8 +34,7 @@ def showWorkflow(_, id):
 # should have an id of line or project to work in the param route
 @workflowRouter.route("/create/<parentId>", methods=['POST'])
 # @decorator_factory(validateRequestBody, SerializerSchema=WorkflowCreateSchema)
-# , routeModel=ProjectModel | LineModel) # Depends on the data
-@decorator_factory(requireAuthentication, routeModel=WorkflowParentsAssociationModel)
+@decorator_factory(requireAuthentication)
 def createWorkflow(userId, parentId):
     data = request.get_json()
     newWorkflow = workflowRepository.create(userId, data, parentId)
