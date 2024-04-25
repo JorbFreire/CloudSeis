@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import type { FormEvent } from "react"
+import { useNavigate } from "@tanstack/react-location"
 
 import { TextField } from "@mui/material"
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -14,6 +15,8 @@ import {
 
 
 export default function Login() {
+  const navigate = useNavigate()
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -36,7 +39,7 @@ export default function Login() {
     const isValid = validateToken(token)
     if (!isValid)
       return
-    //todo do redirect
+    navigate({ to: "/projects" })
   }, [])
 
   return (
@@ -63,10 +66,10 @@ export default function Login() {
         </LoadingButton>
 
         <LinksBox>
-          <Link href="/account-recovery">
+          <Link to="/account-recovery">
             Esqueci minha senha
           </Link>
-          <Link href="request-access">
+          <Link to="/request-access">
             Solicitar acesso
           </Link>
         </LinksBox>

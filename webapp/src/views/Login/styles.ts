@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link as TanstackLink } from "@tanstack/react-location"
 
 export const Container = styled.div`
   display: flex;
@@ -29,6 +30,6 @@ export const LinksBox = styled.div`
   gap: 8px;
 `
 
-export const Link = styled.a`
+export const Link = styled(TanstackLink)`
   font-size: 14px;
 `
