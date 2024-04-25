@@ -14,7 +14,6 @@ from ..repositories.WorkflowParentsAssociationRepository import WorkflowParentsA
 workflowParentsAssociationRepository = WorkflowParentsAssociationRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
 
-
 class WorkflowRepository:
     def showById(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()
@@ -23,9 +22,8 @@ class WorkflowRepository:
 
         return workflow.getAttributes()
 
-    def create(self, userId, newWorkflowData):
-        parentType = newWorkflowData["parent"]["parentType"]
-        parentId = newWorkflowData["parent"]["parentId"]
+    def create(self, userId, newWorkflowData, parentId):
+        parentType = newWorkflowData["parentType"]
 
         user = UserModel.query.filter_by(id=UUID(userId)).first()
         if not user:
@@ -59,15 +57,16 @@ class WorkflowRepository:
         newWorkflowId = newWorkflow.id
         workflowParentsAssociationRepository.create(
             newWorkflowId,
-            newWorkflowData["parent"]
+            parentType,
+            parentId
         )
         orderedCommandsListRepository.create(newWorkflow.id)
 
         return newWorkflow.getAttributes()
 
-    def update(self):
-        pass
-        
+    def updateName(self, userId, data):
+        raise AppError("Not implemented")
+
     def delete(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()
         if not workflow:

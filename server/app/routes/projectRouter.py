@@ -6,6 +6,7 @@ from ..middlewares.validateRequestBody import validateRequestBody
 
 from ..repositories.ProjectRepository import ProjectRepository
 from ..serializers.ProjectSerializer import ProjectListWorkflowsSchema, ProjectCreateSchema, ProjectUpdateSchema, ProjectDeleteSchema
+from ..models.ProjectModel import ProjectModel
 
 projectRouter = Blueprint(
     "project-routes",
@@ -33,7 +34,7 @@ def createProject(userId):
 
 @projectRouter.route("/update/<id>", methods=['PUT'])
 @decorator_factory(validateRequestBody, SerializerSchema=ProjectUpdateSchema)
-@decorator_factory(requireAuthentication)
+@decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def updateProject(_, id):
     data = request.get_json()
     updatedProject = projectRepository.updateName(id, data["name"])
@@ -41,7 +42,7 @@ def updateProject(_, id):
 
 
 @projectRouter.route("/delete/<id>", methods=['DELETE'])
-@decorator_factory(requireAuthentication)
+@decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def deleteProject(_, id):
     project = projectRepository.delete(id)
     return jsonify(project)
@@ -54,3 +55,9 @@ def deleteProject(_, id):
 def listProjectRootWorkflows(_, id):
     projectWorkflows = projectRepository.listWorkflowsByProjectId(id)
     return jsonify(projectWorkflows)
+
+#DEBUG ROUTE
+@projectRouter.route("/listall/debug", methods=['GET'])
+def listAll():
+    projects = projectRepository.listAllDebug()
+    return jsonify(projects)

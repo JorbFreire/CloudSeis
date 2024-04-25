@@ -10,10 +10,7 @@ class WorkflowParentsAssociationRepository:
     def showByWorkflowId(self, id):
         pass
 
-    def create(self, workflowId, parentData):
-        parentId = parentData["parentId"]
-        parentTypeKey = parentData["parentType"]
-
+    def create(self, workflowId, parentTypeKey, parentId):
         if parentTypeKey == "lineId":
             line = LineModel.query.filter_by(id=parentId).first()
             if not line:
@@ -43,3 +40,10 @@ class WorkflowParentsAssociationRepository:
         database.session.commit()
 
         return newAssociation.getAttributes()
+
+    # def delete(self, workflowId):
+    #     workflow = WorkflowParentsAssociationModel.query.filter_by(workflowId=workflowId).first()
+    #     if not workflow:
+    #         raise AppError("Workflow does not exist", 404)
+    #     database.session.delete(workflow)
+    #     database.session.commit()

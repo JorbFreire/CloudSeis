@@ -1,11 +1,13 @@
 from flask import Blueprint, request, jsonify
 
 
+
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
 
 from ..models.LineModel import LineModel
+from ..models.ProjectModel import ProjectModel
 from ..repositories.LineRepository import LineRepository
 from ..serializers.LineSerializer import LineCreateSchema, LineUpdateSchema
 
@@ -26,7 +28,7 @@ def listLines(_, projectId):
 
 @lineRouter.route("/create/<projectId>", methods=['POST'])
 @decorator_factory(validateRequestBody, SerializerSchema=LineCreateSchema)
-@decorator_factory(requireAuthentication)
+@decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def createLine(userId, projectId):
     data = request.get_json()
     newLine = lineRepository.create(
@@ -54,3 +56,9 @@ def updateLine(_, lineId):
 def deleteLine(_, lineId):
     line = lineRepository.delete(lineId)
     return jsonify(line)
+
+# DEBUG ROUTE
+@lineRouter.route("/listall/debug", methods=['GET'])
+def listall():
+    lines = lineRepository.listAllDebug()
+    return jsonify(lines)

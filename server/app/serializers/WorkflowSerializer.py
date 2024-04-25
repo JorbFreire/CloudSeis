@@ -1,14 +1,6 @@
 from marshmallow import Schema, fields, validate
 
 
-class _WorkflowParentSchema(Schema):
-    parentId = fields.String(required=True)
-    parentType = fields.String(
-        required=True,
-        validate=validate.OneOf(["projectId", "lineId", "datasetId"])
-    )
-
-
 class WorkflowShowSchema(Schema):
     # *** route params
     id = fields.Number(required=True)
@@ -16,7 +8,10 @@ class WorkflowShowSchema(Schema):
 
 class WorkflowCreateSchema(Schema):
     name = fields.String(required=True)
-    parent = fields.Nested(_WorkflowParentSchema)
+    parentType = fields.String(
+        required=True,
+        validate=validate.OneOf(["projectId", "lineId", "datasetId"])
+    )
 
 
 class WorkflowUpdateSchema(WorkflowShowSchema):

@@ -13,15 +13,18 @@ class UserModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     email = dbTypes.Column(dbTypes.String, unique=True)
     password = dbTypes.Column(dbTypes.String)
+    hashPassword = dbTypes.Column(dbTypes.LargeBinary)
     is_admin = dbTypes.Column(dbTypes.Boolean)
 
     projects: Mapped[
         List[ProjectModel]
-    ] = relationship(ProjectModel)
+    ] = relationship(ProjectModel, cascade='all, delete-orphan')
 
     def getAttributes(self) -> dict:
         return {
             "id": str(self.id),
             "name": self.name,
-            "email": self.email
+            "email": self.email,
+            "password": self.password, # !Take this OFF!
+            "hashedPassword": str(self.hashPassword) # !Take this OFF too
         }
