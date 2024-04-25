@@ -24,7 +24,7 @@ workflowRepository = WorkflowRepository()
 
 
 @workflowRouter.route("/show/<id>", methods=['GET'])
-# @decorator_factory(validateRequestBody, SerializerSchema=WorkflowShowSchema)
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowShowSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def showWorkflow(_, id):
     workflow = workflowRepository.showById(id)
@@ -33,7 +33,7 @@ def showWorkflow(_, id):
 
 # should have an id of line or project to work in the param route
 @workflowRouter.route("/create/<parentId>", methods=['POST'])
-# @decorator_factory(validateRequestBody, SerializerSchema=WorkflowCreateSchema)
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowCreateSchema)
 @decorator_factory(requireAuthentication)
 def createWorkflow(userId, parentId):
     data = request.get_json()
@@ -42,7 +42,7 @@ def createWorkflow(userId, parentId):
 
 
 @workflowRouter.route("/update/<id>", methods=['PUT'])
-# @decorator_factory(validateRequestBody, SerializerSchema=WorkflowUpdateSchema)
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowUpdateSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateWorkflow(_, id):
     data = request.get_json()
@@ -51,7 +51,7 @@ def updateWorkflow(_, id):
 
 
 @workflowRouter.route("/delete/<id>", methods=['DELETE'])
-# @decorator_factory(validateRequestBody, SerializerSchema=WorkflowDeleteSchema)
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowDeleteSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def deleteWorkflow(_, id):
     workflow = workflowRepository.delete(id)

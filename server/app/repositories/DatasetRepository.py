@@ -13,6 +13,7 @@ commandRepository = CommandRepository()
 class DatasetRepository():
 
     def create(self, projectId, workflowId) -> dict:
+        raise AppError("Fix for workflow adaptation")
         dataset = DataSetModel(
             projectId=projectId
         )
@@ -22,11 +23,8 @@ class DatasetRepository():
         database.session.commit()
 
         workflowRepository.create({
-            "name": workflow.name,
-            "parent": {
-                "parentId": dataset.id,
-                "parentType": "datasetId"
-            }
+            user.id,
+            projectId
         })
 
         for command in commands:
@@ -43,6 +41,7 @@ class DatasetRepository():
         return dataset.getAttributes()
 
     def showById(self, id):
+        raise AppError("Adapt creation first")
         dataset = DataSetModel.query.filter_by(id=id).first()
         if not dataset:
             raise AppError("Dataset does not exist", 404)
@@ -57,6 +56,7 @@ class DatasetRepository():
         return [dataset.getAttributes() for dataset in datasets]
 
     def delete(self, id):
+        raise AppError("Adapt creation first")
         dataset = DataSetModel.query.filter_by(id=id).first()
         if not dataset:
             raise AppError("Dataset does not exist", 404)

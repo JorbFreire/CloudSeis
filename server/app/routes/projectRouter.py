@@ -2,10 +2,10 @@ from flask import Blueprint, request, jsonify
 
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
-# from ..middlewares.validateRequestBody import validateRequestBody
+from ..middlewares.validateRequestBody import validateRequestBody
 
 from ..repositories.ProjectRepository import ProjectRepository
-# from ..serializers.ProjectSerializer import ProjectListWorkflowsSchema, ProjectCreateSchema, ProjectUpdateSchema, ProjectDeleteSchema
+from ..serializers.ProjectSerializer import ProjectListWorkflowsSchema, ProjectCreateSchema, ProjectUpdateSchema, ProjectDeleteSchema
 from ..models.ProjectModel import ProjectModel
 
 projectRouter = Blueprint(
@@ -24,7 +24,7 @@ def showProject(userId):
 
 
 @projectRouter.route("/create", methods=['POST'])
-# @decorator_factory(validateRequestBody, SerializerSchema=ProjectCreateSchema)
+@decorator_factory(validateRequestBody, SerializerSchema=ProjectCreateSchema)
 @decorator_factory(requireAuthentication)
 def createProject(userId):
     data = request.get_json()
@@ -33,7 +33,7 @@ def createProject(userId):
 
 
 @projectRouter.route("/update/<id>", methods=['PUT'])
-# @decorator_factory(validateRequestBody, SerializerSchema=ProjectUpdateSchema)
+@decorator_factory(validateRequestBody, SerializerSchema=ProjectUpdateSchema)
 @decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def updateProject(_, id):
     data = request.get_json()
@@ -50,7 +50,7 @@ def deleteProject(_, id):
 
 # * It does not include workflows inside lines
 @projectRouter.route("/root-workflows/list/<id>", methods=['GET'])
-# @decorator_factory(validateRequestBody, SerializerSchema=ProjectListWorkflowsSchema)
+@decorator_factory(validateRequestBody, SerializerSchema=ProjectListWorkflowsSchema)
 @decorator_factory(requireAuthentication)
 def listProjectRootWorkflows(_, id):
     projectWorkflows = projectRepository.listWorkflowsByProjectId(id)

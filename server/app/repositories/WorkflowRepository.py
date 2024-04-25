@@ -14,12 +14,6 @@ from ..repositories.WorkflowParentsAssociationRepository import WorkflowParentsA
 workflowParentsAssociationRepository = WorkflowParentsAssociationRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
 
-# todo:
-# find a way to delete all workflows when the user, project or line are deleted
-# fallback !
-# probably this depends on the workflowParentsAssociation, ask to jorb
-
-
 class WorkflowRepository:
     def showById(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()
@@ -63,7 +57,8 @@ class WorkflowRepository:
         newWorkflowId = newWorkflow.id
         workflowParentsAssociationRepository.create(
             newWorkflowId,
-            newWorkflowData["parent"]
+            parentType,
+            parentId
         )
         orderedCommandsListRepository.create(newWorkflow.id)
 
