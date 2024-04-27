@@ -29,6 +29,7 @@ export default function Login() {
       response => response && localStorage.setItem("jwt", response)
     )
 
+    navigate({ to: "/projects" })
     setIsLoading(false)
   }
 
@@ -59,6 +60,7 @@ export default function Login() {
         />
 
         <LoadingButton
+          type="submit"
           variant="contained"
           loading={isLoading}
         >

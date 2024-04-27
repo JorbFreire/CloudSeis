@@ -28,7 +28,7 @@ export async function createNewSession({
   password
 }: sessionRequestBody): Promise<string | null> {
   try {
-    const response = await api.post<sessionResponse>(`/session`, {
+    const response = await api.post<sessionResponse>(`/session/`, {
       email,
       password
     })
