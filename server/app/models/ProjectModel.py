@@ -19,6 +19,15 @@ class ProjectModel(database.Model):  # type: ignore
         name="FK_users_table_projects_table"
     ))
 
+    created_at = dbTypes.Column(
+        dbTypes.DateTime(timezone=True),
+        server_default=dbTypes.func.now()
+    )
+    modified_at = dbTypes.Column(
+        dbTypes.DateTime(timezone=True),
+        onupdate=dbTypes.func.now()
+    )
+
     workflowParentAssociations: Mapped[
         List[WorkflowParentsAssociationModel]
     ] = relationship(WorkflowParentsAssociationModel)
@@ -26,7 +35,6 @@ class ProjectModel(database.Model):  # type: ignore
     lines: Mapped[
         List[LineModel]
     ] = relationship(LineModel, cascade='all, delete-orphan')
-
 
     def getWorkflows(self) -> list[dict[str, str]]:
         if len(self.workflowParentAssociations) == 0:
@@ -43,4 +51,6 @@ class ProjectModel(database.Model):  # type: ignore
             "id": self.id,
             "userId": self.userId,
             "name": self.name,
+            "created_at": self.created_at,
+            "modified_at": self.modified_at,
         }

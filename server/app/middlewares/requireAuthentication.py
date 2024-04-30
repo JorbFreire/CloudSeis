@@ -17,10 +17,18 @@ private_key = "private_key"
 # Not finding line from workflow creation root
 # Email not matchin when references projectId for workflow creation root
 
+
 def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False):
     def wrapper(routeModel=routeModel, *args, **kwargs):
         token = request.headers.get('Authorization')
-        data = request.get_json()
+        hasData = False
+        data = {}
+
+        if (request.method == "post" or request.method == "put"):
+            hasData = True
+
+        if (hasData):
+            data = request.get_json()
 
         if not token:
             raise AuthError("No token")
@@ -35,7 +43,6 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
             raise AuthError("Expired Token")
         except:
             raise AuthError()
-
         userId = payload["id"]
         user = UserModel.query.filter_by(id=UUID(userId)).first()
 
@@ -43,7 +50,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
             raise AuthError("Must be admin")
 
         # Really bad implementation
-        if not routeModel and "parentType" in data:
+        if (not routeModel) and ("parentType" in data):
             routeModel = LineModel if data["parentType"] == "lineId" else ProjectModel
 
         if routeModel:
@@ -53,12 +60,14 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
             if not modelObject:
                 raise AuthError("No instance found with this Id")
 
-            userAttr = modelObject.owner_email if hasattr(modelObject, 'owner_email') else modelObject.userId
+            userAttr = modelObject.owner_email if hasattr(
+                modelObject, 'owner_email'
+            ) else modelObject.userId
             if userAttr != user.email and userAttr != user.id:
                 raise AuthError("Unauthorized by required auth")
 
-        # "payload.id" will be the first argument of any function
-        # using "requireAuthentication" as decorator
+        # *** "payload.id" will be the first argument of any function
+        # *** using "requireAuthentication" as decorator
         response = routeFunction(userId, *args, **kwargs)
         return response
     return wrapper

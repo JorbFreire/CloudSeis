@@ -22,11 +22,10 @@ import {
 } from './styles'
 
 interface IProjectProps {
-  projectName?: string
   projectId?: string
 }
 
-export default function Project({ projectName }: IProjectProps) {
+export default function Project({ projectId }: IProjectProps) {
   const {
     selectedWorkflows,
     setSelectedWorkflows,

@@ -19,7 +19,9 @@ projectRepository = ProjectRepository()
 @projectRouter.route("/list", methods=['GET'])
 @decorator_factory(requireAuthentication)
 def showProject(userId):
+    print("inside")
     project = projectRepository.showByUserId(userId)
+    print("after")
     return jsonify(project)
 
 
@@ -56,7 +58,9 @@ def listProjectRootWorkflows(_, id):
     projectWorkflows = projectRepository.listWorkflowsByProjectId(id)
     return jsonify(projectWorkflows)
 
-#DEBUG ROUTE
+# DEBUG ROUTE
+
+
 @projectRouter.route("/listall/debug", methods=['GET'])
 def listAll():
     projects = projectRepository.listAllDebug()

@@ -6,6 +6,9 @@ declare interface IgenericEntitiesType {
 
 declare interface IProject extends IgenericEntitiesType {
   userId: string
+  // !turn into isostring date type
+  created_at: string
+  modified_at: string
 }
 
 declare interface ILine extends IgenericEntitiesType {
