@@ -5,7 +5,7 @@ import { useNavigate } from "@tanstack/react-location"
 import { TextField } from "@mui/material"
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { validateToken, createNewSession } from "services/sessionServices";
+import { validateSession, createNewSession } from "services/sessionServices";
 import {
   Container,
   LoginForm,
@@ -25,11 +25,14 @@ export default function Login() {
     event.preventDefault()
     setIsLoading(true)
 
-    createNewSession({ email, password }).then(
-      response => response && localStorage.setItem("jwt", response)
+    createNewSession({ email, password }).then(response => {
+      if (!response)
+        return console.error("cannot login, we dont know why")
+      localStorage.setItem("jwt", response)
+      navigate({ to: "/projects" })
+    }
     )
 
-    navigate({ to: "/projects" })
     setIsLoading(false)
   }
 
@@ -37,10 +40,11 @@ export default function Login() {
     const token = localStorage.getItem("jwt")
     if (!token)
       return
-    const isValid = validateToken(token)
-    if (!isValid)
-      return
-    navigate({ to: "/projects" })
+    validateSession(token).then((isValid) => {
+      if (isValid)
+        return navigate({ to: "/projects" })
+      localStorage.removeItem("jwt")
+    })
   }, [])
 
   return (

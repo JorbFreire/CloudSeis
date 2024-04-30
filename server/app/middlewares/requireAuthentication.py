@@ -1,8 +1,6 @@
 from uuid import UUID
 
 from flask import request
-from jwt import decode
-from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 
 from ..models.ProjectModel import ProjectModel
 from ..models.LineModel import LineModel
@@ -10,8 +8,10 @@ from ..models.LineModel import LineModel
 from ..models.UserModel import UserModel
 from ..errors.AuthError import AuthError
 
+from ..repositories.SessionRepository import SessionRepository
 
-private_key = "private_key"
+
+sessionRepository = SessionRepository()
 
 # Line creation returns error with wrong token
 # Not finding line from workflow creation root
@@ -24,25 +24,17 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
         hasData = False
         data = {}
 
+        if not token:
+            raise AuthError("No token")
+
         if (request.method == "post" or request.method == "put"):
             hasData = True
 
         if (hasData):
             data = request.get_json()
 
-        if not token:
-            raise AuthError("No token")
+        payload = sessionRepository.validateSession()
 
-        token = token.replace("Bearer ", "")
-
-        try:
-            payload = decode(token, key=private_key, algorithms=["HS256"])
-        except InvalidSignatureError:
-            raise AuthError("Invalid Token Signature")
-        except ExpiredSignatureError:
-            raise AuthError("Expired Token")
-        except:
-            raise AuthError()
         userId = payload["id"]
         user = UserModel.query.filter_by(id=UUID(userId)).first()
 

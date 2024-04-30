@@ -17,3 +17,9 @@ def create():
 
     token = sessionRepository.createSession(data["email"], data["password"])
     return jsonify(token)
+
+
+@sessionRouter.route("/validate/<token>", methods=['POST'])
+def create(token):
+    sessionRepository.validateSession(token)
+    return ('', 200)

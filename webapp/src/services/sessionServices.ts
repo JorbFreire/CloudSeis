@@ -9,11 +9,9 @@ interface sessionResponse {
   token: string
 }
 
-export async function validateToken(token: string): Promise<boolean> {
+export async function validateSession(token: string): Promise<boolean> {
   try {
-    const response = await api.post(`/session/validate`, {
-      token
-    })
+    const response = await api.get(`/session/validate/${token}`)
     if (response.status == 200)
       return true
     return false
