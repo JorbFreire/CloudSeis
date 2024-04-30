@@ -33,7 +33,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
         if (hasData):
             data = request.get_json()
 
-        payload = sessionRepository.validateSession()
+        payload = sessionRepository.validateSession(token)
 
         userId = payload["id"]
         user = UserModel.query.filter_by(id=UUID(userId)).first()
