@@ -19,9 +19,7 @@ projectRepository = ProjectRepository()
 @projectRouter.route("/list", methods=['GET'])
 @decorator_factory(requireAuthentication)
 def showProject(userId):
-    print("inside")
     project = projectRepository.showByUserId(userId)
-    print("after")
     return jsonify(project)
 
 
@@ -29,8 +27,11 @@ def showProject(userId):
 @decorator_factory(validateRequestBody, SerializerSchema=ProjectCreateSchema)
 @decorator_factory(requireAuthentication)
 def createProject(userId):
+    print("inside")
     data = request.get_json()
+    print("after data")
     newProject = projectRepository.create(userId, data["name"])
+    print("after repository")
     return jsonify(newProject)
 
 

@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-location';
+import { Link } from '@tanstack/react-location';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton'
 
-import { Link } from '@tanstack/react-location';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 
 import UserMenu from 'components/UserMenu';
-import { getProjectsByUserID } from 'services/projectServices';
+import { getProjectsByUser } from 'services/projectServices';
+import NewProjectDialog from './NewProjectDialog';
 import {
   Container,
   CustomHeadCell,
@@ -20,9 +23,15 @@ export default function ProjectsList() {
   const navigate = useNavigate()
   const [projects, setProjects] = useState<Array<IProject>>([])
 
+  const pushNewProject = (newProject: IProject) => {
+    setProjects([...projects, newProject])
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("jwt")
-    token && getProjectsByUserID(token)
+    if (!token)
+      return navigate({ to: "/login" })
+    getProjectsByUser(token)
       .then((result) => {
         if (result === 401)
           return navigate({ to: "/login" })
@@ -73,11 +82,17 @@ export default function ProjectsList() {
                 {project.modified_at}
               </TableCell>
 
-              <TableCell />
+              <TableCell>
+                <IconButton onClick={() => console.log("delete project")}>
+                  <DeleteRoundedIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      <NewProjectDialog pushNewProject={pushNewProject} />
     </Container>
   )
 }
