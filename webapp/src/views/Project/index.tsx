@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from '@tanstack/react-location';
 
 // Fav button icons need futter optimiation and animation
 import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
@@ -14,18 +15,20 @@ import ProjectTab from 'components/ProjectTab';
 import CustomTabsNavigation from 'components/CustomTabsNavigation';
 import DefaultDNDList from 'components/DefaultDNDList';
 
+import { getLinesByProjectID } from 'services/lineServices'
 
 import {
   Container,
-  ProjectsContainer,
+  SelectedWorkflowContainer,
   FloatButton,
 } from './styles'
 
 interface IProjectProps {
-  projectId?: string
+  projectId: string
 }
 
 export default function Project({ projectId }: IProjectProps) {
+  const navigate = useNavigate()
   const {
     selectedWorkflows,
     setSelectedWorkflows,
@@ -35,12 +38,27 @@ export default function Project({ projectId }: IProjectProps) {
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
+  const [lines, setLines] = useState<Array<ILine>>([])
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt")
+    if (!token)
+      return navigate({ to: "/login" })
+    getLinesByProjectID(token, projectId)
+      .then((result) => {
+        // todo: create error handler hook
+        if (result === 401)
+          return navigate({ to: "/login" })
+        Array.isArray(result) && setLines(result)
+      })
+  }, [projectId])
+
   return (
     <>
       <Container>
         <ProjectTab />
 
-        <ProjectsContainer>
+        <SelectedWorkflowContainer>
           <CustomTabsNavigation
             tabs={selectedWorkflows}
             setTabs={setSelectedWorkflows}
@@ -48,7 +66,7 @@ export default function Project({ projectId }: IProjectProps) {
             setSelectedTab={setSingleSelectedWorkflowId}
             CustomDndContext={DefaultDNDList}
           />
-        </ProjectsContainer>
+        </SelectedWorkflowContainer>
 
         <FloatButton
           $top='16px'

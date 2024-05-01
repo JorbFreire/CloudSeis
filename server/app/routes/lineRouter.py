@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 
 
-
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
@@ -22,8 +21,8 @@ lineRepository = LineRepository()
 @lineRouter.route("/list/<projectId>", methods=['GET'])
 @decorator_factory(requireAuthentication)
 def listLines(_, projectId):
-    line = lineRepository.showByProjectId(projectId)
-    return jsonify(line)
+    lines = lineRepository.showByProjectId(projectId)
+    return jsonify(lines)
 
 
 @lineRouter.route("/create/<projectId>", methods=['POST'])
@@ -58,6 +57,8 @@ def deleteLine(_, lineId):
     return jsonify(line)
 
 # DEBUG ROUTE
+
+
 @lineRouter.route("/listall/debug", methods=['GET'])
 def listall():
     lines = lineRepository.listAllDebug()

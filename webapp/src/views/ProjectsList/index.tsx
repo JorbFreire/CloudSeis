@@ -33,9 +33,10 @@ export default function ProjectsList() {
       return navigate({ to: "/login" })
     getProjectsByUser(token)
       .then((result) => {
+        // todo: create error handler hook
         if (result === 401)
           return navigate({ to: "/login" })
-        setProjects(result)
+        Array.isArray(result) && setProjects(result)
       })
   }, [])
 

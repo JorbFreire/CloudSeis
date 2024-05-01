@@ -18,7 +18,7 @@ export const Container = styled.div`
   height: 100vh;
 `
 
-export const ProjectsContainer = styled.div`
+export const SelectedWorkflowContainer = styled.div`
   display: flex;
   width: calc(100% - (256px * 2));
 `
