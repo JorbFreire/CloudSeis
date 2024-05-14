@@ -3,19 +3,21 @@ import api from "./api"
 
 export async function getLinesByProjectID(
   token: string,
-  projectID: string
+  projectId: number
 ): Promise<Array<ILine> | number> {
   try {
-    const response = await api.get<Array<ILine>>(`/line/list/${projectID}`, {
+    const response = await api.get<Array<ILine>>(`/line/list/${projectId}`, {
       headers: {
         Authorization: 'Bearer ' + token
       }
     })
+    console.log("response")
+    console.log(response)
     return response.data
   } catch (error) {
     console.error(error)
     const axiosError = error as AxiosError
-    if (axiosError.status)
+    if (axiosError.status === 401)
       return axiosError.status
     return []
   }
@@ -23,7 +25,7 @@ export async function getLinesByProjectID(
 
 export async function createNewLine(
   token: string,
-  projectId: string,
+  projectId: number,
   name: string
 ): Promise<ILine | null> {
   try {

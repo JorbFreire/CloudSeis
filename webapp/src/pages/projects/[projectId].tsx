@@ -8,7 +8,7 @@ export default function ProjectPage() {
   return (
     <SelectedWorkflowsProvider>
       <ProjectView
-        projectId={params.projectId}
+        projectId={Number(params.projectId)}
       />
     </SelectedWorkflowsProvider>
   )

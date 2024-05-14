@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { Routes } from 'generouted/react-location'
 
 import ConsoleLogsProvider from 'providers/ConsoleLogsProvider'
-import SeismicUnixBlocks from 'providers/seismicUnixBlocks'
+import LinesProvider from 'providers/LinesProvider'
 import SelectedCommandProvider from 'providers/SelectedCommandProvider'
 import './index.css'
 
@@ -11,11 +11,11 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ConsoleLogsProvider>
-      <SeismicUnixBlocks>
+      <LinesProvider>
         <SelectedCommandProvider>
           <Routes />
         </SelectedCommandProvider>
-      </SeismicUnixBlocks>
+      </LinesProvider>
     </ConsoleLogsProvider>
   </React.StrictMode>
 )

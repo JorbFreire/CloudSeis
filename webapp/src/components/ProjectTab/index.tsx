@@ -1,29 +1,17 @@
 import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
 
-import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-import { Container } from "./styles"
+import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
+import { useLines } from 'providers/LinesProvider'
+import LineChildrenFolder from './LineChildrenFolder'
 
-const mockLinesList: Array<ILine> = Array(10).fill({}).map((_, index) => (
-  {
-    id: index,
-    projectId: 1,
-    name: `line => ${index}`,
-    // todo: missing datasets here
-    workflows: Array(10).fill({}).map((_, index) => (
-      {
-        id: index,
-        name: `workflow => ${index}`,
-      }
-    )),
-  }
-))
+import { Container } from "./styles"
 
 export default function ProjectTab() {
   const {
@@ -33,6 +21,8 @@ export default function ProjectTab() {
     setSingleSelectedWorkflowId
   } = useSelectedWorkflows()
 
+  const { lines } = useLines()
+
   const [expanded, setExpanded] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>("");
 
@@ -41,7 +31,7 @@ export default function ProjectTab() {
   };
 
   const handleSelect = (_: SyntheticEvent, nodeId: string) => {
-    if (!nodeId.includes("workflow"))
+    if (!nodeId.startsWith("workflow") || !nodeId.startsWith("dataset"))
       return
     const [key, id, name] = nodeId.split("-")
 
@@ -71,7 +61,6 @@ export default function ProjectTab() {
     setSingleSelectedWorkflowId(Number(id))
   };
 
-
   return (
     <Container>
       <TreeView
@@ -82,33 +71,19 @@ export default function ProjectTab() {
         onNodeToggle={handleToggle}
         onNodeSelect={handleSelect}
       >
-        {mockLinesList.map((line,) => (
+        {lines.map((line,) => (
           <TreeItem key={line.id} nodeId={`line-${line.id}`} label={line.name}>
-            <TreeItem
-              nodeId={`ws_from-line-${line.id}`}
-              label="workflows"
-            >
-              {line.workflows.map((workflow) => (
-                <TreeItem
-                  key={workflow.id}
-                  nodeId={`workflow-${workflow.id}-${workflow.name}`}
-                  label={workflow.name}
-                />
-              ))}
-            </TreeItem>
+            <LineChildrenFolder
+              lineId={line.id}
+              entityType='workflow'
+              data={line.workflows}
+            />
 
-            <TreeItem
-              nodeId={`ds_from-line-${line.id}`}
-              label="datasets"
-            >
-              {line.workflows.map((workflow) => (
-                <TreeItem
-                  key={workflow.id}
-                  nodeId={`dataset-${workflow.id}-${workflow.name}`}
-                  label={workflow.name}
-                />
-              ))}
-            </TreeItem>
+            <LineChildrenFolder
+              lineId={line.id}
+              entityType='dataset'
+              data={line.workflows}
+            />
           </TreeItem>
         ))}
       </TreeView>

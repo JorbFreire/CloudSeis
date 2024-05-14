@@ -8,6 +8,7 @@ import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 
 import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
+import { useLines } from 'providers/LinesProvider'
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
@@ -24,7 +25,7 @@ import {
 } from './styles'
 
 interface IProjectProps {
-  projectId: string
+  projectId: number
 }
 
 export default function Project({ projectId }: IProjectProps) {
@@ -38,7 +39,7 @@ export default function Project({ projectId }: IProjectProps) {
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
-  const [lines, setLines] = useState<Array<ILine>>([])
+  const { setLines } = useLines()
 
   useEffect(() => {
     const token = localStorage.getItem("jwt")
@@ -46,10 +47,11 @@ export default function Project({ projectId }: IProjectProps) {
       return navigate({ to: "/login" })
     getLinesByProjectID(token, projectId)
       .then((result) => {
-        // todo: create error handler hook
         if (result === 401)
           return navigate({ to: "/login" })
-        Array.isArray(result) && setLines(result)
+
+        if (Array.isArray(result))
+          setLines([...result])
       })
   }, [projectId])
 
