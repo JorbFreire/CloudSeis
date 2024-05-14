@@ -9,6 +9,7 @@ numpy = "*"
 seismicio = "==0.0.22"
 
 [dev-packages]
+ipython = "*"
 
 [requires]
 python_version = "3.12"
