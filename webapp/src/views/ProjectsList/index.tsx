@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 
 import UserMenu from 'components/UserMenu';
-import { getProjectsByUser } from 'services/projectServices';
+import { getProjectsByUser, deleteProject } from 'services/projectServices';
 import NewProjectDialog from './NewProjectDialog';
 import {
   Container,
@@ -25,6 +25,18 @@ export default function ProjectsList() {
 
   const pushNewProject = (newProject: IProject) => {
     setProjects([...projects, newProject])
+  }
+
+  const triggerDeleteButton = (projectId: number) => {
+    const token = localStorage.getItem("jwt")
+    if (!token)
+      return navigate({ to: "/login" })
+    deleteProject(token, projectId)
+      .then((result) => {
+        // todo: create error handler hook
+        if (result === 401)
+          return navigate({ to: "/login" })
+      })
   }
 
   useEffect(() => {
@@ -84,7 +96,7 @@ export default function ProjectsList() {
               </TableCell>
 
               <TableCell>
-                <IconButton onClick={() => console.log("delete project")}>
+                <IconButton onClick={() => triggerDeleteButton(project.id)}>
                   <DeleteRoundedIcon />
                 </IconButton>
               </TableCell>

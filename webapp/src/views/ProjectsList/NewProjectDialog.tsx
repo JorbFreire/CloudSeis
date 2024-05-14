@@ -19,12 +19,12 @@ interface INewProjectDialogProps {
 }
 
 export default function NewProjectDialog({ pushNewProject }: INewProjectDialogProps) {
-  const [open, setOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [projectName, setProjectName] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
   const closeDialog = () => {
-    setOpen(false)
+    setIsOpen(false)
   }
 
   const submitNewProject = (event: FormEvent) => {
@@ -40,7 +40,7 @@ export default function NewProjectDialog({ pushNewProject }: INewProjectDialogPr
   return (
     <>
       <Dialog
-        open={open}
+        open={isOpen}
         onClose={closeDialog}
         component="form"
         onSubmit={submitNewProject}
@@ -69,7 +69,7 @@ export default function NewProjectDialog({ pushNewProject }: INewProjectDialogPr
 
       <AddProjectButton
         color='primary'
-        onClick={() => setOpen(true)}
+        onClick={() => setIsOpen(true)}
       >
         <AddRoundedIcon />
       </AddProjectButton>

@@ -12,7 +12,7 @@ export async function getProjectsByUser(token: string): Promise<Array<IProject> 
   } catch (error) {
     console.error(error)
     const axiosError = error as AxiosError
-    if (axiosError.status)
+    if (axiosError.status === 401)
       return axiosError.status
     return []
   }
@@ -33,5 +33,25 @@ export async function createNewProject(token: string, name: string): Promise<IPr
   } catch (error) {
     console.error(error)
     return null
+  }
+}
+
+export async function deleteProject(token: string, id: number): Promise<IProject | number> {
+  try {
+    const response = await api.delete<IProject>(
+      `/project/delete/${id}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    const axiosError = error as AxiosError
+    if (axiosError.status === 401)
+      return axiosError.status
+    return 400
   }
 }
