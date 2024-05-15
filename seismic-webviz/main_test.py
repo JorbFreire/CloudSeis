@@ -1,7 +1,7 @@
 # bokeh serve step_6.py
 
 from bokeh.layouts import column, layout, row
-from bokeh.models import Paragraph, Slider, Switch, RangeSlider
+from bokeh.models import Paragraph, Slider, Switch, RangeSlider, Button, GlyphRenderer
 from bokeh.plotting import curdoc, show
 from seismicio import readsu
 
@@ -43,8 +43,20 @@ def range_slider_input_handler(attr, old, new):
     )
 
 
+def test_button_callback(event):
+    print("helou")
+    # instantâneo!
+    seismic_visualization.plot.renderers = list(
+        filter(lambda gl: gl.name != "H", seismic_visualization.plot.renderers)
+    )
+    print("baibai")
+
+
 # Widgets
 # -------
+test_button = Button(label="test things")
+test_button.on_click(test_button_callback)
+
 first_gather_index = 0
 last_gather_index = sufile.num_gathers - 1
 
@@ -61,13 +73,14 @@ range_slider.on_change("value_throttled", range_slider_input_handler)
 switch_lines = Switch(active=True)
 switch_image = Switch(active=True)
 # switch_areas = Switch(active=True)
-seismic_visualization.js_link_lines_visible(switch_lines, "active")
+seismic_visualization.assign_line_switch(switch_lines)
 seismic_visualization.js_link_image_visible(switch_image, "active")
 # seismic_visualization.js_link_areas_visible(switch_areas, "active")
 
 tools_column = column(
     row(Paragraph(text="Lines"), switch_lines),
     row(Paragraph(text="Image"), switch_image),
+    test_button,
     # row(Paragraph(text="Areas"), switch_areas),
 )
 

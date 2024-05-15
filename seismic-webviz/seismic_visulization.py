@@ -1,19 +1,24 @@
 import numpy.typing as npt
-from bokeh.models import ColumnDataSource, GlyphRenderer, Model, Image
+from bokeh.models import ColumnDataSource, GlyphRenderer, Model, Image, Switch
 import numpy as np
 from bokeh.plotting import figure
+
+MAX_TRACES_LINE_HAREA = 200
 
 
 class SeismicVisualization:
 
+    line_switch: Switch | None = None
+    harea_switch: Switch | None = None
+
     def __init__(
-            self,
-            data: npt.NDArray,
-            x_positions: npt.NDArray | None,
-            interval_time_samples: float,
-            time_unit="s",
-            stretch_factor=0.15,
-            color="black",
+        self,
+        data: npt.NDArray,
+        x_positions: npt.NDArray | None,
+        interval_time_samples: float,
+        time_unit="s",
+        stretch_factor=0.15,
+        color="black",
     ):
         # Input checks
         # ------------
@@ -30,6 +35,7 @@ class SeismicVisualization:
 
         num_time_samples = data.shape[0]
         num_traces = data.shape[1]
+        print("num_traces:", num_traces)
 
         # Input check for x_positions
         if x_positions is None:
@@ -43,7 +49,8 @@ class SeismicVisualization:
                 raise ValueError(
                     "The size of x_positions must be equal to the number of "
                     "columns in data, that is, it must be equal to the number "
-                    "of traces")
+                    "of traces"
+                )
 
         # Create and set up figure object
         # -------------------------------
@@ -127,7 +134,7 @@ class SeismicVisualization:
                 x2=amplitudes_positive + x_position,
                 y=time_sample_instants,
                 color="black",
-                name="myharea",
+                name="H",
             )
 
             # construct CDS for multi_line render
@@ -143,17 +150,23 @@ class SeismicVisualization:
 
         # Add multiline renderer
         self.multi_line_gl: GlyphRenderer = self.plot.multi_line(
-            xs="xs", ys="ys", source=self.multi_line_source, color=color
+            xs="xs",
+            ys="ys",
+            source=self.multi_line_source,
+            color=color,
+            visible=False,
         )
 
+        self.update_line_visible(num_traces)
+
     def update_plot(
-            self,
-            data: npt.NDArray,
-            x_positions: npt.NDArray | None,
-            interval_time_samples: float,
-            time_unit="s",
-            stretch_factor=0.15,
-            color="black",
+        self,
+        data: npt.NDArray,
+        x_positions: npt.NDArray | None,
+        interval_time_samples: float,
+        time_unit="s",
+        stretch_factor=0.15,
+        color="black",
     ):
         # Input checks
         # ------------
@@ -170,6 +183,7 @@ class SeismicVisualization:
 
         num_time_samples = data.shape[0]
         num_traces = data.shape[1]
+        print("num_traces:", num_traces)
 
         # Input check for x_positions
         if x_positions is None:
@@ -183,10 +197,13 @@ class SeismicVisualization:
                 raise ValueError(
                     "The size of x_positions must be equal to the number of "
                     "columns in data, that is, it must be equal to the number "
-                    "of traces")
+                    "of traces"
+                )
 
         # Update ColumnDataSource objects for renderers
         # ---------------------------------------------
+
+        # self._remove_harea_renderers()
 
         # Time sample instants
         first_time_sample = 0.0
@@ -216,13 +233,13 @@ class SeismicVisualization:
             # fill positive amplitudes
             amplitudes_positive = np.clip(amplitudes, a_min=0, a_max=None)
             # Add harea renderer
-            # self.harea_gl_list.append(
-            #     self.plot.harea(
-            #         x1=amplitudes_zeros + x_position,
-            #         x2=amplitudes_positive + x_position,
-            #         y=time_sample_instants,
-            #         color="black",
-            #     )
+            # demora pra caralho
+            # self.plot.harea(
+            #     x1=amplitudes_zeros + x_position,
+            #     x2=amplitudes_positive + x_position,
+            #     y=time_sample_instants,
+            #     color="black",
+            #     name="H",
             # )
 
             # construct CDS for line render
@@ -259,12 +276,41 @@ class SeismicVisualization:
         image_glyph.y = first_time_sample
         image_glyph.dh = width_time_sample_instants
 
-    def js_link_lines_visible(self, model: Model, attr: str):
-        """Link a Bokeh model property to the visibility of the wiggle lines"""
-        model.js_link(attr, self.multi_line_gl, "visible")
+        self.update_line_visible(num_traces)
 
-    # def js_link_areas_visible(self, model: Model, attr: str):
+    def _remove_harea_renderers(self):
+        """Remove all harea glyph renderers from this plot"""
+        self.plot.renderers = list(filter(lambda gl: gl.name != "H", self.plot.renderers))
+
+    def update_line_visible(self, num_traces: int):
+        if num_traces > MAX_TRACES_LINE_HAREA:
+            self.multi_line_gl.visible = False
+            if not (self.line_switch is None):
+                self.line_switch.active = False
+                self.line_switch.disabled = True
+        else:
+            self.multi_line_gl.visible = True
+            if not (self.line_switch is None):
+                self.line_switch.disabled = False
+                self.line_switch.active = True
+
+    def assign_line_switch(self, switch: Switch):
+        """Link a Bokeh model property to the visibility of the wiggle lines"""
+        self.line_switch = switch
+        self.line_switch.active = self.multi_line_gl.visible
+        self.line_switch.js_link("active", self.multi_line_gl, "visible")
+
+
+
+    # def assign_harea_switch(self, switch: Switch):
     #     """Link a Bokeh model property to the visibility of the wiggle areas"""
+
+    #     def harea_switch_handler(attr, old, new):
+
+
+
+    #     for gl in filter(lambda gl: gl.name == "H", self.plot.renderers):
+    #         gl.visible = False
     #     for harea_gl in self.harea_gl_list:
     #         model.js_link(attr, harea_gl, "visible")
 

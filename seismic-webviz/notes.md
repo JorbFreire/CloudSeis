@@ -1,2 +1,3 @@
 - [method bokeh.models.Plot.select](https://docs.bokeh.org/en/latest/docs/reference/models/plots.html#bokeh.models.Plot.select)
 - [attribute bokeh.models.GlyphRenderer.name](https://docs.bokeh.org/en/latest/docs/reference/models/renderers.html#bokeh.models.GlyphRenderer.name)
+- [attribute bokeh.models.Plot.renderers](https://docs.bokeh.org/en/latest/docs/reference/models/plots.html#bokeh.models.Plot.renderers)
