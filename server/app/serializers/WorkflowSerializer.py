@@ -10,7 +10,9 @@ class WorkflowCreateSchema(Schema):
     name = fields.String(required=True)
     parentType = fields.String(
         required=True,
-        validate=validate.OneOf(["projectId", "lineId", "datasetId"])
+        # *** No "datasetId" becouse datasets should not be
+        # *** created or modified in the route layer
+        validate=validate.OneOf(["projectId", "lineId"])
     )
 
 
