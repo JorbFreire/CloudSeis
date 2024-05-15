@@ -110,7 +110,7 @@ class SeismicVisualization:
 
         xs_list = []
         ys_list = []
-        # self.harea_gl_list: list[GlyphRenderer] = []
+        self.harea_gl_list: list[GlyphRenderer] = []
 
         for trace_index in range(num_traces):
             x_position = x_positions[trace_index]
@@ -122,13 +122,13 @@ class SeismicVisualization:
             # self.harea_gl_list.append(
 
             # Add harea renderer
-            # self.plot.harea(
-            #     x1=amplitudes_zeros + x_position,
-            #     x2=amplitudes_positive + x_position,
-            #     y=time_sample_instants,
-            #     color="black",
-            # )
-            # )
+            self.plot.harea(
+                x1=amplitudes_zeros + x_position,
+                x2=amplitudes_positive + x_position,
+                y=time_sample_instants,
+                color="black",
+                name="myharea",
+            )
 
             # construct CDS for multi_line render
             xs_list.append(amplitudes + x_position)
