@@ -14,6 +14,7 @@ from ..repositories.WorkflowParentsAssociationRepository import WorkflowParentsA
 workflowParentsAssociationRepository = WorkflowParentsAssociationRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
 
+
 class WorkflowRepository:
     def showById(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()
@@ -41,10 +42,6 @@ class WorkflowRepository:
             parent = DataSetModel.query.filter_by(id=parentId).first()
             if not parent:
                 raise AppError("DataSet does not exist", 404)
-        else:
-            raise AppError(
-                "'parentType' must be either 'lineId', 'projectId' or 'datasetId'"
-            )
 
         newWorkflow = WorkflowModel(
             name=newWorkflowData["name"],
@@ -65,6 +62,9 @@ class WorkflowRepository:
         return newWorkflow.getAttributes()
 
     def updateName(self, userId, data):
+        raise AppError("Not implemented")
+
+    def updateFilename(self, userId, data):
         raise AppError("Not implemented")
 
     def delete(self, id):

@@ -1,8 +1,5 @@
 from flask import Blueprint, request, jsonify
 
-from ..models.LineModel import LineModel
-from ..models.ProjectModel import ProjectModel
-
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
@@ -10,7 +7,6 @@ from ..middlewares.validateRequestBody import validateRequestBody
 from ..serializers.WorkflowSerializer import WorkflowShowSchema, WorkflowCreateSchema, WorkflowUpdateSchema, WorkflowDeleteSchema
 from ..repositories.WorkflowRepository import WorkflowRepository
 from ..models.WorkflowModel import WorkflowModel
-from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
@@ -31,7 +27,7 @@ def showWorkflow(_, id):
     return jsonify(workflow)
 
 
-# should have an id of line or project to work in the param route
+# *** shall have an line id or project id the route params
 @workflowRouter.route("/create/<parentId>", methods=['POST'])
 @decorator_factory(validateRequestBody, SerializerSchema=WorkflowCreateSchema)
 @decorator_factory(requireAuthentication)
