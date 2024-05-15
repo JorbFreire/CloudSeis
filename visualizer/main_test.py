@@ -5,7 +5,7 @@ from bokeh.models import Paragraph, Slider, Switch, RangeSlider
 from bokeh.plotting import curdoc, show
 from seismicio import readsu
 
-import seismic_visulization
+from seismic_visulization import SeismicVisualization
 
 # Parâmetros de entrada
 # ---------------------
@@ -25,7 +25,7 @@ interval_time_samples = sufile.headers.dt[0] / 1000000  # µs → s
 
 # SeismicVisualization
 # --------------------
-seismic_visualization = seismic_visulization.SeismicVisualization(
+seismic_visualization = SeismicVisualization(
     data=sufile.gather[igather_start:igather_stop].data,
     x_positions=None,
     interval_time_samples=interval_time_samples,
