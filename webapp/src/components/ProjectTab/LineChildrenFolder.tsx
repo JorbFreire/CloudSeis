@@ -17,10 +17,11 @@ export default function LineChildrenFolder({
   const { pushNewWorkflowToLine } = useLines()
 
   const generateNextWorkflowName = () => {
+    if (data.length < 1)
+      return "New workflow"
+
     return (
-      "New workflow (" +
-      (data[data.length - 1].id + 1) +
-      ")"
+      `New workflow (${data.length + 1})`
     )
   }
 

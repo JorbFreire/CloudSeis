@@ -59,16 +59,17 @@ export default function LinesProvider({ children }: ILinesProviderProps) {
     const token = localStorage.getItem("jwt")
     if (!token)
       return
-    createNewWorkflow(token, lineId, name)
+
+    createNewWorkflow(token, lineId, "lineId", name)
       .then(result => {
         if (!result)
           return
-        const tempLines = [...lines.map((line) => {
+        const tempLines = lines.map((line) => {
           if (line.id == lineId)
-            line.workflows.push(line)
+            line.workflows.push(result)
           return line
-        })]
-        setLines(tempLines)
+        })
+        setLines([...tempLines])
       })
   }
 

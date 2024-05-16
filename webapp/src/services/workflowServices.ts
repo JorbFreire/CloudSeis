@@ -1,8 +1,18 @@
 import api from "./api"
 
-export async function getWorkflowByID(id: string): Promise<IWorkflow | null> {
+export async function getWorkflowByID(
+  token: string,
+  id: string,
+): Promise<IResumedWorkflow | null> {
   try {
-    const response = await api.get<IWorkflow>(`/workflow/show/${id}`)
+    const response = await api.get<IResumedWorkflow>(
+      `/workflow/show/${id}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
     return response.data
   } catch (error) {
     console.error(error)
@@ -10,12 +20,25 @@ export async function getWorkflowByID(id: string): Promise<IWorkflow | null> {
   }
 }
 
-export async function createNewWorkflow(lineId: string, name: string): Promise<IWorkflow | null> {
+export async function createNewWorkflow(
+  token: string,
+  parentId: number,
+  parentType: "projectId" | "lineId",
+  name: string,
+): Promise<IResumedWorkflow | null> {
   try {
-    const response = await api.post<IWorkflow>(`/workflow/create`, {
-      lineId,
-      name
-    })
+    const response = await api.post<IResumedWorkflow>(
+      `/workflow/create/${parentId}`,
+      {
+        parentType,
+        name
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
     return response.data
   } catch (error) {
     console.error(error)
