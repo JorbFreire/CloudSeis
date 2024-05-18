@@ -2,8 +2,10 @@ import numpy.typing as npt
 from bokeh.models import ColumnDataSource, GlyphRenderer, Model, Image, Switch
 import numpy as np
 from bokeh.plotting import figure
+from time import perf_counter
 
-MAX_TRACES_LINE_HAREA = 200
+
+MAX_TRACES_LINE_HAREA = 100
 
 
 class SeismicVisualization:
@@ -20,6 +22,7 @@ class SeismicVisualization:
         stretch_factor=0.15,
         color="black",
     ):
+        init_start = perf_counter()
         # Input checks
         # ------------
 
@@ -128,14 +131,15 @@ class SeismicVisualization:
             # Call harea glyph renderer
             # self.harea_gl_list.append(
 
-            # Add harea renderer
-            self.plot.harea(
-                x1=amplitudes_zeros + x_position,
-                x2=amplitudes_positive + x_position,
-                y=time_sample_instants,
-                color="black",
-                name="H",
-            )
+            # Add harea glyph renderer
+            if num_traces <= MAX_TRACES_LINE_HAREA:
+                self.plot.harea(
+                    x1=amplitudes_zeros + x_position,
+                    x2=amplitudes_positive + x_position,
+                    y=time_sample_instants,
+                    color="black",
+                    name="H",
+                )
 
             # construct CDS for multi_line render
             xs_list.append(amplitudes + x_position)
@@ -154,10 +158,13 @@ class SeismicVisualization:
             ys="ys",
             source=self.multi_line_source,
             color=color,
-            visible=False,
+            visible=self.line_switch.active if self.line_switch else True,
         )
 
-        self.update_line_visible(num_traces)
+        self._set_up_renderers_on_trace_excess(num_traces)
+
+        init_stop = perf_counter()
+        print(f"\ninit time: {init_stop - init_start} seconds\n")
 
     def update_plot(
         self,
@@ -168,6 +175,7 @@ class SeismicVisualization:
         stretch_factor=0.15,
         color="black",
     ):
+        update_plot_start = perf_counter()
         # Input checks
         # ------------
 
@@ -200,10 +208,12 @@ class SeismicVisualization:
                     "of traces"
                 )
 
+        # Hold off all requests to repaint the plot
+        self.plot.hold_render = True
+
         # Update ColumnDataSource objects for renderers
         # ---------------------------------------------
-
-        # self._remove_harea_renderers()
+        self._remove_harea_renderers()
 
         # Time sample instants
         first_time_sample = 0.0
@@ -232,15 +242,16 @@ class SeismicVisualization:
 
             # fill positive amplitudes
             amplitudes_positive = np.clip(amplitudes, a_min=0, a_max=None)
-            # Add harea renderer
-            # demora pra caralho
-            # self.plot.harea(
-            #     x1=amplitudes_zeros + x_position,
-            #     x2=amplitudes_positive + x_position,
-            #     y=time_sample_instants,
-            #     color="black",
-            #     name="H",
-            # )
+
+            # Add harea glyph renderer
+            if num_traces <= MAX_TRACES_LINE_HAREA:
+                self.plot.harea(
+                    x1=amplitudes_zeros + x_position,
+                    x2=amplitudes_positive + x_position,
+                    y=time_sample_instants,
+                    color="black",
+                    name="H",
+                )
 
             # construct CDS for line render
             xs_list.append(amplitudes + x_position)
@@ -271,28 +282,38 @@ class SeismicVisualization:
         distance_last_x_positions = x_positions[-1] - x_positions[-2]
 
         image_glyph: Image = self.image_gl.glyph
-        image_glyph.x = x_positions[0] - distance_first_x_positions / 2
-        image_glyph.dw = width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2
-        image_glyph.y = first_time_sample
-        image_glyph.dh = width_time_sample_instants
+        image_glyph.update(
+            x=x_positions[0] - distance_first_x_positions / 2,
+            dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
+            y=first_time_sample,
+            dh=width_time_sample_instants,
+        )
 
-        self.update_line_visible(num_traces)
+        self._set_up_renderers_on_trace_excess(num_traces)
+
+        # Stop holding off requests to repaint the plot
+        self.plot.hold_render = False
+
+        update_plot_end = perf_counter()
+        print(f"\nTIME update_plot: {update_plot_end - update_plot_start} seconds\n")
 
     def _remove_harea_renderers(self):
         """Remove all harea glyph renderers from this plot"""
         self.plot.renderers = list(filter(lambda gl: gl.name != "H", self.plot.renderers))
 
-    def update_line_visible(self, num_traces: int):
+    def _set_up_renderers_on_trace_excess(self, num_traces: int):
+        """If there are too many traces, don't allow the user to use the switch
+        that enables harea renderer"""
         if num_traces > MAX_TRACES_LINE_HAREA:
-            self.multi_line_gl.visible = False
-            if not (self.line_switch is None):
-                self.line_switch.active = False
-                self.line_switch.disabled = True
+            # hide line renderer by using its switch
+            self.line_switch.active = False
+            # harea is NOT allowed
+            if self.harea_switch is not None:
+                self.harea_switch.update(active=False, disabled=True)
         else:
-            self.multi_line_gl.visible = True
-            if not (self.line_switch is None):
-                self.line_switch.disabled = False
-                self.line_switch.active = True
+            # harea is allowed
+            if self.harea_switch is not None:
+                self.harea_switch.update(disabled=False, active=True)
 
     def assign_line_switch(self, switch: Switch):
         """Link a Bokeh model property to the visibility of the wiggle lines"""
@@ -300,19 +321,18 @@ class SeismicVisualization:
         self.line_switch.active = self.multi_line_gl.visible
         self.line_switch.js_link("active", self.multi_line_gl, "visible")
 
+    def assign_harea_switch(self, switch: Switch):
+        """Link a Bokeh model property to the visibility of the wiggle areas"""
 
+        def harea_switch_handler(attr, old, new: bool):
+            self.harea_switch.disabled = True
+            with self.plot.hold(render=True):
+                for gl in filter(lambda gl: gl.name == "H", self.plot.renderers):
+                    gl.visible = new
+            self.harea_switch.disabled = False
 
-    # def assign_harea_switch(self, switch: Switch):
-    #     """Link a Bokeh model property to the visibility of the wiggle areas"""
-
-    #     def harea_switch_handler(attr, old, new):
-
-
-
-    #     for gl in filter(lambda gl: gl.name == "H", self.plot.renderers):
-    #         gl.visible = False
-    #     for harea_gl in self.harea_gl_list:
-    #         model.js_link(attr, harea_gl, "visible")
+        self.harea_switch = switch
+        self.harea_switch.on_change("active", harea_switch_handler)
 
     def js_link_image_visible(self, model: Model, attr: str):
         """Link a Bokeh model property to the visibility of the image"""
