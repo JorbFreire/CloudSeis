@@ -1,18 +1,18 @@
 # bokeh serve step_6.py
 
-from bokeh.layouts import column, layout, row
-from bokeh.models import Paragraph, Slider, Switch, RangeSlider, Button, GlyphRenderer
-from bokeh.plotting import curdoc, show
+from bokeh.layouts import column, row
+from bokeh.models import Paragraph, RangeSlider, Switch
+from bokeh.plotting import curdoc
 from seismicio import readsu
 
-from seismic_visulization import SeismicVisualization
+from seismic_visualization import SeismicVisualization
 
 # Parâmetros de entrada
 # ---------------------
 file_path = "/storage1/Seismic/dados_teste/marmousi_4ms_CDP.su"
 gather_key = "cdp"
-igather_start = 5
-igather_stop = 6
+igather_start = 10
+igather_stop = 12
 
 # Ler dado sísmico
 # ----------------
@@ -43,26 +43,15 @@ def range_slider_input_handler(attr, old, new):
     )
 
 
-def test_button_callback(event):
-    print("helou")
-    # instantâneo!
-    seismic_visualization.plot.renderers = list(
-        filter(lambda gl: gl.name != "H", seismic_visualization.plot.renderers)
-    )
-    print("baibai")
-
-
 # Widgets
 # -------
-test_button = Button(label="test things")
-test_button.on_click(test_button_callback)
 
 first_gather_index = 0
 last_gather_index = sufile.num_gathers - 1
 
 range_slider = RangeSlider(
     start=first_gather_index,
-    end=last_gather_index,
+    end=last_gather_index + 1,  # because igather slicing is not inclusive at stop
     value=(igather_start, igather_stop),
     step=1,
     title="Gather",
@@ -72,16 +61,15 @@ range_slider.on_change("value_throttled", range_slider_input_handler)
 
 switch_lines = Switch(active=True)
 switch_image = Switch(active=True)
-# switch_areas = Switch(active=True)
+switch_areas = Switch(active=True)
 seismic_visualization.assign_line_switch(switch_lines)
 seismic_visualization.js_link_image_visible(switch_image, "active")
-# seismic_visualization.js_link_areas_visible(switch_areas, "active")
+seismic_visualization.assign_harea_switch(switch_areas)
 
 tools_column = column(
-    row(Paragraph(text="Lines"), switch_lines),
     row(Paragraph(text="Image"), switch_image),
-    test_button,
-    # row(Paragraph(text="Areas"), switch_areas),
+    row(Paragraph(text="Lines"), switch_lines),
+    row(Paragraph(text="Areas"), switch_areas),
 )
 
 row_tools_figure = row(children=[tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
