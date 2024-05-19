@@ -1,5 +1,5 @@
 import numpy.typing as npt
-from bokeh.models import ColumnDataSource, GlyphRenderer, Model, Image, Switch
+from bokeh.models import ColumnDataSource, GlyphRenderer, Image, Switch
 import numpy as np
 from bokeh.plotting import figure
 from time import perf_counter
@@ -10,8 +10,9 @@ MAX_TRACES_LINE_HAREA = 100
 
 class SeismicVisualization:
 
-    line_switch: Switch | None = None
-    harea_switch: Switch | None = None
+    image_widget: Switch | None = None
+    line_widget: Switch | None = None
+    area_widget: Switch | None = None
 
     def __init__(
         self,
@@ -62,6 +63,7 @@ class SeismicVisualization:
             height=800,
             width=1000,
             sizing_mode="stretch_both",
+            active_drag=None,
         )
 
         # Adjust ranges
@@ -96,7 +98,7 @@ class SeismicVisualization:
         distance_last_x_positions = x_positions[-1] - x_positions[-2]
 
         # Add image renderer
-        self.image_gl: GlyphRenderer = self.plot.image(
+        self.image_renderer: GlyphRenderer = self.plot.image(
             image="image",
             source=self.image_source,
             x=x_positions[0] - distance_first_x_positions / 2,
@@ -153,12 +155,12 @@ class SeismicVisualization:
         )
 
         # Add multiline renderer
-        self.multi_line_gl: GlyphRenderer = self.plot.multi_line(
+        self.line_renderer: GlyphRenderer = self.plot.multi_line(
             xs="xs",
             ys="ys",
             source=self.multi_line_source,
             color=color,
-            visible=self.line_switch.active if self.line_switch else True,
+            visible=self.line_widget.active if self.line_widget else True,
         )
 
         self._set_up_renderers_on_trace_excess(num_traces)
@@ -251,6 +253,7 @@ class SeismicVisualization:
                     y=time_sample_instants,
                     color="black",
                     name="H",
+                    visible=self.area_widget.active if self.area_widget else True,
                 )
 
             # construct CDS for line render
@@ -275,13 +278,12 @@ class SeismicVisualization:
 
         # Update image renderer's glyph
         # -----------------------------
-
         width_x_positions = np.abs(x_positions[0] - x_positions[-1])
         width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
         distance_first_x_positions = x_positions[1] - x_positions[0]
         distance_last_x_positions = x_positions[-1] - x_positions[-2]
 
-        image_glyph: Image = self.image_gl.glyph
+        image_glyph: Image = self.image_renderer.glyph
         image_glyph.update(
             x=x_positions[0] - distance_first_x_positions / 2,
             dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
@@ -302,38 +304,56 @@ class SeismicVisualization:
         self.plot.renderers = list(filter(lambda gl: gl.name != "H", self.plot.renderers))
 
     def _set_up_renderers_on_trace_excess(self, num_traces: int):
-        """If there are too many traces, don't allow the user to use the switch
-        that enables harea renderer"""
+        # If there are too many traces...
+
+        # - deactivate area widget
+        #   (no need to hide area renderer because it won't even exist)
+        # - hide line renderer if it was visible
+        # - reveal image renderer if it was hidden
+
         if num_traces > MAX_TRACES_LINE_HAREA:
-            # hide line renderer by using its switch
-            self.line_switch.active = False
-            # harea is NOT allowed
-            if self.harea_switch is not None:
-                self.harea_switch.update(active=False, disabled=True)
+            # deactivate area widget
+            if self.area_widget:
+                self.area_widget.update(active=False, disabled=True)
+            # hide line renderer
+            if self.line_widget:
+                self.line_widget.active = False
+            else:
+                self.line_renderer.visible = False
+            # reveal image renderer
+            if self.image_widget:
+                self.image_widget.active = True
+            else:
+                self.image_renderer.visible = True
         else:
             # harea is allowed
-            if self.harea_switch is not None:
-                self.harea_switch.update(disabled=False, active=True)
+            if self.area_widget is not None:
+                self.area_widget.disabled = False
 
-    def assign_line_switch(self, switch: Switch):
-        """Link a Bokeh model property to the visibility of the wiggle lines"""
-        self.line_switch = switch
-        self.line_switch.active = self.multi_line_gl.visible
-        self.line_switch.js_link("active", self.multi_line_gl, "visible")
+    def assign_line_widget(self, switch: Switch):
+        """Link the `active` attribute of a Switch instance (either a
+        Switch or CheckBox instance) to the visibility of the line renderer"""
+        self.line_widget = switch
+        self.line_widget.active = self.line_renderer.visible
+        self.line_widget.js_link("active", self.line_renderer, "visible")
 
-    def assign_harea_switch(self, switch: Switch):
-        """Link a Bokeh model property to the visibility of the wiggle areas"""
+    def assign_area_widget(self, switch: Switch):
+        """Link the `active` attribute of a Switch instance (either a
+        Switch or CheckBox instance) to the visibility of the area renderer"""
 
         def harea_switch_handler(attr, old, new: bool):
-            self.harea_switch.disabled = True
+            self.area_widget.disabled = True
             with self.plot.hold(render=True):
                 for gl in filter(lambda gl: gl.name == "H", self.plot.renderers):
                     gl.visible = new
-            self.harea_switch.disabled = False
+            self.area_widget.disabled = False
 
-        self.harea_switch = switch
-        self.harea_switch.on_change("active", harea_switch_handler)
+        self.area_widget = switch
+        self.area_widget.on_change("active", harea_switch_handler)
 
-    def js_link_image_visible(self, model: Model, attr: str):
-        """Link a Bokeh model property to the visibility of the image"""
-        model.js_link(attr, self.image_gl, "visible")
+    def asssign_image_widget(self, switch: Switch):
+        """Link the `active` attribute of a Switch instance (either a
+        Switch or CheckBox instance) to the visibility of the image renderer"""
+        self.image_widget = switch
+        self.image_widget.active = self.image_renderer.visible
+        self.image_widget.js_link("active", self.image_renderer, "visible")
