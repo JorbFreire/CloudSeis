@@ -129,9 +129,9 @@ slider.on_change("value_throttled", slider_value_callback)
 switch_lines = Switch(active=True)
 switch_image = Switch(active=True)
 switch_areas = Switch(active=True)
-seismic_visualization.assign_line_switch(switch_lines)
-seismic_visualization.js_link_image_visible(switch_image, "active")
-seismic_visualization.assign_harea_switch(switch_areas)
+seismic_visualization.assign_line_widget(switch_lines)
+seismic_visualization.asssign_image_widget(switch_image)
+seismic_visualization.assign_area_widget(switch_areas)
 
 left_tools_column = column(
     simple_paragraph,
