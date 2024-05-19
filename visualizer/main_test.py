@@ -1,7 +1,7 @@
 # bokeh serve step_6.py
 
 from bokeh.layouts import column, row
-from bokeh.models import Paragraph, RangeSlider, Switch
+from bokeh.models import Paragraph, RangeSlider, Switch, Slider, Spinner
 from bokeh.plotting import curdoc
 from seismicio import readsu
 
@@ -43,11 +43,33 @@ def range_slider_input_handler(attr, old, new):
     )
 
 
+def slider_value_callback(attr, old, new):
+    value: int = round(new)
+
+
 # Widgets
 # -------
 
 first_gather_index = 0
 last_gather_index = sufile.num_gathers - 1
+
+slider = Slider(
+    start=1,
+    end=sufile.num_gathers,
+    value=1,
+    step=1,
+    title="Gather sequential number",
+    sizing_mode="stretch_width",
+)
+slider.on_change("value_throttled", slider_value_callback)
+
+num_loaded_gathers_spinner = Spinner(
+    title="Number of gathers to load",
+    low=1,
+    high=sufile.num_gathers,
+    step=1,
+    value=5,
+)
 
 range_slider = RangeSlider(
     start=first_gather_index,
@@ -66,13 +88,15 @@ seismic_visualization.assign_line_switch(switch_lines)
 seismic_visualization.js_link_image_visible(switch_image, "active")
 seismic_visualization.assign_harea_switch(switch_areas)
 
-tools_column = column(
+left_tools_column = column(
     row(Paragraph(text="Image"), switch_image),
     row(Paragraph(text="Lines"), switch_lines),
     row(Paragraph(text="Areas"), switch_areas),
 )
 
-row_tools_figure = row(children=[tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
-column_main = column(children=[row_tools_figure, range_slider], sizing_mode="stretch_both")
+bottom_tools_row = row(num_loaded_gathers_spinner, slider, sizing_mode="stretch_width")
+
+row_tools_figure = row(children=[left_tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
+column_main = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
 
 curdoc().add_root(column_main)
