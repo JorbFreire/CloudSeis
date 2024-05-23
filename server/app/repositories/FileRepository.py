@@ -4,6 +4,7 @@ from datetime import datetime
 from ..getFilePath import getSuFilePath
 
 
+# todo: change to "SeismicFileRepository"
 class FileRepository:
     def _getParameter(self, parameterValues: list | str | float | int | bool) -> str:
         parameterValuesProcessString = ""
