@@ -5,17 +5,27 @@ services:
   db:
     image: postgres
     restart: always
+    environment:
+      - POSTGRES_NAME=${DATABASE_NAME:-admin}
+      - POSTGRES_USER=${DATABASE_USER:-admin}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD:-mysecretpassword}
     ports:
       - 5432:5432
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: mysecretpassword
 
   server:
     build: ./server
+    depends_on:
+      - db
+    environment:
+      - SECRET=${SECRET}
+      - DATABASE_NAME=${DATABASE_NAME:-admin}
+      - DATABASE_USER=${DATABASE_USER:-admin}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD:-mysecretpassword}
+      - DATABASE_HOST=${DATABASE_HOST:-localhost}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - FLASK_ENV=${FLASK_ENV:-DEVELOPMENT}
     ports:
-      - "8000:5000"
-
+      - "5000:5000"
   webapp:
     build: ./webapp
     ports:

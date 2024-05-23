@@ -10,3 +10,4 @@
 *.sw?
 __pycache__
 
+.env

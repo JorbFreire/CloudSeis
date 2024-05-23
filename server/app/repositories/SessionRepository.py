@@ -6,9 +6,7 @@ from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from ..errors.AuthError import AuthError
 from ..models.UserModel import UserModel
 from ..hash.hash import checkPassword
-
-
-private_key = "private_key"
+from ..config.private_key import private_key
 
 
 class SessionRepository:

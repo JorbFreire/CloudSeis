@@ -1,9 +1,11 @@
 FROM python:3.11
-ENV FLASK_APP=app.py
+WORKDIR /home/server
+ENV FLASK_APP=app.create_app:create_app
 ENV FLASK_RUN_HOST=0.0.0.0
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-RUN echo | bash -c "$(wget -qO- https://gist.githubusercontent.com/botoseis/4ca681cb9ef706c1b8410153c6199cf2/raw/b16ad754839d1ca3657d8e8396db14f5ba791e6b/install_seismic_unix.sh)"
-EXPOSE 5000
+
 COPY . .
-CMD ["flask", "db" "upgrade", "&&", "flask", "run"]
+RUN pip install -r requirements.txt
+RUN chmod +x ./container_start.sh
+
+EXPOSE 5000
+ENTRYPOINT ["./container_start.sh"]

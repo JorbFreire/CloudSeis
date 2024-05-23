@@ -1,5 +1,6 @@
 from typing import Literal
-from os import path, getcwd
+from os import path, getcwd, getenv
+from ._checkForEnvValue import checkForEnvValue
 
 database_root_path = path.join(getcwd(), 'app/database')
 migrations_root_path = path.join(database_root_path, 'migrations')
@@ -8,24 +9,25 @@ modeKeyType = Literal["production", "development", "test"]
 
 dbConfigOptions = {
     "production": {
-        "dbname": "admin",
-        "user": "admin",
-        "password": "mysecretpassword",
-        "host": "localhost",
-        "port": "5432"
+        "dbname": getenv("DATABASE_NAME"),
+        "user": getenv("DATABASE_USER"),
+        "password": getenv("DATABASE_PASSWORD"),
+        "host": getenv("DATABASE_HOST"),
+        "port": getenv("DATABASE_PORT")
     },
     "development": {
-        "dbname": "admin",
-        "user": "admin",
-        "password": "mysecretpassword",
-        "host": "localhost",
-        "port": "5432"
+        "dbname": checkForEnvValue("DATABASE_NAME", "admin"),
+        "user": checkForEnvValue("DATABASE_USER", "admin"),
+        "password": checkForEnvValue("DATABASE_PASSWORD", "mysecretpassword"),
+        "host": checkForEnvValue("DATABASE_HOST", "localhost"),
+        "port": checkForEnvValue("DATABASE_PORT", "5432")
     },
+    # *** test connections blocked by white list
     "test": {
-        "dbname": "admin",
-        "user": "admin",
-        "password": "mysecretpassword",
-        "host": "localhost",
+        "dbname": "postgres",
+        "user": "postgres",
+        "password": "0qXblK92vas5LNN9",
+        "host": "dependably-succinct-goldfish.data-1.use1.tembo.io",
         "port": "5432"
     }
 }
