@@ -5,7 +5,7 @@ from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
 
 from ..repositories.ProjectRepository import ProjectRepository
-from ..serializers.ProjectSerializer import ProjectListWorkflowsSchema, ProjectCreateSchema, ProjectUpdateSchema, ProjectDeleteSchema
+from ..serializers.ProjectSerializer import ProjectCreateSchema, ProjectUpdateSchema
 from ..models.ProjectModel import ProjectModel
 
 projectRouter = Blueprint(
@@ -27,11 +27,8 @@ def showProject(userId):
 @decorator_factory(validateRequestBody, SerializerSchema=ProjectCreateSchema)
 @decorator_factory(requireAuthentication)
 def createProject(userId):
-    print("inside")
     data = request.get_json()
-    print("after data")
     newProject = projectRepository.create(userId, data["name"])
-    print("after repository")
     return jsonify(newProject)
 
 
@@ -53,16 +50,7 @@ def deleteProject(_, id):
 
 # * It does not include workflows inside lines
 @projectRouter.route("/root-workflows/list/<id>", methods=['GET'])
-@decorator_factory(validateRequestBody, SerializerSchema=ProjectListWorkflowsSchema)
 @decorator_factory(requireAuthentication)
 def listProjectRootWorkflows(_, id):
     projectWorkflows = projectRepository.listWorkflowsByProjectId(id)
     return jsonify(projectWorkflows)
-
-# DEBUG ROUTE
-
-
-@projectRouter.route("/listall/debug", methods=['GET'])
-def listAll():
-    projects = projectRepository.listAllDebug()
-    return jsonify(projects)

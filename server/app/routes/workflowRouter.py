@@ -4,7 +4,7 @@ from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
 
-from ..serializers.WorkflowSerializer import WorkflowShowSchema, WorkflowCreateSchema, WorkflowUpdateSchema, WorkflowDeleteSchema
+from ..serializers.WorkflowSerializer import WorkflowCreateSchema, WorkflowUpdateSchema
 from ..repositories.WorkflowRepository import WorkflowRepository
 from ..models.WorkflowModel import WorkflowModel
 
@@ -20,7 +20,6 @@ workflowRepository = WorkflowRepository()
 
 
 @workflowRouter.route("/show/<id>", methods=['GET'])
-@decorator_factory(validateRequestBody, SerializerSchema=WorkflowShowSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def showWorkflow(_, id):
     workflow = workflowRepository.showById(id)
@@ -47,7 +46,6 @@ def updateWorkflow(_, id):
 
 
 @workflowRouter.route("/delete/<id>", methods=['DELETE'])
-@decorator_factory(validateRequestBody, SerializerSchema=WorkflowDeleteSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def deleteWorkflow(_, id):
     workflow = workflowRepository.delete(id)
