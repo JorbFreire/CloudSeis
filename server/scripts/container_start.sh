@@ -1,6 +1,14 @@
 #!/bin/bash
+
+/usr/local/bin/wait-for-it.sh -t 30 db:5432
+
+echo "FLASK_ENV:"
+echo $FLASK_ENV
+echo "**********"
+
 echo "Running migrations"
 exec flask db upgrade
+
 if [ "$FLASK_ENV" = "DEVELOPMENT" ]; then
     echo "Running in development mode"
     exec flask run --reload

@@ -1,11 +1,15 @@
 FROM python:3.11
 WORKDIR /home/server
+
 ENV FLASK_APP=app.create_app:create_app
 ENV FLASK_RUN_HOST=0.0.0.0
 
+COPY scripts/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
 COPY . .
 RUN pip install -r requirements.txt
-RUN chmod +x ./container_start.sh
+RUN chmod +x ./scripts/container_start.sh
 
 EXPOSE 5000
-ENTRYPOINT ["./container_start.sh"]
+CMD ["./scripts/container_start.sh"]
