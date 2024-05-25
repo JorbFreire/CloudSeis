@@ -12,7 +12,7 @@ from seismic_visualization import SeismicVisualization
 file_path = "/storage1/Seismic/dados_teste/marmousi_4ms_CDP.su"
 gather_key = "cdp"
 num_loadedgathers: int = 2
-start_loadedgathers: int = 0  # zero-based indexing
+start_igather: int = 0  # zero-based indexing
 
 # Ler dado sísmico
 # ----------------
@@ -26,7 +26,7 @@ interval_time_samples = sufile.headers.dt[0] / 1000000  # µs → s
 # SeismicVisualization
 # --------------------
 seismic_visualization = SeismicVisualization(
-    data=sufile.igather[start_loadedgathers : start_loadedgathers + num_loadedgathers].data,
+    data=sufile.igather[start_igather : start_igather + num_loadedgathers].data,
     x_positions=None,
     interval_time_samples=interval_time_samples,
 )
@@ -37,11 +37,12 @@ simple_paragraph = Paragraph(text="Gathers")
 
 def update_information(gather_index_start: int, gather_index_stop: int):
     gather_value_start = sufile.gather_index_to_value(gather_index_start)
-    gather_value_end = sufile.gather_index_to_value(gather_index_stop)
+    gather_value_end = sufile.gather_index_to_value(gather_index_stop - 1)
     simple_paragraph.text = f"Gather {gather_value_start} to {gather_value_end}"
+    # simple_paragraph.text = f"Gather WHATERVER"
 
 
-update_information(start_loadedgathers, start_loadedgathers + num_loadedgathers)
+update_information(start_igather, start_igather + num_loadedgathers)
 
 
 def update_plotting(igather_start: int, igather_stop: int):
@@ -67,37 +68,64 @@ def range_slider_input_handler(attr, old, new):
 
 
 def spinner_value_callback(attr, old, new):
-    global start_loadedgathers, num_loadedgathers, spinner
+    print("--------------------------------------")
+    print(f"CALL spinner_value_callback(new={new})")
+    global start_igather, num_loadedgathers, spinner
     spinner.disabled = True
     slider.disabled = True
 
     num_loadedgathers = round(new)
 
-    stop_loadedgathers = start_loadedgathers + num_loadedgathers
+    stop_igather = start_igather + num_loadedgathers
     # if exceeding to the right
-    if stop_loadedgathers > num_gathers:
-        stop_loadedgathers = num_gathers
-        num_loadedgathers = stop_loadedgathers - start_loadedgathers + 1
+    if stop_igather > num_gathers:
+        stop_igather = num_gathers
+        num_loadedgathers = stop_igather - start_igather + 1
         spinner.value = num_loadedgathers
 
-    update_plotting(start_loadedgathers, stop_loadedgathers)
+    update_plotting(start_igather, stop_igather)
     spinner.disabled = False
     slider.disabled = False
 
 
+def _get_igather_slice(start_position_1_based,  num_loadedgathers):
+    """
+    Args:
+      position (int): position of the gather, counting started at 1
+      num_loadedgathers (int): number of gathers to be loaded
+    
+    Returns:
+      start_igather (int):
+        start index, included endpoint for slicing gathers by index
+      stop_igather (int):
+        stop index, excluded endpoint for slicing gathers by index
+    """
+    start_igather = start_position_1_based - 1
+    stop_igather = start_igather + num_loadedgathers
+    if stop_igather <= num_gathers:
+        return (start_igather, stop_igather)
+    else:
+        return (num_gathers - num_loadedgathers, num_gathers)
+
+
+
 def slider_value_callback(attr, old, new):
-    global start_loadedgathers, num_loadedgathers, slider
+    print("--------------------------------------")
+    print(f"CALL slider_value_callback(new={new})")
+    global start_igather, num_loadedgathers, slider
     spinner.disabled = True
     slider.disabled = True
-    start_loadedgathers = round(new) - 1
-    stop_loadedgathers = start_loadedgathers + num_loadedgathers
-    # if exceeding to the right
-    if stop_loadedgathers > num_gathers:
-        start_loadedgathers = num_gathers - num_loadedgathers
-        stop_loadedgathers = num_gathers
-        slider.value = start_loadedgathers
 
-    update_plotting(start_loadedgathers, stop_loadedgathers)
+    start_igather = round(new) - 1
+    stop_igather = start_igather + num_loadedgathers
+
+    # if exceeding to the right
+    if stop_igather > num_gathers:
+        start_igather = num_gathers - num_loadedgathers
+        stop_igather = num_gathers
+        slider.value = start_igather + 1
+
+    update_plotting(start_igather, stop_igather)
     spinner.disabled = False
     slider.disabled = False
 
@@ -119,10 +147,10 @@ spinner.on_change("value_throttled", spinner_value_callback)
 slider = Slider(
     start=1,
     end=sufile.num_gathers,
-    value=start_loadedgathers + 1,
+    value=start_igather + 1,
     step=1,
     title="Gather sequential number start",
-    sizing_mode="stretch_width",
+    width=1000,
 )
 slider.on_change("value_throttled", slider_value_callback)
 
@@ -146,3 +174,5 @@ row_tools_figure = row(children=[left_tools_column, seismic_visualization.plot],
 column_main = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
 
 curdoc().add_root(column_main)
+
+print(f"Number of gathers: {sufile.num_gathers}\n")
