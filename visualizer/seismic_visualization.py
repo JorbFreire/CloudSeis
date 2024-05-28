@@ -168,6 +168,78 @@ class SeismicVisualization:
         init_stop = perf_counter()
         print(f"\ninit time: {init_stop - init_start} seconds\n")
 
+    @staticmethod
+    def _check_stretch_factor(stretch_factor):
+        if not isinstance(stretch_factor, (int, float)):
+            raise TypeError("stretch_factor must be a number")
+
+    @staticmethod
+    def _check_data(data):
+        if type(data).__module__ != np.__name__:
+            raise TypeError("data must be a numpy array")
+        if len(data.shape) != 2:
+            raise ValueError("data must be a 2D array")
+
+    @staticmethod
+    def _check_x_positions(x_positions, num_traces):
+        if type(x_positions).__module__ != np.__name__:
+            raise TypeError("x_positions must be a numpy array")
+        if len(x_positions.shape) != 1:
+            raise ValueError("x_positions must be a 1D array")
+        if x_positions.size != num_traces:
+            raise ValueError(
+                "The size of x_positions must be equal to the number of "
+                "columns in data, that is, it must be equal to the number "
+                "of traces"
+            )
+
+    @staticmethod
+    def _compute_multi_line_source_data(data, x_positions, time_sample_instants):
+        num_traces = data.shape[1]
+
+        xs_list = []
+        ys_list = []
+        for trace_index in range(num_traces):
+            x_position = x_positions[trace_index]
+            amplitudes = data[:, trace_index]
+
+            # construct CDS for line render
+            xs_list.append(amplitudes + x_position)
+            ys_list.append(time_sample_instants)
+
+        data_repositioned = data + x_positions
+        xs_list = data_repositioned.T.tolist()
+        ys_list = [time_sample_instants for _ in range(num_traces)]
+
+        return {"xs": xs_list, "ys": ys_list}
+
+    def _plot_harea(self, data, x_positions, time_sample_instants):
+
+        num_time_samples = data.shape[0]
+        num_traces = data.shape[1]
+
+        # Cancel if there are too many traces
+        if num_traces > MAX_TRACES_LINE_HAREA:
+            return
+
+        amplitudes_zeros = np.zeros(shape=(num_time_samples,))
+
+        for trace_index in range(num_traces):
+            x_position = x_positions[trace_index]
+            amplitudes = data[:, trace_index]
+
+            amplitudes_positive = np.clip(amplitudes, a_min=0, a_max=None)
+
+            # Add harea glyph renderer
+            self.plot.harea(
+                x1=amplitudes_zeros + x_position,
+                x2=amplitudes_positive + x_position,
+                y=time_sample_instants,
+                color="black",
+                name="H",
+                visible=self.area_widget.active if self.area_widget else True,
+            )
+
     def update_plot(
         self,
         data: npt.NDArray,
@@ -180,35 +252,15 @@ class SeismicVisualization:
         update_plot_start = perf_counter()
         # Input checks
         # ------------
-
-        # Input check for stretch_factor
-        if not isinstance(stretch_factor, (int, float)):
-            raise TypeError("stretch_factor must be a number")
-
-        # Input check for data
-        if type(data).__module__ != np.__name__:
-            raise TypeError("data must be a numpy array")
-        if len(data.shape) != 2:
-            raise ValueError("data must be a 2D array")
-
+        self._check_stretch_factor(stretch_factor)
+        self._check_data(data)
         num_time_samples = data.shape[0]
         num_traces = data.shape[1]
-        print("num_traces:", num_traces)
-
-        # Input check for x_positions
+        print(f"Number of traces: {num_traces}")
         if x_positions is None:
             x_positions = np.arange(start=1, stop=num_traces + 1)
         else:
-            if type(x_positions).__module__ != np.__name__:
-                raise TypeError("x_positions must be a numpy array")
-            if len(x_positions.shape) != 1:
-                raise ValueError("x_positions must be a 1D array")
-            if x_positions.size != num_traces:
-                raise ValueError(
-                    "The size of x_positions must be equal to the number of "
-                    "columns in data, that is, it must be equal to the number "
-                    "of traces"
-                )
+            self._check_x_positions(x_positions, num_traces)
 
         # Hold off all requests to repaint the plot
         self.plot.hold_render = True
@@ -234,38 +286,16 @@ class SeismicVisualization:
         data_max_std = np.max(np.std(data, axis=0))
         data_rescaled = data / data_max_std * trace_x_spacing * stretch_factor
 
-        xs_list = []
-        ys_list = []
-        # self.harea_gl_list: list[GlyphRenderer] = []
-        num_traces = data.shape[1]
-        for trace_index in range(num_traces):
-            x_position = x_positions[trace_index]
-            amplitudes = data_rescaled[:, trace_index]
-
-            # fill positive amplitudes
-            amplitudes_positive = np.clip(amplitudes, a_min=0, a_max=None)
-
-            # Add harea glyph renderer
-            if num_traces <= MAX_TRACES_LINE_HAREA:
-                self.plot.harea(
-                    x1=amplitudes_zeros + x_position,
-                    x2=amplitudes_positive + x_position,
-                    y=time_sample_instants,
-                    color="black",
-                    name="H",
-                    visible=self.area_widget.active if self.area_widget else True,
-                )
-
-            # construct CDS for line render
-            xs_list.append(amplitudes + x_position)
-            ys_list.append(time_sample_instants)
-
-        # Update data sources
-        # -------------------
-        # image
+        # Update visualization
+        # --------------------
+        # Update image renderer's source
         self.image_source.data = {"image": [data]}
-        # multi_line
-        self.multi_line_source.data = {"xs": xs_list, "ys": ys_list}
+        # Update multi_line renderer's source
+        self.multi_line_source.data = self._compute_multi_line_source_data(
+            data_rescaled, x_positions, time_sample_instants
+        )
+        # Add harea renderers
+        self._plot_harea(data_rescaled, x_positions, time_sample_instants)
 
         # Update plot setup
         # -----------------
@@ -282,9 +312,7 @@ class SeismicVisualization:
         width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
         distance_first_x_positions = x_positions[1] - x_positions[0]
         distance_last_x_positions = x_positions[-1] - x_positions[-2]
-
-        image_glyph: Image = self.image_renderer.glyph
-        image_glyph.update(
+        self.image_renderer.glyph.update(
             x=x_positions[0] - distance_first_x_positions / 2,
             dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
             y=first_time_sample,
@@ -297,7 +325,7 @@ class SeismicVisualization:
         self.plot.hold_render = False
 
         update_plot_end = perf_counter()
-        print(f"\nTIME update_plot: {update_plot_end - update_plot_start} seconds\n")
+        print(f"time — update_plot: {update_plot_end - update_plot_start} seconds")
 
     def _remove_harea_renderers(self):
         """Remove all harea glyph renderers from this plot"""
