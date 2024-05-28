@@ -12,8 +12,7 @@ class UserModel(database.Model):  # type: ignore
     id = dbTypes.Column(dbTypes.Uuid, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
     email = dbTypes.Column(dbTypes.String, unique=True)
-    password = dbTypes.Column(dbTypes.String)
-    hashPassword = dbTypes.Column(dbTypes.LargeBinary)
+    password = dbTypes.Column(dbTypes.LargeBinary)
     is_admin = dbTypes.Column(dbTypes.Boolean)
 
     projects: Mapped[
@@ -25,6 +24,4 @@ class UserModel(database.Model):  # type: ignore
             "id": str(self.id),
             "name": self.name,
             "email": self.email,
-            "password": self.password, # !Take this OFF!
-            "hashedPassword": str(self.hashPassword) # !Take this OFF too
         }

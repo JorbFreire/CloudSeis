@@ -32,8 +32,7 @@ class UserRepository:
             id=newId,
             name=newUserData["name"],
             email=newUserData["email"],
-            password=newUserData["password"],
-            hashPassword=hashedPassword
+            password=hashedPassword
         )
         database.session.add(newUser)
         database.session.commit()
