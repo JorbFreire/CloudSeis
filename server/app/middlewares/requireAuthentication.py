@@ -6,6 +6,7 @@ from ..models.ProjectModel import ProjectModel
 from ..models.LineModel import LineModel
 
 from ..models.UserModel import UserModel
+from ..errors.AppError import AppError
 from ..errors.AuthError import AuthError
 
 from ..repositories.SessionRepository import SessionRepository
@@ -50,7 +51,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
             modelObject = routeModel.query.filter_by(id=modelId).first()
 
             if not modelObject:
-                raise AuthError("No instance found with this Id")
+                raise AppError("No instance found with this Id", 404)
 
             userAttr = modelObject.owner_email if hasattr(
                 modelObject, 'owner_email'
