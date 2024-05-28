@@ -7,7 +7,7 @@ from ..middlewares.validateRequestBody import validateRequestBody
 from ..models.WorkflowModel import WorkflowModel
 from ..repositories.CommandRepository import CommandRepository
 from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
-from ..serializers.CommandSerializer import CommandShowtSchema, CommandCreateSchema, CommandUpdateParametersSchema, CommandsUpdateOrderSchema, CommandDeleteSchema
+from ..serializers.CommandSerializer import CommandCreateSchema, CommandUpdateParametersSchema, CommandsUpdateOrderSchema
 from ..models.CommandModel import CommandModel
 
 
@@ -21,7 +21,6 @@ orderedCommandsListRepository = OrderedCommandsListRepository()
 
 
 @commandRouter.route("/show/<id>", methods=['GET'])
-@decorator_factory(validateRequestBody, SerializerSchema=CommandShowtSchema)
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def showCommand(_, id):
     command = commandRepository.show(id)
@@ -67,7 +66,6 @@ def updateOrder(_, workflowId):
 
 
 @commandRouter.route("/delete/<id>", methods=['DELETE'])
-@decorator_factory(validateRequestBody, SerializerSchema=CommandDeleteSchema)
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def deleteCommand(_, id):
     command = commandRepository.delete(id)

@@ -1,18 +1,9 @@
 from marshmallow import Schema, fields
 
 
-class ProjectListWorkflowsSchema(Schema):
-    # *** route params
-    id = fields.Number(required=True)
-
-
 class ProjectCreateSchema(Schema):
     name = fields.String(required=True)
 
 
-class ProjectUpdateSchema(ProjectListWorkflowsSchema):
+class ProjectUpdateSchema():
     name = fields.String(required=True)
-
-
-class ProjectDeleteSchema(ProjectListWorkflowsSchema):
-    pass

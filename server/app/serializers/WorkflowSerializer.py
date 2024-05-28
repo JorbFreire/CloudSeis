@@ -1,11 +1,6 @@
 from marshmallow import Schema, fields, validate
 
 
-class WorkflowShowSchema(Schema):
-    # *** route params
-    id = fields.Number(required=True)
-
-
 class WorkflowCreateSchema(Schema):
     name = fields.String(required=True)
     parentType = fields.String(
@@ -16,9 +11,5 @@ class WorkflowCreateSchema(Schema):
     )
 
 
-class WorkflowUpdateSchema(WorkflowShowSchema):
+class WorkflowUpdateSchema():
     name = fields.String(required=True)
-
-
-class WorkflowDeleteSchema(WorkflowShowSchema):
-    pass

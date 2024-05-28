@@ -74,8 +74,3 @@ class ProjectRepository:
         ).all()
 
         return [workflow.getResumedAttributes() for workflow in workflows]
-
-    #DEBUG METHOD
-    def listAllDebug(self):
-        projects = ProjectModel.query.all()
-        return [project.getAttributes() for project in projects]

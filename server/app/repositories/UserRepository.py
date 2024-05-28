@@ -27,12 +27,12 @@ class UserRepository:
         if user:
             raise AppError("Email alredy used")
         newId = uuid4()
-        hashedPassword = hashPassword(newUserData["password"])
+
         newUser = UserModel(
             id=newId,
             name=newUserData["name"],
             email=newUserData["email"],
-            password=hashedPassword
+            password=hashPassword(newUserData["password"]),
         )
         database.session.add(newUser)
         database.session.commit()
