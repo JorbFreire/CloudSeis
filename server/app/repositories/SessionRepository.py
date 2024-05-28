@@ -12,8 +12,7 @@ from ..config.private_key import private_key
 class SessionRepository:
     def createSession(self, email, password) -> str:
         user = UserModel.query.filter_by(email=email).first()
-        # user.password != password:
-        if not user or not checkPassword(password, user.hashPassword):
+        if not user or not checkPassword(password, user.password):
             raise AuthError("Invalid email or password")
 
         try:
