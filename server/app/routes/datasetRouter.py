@@ -15,16 +15,6 @@ datasetRepository = DatasetRepository()
 
 # todo: final version should not get a "create" route for dataset
 # todo: datasets should be created when running plot
-@datasetRouter.route("/create/<workflowId>", methods=['POST'])
-@decorator_factory(requireAuthentication, routeModel=WorkflowModel)
-def createDataset(_, workflowId):
-    data = request.get_json()
-    newDataset = datasetRepository.create(
-        data["projectId"],
-        workflowId
-    )
-    return jsonify(newDataset)
-
 
 @datasetRouter.route("/delete/<id>", methods=['DELETE'])
 @decorator_factory(requireAuthentication, routeModel=DataSetModel)

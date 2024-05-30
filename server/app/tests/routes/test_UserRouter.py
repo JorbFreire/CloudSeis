@@ -2,12 +2,15 @@ import pytest
 import unittest
 from server.app.database.connection import database
 from ..conftest import _app
+from ..utils import get_test_user_session
 
 
 class TestUserRouter(unittest.TestCase):
     url_prefix = "/user"
+    token = get_test_user_session()
     client = pytest.client
     created_users: list[dict] = []
+    order: int = 0
 
     @pytest.fixture(autouse=True, scope='class')
     def _init_database(self):
@@ -24,19 +27,22 @@ class TestUserRouter(unittest.TestCase):
         assert response.status_code == 404
         assert response.json["Error"] == expected_response_data["Error"]
 
-    # todo: test weak password and repeated email
+    # todo: test weak password
     @pytest.mark.run(order=12)
     def test_create_new_user(self):
         for i in range(3):
             expected_response_data = {
-                "name": f'User-{i}',
+                "name": f'user_{i}',
                 "email": f'user_{i}@email.com'
             }
+
+            name = f'user_{i}'
+            email = f'{name}@email.com'
             response = self.client.post(
                 f"{self.url_prefix}/create",
                 json={
-                    "name": f'User-{i}',
-                    "email": f'user_{i}@email.com',
+                    "name": name,
+                    "email": email,
                     "password": "password123"
                 }
             )
@@ -57,15 +63,38 @@ class TestUserRouter(unittest.TestCase):
         assert response.json == self.created_users
 
     @pytest.mark.run(order=14)
-    def test_delete_user(self):
+    def test_update_user(self):
         for user in self.created_users:
-            response = self.client.delete(
-                f"{self.url_prefix}/delete/{user['id']}"
+            self.token = get_test_user_session(user["name"])
+            response = self.client.put(
+                f"{self.url_prefix}/update",
+                json = {
+                    "name": f"updated_{user['name']}"
+                },
+                headers = {
+                    "Authorization": self.token
+                }
             )
-            response.status == 200
-            assert response.json == user
+            assert response.status_code == 200
+            assert response.json["name"] == f"updated_{user['name']}"
 
     @pytest.mark.run(order=15)
+    def test_delete_user(self):
+        for user in self.created_users:
+            self.token = get_test_user_session(user["name"])
+            response = self.client.delete(
+                f"{self.url_prefix}/delete", 
+                json = {
+                    "DummyMedia": None
+                },
+                headers={
+                    "Authorization": self.token
+                }
+            )
+            assert response.status_code == 200
+            assert response.json["email"] == user["email"]
+
+    @pytest.mark.run(order=16)
     def test_clean_up_database(self):
         with _app.app_context():
             database.drop_all()

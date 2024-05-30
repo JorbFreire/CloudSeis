@@ -51,3 +51,11 @@ def updateUser(userId):
 def deleteUser(userId):
     user = userRepository.delete(userId)
     return jsonify(user)
+
+# Route for test
+@userRouter.route("/test", methods=['POST'])
+def test():
+    data = request.get_json()
+    user = userRepository.testCreation(data)
+
+    return jsonify(user)

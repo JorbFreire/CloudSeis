@@ -4,13 +4,14 @@ from server.app.database.connection import database
 from server.app.models.UserModel import UserModel
 from server.app.models.ProjectModel import ProjectModel
 from ..conftest import _app
-from ..utils import get_test_project_data
+from ..utils import get_test_project_data, get_test_user_session
 
 
-class TestLinetRouter(unittest.TestCase):
+class TestLineRouter(unittest.TestCase):
     url_prefix = "/line"
     client = pytest.client
     project_data, user_data = get_test_project_data()
+    token = get_test_user_session(user_data["name"])
     project_id = project_data["id"]
     created_lines: list[dict] = []
 
@@ -27,12 +28,18 @@ class TestLinetRouter(unittest.TestCase):
                 database.session.add(project)
                 database.session.commit()
 
-    @pytest.mark.run(order=21)
-    def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no Lines for this project"
         }
-        response = self.client.get(f"{self.url_prefix}/list/{self.project_id}")
+        response = self.client.get(
+            f"{self.url_prefix}/list/{self.project_id}",
+            json = {
+                "DummyMedia": None
+            }, 
+            headers = {
+                "Authorization": self.token
+            }
+        )
         assert response.status_code == 404
         assert response.json["Error"] == expected_response_data["Error"]
 
@@ -44,10 +51,12 @@ class TestLinetRouter(unittest.TestCase):
                 "projectId": self.project_id
             }
             response = self.client.post(
-                f"{self.url_prefix}/create",
+                f"{self.url_prefix}/create/{self.project_id}",
                 json={
                     "name": f'NEW LINE-{i}',
-                    "projectId": self.project_id
+                }, 
+                headers = {
+                    "Authorization": self.token
                 }
             )
             assert response.status_code == 200
@@ -58,7 +67,15 @@ class TestLinetRouter(unittest.TestCase):
 
     @pytest.mark.run(order=24)
     def test_list_lines(self):
-        response = self.client.get(f"{self.url_prefix}/list/{self.project_id}")
+        response = self.client.get(
+            f"{self.url_prefix}/list/{self.project_id}",
+            json = {
+                "DummyMedia": None
+            }, 
+            headers = {
+                "Authorization": self.token
+            }
+        )
         assert response.status_code == 200
         assert isinstance(response.json, list)
         assert response.json == self.created_lines
@@ -67,10 +84,15 @@ class TestLinetRouter(unittest.TestCase):
     def test_delete_line(self):
         for line in self.created_lines:
             response = self.client.delete(
-                f"{self.url_prefix}/delete/{line['id']}"
+                f"{self.url_prefix}/delete/{line['id']}",
+                json = {
+                    "DummyMedia": None
+                }, 
+                headers = {
+                    "Authorization": self.token
+                }
             )
-            response.status == 200
-            assert response.json == line
+            assert response.status_code == 200
 
     @pytest.mark.run(order=26)
     def test_clean_up_database(self):

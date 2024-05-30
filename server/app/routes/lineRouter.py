@@ -19,7 +19,7 @@ lineRepository = LineRepository()
 
 
 @lineRouter.route("/list/<projectId>", methods=['GET'])
-@decorator_factory(requireAuthentication)
+@decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def listLines(_, projectId):
     lines = lineRepository.showByProjectId(projectId)
     return jsonify(lines)

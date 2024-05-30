@@ -24,7 +24,6 @@ orderedCommandsListRepository = OrderedCommandsListRepository()
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def showCommand(_, id):
     command = commandRepository.show(id)
-    return jsonify(command)
 
 
 @commandRouter.route("/create/<workflowId>", methods=['POST'])

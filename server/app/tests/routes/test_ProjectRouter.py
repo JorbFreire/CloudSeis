@@ -1,15 +1,15 @@
 import pytest
 import unittest
 from server.app.database.connection import database
-from server.app.models.UserModel import UserModel
 from ..conftest import _app
-from ..utils import get_test_user_data
+from ..utils import get_test_user_data, get_test_user_session
 
 
 class TestProjectRouter(unittest.TestCase):
     url_prefix = "/project"
     client = pytest.client
     user_data = get_test_user_data()
+    token = get_test_user_session(user_data["name"])
     user_id = user_data["id"]
     created_projects: list[dict] = []
 
@@ -24,7 +24,15 @@ class TestProjectRouter(unittest.TestCase):
         expected_response_data = {
             "Error": "There are no Projects for this user"
         }
-        response = self.client.get(f"{self.url_prefix}/list/{self.user_id}")
+        response = self.client.get(
+            f"{self.url_prefix}/list",
+            json = {
+                "DummyMedia": None
+            },
+            headers = {
+                "Authorization": self.token
+            }
+        )
         assert response.status_code == 404
         assert response.json["Error"] == expected_response_data["Error"]
 
@@ -40,6 +48,9 @@ class TestProjectRouter(unittest.TestCase):
                 json={
                     "name": f'NEW PROJECT-{i}',
                     "userId": self.user_id
+                },
+                headers = {
+                    "Authorization": self.token
                 }
             )
             assert response.status_code == 200
@@ -56,6 +67,9 @@ class TestProjectRouter(unittest.TestCase):
             f"{self.url_prefix}/update/{self.created_projects[2]['id']}",
             json={
                 "name": new_name,
+            }, 
+            headers = {
+                "Authorization": self.token
             }
         )
         assert response.status_code == 200
@@ -63,7 +77,15 @@ class TestProjectRouter(unittest.TestCase):
 
     @pytest.mark.run(order=4)
     def test_list_projects(self):
-        response = self.client.get(f"{self.url_prefix}/list/{self.user_id}")
+        response = self.client.get(
+            f"{self.url_prefix}/list",
+            json = {
+                "DummyMedia": None
+            },
+            headers = {
+                "Authorization": self.token
+            }
+        )
         assert response.status_code == 200
         assert isinstance(response.json, list)
         assert response.json == self.created_projects
@@ -72,9 +94,15 @@ class TestProjectRouter(unittest.TestCase):
     def test_delete_project(self):
         for project in self.created_projects:
             response = self.client.delete(
-                f"{self.url_prefix}/delete/{project['id']}"
+                f"{self.url_prefix}/delete/{project['id']}", 
+                json = {
+                    "DummyMedia": None
+                },
+                headers = {
+                    "Authorization": self.token
+                }
             )
-            response.status == 200
+            assert response.status_code == 200
             assert response.json == project
 
     @pytest.mark.run(order=6)

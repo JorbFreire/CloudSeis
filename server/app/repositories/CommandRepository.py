@@ -10,7 +10,8 @@ from copy import copy
 
 class CommandRepository:
     def show(self, id):
-        pass
+        command = CommandModel.query.filter_by(id=id).first()
+        return command.getAttributes()
 
     def create(self, userId, workflowId, name, parameters):
         user = UserModel.query.filter_by(id=UUID(userId)).first()
@@ -55,4 +56,11 @@ class CommandRepository:
         return command.getAttributes()
 
     def delete(self, id):
-        pass
+        command = CommandModel.query.filter_by(id=id).first()
+        if not command:
+            raise AppError("Command does not exist", 404)
+
+        database.session.delete(command)
+        database.session.commit()
+
+        return command.getAttributes()
