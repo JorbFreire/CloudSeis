@@ -11,7 +11,7 @@ from seismic_visualization import SeismicVisualization
 # ---------------------
 file_path = "/storage1/Seismic/dados_teste/marmousi_4ms_CDP.su"
 gather_key = "cdp"
-num_loadedgathers: int = 2
+num_loadedgathers: int = 1
 start_igather: int = 0  # zero-based indexing
 
 # Ler dado sísmico
@@ -25,11 +25,21 @@ interval_time_samples = sufile.headers.dt[0] / 1000000  # µs → s
 
 # SeismicVisualization
 # --------------------
-seismic_visualization = SeismicVisualization(
-    data=sufile.igather[start_igather : start_igather + num_loadedgathers].data,
-    x_positions=None,
-    interval_time_samples=interval_time_samples,
-)
+if num_loadedgathers == 1:
+    # Single gather
+    seismic_visualization = SeismicVisualization(
+        data=sufile.igather[start_igather].data,
+        x_positions=sufile.igather[start_igather].headers["offset"],
+        interval_time_samples=interval_time_samples,
+        gather_key="Offset [m]"
+    )
+else:
+    # Multiple gathers
+    seismic_visualization = SeismicVisualization(
+        data=sufile.igather[start_igather : start_igather + num_loadedgathers].data,
+        x_positions=None,
+        interval_time_samples=interval_time_samples,
+    )
 num_gathers = sufile.num_gathers
 
 simple_paragraph = Paragraph(text="Gathers")
@@ -46,13 +56,25 @@ update_information(start_igather, start_igather + num_loadedgathers)
 
 
 def update_plotting(igather_start: int, igather_stop: int):
-    # This function expects the index or slice to be correct
-    print(f"PLOT igather[{igather_start}:{igather_stop}]")
-    seismic_visualization.update_plot(
-        data=sufile.igather[igather_start:igather_stop].data,
-        x_positions=None,
-        interval_time_samples=interval_time_samples,
-    )
+    # WARNING: this function expects the index or slice to be correct
+    print(f"CALL update_plotting({igather_start}, {igather_stop})")
+
+    if igather_start == igather_stop - 1:
+        # Single gather
+        seismic_visualization.update_plot(
+            data=sufile.igather[igather_start].data,
+            x_positions=sufile.igather[igather_start].headers["offset"],
+            interval_time_samples=interval_time_samples,
+            gather_key="Offset [m]",
+        )
+    else:
+        # Multiple gathers
+        seismic_visualization.update_plot(
+            data=sufile.igather[igather_start:igather_stop].data,
+            x_positions=None,
+            interval_time_samples=interval_time_samples,
+        )
+
     update_information(igather_start, igather_stop)
 
 
@@ -157,9 +179,9 @@ slider.on_change("value_throttled", slider_value_callback)
 switch_lines = Switch(active=True)
 switch_image = Switch(active=True)
 switch_areas = Switch(active=True)
-seismic_visualization.assign_line_widget(switch_lines)
-seismic_visualization.asssign_image_widget(switch_image)
-seismic_visualization.assign_area_widget(switch_areas)
+seismic_visualization.assign_line_switch(switch_lines)
+seismic_visualization.asssign_image_switch(switch_image)
+seismic_visualization.assign_area_switch(switch_areas)
 
 left_tools_column = column(
     simple_paragraph,
