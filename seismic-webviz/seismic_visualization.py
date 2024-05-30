@@ -1,6 +1,7 @@
 import numpy.typing as npt
 from bokeh.models import ColumnDataSource, GlyphRenderer, Image, Switch
 import numpy as np
+import numpy.typing as npt
 from bokeh.plotting import figure
 from time import perf_counter
 
@@ -194,7 +195,7 @@ class SeismicVisualization:
             )
 
     @staticmethod
-    def _rescale_data(data, x_positions, stretch_factor):
+    def _rescale_data(data: npt.NDArray, x_positions: npt.NDArray, stretch_factor: int):
         # if there is only one trace, no need to rescale
         if data.shape[1] == 1:
             # normalize between -1 and 1
@@ -210,7 +211,11 @@ class SeismicVisualization:
         return data_rescaled
 
     @staticmethod
-    def _compute_multi_line_source_data(data, x_positions, time_sample_instants):
+    def _compute_multi_line_source_data(
+        data: npt.NDArray,
+        x_positions: npt.NDArray,
+        time_sample_instants: npt.NDArray,
+    ):
         num_traces = data.shape[1]
 
         xs_list = []
@@ -229,7 +234,12 @@ class SeismicVisualization:
 
         return {"xs": xs_list, "ys": ys_list}
 
-    def _plot_harea(self, data, x_positions, time_sample_instants):
+    def _add_hareas(
+        self,
+        data: npt.NDArray,
+        x_positions: npt.NDArray,
+        time_sample_instants: npt.NDArray,
+    ):
 
         num_time_samples = data.shape[0]
         num_traces = data.shape[1]
@@ -256,68 +266,9 @@ class SeismicVisualization:
                 visible=self.area_widget.active if self.area_widget else True,
             )
 
-    
-
-    def update_plot(
-        self,
-        data: npt.NDArray,
-        x_positions: npt.NDArray | None,
-        interval_time_samples: float,
-        time_unit="s",
-        stretch_factor=0.15,
-        color="black",
-    ):
-        update_plot_start = perf_counter()
-        # Input checks
-        # ------------
-        self._check_stretch_factor(stretch_factor)
-        self._check_data(data)
-        num_time_samples = data.shape[0]
-        num_traces = data.shape[1]
-        print(f"Number of traces: {num_traces}")
-        if x_positions is None:
-            x_positions = np.arange(start=1, stop=num_traces + 1)
-        else:
-            self._check_x_positions(x_positions, num_traces)
-
-        # Hold off all requests to repaint the plot
-        self.plot.hold_render = True
-
-        # Update ColumnDataSource objects for renderers
-        # ---------------------------------------------
-        self._remove_harea_renderers()
-
-        # Time sample instants
-        first_time_sample = 0.0
-        last_time_sample = first_time_sample + (num_time_samples - 1) * interval_time_samples
-        time_sample_instants = np.linspace(
-            start=first_time_sample, stop=last_time_sample, num=num_time_samples
-        )
-
-        data_rescaled = self._rescale_data(data, x_positions, stretch_factor)
-
-        # Update visualization
-        # --------------------
-        # Update image renderer's source
-        self.image_source.data = {"image": [data]}
-        # Update multi_line renderer's source
-        self.multi_line_source.data = self._compute_multi_line_source_data(
-            data_rescaled, x_positions, time_sample_instants
-        )
-        # Add harea renderers
-        self._plot_harea(data_rescaled, x_positions, time_sample_instants)
-
-        # Update plot setup
-        # -----------------
-        # Adjust axes
-        self.plot.xaxis.axis_label = "Offset (m)"
-        if time_unit == "s":
-            self.plot.yaxis.axis_label = "Time (s)"
-        elif time_unit == "ms":
-            self.plot.yaxis.axis_label = "Time (ms)"
-
-        # Update image renderer's glyph
-        # -----------------------------
+    def _update_image_glyph(self, x_positions: npt.NDArray, time_sample_instants: npt.NDArray):
+        num_traces = x_positions.size
+        first_time_sample = time_sample_instants[0]
         width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
         if num_traces == 1:
             self.image_renderer.glyph.update(
@@ -337,15 +288,82 @@ class SeismicVisualization:
                 dh=width_time_sample_instants,
             )
 
+    def update_plot(
+        self,
+        data: npt.NDArray,
+        x_positions: npt.NDArray | None,
+        interval_time_samples: float,
+        time_unit="s",
+        stretch_factor=0.15,
+        color="black",
+    ):
+        # Input checks
+        # ------------
+        self._check_stretch_factor(stretch_factor)
+        self._check_data(data)
+        num_time_samples = data.shape[0]
+        num_traces = data.shape[1]
+        if x_positions is None:
+            x_positions = np.arange(start=1, stop=num_traces + 1)
+        else:
+            self._check_x_positions(x_positions, num_traces)
+
+        # Hold off all requests to repaint the plot
+        self.plot.hold_render = True
+
+        # Data after rescaling
+        data_rescaled = self._rescale_data(data, x_positions, stretch_factor)
+
+        # Time sample instants
+        first_time_sample = 0.0
+        last_time_sample = first_time_sample + (num_time_samples - 1) * interval_time_samples
+        time_sample_instants = np.linspace(
+            start=first_time_sample, stop=last_time_sample, num=num_time_samples
+        )
+
+        # Update visualization
+        # --------------------
+
+        # Update image renderer's source
+        self._update_image_source(data)
+        # Update image renderer's glyph
+        self._update_image_glyph(x_positions, time_sample_instants)
+
+        # Update multi_line renderer's source
+        self._update_multi_line_source(data_rescaled, x_positions, time_sample_instants)
+
+        # Update harea renderers
+        self._remove_hareas()
+        self._add_hareas(data_rescaled, x_positions, time_sample_instants)
+
+        # Update plot setup
+        # -----------------
+        # Adjust axes
+        self.plot.xaxis.axis_label = "Offset (m)"
+        if time_unit == "s":
+            self.plot.yaxis.axis_label = "Time (s)"
+        elif time_unit == "ms":
+            self.plot.yaxis.axis_label = "Time (ms)"
+
         self._set_up_renderers_on_trace_excess(num_traces)
 
         # Stop holding off requests to repaint the plot
         self.plot.hold_render = False
 
-        update_plot_end = perf_counter()
-        print(f"time — update_plot: {update_plot_end - update_plot_start} seconds")
+    def _update_image_source(self, data: npt.NDArray):
+        self.image_source.data = {"image": [data]}
 
-    def _remove_harea_renderers(self):
+    def _update_multi_line_source(
+        self,
+        data_rescaled: npt.NDArray,
+        x_positions: npt.NDArray,
+        time_sample_instants: npt.NDArray,
+    ):
+        self.multi_line_source.data = self._compute_multi_line_source_data(
+            data_rescaled, x_positions, time_sample_instants
+        )
+
+    def _remove_hareas(self):
         """Remove all harea glyph renderers from this plot"""
         self.plot.renderers = list(filter(lambda gl: gl.name != "H", self.plot.renderers))
 
