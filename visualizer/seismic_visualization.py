@@ -194,6 +194,22 @@ class SeismicVisualization:
             )
 
     @staticmethod
+    def _rescale_data(data, x_positions, stretch_factor):
+        # if there is only one trace, no need to rescale
+        if data.shape[1] == 1:
+            # normalize between -1 and 1
+            return data / np.max(np.abs(data))
+
+        # Minimum trace horizontal spacing
+        trace_x_spacing = np.min(np.diff(x_positions))
+
+        # Rescale data by trace_x_spacing and stretch_factor
+        data_max_std = np.max(np.std(data, axis=0))
+
+        data_rescaled = data / data_max_std * trace_x_spacing * stretch_factor
+        return data_rescaled
+
+    @staticmethod
     def _compute_multi_line_source_data(data, x_positions, time_sample_instants):
         num_traces = data.shape[1]
 
@@ -240,6 +256,8 @@ class SeismicVisualization:
                 visible=self.area_widget.active if self.area_widget else True,
             )
 
+    
+
     def update_plot(
         self,
         data: npt.NDArray,
@@ -276,15 +294,7 @@ class SeismicVisualization:
             start=first_time_sample, stop=last_time_sample, num=num_time_samples
         )
 
-        # Amplitudes zeros
-        amplitudes_zeros = np.zeros(shape=(num_time_samples,))
-
-        # Minimum trace horizontal spacing
-        trace_x_spacing = np.min(np.diff(x_positions))
-
-        # Rescale data by trace_x_spacing and stretch_factor
-        data_max_std = np.max(np.std(data, axis=0))
-        data_rescaled = data / data_max_std * trace_x_spacing * stretch_factor
+        data_rescaled = self._rescale_data(data, x_positions, stretch_factor)
 
         # Update visualization
         # --------------------
@@ -308,16 +318,24 @@ class SeismicVisualization:
 
         # Update image renderer's glyph
         # -----------------------------
-        width_x_positions = np.abs(x_positions[0] - x_positions[-1])
         width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
-        distance_first_x_positions = x_positions[1] - x_positions[0]
-        distance_last_x_positions = x_positions[-1] - x_positions[-2]
-        self.image_renderer.glyph.update(
-            x=x_positions[0] - distance_first_x_positions / 2,
-            dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
-            y=first_time_sample,
-            dh=width_time_sample_instants,
-        )
+        if num_traces == 1:
+            self.image_renderer.glyph.update(
+                x=x_positions[0] - 1,
+                dw=2,
+                y=first_time_sample,
+                dh=width_time_sample_instants,
+            )
+        else:
+            width_x_positions = np.abs(x_positions[0] - x_positions[-1])
+            distance_first_x_positions = x_positions[1] - x_positions[0]
+            distance_last_x_positions = x_positions[-1] - x_positions[-2]
+            self.image_renderer.glyph.update(
+                x=x_positions[0] - distance_first_x_positions / 2,
+                dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
+                y=first_time_sample,
+                dh=width_time_sample_instants,
+            )
 
         self._set_up_renderers_on_trace_excess(num_traces)
 
