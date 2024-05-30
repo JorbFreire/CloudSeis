@@ -2,8 +2,14 @@ import pytest
 import unittest
 
 from server.app.database.connection import database
+from server.app.models.UserModel import UserModel
+from server.app.models.ProjectModel import ProjectModel
+from server.app.models.LineModel import LineModel
+from server.app.models.WorkflowModel import WorkflowModel
+
 from ..conftest import _app
 from ..utils import get_test_workflow_data, get_test_user_session
+
 
 class TestCommandRouter(unittest.TestCase):
     url_prefix = "/command"
@@ -11,7 +17,7 @@ class TestCommandRouter(unittest.TestCase):
     workflow_data, line_data, project_data, user_data = get_test_workflow_data()
     workflowId = workflow_data["id"]
     lineId = line_data["id"]
-    projectId = project_data["id"]    
+    projectId = project_data["id"]
     token = get_test_user_session(user_data["name"])
     created_commands: list[dict] = []
 
@@ -19,6 +25,16 @@ class TestCommandRouter(unittest.TestCase):
     def _init_database(self):
         with _app.app_context():
             database.create_all()
+            user = UserModel(**self.user_data)
+            project = ProjectModel(**self.project_data)
+            line = LineModel(**self.line_data)
+            workflow_data = WorkflowModel(**self.workflow_data)
+
+            database.session.add(user)
+            database.session.add(project)
+            database.session.add(line)
+            database.session.add(workflow_data)
+            database.session.commit()
 
     @pytest.mark.run(order=50)
     def test_empty_get(self):
@@ -27,10 +43,10 @@ class TestCommandRouter(unittest.TestCase):
         }
         response = self.client.get(
             f"{self.url_prefix}/show/1",
-            json = {
+            json={
                 "DummyMedia": None
-            }, 
-            headers = {
+            },
+            headers={
                 "Authorization": self.token
             }
         )
@@ -48,11 +64,11 @@ class TestCommandRouter(unittest.TestCase):
             }
             response = self.client.post(
                 f"{self.url_prefix}/create/{self.workflowId}",
-                json = {
+                json={
                     "name": f"NEW COMMAND-{i}",
                     "parameters": "SUDEFAULT",
                 },
-                headers = {
+                headers={
                     "Authorization": self.token
                 }
             )
@@ -66,15 +82,14 @@ class TestCommandRouter(unittest.TestCase):
         for command in self.created_commands:
             response = self.client.get(
                 f"{self.url_prefix}/show/{command['id']}",
-                json = {
+                json={
                     "DummyMedia": None,
                 },
-                headers = {
+                headers={
                     "Authorization": self.token,
                 }
             )
             assert response.status_code == 200
-    
 
     @pytest.mark.run(order=53)
     def test_update_command(self):
@@ -86,11 +101,11 @@ class TestCommandRouter(unittest.TestCase):
             }
             response = self.client.put(
                 f"{self.url_prefix}/update/{self.workflowId}",
-                json = {
+                json={
                     "name": f"NEW COMMAND-{i}",
                     "parameters": "SUDEFAULT",
                 },
-                headers = {
+                headers={
                     "Authorization": self.token
                 }
             )
@@ -104,10 +119,10 @@ class TestCommandRouter(unittest.TestCase):
         for command in self.created_commands:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{command['id']}",
-                json = {
+                json={
                     "DummyMedia": None
-                }, 
-                headers = {
+                },
+                headers={
                     "Authorization": self.token
                 }
             )
@@ -116,16 +131,16 @@ class TestCommandRouter(unittest.TestCase):
     @pytest.mark.run(order=55)
     def test_create_new_command_with_inexistent_workflow(self):
         expected_response_data = {
-            # !"Error": "Workflow does not exist" 
+            # !"Error": "Workflow does not exist"
             "Error": "No instance found for this id"
         }
         response = self.client.post(
             f"{self.url_prefix}/create/{self.workflowId + 99}",
-            json = {
+            json={
                 "name": "NO EXISTING PARENT",
                 "parameters": "SUDEFAULT",
             },
-            headers = {
+            headers={
                 "Authorization": self.token,
             }
         )
