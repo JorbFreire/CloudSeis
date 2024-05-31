@@ -7,7 +7,7 @@ from ..utils import get_test_user_session
 
 class TestUserRouter(unittest.TestCase):
     url_prefix = "/user"
-    token = get_test_user_session()
+    token = ""
     client = pytest.client
     created_users: list[dict] = []
     order: int = 0
@@ -48,7 +48,7 @@ class TestUserRouter(unittest.TestCase):
             )
             assert response.status_code == 200
             assert isinstance(response.json["id"], str)
-            # shoud never return the password
+            # *** shoud never return the password
             hasPassword = "password" in response.json
             assert hasPassword == False
             assert expected_response_data["name"] == response.json["name"]
@@ -68,10 +68,10 @@ class TestUserRouter(unittest.TestCase):
             self.token = get_test_user_session(user["name"])
             response = self.client.put(
                 f"{self.url_prefix}/update",
-                json = {
+                json={
                     "name": f"updated_{user['name']}"
                 },
-                headers = {
+                headers={
                     "Authorization": self.token
                 }
             )
@@ -83,8 +83,8 @@ class TestUserRouter(unittest.TestCase):
         for user in self.created_users:
             self.token = get_test_user_session(user["name"])
             response = self.client.delete(
-                f"{self.url_prefix}/delete", 
-                json = {
+                f"{self.url_prefix}/delete",
+                json={
                     "DummyMedia": None
                 },
                 headers={

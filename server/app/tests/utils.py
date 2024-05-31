@@ -22,12 +22,12 @@ def get_test_user_session(name="root"):
     email = f'{name}@email.com'
     response = pytest.client.post(
         "/session/",
-        json = {
+        json={
             "email": email,
             "password": "password123"
         }
     )
-    return response.json
+    return response.json["token"]
 
 
 def get_test_project_data(name="project"):
@@ -39,7 +39,7 @@ def get_test_project_data(name="project"):
             "name": "project_test",
             "userId": user_data["id"],
         },
-        headers = {
+        headers={
             "Authorization": token
         }
     )
@@ -56,23 +56,24 @@ def get_test_line_data(name="line"):
             "name": "line_test",
             "projectId": project_data["id"],
         },
-        headers = {
+        headers={
             "Authorization": token
         }
     )
     line_data = response.json
     return line_data, project_data, user_data
 
+
 def get_test_workflow_data(name="workflow"):
     line_data, project_data, user_data = get_test_line_data(name=name)
     token = get_test_user_session(name=user_data["name"])
     response = pytest.client.post(
         f"/workflow/create/{line_data['id']}",
-        json = {
+        json={
             "name": "workflow_test",
-            "parentType": "lineId" 
-        }, 
-        headers = {
+            "parentType": "lineId"
+        },
+        headers={
             "Authorization": token
         }
     )
