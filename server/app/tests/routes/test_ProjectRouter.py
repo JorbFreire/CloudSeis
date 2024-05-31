@@ -26,10 +26,7 @@ class TestProjectRouter(unittest.TestCase):
         }
         response = self.client.get(
             f"{self.url_prefix}/list",
-            json = {
-                "DummyMedia": None
-            },
-            headers = {
+            headers={
                 "Authorization": self.token
             }
         )
@@ -47,9 +44,8 @@ class TestProjectRouter(unittest.TestCase):
                 f"{self.url_prefix}/create",
                 json={
                     "name": f'NEW PROJECT-{i}',
-                    "userId": self.user_id
                 },
-                headers = {
+                headers={
                     "Authorization": self.token
                 }
             )
@@ -67,11 +63,12 @@ class TestProjectRouter(unittest.TestCase):
             f"{self.url_prefix}/update/{self.created_projects[2]['id']}",
             json={
                 "name": new_name,
-            }, 
-            headers = {
+            },
+            headers={
                 "Authorization": self.token
             }
         )
+        self.created_projects[2]["modified_at"] = response.json["modified_at"]
         assert response.status_code == 200
         assert response.json == self.created_projects[2]
 
@@ -79,10 +76,7 @@ class TestProjectRouter(unittest.TestCase):
     def test_list_projects(self):
         response = self.client.get(
             f"{self.url_prefix}/list",
-            json = {
-                "DummyMedia": None
-            },
-            headers = {
+            headers={
                 "Authorization": self.token
             }
         )
@@ -94,11 +88,8 @@ class TestProjectRouter(unittest.TestCase):
     def test_delete_project(self):
         for project in self.created_projects:
             response = self.client.delete(
-                f"{self.url_prefix}/delete/{project['id']}", 
-                json = {
-                    "DummyMedia": None
-                },
-                headers = {
+                f"{self.url_prefix}/delete/{project['id']}",
+                headers={
                     "Authorization": self.token
                 }
             )

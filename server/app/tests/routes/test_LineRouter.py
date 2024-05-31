@@ -33,10 +33,7 @@ class TestLineRouter(unittest.TestCase):
         }
         response = self.client.get(
             f"{self.url_prefix}/list/{self.project_id}",
-            json = {
-                "DummyMedia": None
-            }, 
-            headers = {
+            headers={
                 "Authorization": self.token
             }
         )
@@ -54,8 +51,9 @@ class TestLineRouter(unittest.TestCase):
                 f"{self.url_prefix}/create/{self.project_id}",
                 json={
                     "name": f'NEW LINE-{i}',
-                }, 
-                headers = {
+                    "projectId": self.project_id
+                },
+                headers={
                     "Authorization": self.token
                 }
             )
@@ -69,10 +67,7 @@ class TestLineRouter(unittest.TestCase):
     def test_list_lines(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.project_id}",
-            json = {
-                "DummyMedia": None
-            }, 
-            headers = {
+            headers={
                 "Authorization": self.token
             }
         )
@@ -85,10 +80,7 @@ class TestLineRouter(unittest.TestCase):
         for line in self.created_lines:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{line['id']}",
-                json = {
-                    "DummyMedia": None
-                }, 
-                headers = {
+                headers={
                     "Authorization": self.token
                 }
             )

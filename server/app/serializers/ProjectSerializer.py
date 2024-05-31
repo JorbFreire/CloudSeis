@@ -5,5 +5,5 @@ class ProjectCreateSchema(Schema):
     name = fields.String(required=True)
 
 
-class ProjectUpdateSchema():
-    name = fields.String(required=True)
+class ProjectUpdateSchema(ProjectCreateSchema):
+    pass
