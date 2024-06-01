@@ -335,26 +335,10 @@ class SeismicVisualization:
 
     def _set_up_renderers_on_trace_excess(self, num_traces: int):
         # If there are too many traces...
-
-        # - deactivate area widget
-        #   (no need to hide area renderer because it won't even exist)
-        # - hide line renderer if it was visible
-        # - reveal image renderer if it was hidden
-
         if num_traces > MAX_TRACES_LINE_HAREA:
             # deactivate area widget
             if self.area_widget:
                 self.area_widget.update(active=False, disabled=True)
-            # hide line renderer
-            if self.line_widget:
-                self.line_widget.active = False
-            else:
-                self.multi_line_renderer.visible = False
-            # reveal image renderer
-            if self.image_widget:
-                self.image_widget.active = True
-            else:
-                self.image_renderer.visible = True
         else:
             # harea is allowed
             if self.area_widget is not None:
