@@ -15,8 +15,9 @@ class TestUserRouter(unittest.TestCase):
     @pytest.fixture(autouse=True, scope='class')
     def _init_database(self):
         with _app.app_context():
-            database.create_all()
-            database.session.commit()
+            with database.session.begin():
+                database.drop_all()
+                database.create_all()
 
     @pytest.mark.run(order=11)
     def test_empty_get(self):
@@ -84,9 +85,6 @@ class TestUserRouter(unittest.TestCase):
             self.token = get_test_user_session(user["name"])
             response = self.client.delete(
                 f"{self.url_prefix}/delete",
-                json={
-                    "DummyMedia": None
-                },
                 headers={
                     "Authorization": self.token
                 }

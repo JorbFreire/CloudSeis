@@ -25,9 +25,11 @@ class TestCommandRouter(unittest.TestCase):
     def _init_database(self):
         with _app.app_context():
             database.create_all()
+            del self.line_data["workflows"]
+
             user = UserModel(**self.user_data)
             project = ProjectModel(**self.project_data)
-            line = LineModel(**self.line_data)
+            line = LineModel(**self.line_data, owner_email=user.email)
             workflow_data = WorkflowModel(**self.workflow_data)
 
             database.session.add(user)
@@ -43,14 +45,10 @@ class TestCommandRouter(unittest.TestCase):
         }
         response = self.client.get(
             f"{self.url_prefix}/show/1",
-            json={
-                "DummyMedia": None
-            },
             headers={
                 "Authorization": self.token
             }
         )
-        print(response.json)
         assert response.status_code == 401
         assert response.json["Error"] == expected_response_data["Error"]
 
