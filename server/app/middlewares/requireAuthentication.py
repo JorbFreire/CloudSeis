@@ -29,7 +29,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
         if not token:
             raise AuthError("No token")
 
-        if (request.method == "post" or request.method == "put"):
+        if (request.method == "POST" or request.method == "PUT"):
             hasData = True
 
         if (hasData):
@@ -43,7 +43,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
         if isAdminRequired and not user.is_admin:
             raise AuthError("Must be admin")
 
-        # Really bad implementation
+        # ! Really bad implementation
         if (not routeModel) and ("parentType" in data):
             routeModel = LineModel if data["parentType"] == "lineId" else ProjectModel
 
