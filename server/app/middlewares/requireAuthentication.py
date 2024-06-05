@@ -58,7 +58,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
                 modelObject, 'owner_email'
             ) else modelObject.userId
             if userAttr != user.email and userAttr != user.id:
-                raise AuthError("Unauthorized by required auth")
+                raise AuthError("User unauthorized for this entity")
 
         # *** "payload.id" will be the first argument of any function
         # *** using "requireAuthentication" as decorator
