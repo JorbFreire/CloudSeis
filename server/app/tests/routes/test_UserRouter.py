@@ -1,8 +1,9 @@
 import pytest
 import unittest
+
 from server.app.database.connection import database
 from ..conftest import _app
-from ..utils import get_test_user_session
+from ..Mock import createSession, DEFAULT_PASSWORD
 
 
 class TestUserRouter(unittest.TestCase):
@@ -10,14 +11,12 @@ class TestUserRouter(unittest.TestCase):
     token = ""
     client = pytest.client
     created_users: list[dict] = []
-    order: int = 0
 
     @pytest.fixture(autouse=True, scope='class')
     def _init_database(self):
         with _app.app_context():
-            with database.session.begin():
-                database.drop_all()
-                database.create_all()
+            database.drop_all()
+            database.create_all()
 
     @pytest.mark.run(order=11)
     def test_empty_get(self):
@@ -44,7 +43,7 @@ class TestUserRouter(unittest.TestCase):
                 json={
                     "name": name,
                     "email": email,
-                    "password": "password123"
+                    "password": DEFAULT_PASSWORD
                 }
             )
             assert response.status_code == 200
@@ -66,14 +65,14 @@ class TestUserRouter(unittest.TestCase):
     @pytest.mark.run(order=14)
     def test_update_user(self):
         for user in self.created_users:
-            self.token = get_test_user_session(user["name"])
+            token = createSession(email=user["email"])
             response = self.client.put(
                 f"{self.url_prefix}/update",
                 json={
                     "name": f"updated_{user['name']}"
                 },
                 headers={
-                    "Authorization": self.token
+                    "Authorization": token
                 }
             )
             assert response.status_code == 200
@@ -82,11 +81,11 @@ class TestUserRouter(unittest.TestCase):
     @pytest.mark.run(order=15)
     def test_delete_user(self):
         for user in self.created_users:
-            self.token = get_test_user_session(user["name"])
+            token = createSession(email=user["email"])
             response = self.client.delete(
                 f"{self.url_prefix}/delete",
                 headers={
-                    "Authorization": self.token
+                    "Authorization": token
                 }
             )
             assert response.status_code == 200

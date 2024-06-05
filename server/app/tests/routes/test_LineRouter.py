@@ -1,18 +1,14 @@
 import pytest
 import unittest
 from server.app.database.connection import database
-from server.app.models.UserModel import UserModel
-from server.app.models.ProjectModel import ProjectModel
 from ..conftest import _app
-from ..utils import get_test_project_data, get_test_user_session
+from ..Mock import Mock
 
 
 class TestLineRouter(unittest.TestCase):
     url_prefix = "/line"
     client = pytest.client
-    project_data, user_data = get_test_project_data()
-    token = get_test_user_session(user_data["name"])
-    project_id = project_data["id"]
+    mock = Mock()
     created_lines: list[dict] = []
 
     #! this fixture implementation shall be checked to be
@@ -20,21 +16,20 @@ class TestLineRouter(unittest.TestCase):
     @pytest.fixture(autouse=True, scope='class')
     def _init_database(self):
         with _app.app_context():
-            with database.session.begin():
-                database.create_all()
-                user = UserModel(**self.user_data)
-                project = ProjectModel(**self.project_data)
-                database.session.add(user)
-                database.session.add(project)
-                database.session.commit()
+            database.drop_all()
+            database.create_all()
+            self.mock.loadUser()
+            self.mock.loadSession()
+            self.mock.loadProject()
+            self.mock.loadWorkflow()
 
         expected_response_data = {
             "Error": "There are no Lines for this project"
         }
         response = self.client.get(
-            f"{self.url_prefix}/list/{self.project_id}",
+            f"{self.url_prefix}/list/{self.mock.project['id']}",
             headers={
-                "Authorization": self.token
+                "Authorization": self.mock.token
             }
         )
         assert response.status_code == 404
@@ -45,16 +40,16 @@ class TestLineRouter(unittest.TestCase):
         for i in range(3):
             expected_response_data = {
                 "name": f'NEW LINE-{i}',
-                "projectId": self.project_id
+                "projectId": self.mock.project['id']
             }
             response = self.client.post(
-                f"{self.url_prefix}/create/{self.project_id}",
+                f"{self.url_prefix}/create/{self.mock.project['id']}",
                 json={
                     "name": f'NEW LINE-{i}',
-                    "projectId": self.project_id
+                    "projectId": self.mock.project['id']
                 },
                 headers={
-                    "Authorization": self.token
+                    "Authorization": self.mock.token
                 }
             )
             assert response.status_code == 200
@@ -66,9 +61,9 @@ class TestLineRouter(unittest.TestCase):
     @pytest.mark.run(order=24)
     def test_list_lines(self):
         response = self.client.get(
-            f"{self.url_prefix}/list/{self.project_id}",
+            f"{self.url_prefix}/list/{self.mock.project['id']}",
             headers={
-                "Authorization": self.token
+                "Authorization": self.mock.token
             }
         )
         assert response.status_code == 200
@@ -81,7 +76,7 @@ class TestLineRouter(unittest.TestCase):
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{line['id']}",
                 headers={
-                    "Authorization": self.token
+                    "Authorization": self.mock.token
                 }
             )
             assert response.status_code == 200
