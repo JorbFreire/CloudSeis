@@ -7,7 +7,7 @@ class CommandCreateSchema(Schema):
     parameters = fields.String(required=True)
 
 
-class CommandUpdateParametersSchema():
+class CommandUpdateParametersSchema(Schema):
     # ! maybe should validate if it is a stringfied json
     parameters = fields.String(required=True)
 
