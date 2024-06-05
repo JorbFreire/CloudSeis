@@ -24,10 +24,10 @@ dbConfigOptions = {
     },
     # *** test connections blocked by white list
     "test": {
-        "dbname": checkForEnvValue("DATABASE_NAME", "postgres"),
-        "user": checkForEnvValue("DATABASE_USER", "postgres"),
-        "password": checkForEnvValue("DATABASE_PASSWORD", "0qXblK92vas5LNN9"),
-        "host": checkForEnvValue("DATABASE_HOST", "dependably-succinct-goldfish.data-1.use1.tembo.io"),
+        "dbname": checkForEnvValue("DATABASE_NAME", "admin"),
+        "user": checkForEnvValue("DATABASE_USER", "admin"),
+        "password": checkForEnvValue("DATABASE_PASSWORD", "mysecretpassword"),
+        "host": checkForEnvValue("DATABASE_HOST", "localhost"),
         "port": checkForEnvValue("DATABASE_PORT", "5432")
     }
 }
