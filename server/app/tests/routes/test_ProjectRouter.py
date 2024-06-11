@@ -1,3 +1,4 @@
+from flask import Response
 import pytest
 import unittest
 from server.app.database.connection import database
@@ -85,6 +86,17 @@ class TestProjectRouter(unittest.TestCase):
         assert response.json == self.created_projects
 
     @pytest.mark.run(order=5)
+    def test_invalid_token_project(self):
+        for project in self.created_projects:
+            response = self.client.delete(
+                f"{self.url_prefix}/delete/{project['id']}",
+                headers={
+                    "Authorization": "!NV4L1dT0k3N"
+                }
+            )
+            assert response.status_code == 401
+
+    @pytest.mark.run(order=6)
     def test_delete_project(self):
         for project in self.created_projects:
             response = self.client.delete(
@@ -96,7 +108,7 @@ class TestProjectRouter(unittest.TestCase):
             assert response.status_code == 200
             assert response.json == project
 
-    @pytest.mark.run(order=6)
+    @pytest.mark.run(order=7)
     def test_clean_up_database(self):
         with _app.app_context():
             database.drop_all()

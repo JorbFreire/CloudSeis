@@ -21,7 +21,7 @@ def createProgram(groupId):
     if data == None:
         raise AppError("No body", 400)
 
-    if ('file' in request.files):
+    if 'file' in request.files:
         file = request.files['file']
         unique_filename = programFileRepository.create(file)
         data["path_to_executable_file"] = unique_filename
@@ -36,7 +36,7 @@ def updateProgram(programId):
     if data == None:
         raise AppError("No body", 400)
 
-    if ('file' in request.files):
+    if 'file' in request.files:
         file = request.files['file']
         unique_filename = programFileRepository.create(file)
         data["path_to_executable_file"] = unique_filename

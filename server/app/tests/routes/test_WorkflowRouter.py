@@ -143,7 +143,18 @@ class TestWorkflowRouter(unittest.TestCase):
             self.created_workflows.append(response.json)
 
     @pytest.mark.run(order=37)
-    def test_delete_project(self):
+    def test_invalid_token_workflow(self):
+        for workflow in self.created_workflows:
+            response = self.client.delete(
+                f"{self.url_prefix}/delete/{workflow['id']}",
+                headers={
+                    "Authorization": "!NV4L1dT0k3N"
+                }
+            )
+            assert response.status_code == 401
+
+    @pytest.mark.run(order=38)
+    def test_delete_workflow(self):
         for workflow in self.created_workflows:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{workflow['id']}",
@@ -154,7 +165,7 @@ class TestWorkflowRouter(unittest.TestCase):
             assert response.status_code == 200
             assert response.json == workflow
 
-    @pytest.mark.run(order=38)
+    @pytest.mark.run(order=39)
     def test_clean_up_database(self):
         with _app.app_context():
             database.drop_all()

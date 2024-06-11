@@ -15,24 +15,15 @@ from ..repositories.SessionRepository import SessionRepository
 
 sessionRepository = SessionRepository()
 
-# Line creation returns error with wrong token
-# Not finding line from workflow creation root
-# Email not matchin when references projectId for workflow creation root
-
-
 def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False):
     def wrapper(routeModel=routeModel, *args, **kwargs):
         token = request.headers.get('Authorization')
-        hasData = False
         data = {}
 
         if not token:
             raise AuthError("No token")
 
-        if (request.method == "POST" or request.method == "PUT"):
-            hasData = True
-
-        if (hasData):
+        if request.method == "POST" or request.method == "PUT":
             data = request.get_json()
 
         payload = sessionRepository.validateSession(token)
@@ -44,7 +35,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
             raise AuthError("Must be admin")
 
         # ! Really bad implementation
-        if (not routeModel) and ("parentType" in data):
+        if not routeModel and "parentType" in data:
             routeModel = LineModel if data["parentType"] == "lineId" else ProjectModel
 
         if routeModel:
