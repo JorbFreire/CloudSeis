@@ -71,6 +71,17 @@ class TestLineRouter(unittest.TestCase):
         assert response.json == self.created_lines
 
     @pytest.mark.run(order=25)
+    def test_invalid_token_line(self):
+        for line in self.created_lines:
+            response = self.client.delete(
+                f"{self.url_prefix}/delete/{line['id']}",
+                headers={
+                    "Authorization": "!NV4L1dT0k3N"
+                }
+            )
+            assert response.status_code == 401
+
+    @pytest.mark.run(order=26)
     def test_delete_line(self):
         for line in self.created_lines:
             response = self.client.delete(
@@ -81,7 +92,7 @@ class TestLineRouter(unittest.TestCase):
             )
             assert response.status_code == 200
 
-    @pytest.mark.run(order=26)
+    @pytest.mark.run(order=27)
     def test_clean_up_database(self):
         with _app.app_context():
             database.drop_all()

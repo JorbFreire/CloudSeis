@@ -3,4 +3,5 @@ venv/
 __pycache__
 .pytest_cache
 static/*
+vars.sh
 !.gitkeep

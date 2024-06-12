@@ -10,10 +10,6 @@ from ..repositories.UserRepository import UserRepository
 userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 userRepository = UserRepository()
 
-
-# todo:
-# encrypty password
-
 @userRouter.route("/create", methods=['POST'])
 @decorator_factory(validateRequestBody, SerializerSchema=UserCreateSchema)
 def createUser():

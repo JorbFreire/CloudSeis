@@ -63,6 +63,21 @@ class TestUserRouter(unittest.TestCase):
         assert response.json == self.created_users
 
     @pytest.mark.run(order=14)
+    def test_invalid_token_user(self):
+        for user in self.created_users:
+            response = self.client.put(
+                f"{self.url_prefix}/update",
+                json={
+                    "name": f"updated_{user['name']}"
+                },
+                headers={
+                    "Authorization": "!NV4L1dT0k3N"
+                }
+            )
+            assert response.status_code == 401
+
+
+    @pytest.mark.run(order=15)
     def test_update_user(self):
         for user in self.created_users:
             token = createSession(email=user["email"])
@@ -78,7 +93,7 @@ class TestUserRouter(unittest.TestCase):
             assert response.status_code == 200
             assert response.json["name"] == f"updated_{user['name']}"
 
-    @pytest.mark.run(order=15)
+    @pytest.mark.run(order=16)
     def test_delete_user(self):
         for user in self.created_users:
             token = createSession(email=user["email"])
@@ -91,7 +106,7 @@ class TestUserRouter(unittest.TestCase):
             assert response.status_code == 200
             assert response.json["email"] == user["email"]
 
-    @pytest.mark.run(order=16)
+    @pytest.mark.run(order=17)
     def test_clean_up_database(self):
         with _app.app_context():
             database.drop_all()
