@@ -5,12 +5,12 @@ from bokeh.models import Paragraph, Slider, Spinner, Switch
 from bokeh.plotting import curdoc
 from seismicio import readsu
 
-from seismic_visualization import SeismicVisualization
+from src.models.SeismicVisualization import SeismicVisualization
 
 # Parâmetros de entrada
 # ---------------------
-file_path = "/storage1/Seismic/dados_teste/marmousi_4ms_CDP.su"
-gather_key = "cdp"
+file_path = "./marmousi_4ms_CS.su"
+gather_key = "ep"
 num_loadedgathers: int = 1
 start_igather: int = 0  # zero-based indexing
 
@@ -36,7 +36,8 @@ if num_loadedgathers == 1:
 else:
     # Multiple gathers
     seismic_visualization = SeismicVisualization(
-        data=sufile.igather[start_igather : start_igather + num_loadedgathers].data,
+        data=sufile.igather[start_igather: start_igather +
+                            num_loadedgathers].data,
         x_positions=None,
         interval_time_samples=interval_time_samples,
     )
@@ -45,14 +46,14 @@ num_gathers = sufile.num_gathers
 simple_paragraph = Paragraph(text="Gathers")
 
 
-def update_information(gather_index_start: int, gather_index_stop: int):
+def update_gather_label(gather_index_start: int, gather_index_stop: int):
     gather_value_start = sufile.gather_index_to_value(gather_index_start)
     gather_value_end = sufile.gather_index_to_value(gather_index_stop - 1)
     simple_paragraph.text = f"Gather {gather_value_start} to {gather_value_end}"
     # simple_paragraph.text = f"Gather WHATERVER"
 
 
-update_information(start_igather, start_igather + num_loadedgathers)
+update_gather_label(start_igather, start_igather + num_loadedgathers)
 
 
 def update_plotting(igather_start: int, igather_stop: int):
@@ -75,7 +76,7 @@ def update_plotting(igather_start: int, igather_stop: int):
             interval_time_samples=interval_time_samples,
         )
 
-    update_information(igather_start, igather_stop)
+    update_gather_label(igather_start, igather_stop)
 
 
 def range_slider_input_handler(attr, old, new):
@@ -110,48 +111,6 @@ def spinner_value_callback(attr, old, new):
     slider.disabled = False
 
 
-def _get_igather_slice(start_position_1_based,  num_loadedgathers):
-    """
-    Args:
-      position (int): position of the gather, counting started at 1
-      num_loadedgathers (int): number of gathers to be loaded
-    
-    Returns:
-      start_igather (int):
-        start index, included endpoint for slicing gathers by index
-      stop_igather (int):
-        stop index, excluded endpoint for slicing gathers by index
-    """
-    start_igather = start_position_1_based - 1
-    stop_igather = start_igather + num_loadedgathers
-    if stop_igather <= num_gathers:
-        return (start_igather, stop_igather)
-    else:
-        return (num_gathers - num_loadedgathers, num_gathers)
-
-
-
-def slider_value_callback(attr, old, new):
-    print("--------------------------------------")
-    print(f"CALL slider_value_callback(new={new})")
-    global start_igather, num_loadedgathers, slider
-    spinner.disabled = True
-    slider.disabled = True
-
-    start_igather = round(new) - 1
-    stop_igather = start_igather + num_loadedgathers
-
-    # if exceeding to the right
-    if stop_igather > num_gathers:
-        start_igather = num_gathers - num_loadedgathers
-        stop_igather = num_gathers
-        slider.value = start_igather + 1
-
-    update_plotting(start_igather, stop_igather)
-    spinner.disabled = False
-    slider.disabled = False
-
-
 # Widgets
 # -------
 first_gather_index = 0
@@ -166,21 +125,13 @@ spinner = Spinner(
 )
 spinner.on_change("value_throttled", spinner_value_callback)
 
-slider = Slider(
-    start=1,
-    end=sufile.num_gathers,
-    value=start_igather + 1,
-    step=1,
-    title="Gather sequential number start",
-    width=1000,
-)
-slider.on_change("value_throttled", slider_value_callback)
+slider = SliderModel()
 
 switch_lines = Switch(active=True)
 switch_image = Switch(active=True)
 switch_areas = Switch(active=True)
 seismic_visualization.assign_line_switch(switch_lines)
-seismic_visualization.asssign_image_switch(switch_image)
+seismic_visualization.assign_image_switch(switch_image)
 seismic_visualization.assign_area_switch(switch_areas)
 
 left_tools_column = column(
@@ -192,8 +143,10 @@ left_tools_column = column(
 
 bottom_tools_row = row(spinner, slider, sizing_mode="stretch_width")
 
-row_tools_figure = row(children=[left_tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
-column_main = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
+row_tools_figure = row(children=[
+                       left_tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
+column_main = column(
+    children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
 
 curdoc().add_root(column_main)
 
