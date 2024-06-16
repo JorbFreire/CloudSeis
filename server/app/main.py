@@ -1,4 +1,4 @@
-from create_app import create_app
+from .create_app import create_app
 from dotenv import load_dotenv
 
 from .cli import populate_database_programs_table, new_default_programs_from_database

@@ -12,6 +12,16 @@ services:
     ports:
       - 5432:5432
 
+  db-test:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_NAME=${DATABASE_NAME:-admin}
+      - POSTGRES_USER=${DATABASE_USER:-admin}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD:-mysecretpassword}
+    ports:
+      - 5431:5432
+
   server:
     build: ./server
     depends_on:
