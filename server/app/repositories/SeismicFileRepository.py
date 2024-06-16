@@ -1,11 +1,13 @@
-from os import path
+import os
 import subprocess
 from datetime import datetime
+from uuid import UUID
 from ..getFilePath import getSuFilePath
 
+from ..models.UserModel import UserModel
 
-# todo: change to "SeismicFileRepository"
-class FileRepository:
+
+class SeismicFileRepository:
     def _getParameter(self, parameterValues: list | str | float | int | bool) -> str:
         parameterValuesProcessString = ""
         if not isinstance(parameterValues, list):
@@ -13,7 +15,7 @@ class FileRepository:
             return parameterValuesProcessString
 
         for index, parameterValue in enumerate(parameterValues):
-            if (index < len(parameterValues) - 1):
+            if index < len(parameterValues) - 1:
                 parameterValuesProcessString += f'{parameterValue},'
                 continue
             parameterValuesProcessString += f'{parameterValue}'
@@ -39,13 +41,20 @@ class FileRepository:
             seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
         return seismicUnixProcessString
 
-    def create(self, file) -> str:
+    def create(self, file, userId, projectId) -> str:
         unique_filename = file.filename.replace(".su", "_").replace(" ", "_")
         unique_filename = unique_filename + \
             datetime.now().strftime("%d%m%Y_%H%M%S") + ".su"
 
-        file.save(path.join("static", unique_filename))
+        user = UserModel.query.filter_by(id=UUID(userId)).first()
+
+        directory = f"static/{user.email}/{projectId}"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        file.save(os.path.join(directory, unique_filename))
         return unique_filename
+
+        # Check why file is blank
 
     def update(self, unique_filename, seismicUnixCommandsQueue) -> str:
         source_file_path = getSuFilePath(unique_filename)

@@ -23,8 +23,10 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
         if not token:
             raise AuthError("No token")
 
-        if request.method == "POST" or request.method == "PUT":
+        try:
             data = request.get_json()
+        except:
+            pass
 
         payload = sessionRepository.validateSession(token)
 

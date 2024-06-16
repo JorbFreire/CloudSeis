@@ -1,9 +1,14 @@
 from flask import Blueprint, send_file, request, jsonify
 
-from ..repositories.FileRepository import FileRepository
+from ..errors.AppError import AppError
+
+from ..middlewares.decoratorsFactory import decorator_factory
+from ..middlewares.requireAuthentication import requireAuthentication
+from ..models.ProjectModel import ProjectModel
+from ..repositories.SeismicFileRepository import SeismicFileRepository
 
 suFileRouter = Blueprint("su-file-routes", __name__, url_prefix="/su-file")
-fileRepository = FileRepository()
+seismicFileRepository = SeismicFileRepository()
 
 # ? note sure if this "/ should be keep or not"
 @suFileRouter.route("/", methods=['GET'])
@@ -15,10 +20,15 @@ def showSuFile():
 
 
 # ? note sure if this "/ should be keep or not"
-@suFileRouter.route("/", methods=['POST'])
-def createSuFile():
+@suFileRouter.route("/create/<projectId>", methods=['POST'])
+@decorator_factory(requireAuthentication, routeModel=ProjectModel)
+def createSuFile(userId, *_, **kwargs):
     file = request.files['file']
-    unique_filename = fileRepository.create(file)
+    if 'file' not in request.files:
+        raise AppError("No file part in the request")
+
+    projectId = int(list(kwargs.values())[0])
+    unique_filename = seismicFileRepository.create(file, userId, projectId)
     return {"unique_filename": unique_filename}
 
 
@@ -32,7 +42,7 @@ def updateSuFile(unique_filename):
         )
 
     seismicUnixCommandsQueue = data["seismicUnixCommandsQueue"]
-    process_output = fileRepository.update(unique_filename, seismicUnixCommandsQueue)
+    process_output = seismicFileRepository.update(unique_filename, seismicUnixCommandsQueue)
     return jsonify({
         "process_output": process_output
     })
