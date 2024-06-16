@@ -7,7 +7,7 @@ echo $FLASK_ENV
 echo "**********"
 
 echo "Running migrations"
-exec flask db upgrade
+flask db upgrade
 
 if [ "$FLASK_ENV" = "DEVELOPMENT" ]; then
     echo "Running in development mode"
