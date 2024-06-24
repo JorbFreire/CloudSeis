@@ -18,14 +18,13 @@ export const Container = styled.div`
   height: 100vh;
 `
 
-export const SelectedWorkflowContainer = styled.div`
+export const SelectedWorkflowsContainer = styled.div`
   display: flex;
-  width: calc(100% - (256px * 2));
+  width: calc(100% - (256px));
 `
 
 export const FloatButton = styled(Fab) <IFloatButtonProps>`
   position: absolute !important;
-  background-color: red;
   z-index: 10;
 
   ${({ $top }) => $top && `top: ${$top};`}

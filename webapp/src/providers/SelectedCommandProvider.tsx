@@ -1,81 +1,48 @@
 import { createContext, useContext, useState } from 'react'
 import type { ReactNode, Dispatch, SetStateAction } from 'react'
-import { updateCommand } from 'services/commandServices'
 
-type selectedCommandType = ICommand | undefined
-type setSelectedCommandType = Dispatch<SetStateAction<selectedCommandType>>
+type selectedCommandIndexType = number | undefined
+type setSelectedCommandIndexType = Dispatch<SetStateAction<number | undefined>>
 
-interface ISelectedCommandProviderProps {
+interface ISelectedCommandIndexProviderProps {
   children: ReactNode | Array<ReactNode>
 }
 
-interface ISelectedCommandProviderContext {
-  selectedCommand: selectedCommandType
-  setSelectedCommand: setSelectedCommandType
-  updateCommandParams: (newParameters: string) => undefined | void
-  // "suFileName" is kept here as an workarround and shall be better placed soon
-  suFileName: string
-  setSuFileName: (newSuFileName: string) => undefined | void
+interface ISelectedCommandIndexProviderContext {
+  selectedCommandIndex: selectedCommandIndexType
+  setSelectedCommandIndex: setSelectedCommandIndexType
 }
 
-const SelectedCommandProviderContext = createContext<ISelectedCommandProviderContext>({
-  selectedCommand: undefined,
-  setSelectedCommand: () => undefined,
-  updateCommandParams: () => undefined,
-  // "suFileName" is kept here as an workarround and shall be better placed soon
-  suFileName: "",
-  setSuFileName: () => undefined,
+const SelectedCommandIndexProviderContext = createContext<ISelectedCommandIndexProviderContext>({
+  selectedCommandIndex: undefined,
+  setSelectedCommandIndex: () => undefined,
 });
 
-export default function SelectedCommandProvider({ children }: ISelectedCommandProviderProps) {
-  const [selectedCommand, setSelectedCommand] = useState<selectedCommandType>(undefined)
-  // "suFileName" is kept here as an workarround and shall be better placed soon
-  const [suFileName, setSuFileName] = useState("")
-
-  // isso provavelmente vai no unix block provider, 
-  // chamando o selecetedCommand de dentro
-  // Tem q pensar um pouco mais pra ver a melhor rota
-
-  const updateCommandParams = (newParameters: string) => {
-    if (!selectedCommand)
-      return;
-    updateCommand(selectedCommand.id, newParameters)
-  }
+export default function SelectedCommandIndexProvider({ children }: ISelectedCommandIndexProviderProps) {
+  const [selectedCommandIndex, setSelectedCommandIndex] = useState<selectedCommandIndexType>(undefined)
 
   return (
-    <SelectedCommandProviderContext.Provider
+    <SelectedCommandIndexProviderContext.Provider
       value={{
-        selectedCommand,
-        setSelectedCommand,
-        updateCommandParams,
-        // "suFileName" is kept here as an workarround and shall be better placed soon
-        suFileName,
-        setSuFileName,
+        selectedCommandIndex,
+        setSelectedCommandIndex,
       }}
     >
       {children}
-    </SelectedCommandProviderContext.Provider>
+    </SelectedCommandIndexProviderContext.Provider>
   )
 }
 
-export function useSelectedCommand(): ISelectedCommandProviderContext {
-  const context = useContext(SelectedCommandProviderContext)
+export function useSelectedCommandIndex(): ISelectedCommandIndexProviderContext {
+  const context = useContext(SelectedCommandIndexProviderContext)
   if (!context)
-    throw new Error('useSelectedCommand must be used within a SelectedCommandProvider')
+    throw new Error('useSelectedCommandIndex must be used within a SelectedCommandIndexProvider')
   const {
-    selectedCommand,
-    setSelectedCommand,
-    updateCommandParams,
-    // "suFileName" is kept here as an workarround and shall be better placed soon
-    suFileName,
-    setSuFileName,
+    selectedCommandIndex,
+    setSelectedCommandIndex,
   } = context
   return {
-    selectedCommand,
-    setSelectedCommand,
-    updateCommandParams,
-    // "suFileName" is kept here as an workarround and shall be better placed soon
-    suFileName,
-    setSuFileName,
+    selectedCommandIndex,
+    setSelectedCommandIndex,
   }
 }

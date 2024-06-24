@@ -1,18 +1,18 @@
 import { Dispatch, ReactNode, SetStateAction } from "react"
 
-// make tabs compatible with dnd items
-// not needing to use tabs in every DND list
+// ? make tabs compatible with dnd items
+// ? not needing to use tabs in every DND list
 interface IgenericEntityWithOptionalName {
   name?: string;
 }
 
 type itemType = IgenericEntitiesType & IgenericEntityWithOptionalName;
 
-type itemsListType = Array<itemType>
+type itemsListType<T extends itemType> = Array<T>
 
-export interface IDefaultDNDListProps {
+export interface IDefaultDNDListProps<T extends itemType> {
   children: ReactNode
   orientation?: navigationOrientationType
-  items: itemsListType
-  setItems: Dispatch<SetStateAction<itemsListType>>
+  items: itemsListType<T>
+  setItems: Dispatch<SetStateAction<itemsListType<T>>>
 }

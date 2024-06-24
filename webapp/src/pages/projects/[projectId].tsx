@@ -1,5 +1,7 @@
 import { useMatch } from '@tanstack/react-location'
 import SelectedWorkflowsProvider from 'providers/SelectedWorkflowsProvider'
+import CommandsProvider from 'providers/CommandsProvider'
+import SelectedCommandProvider from 'providers/SelectedCommandProvider'
 import ProjectView from 'views/Project'
 
 export default function ProjectPage() {
@@ -7,9 +9,13 @@ export default function ProjectPage() {
 
   return (
     <SelectedWorkflowsProvider>
-      <ProjectView
-        projectId={Number(params.projectId)}
-      />
+      <CommandsProvider>
+        <SelectedCommandProvider>
+          <ProjectView
+            projectId={Number(params.projectId)}
+          />
+        </SelectedCommandProvider >
+      </CommandsProvider>
     </SelectedWorkflowsProvider>
   )
 }

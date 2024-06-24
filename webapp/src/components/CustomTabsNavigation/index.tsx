@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction, ComponentType } from 'react'
+import { type Dispatch, type SetStateAction, type ComponentType, type ReactNode, useEffect } from 'react'
 
 import Tabs from '@mui/material/Tabs';
 import CustomTab from 'components/CustomTab';
@@ -9,27 +9,35 @@ import {
   TabContent,
 } from './styles'
 
-interface ICustomTabsNavigationProps {
-  tabs: Array<IgenericEntitiesType>
-  setTabs: Dispatch<SetStateAction<Array<IgenericEntitiesType>>>
+
+// *** once <T> accepts any type extending "IgenericEntitiesType"
+// *** it shall be capable to render any matching array
+// *** not needing to convert it removing other filds missing at "IgenericEntitiesType"
+interface ICustomTabsNavigationProps<T extends IgenericEntitiesType> {
+  tabs: Array<T>
+  setTabs: Dispatch<SetStateAction<Array<T>>>
   selectedTab: number | undefined
   setSelectedTab: Dispatch<SetStateAction<number | undefined>>
+
+  children?: ReactNode
+
   color?: navigationColorType
   orientation?: navigationOrientationType
-  CustomDndContext?: ComponentType<IDefaultDNDListProps>
+  CustomDndContext?: ComponentType<IDefaultDNDListProps<T>>
 }
 
-export default function CustomTabsNavigation({
+export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
   tabs,
   setTabs,
-  color = "primary",
-  orientation = "horizontal",
   selectedTab,
   setSelectedTab,
+
+  children,
+  color = "primary",
+  orientation = "horizontal",
   // *** render empty element by default when no DndContextProvided
   CustomDndContext = ({ children }) => (children),
-}: ICustomTabsNavigationProps) {
-
+}: ICustomTabsNavigationProps<T>) {
   return Boolean(tabs.length) && (
     <Container $orientation={orientation}>
       {/* *** CustomDndContext is passed by optional props *** */}
@@ -64,6 +72,7 @@ export default function CustomTabsNavigation({
             $color={color}
             $orientation={orientation}
           >
+            {children}
           </TabContent>
         )
       )}

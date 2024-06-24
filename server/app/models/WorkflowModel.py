@@ -13,6 +13,7 @@ class WorkflowModel(database.Model):  # type: ignore
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
+    # todo: file_name shall be moved to the project and make a selectable here
     file_name = dbTypes.Column(dbTypes.String)
 
     owner_email = dbTypes.Column(dbTypes.ForeignKey(

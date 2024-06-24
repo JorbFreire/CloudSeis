@@ -13,7 +13,7 @@ export async function getLinesByProjectID(
     })
     return response.data
   } catch (error) {
-    console.error(error)
+    console.error(error);
     const axiosError = error as AxiosError
     if (axiosError.status === 401)
       return axiosError.status

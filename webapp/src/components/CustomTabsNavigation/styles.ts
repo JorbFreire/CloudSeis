@@ -33,6 +33,7 @@ export const Container = styled.div<IContainerProps>`
   display: flex;
   flex-direction: ${({ $orientation }) => getContainerDirection($orientation)};
   height: 100%;
+  width: 100%;
   .MuiTabs-indicator {
     display: none;
   }
@@ -41,6 +42,8 @@ export const Container = styled.div<IContainerProps>`
 export const TabContent = styled.div<ITabContentProps>`
   z-index: 2;
   height: 100%;
+  width: 100%;
+  padding: 16px 32px;
   ${({ $orientation }) => getContentOrientationStyles($orientation)}
   ${({ $color }) => getContentColorStyles($color)}
 `

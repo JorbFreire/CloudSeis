@@ -7,20 +7,24 @@ import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 
-import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
 import { useLines } from 'providers/LinesProvider'
+import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
+import { useCommands } from 'providers/CommandsProvider';
+import { useSelectedCommandIndex } from 'providers/SelectedCommandProvider';
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
 import ProjectTab from 'components/ProjectTab';
 import CustomTabsNavigation from 'components/CustomTabsNavigation';
+import CommandParameters from 'components/CommandParameters';
 import DefaultDNDList from 'components/DefaultDNDList';
 
 import { getLinesByProjectID } from 'services/lineServices'
+import { getWorkflowByID } from 'services/workflowServices'
 
 import {
   Container,
-  SelectedWorkflowContainer,
+  SelectedWorkflowsContainer,
   FloatButton,
 } from './styles'
 
@@ -40,6 +44,8 @@ export default function Project({ projectId }: IProjectProps) {
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
   const { setLines } = useLines()
+  const { commands, setCommands } = useCommands()
+  const { selectedCommandIndex, setSelectedCommandIndex } = useSelectedCommandIndex()
 
   useEffect(() => {
     const token = localStorage.getItem("jwt")
@@ -55,20 +61,57 @@ export default function Project({ projectId }: IProjectProps) {
       })
   }, [projectId])
 
+  useEffect(() => {
+    if (!singleSelectedWorkflowId)
+      return
+    const token = localStorage.getItem("jwt")
+    if (!token)
+      return navigate({ to: "/login" })
+    getWorkflowByID(token, singleSelectedWorkflowId)
+      .then((result) => {
+        if (!result)
+          return
+        if (result === 401)
+          return navigate({ to: "/login" })
+
+        setCommands([...result.commands])
+        if (result.commands.length < 1)
+          return;
+        setSelectedCommandIndex(result.commands[0].id)
+      })
+  }, [singleSelectedWorkflowId])
+
   return (
     <>
       <Container>
         <ProjectTab />
-
-        <SelectedWorkflowContainer>
+        <SelectedWorkflowsContainer>
           <CustomTabsNavigation
             tabs={selectedWorkflows}
             setTabs={setSelectedWorkflows}
             selectedTab={singleSelectedWorkflowId}
             setSelectedTab={setSingleSelectedWorkflowId}
             CustomDndContext={DefaultDNDList}
-          />
-        </SelectedWorkflowContainer>
+          >
+            <CustomTabsNavigation
+              tabs={commands}
+              setTabs={setCommands}
+              selectedTab={selectedCommandIndex}
+              setSelectedTab={setSelectedCommandIndex}
+              CustomDndContext={DefaultDNDList}
+              color='white'
+              orientation='vertical'
+            >
+              {
+                selectedCommandIndex && (
+                  <CommandParameters
+                    command={commands.find(({ id }) => id == selectedCommandIndex)}
+                  />
+                )
+              }
+            </CustomTabsNavigation>
+          </CustomTabsNavigation>
+        </SelectedWorkflowsContainer>
 
         <FloatButton
           $top='16px'

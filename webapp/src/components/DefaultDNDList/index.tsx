@@ -34,12 +34,12 @@ function getModifiers(orientation: navigationOrientationType) {
   return [...modifiers, restrictToVerticalAxis]
 }
 
-export default function DefaultDNDList({
+export default function DefaultDNDList<T extends IgenericEntitiesType>({
   children,
   orientation = "horizontal",
   items,
   setItems,
-}: IDefaultDNDListProps) {
+}: IDefaultDNDListProps<T>) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {

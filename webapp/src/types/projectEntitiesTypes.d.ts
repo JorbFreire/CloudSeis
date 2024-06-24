@@ -16,13 +16,18 @@ declare interface ILine extends IgenericEntitiesType {
   workflows: Array<IResumedWorkflow>
 }
 
+declare interface IWorkflow extends IgenericEntitiesType {
+  file_name: string
+  commands: Array<ICommand>
+}
+
 declare interface IResumedWorkflow extends IgenericEntitiesType {
 }
 
 declare interface ICommand extends IgenericEntitiesType {
-  // stringfied json
-  parameters: string
   workflowId: number
+  // *** stringfied json, but currently [commit 7640f54] accepts any object
+  parameters: string
 }
 
 declare type listOfCommandIdsType = Array<string>
