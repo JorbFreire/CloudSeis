@@ -32,8 +32,9 @@ def createSuFile(userId, *_, **kwargs):
     return {"unique_filename": unique_filename}
 
 
-@suFileRouter.route("/<unique_filename>/filters", methods=['PUT'])
-def updateSuFile(unique_filename):
+# Understans <unique_filename> -> What it is, which file is and why it is necessary
+@suFileRouter.route("/<unique_filename>/<workflowId>", methods=['PUT'])
+def updateSuFile(unique_filename, workflowId):
     data = request.get_json()
     if data == None:
         return jsonify(
@@ -41,8 +42,8 @@ def updateSuFile(unique_filename):
             status=400
         )
 
-    seismicUnixCommandsQueue = data["seismicUnixCommandsQueue"]
-    process_output = seismicFileRepository.update(unique_filename, seismicUnixCommandsQueue)
+    # seismicUnixCommandsQueue = data["seismicUnixCommandsQueue"]
+    process_output = seismicFileRepository.update(unique_filename, workflowId)
     return jsonify({
         "process_output": process_output
     })

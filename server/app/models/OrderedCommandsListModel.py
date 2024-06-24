@@ -21,7 +21,7 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
     commandIds = dbTypes.Column(dbTypes.ARRAY(dbTypes.Integer))
 
     def getCommands(self) -> list[dict[str, str]]:
-        if len(self.commandIds) is 0:
+        if len(self.commandIds) == 0:
             return []
         commands = []
         for id in self.commandIds:
@@ -30,7 +30,8 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
             ).first()
             commands.append(command)
 
-        return [command.getAttributes() for command in commands]
+        # return [command.getAttributes() for command in commands]
+        return commands
 
     def getAttributes(self) -> dict[str, str | list[int]]:
         return {

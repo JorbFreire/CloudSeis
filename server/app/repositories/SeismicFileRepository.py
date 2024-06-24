@@ -1,3 +1,5 @@
+from icecream import ic
+import json
 import os
 import subprocess
 from datetime import datetime
@@ -5,7 +7,7 @@ from uuid import UUID
 from ..getFilePath import getSuFilePath
 
 from ..models.UserModel import UserModel
-
+from ..models.WorkflowModel import WorkflowModel
 
 class SeismicFileRepository:
     def _getParameter(self, parameterValues: list | str | float | int | bool) -> str:
@@ -33,12 +35,16 @@ class SeismicFileRepository:
 
     def _getSemicUnixCommandString(self, commandsQueue: list, source_file_path: str, changed_file_path: str) -> str:
         seismicUnixProcessString = ""
-        for seismicUnixProgram in commandsQueue:
-            seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
-            seismicUnixProcessString += self._getAllParameters(
-                seismicUnixProgram["parameters"]
-            )
-            seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
+        for orderedCommands in commandsQueue:
+            for seismicUnixProgram in orderedCommands.getCommands():
+                seismicUnixProcessString += f'{seismicUnixProgram.name}'
+                seismicUnixProcessString += self._getAllParameters(seismicUnixProgram.parameters)
+                seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
+
+            # Dentro do workflow tem o orderedCommands
+            # A partir do orderedCommands, tem-se os commands
+            # então, tem-se workflow que tem orderedCommands, nesta função é o commandsQueue
+            # commandsQueue é um array de commands (Model)
         return seismicUnixProcessString
 
     def create(self, file, userId, projectId) -> str:
@@ -54,10 +60,12 @@ class SeismicFileRepository:
         file.save(os.path.join(directory, unique_filename))
         return unique_filename
 
-        # Check why file is blank
+        # File is blank if marmousi_CS.su is empty
 
-    def update(self, unique_filename, seismicUnixCommandsQueue) -> str:
+    def update(self, unique_filename, workflowId) -> str:
         source_file_path = getSuFilePath(unique_filename)
+        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+        seismicUnixCommandsQueue = workflow.orderedCommandsList
         # todo: dynamically change the name of the file
         changed_file_path = getSuFilePath(f'2{unique_filename}')
         seismicUnixProcessString = self._getSemicUnixCommandString(
