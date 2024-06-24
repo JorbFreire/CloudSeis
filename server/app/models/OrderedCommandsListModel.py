@@ -10,6 +10,7 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
 
+    # todo: the parent shall be changed to project
     workflowId = dbTypes.Column(dbTypes.ForeignKey(
         "workflows_table.id",
         name="FK_workflows_table_workflow_commands_list_table"
@@ -18,6 +19,8 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
     # ! thats a huge workarround, but should work
     # each integer represents an id on command table
     # that way will be easy to keep the list of commands ordered
+    # ! need fix: when delete command, its id keeps here
+    # todo: add relation to commands so it can be finded and removed
     commandIds = dbTypes.Column(dbTypes.ARRAY(dbTypes.Integer))
 
     def getCommands(self) -> list[dict[str, str]]:
@@ -28,9 +31,7 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
             command = CommandModel.query.filter_by(
                 id=id
             ).first()
-            commands.append(command)
-
-        # return [command.getAttributes() for command in commands]
+            commands.append(command.getAttributes())
         return commands
 
     def getAttributes(self) -> dict[str, str | list[int]]:

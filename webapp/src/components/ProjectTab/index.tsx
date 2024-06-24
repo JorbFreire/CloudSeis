@@ -31,7 +31,9 @@ export default function ProjectTab() {
   };
 
   const handleSelect = (_: SyntheticEvent, nodeId: string) => {
-    if (!nodeId.startsWith("workflow") || !nodeId.startsWith("dataset"))
+    const isWorkflow = nodeId.startsWith("workflow")
+    const isDataset = nodeId.startsWith("dataset")
+    if (!(isWorkflow || isDataset))
       return
     const [key, id, name] = nodeId.split("-")
 
@@ -46,7 +48,11 @@ export default function ProjectTab() {
 
     const isAlredySelected = selectedWorkflows.findIndex(
       (element) => element.id == Number(id)
-    ) > 0
+    ) >= 0
+
+    setSelected(nodeId);
+    setSingleSelectedWorkflowId(Number(id))
+
     if (isAlredySelected)
       return
 
@@ -57,8 +63,6 @@ export default function ProjectTab() {
         name: name,
       }
     ])
-    setSelected(nodeId);
-    setSingleSelectedWorkflowId(Number(id))
   };
 
   return (

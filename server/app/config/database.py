@@ -22,13 +22,12 @@ dbConfigOptions = {
         "host": checkForEnvValue("DATABASE_HOST", "localhost"),
         "port": checkForEnvValue("DATABASE_PORT", "5432")
     },
-    # *** test connections blocked by white list
     "test": {
         "dbname": checkForEnvValue("DATABASE_NAME", "admin"),
         "user": checkForEnvValue("DATABASE_USER", "admin"),
         "password": checkForEnvValue("DATABASE_PASSWORD", "mysecretpassword"),
         "host": checkForEnvValue("DATABASE_HOST", "localhost"),
-        "port": checkForEnvValue("DATABASE_PORT", "5432")
+        "port": checkForEnvValue("TEST_DATABASE_PORT", "5431")
     }
 }
 

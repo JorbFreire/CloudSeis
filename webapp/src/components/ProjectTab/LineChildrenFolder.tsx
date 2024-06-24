@@ -27,12 +27,12 @@ export default function LineChildrenFolder({
 
   return (
     <TreeItem
-      nodeId={`${entityType}-from-line-${lineId}`}
+      nodeId={`from-${lineId}-${entityType}`}
       label={`${entityType}s`}
     >
       {data.map((workflow) => (
         <TreeItem
-          key={workflow.id}
+          key={`${entityType}-${workflow.id}`}
           nodeId={`${entityType}-${workflow.id}-${workflow.name}`}
           label={workflow.name}
         />
