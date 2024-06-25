@@ -1,11 +1,14 @@
-from os import path
+from json import loads
+import os
 import subprocess
 from datetime import datetime
+from uuid import UUID
 from ..getFilePath import getSuFilePath
 
+from ..models.UserModel import UserModel
+from ..models.WorkflowModel import WorkflowModel
 
-# todo: change to "SeismicFileRepository"
-class FileRepository:
+class SeismicFileRepository:
     def _getParameter(self, parameterValues: list | str | float | int | bool) -> str:
         parameterValuesProcessString = ""
         if not isinstance(parameterValues, list):
@@ -13,7 +16,7 @@ class FileRepository:
             return parameterValuesProcessString
 
         for index, parameterValue in enumerate(parameterValues):
-            if (index < len(parameterValues) - 1):
+            if index < len(parameterValues) - 1:
                 parameterValuesProcessString += f'{parameterValue},'
                 continue
             parameterValuesProcessString += f'{parameterValue}'
@@ -31,24 +34,32 @@ class FileRepository:
 
     def _getSemicUnixCommandString(self, commandsQueue: list, source_file_path: str, changed_file_path: str) -> str:
         seismicUnixProcessString = ""
-        for seismicUnixProgram in commandsQueue:
-            seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
-            seismicUnixProcessString += self._getAllParameters(
-                seismicUnixProgram["parameters"]
-            )
-            seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
+        for orderedCommands in commandsQueue:
+            for seismicUnixProgram in orderedCommands.getCommands():
+                seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
+                seismicUnixProcessString += self._getAllParameters(loads((seismicUnixProgram["parameters"])))
+                seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
         return seismicUnixProcessString
 
-    def create(self, file) -> str:
+    def create(self, file, userId, projectId) -> str:
         unique_filename = file.filename.replace(".su", "_").replace(" ", "_")
         unique_filename = unique_filename + \
             datetime.now().strftime("%d%m%Y_%H%M%S") + ".su"
 
-        file.save(path.join("static", unique_filename))
+        user = UserModel.query.filter_by(id=UUID(userId)).first()
+
+        directory = f"static/{user.email}/{projectId}"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        file.save(os.path.join(directory, unique_filename))
         return unique_filename
 
-    def update(self, unique_filename, seismicUnixCommandsQueue) -> str:
+        # File is blank if marmousi_CS.su is empty
+
+    def update(self, unique_filename, workflowId) -> str:
         source_file_path = getSuFilePath(unique_filename)
+        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+        seismicUnixCommandsQueue = workflow.orderedCommandsList
         # todo: dynamically change the name of the file
         changed_file_path = getSuFilePath(f'2{unique_filename}')
         seismicUnixProcessString = self._getSemicUnixCommandString(

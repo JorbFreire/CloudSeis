@@ -1,9 +1,14 @@
 from flask import Blueprint, send_file, request, jsonify
 
-from ..repositories.FileRepository import FileRepository
+from ..errors.AppError import AppError
+
+from ..middlewares.decoratorsFactory import decorator_factory
+from ..middlewares.requireAuthentication import requireAuthentication
+from ..models.ProjectModel import ProjectModel
+from ..repositories.SeismicFileRepository import SeismicFileRepository
 
 suFileRouter = Blueprint("su-file-routes", __name__, url_prefix="/su-file")
-fileRepository = FileRepository()
+seismicFileRepository = SeismicFileRepository()
 
 # ? note sure if this "/ should be keep or not"
 @suFileRouter.route("/", methods=['GET'])
@@ -15,15 +20,21 @@ def showSuFile():
 
 
 # ? note sure if this "/ should be keep or not"
-@suFileRouter.route("/", methods=['POST'])
-def createSuFile():
+@suFileRouter.route("/create/<projectId>", methods=['POST'])
+@decorator_factory(requireAuthentication, routeModel=ProjectModel)
+def createSuFile(userId, *_, **kwargs):
     file = request.files['file']
-    unique_filename = fileRepository.create(file)
+    if 'file' not in request.files:
+        raise AppError("No file part in the request")
+
+    projectId = int(list(kwargs.values())[0])
+    unique_filename = seismicFileRepository.create(file, userId, projectId)
     return {"unique_filename": unique_filename}
 
 
-@suFileRouter.route("/<unique_filename>/filters", methods=['PUT'])
-def updateSuFile(unique_filename):
+# Understans <unique_filename> -> What it is, which file is and why it is necessary
+@suFileRouter.route("/<unique_filename>/<workflowId>", methods=['PUT'])
+def updateSuFile(unique_filename, workflowId):
     data = request.get_json()
     if data == None:
         return jsonify(
@@ -31,8 +42,8 @@ def updateSuFile(unique_filename):
             status=400
         )
 
-    seismicUnixCommandsQueue = data["seismicUnixCommandsQueue"]
-    process_output = fileRepository.update(unique_filename, seismicUnixCommandsQueue)
+    # seismicUnixCommandsQueue = data["seismicUnixCommandsQueue"]
+    process_output = seismicFileRepository.update(unique_filename, workflowId)
     return jsonify({
         "process_output": process_output
     })

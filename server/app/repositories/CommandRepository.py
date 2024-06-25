@@ -6,6 +6,7 @@ from ..models.OrderedCommandsListModel import OrderedCommandsListModel
 from ..models.WorkflowModel import WorkflowModel
 from ..errors.AppError import AppError
 from copy import copy
+from json import dumps
 
 
 class CommandRepository:
@@ -46,6 +47,8 @@ class CommandRepository:
         return newCommand.getAttributes()
 
     def updateParameters(self, id, newParameters):
+        if isinstance(newParameters, dict):
+            newParameters = dumps(newParameters)
         command = CommandModel.query.filter_by(id=id).first()
         if not command:
             raise AppError("Command does not exist", 404)
