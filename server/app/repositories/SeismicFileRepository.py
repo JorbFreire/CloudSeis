@@ -1,5 +1,4 @@
-from icecream import ic
-import json
+from json import loads
 import os
 import subprocess
 from datetime import datetime
@@ -37,14 +36,9 @@ class SeismicFileRepository:
         seismicUnixProcessString = ""
         for orderedCommands in commandsQueue:
             for seismicUnixProgram in orderedCommands.getCommands():
-                seismicUnixProcessString += f'{seismicUnixProgram.name}'
-                seismicUnixProcessString += self._getAllParameters(seismicUnixProgram.parameters)
+                seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
+                seismicUnixProcessString += self._getAllParameters(loads((seismicUnixProgram["parameters"])))
                 seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
-
-            # Dentro do workflow tem o orderedCommands
-            # A partir do orderedCommands, tem-se os commands
-            # então, tem-se workflow que tem orderedCommands, nesta função é o commandsQueue
-            # commandsQueue é um array de commands (Model)
         return seismicUnixProcessString
 
     def create(self, file, userId, projectId) -> str:
