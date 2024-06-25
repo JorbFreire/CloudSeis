@@ -1,8 +1,12 @@
 from flask import Blueprint, request, jsonify
 
+from ...middlewares.decoratorsFactory import decorator_factory
+from ...middlewares.validateRequestBody import validateRequestBody
+
 from ...repositories.ProgramRepository import ProgramRepository
 from ...repositories.ProgramFileRepository import ProgramFileRepository
 from ...errors.AppError import AppError
+from ...serializers.ProgramSerializer import ProgramCreateSchema
 
 programRouter = Blueprint("program-routes", __name__, url_prefix="/programs")
 programRepository = ProgramRepository()
@@ -16,6 +20,7 @@ def listPrograms(groupId):
 
 
 @programRouter.route("/create/<groupId>", methods=['POST'])
+@decorator_factory(validateRequestBody, SerializerSchema=ProgramCreateSchema)
 def createProgram(groupId):
     data = request.form
     if data == None:
