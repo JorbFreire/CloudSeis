@@ -1,11 +1,14 @@
 # bokeh serve step_6.py
 
 from bokeh.layouts import column, row
-from bokeh.models import Paragraph, Slider, Spinner, Switch
+from bokeh.models import Paragraph, Slider, Spinner, Switch, NumericInput, TextInput, RadioButtonGroup
 from bokeh.plotting import curdoc
 from seismicio import readsu
 
 from seismic_visualization import SeismicVisualization
+from seismic_clip import apply_clip_from_perc
+from gain import do_agc, do_gagc
+GAIN_OPTIONS=["None", "agc", "gagc"]
 
 # Parâmetros de entrada
 # ---------------------
@@ -31,7 +34,7 @@ if num_loadedgathers == 1:
         data=sufile.igather[start_igather].data,
         x_positions=sufile.igather[start_igather].headers["offset"],
         interval_time_samples=interval_time_samples,
-        gather_key="Offset [m]"
+        gather_key="Offset [m]",
     )
 else:
     # Multiple gathers
@@ -55,14 +58,49 @@ def update_information(gather_index_start: int, gather_index_stop: int):
 update_information(start_igather, start_igather + num_loadedgathers)
 
 
-def update_plotting(igather_start: int, igather_stop: int):
+
+def apply_gain_single_trace(data, gain_option: str, iwagc, nt: int):
+    if gain_option == "agc":
+        data = do_agc(data, iwagc, nt)
+    elif gain_option == "gagc":
+        data = do_agc(data, iwagc, nt)
+    return data
+
+
+
+def apply_gain_data(data, gain_option, wagc):
+    if gain_option == "None":
+        return data
+    dt: float = sufile.headers.dt[0] / 1000000.0  # microsseconds to seconds
+    nt: int = sufile.num_samples
+    iwagc = round(wagc / dt)
+    num_traces = data.shape[1]
+
+    for trace_index in range(num_traces):
+        trace = data[:, trace_index]
+        data[:, trace_index] = apply_gain_single_trace(trace, gain_option, iwagc, nt)
+    
+    return data
+
+
+def update_plotting(igather_start: int, igather_stop: int, perc=None, gain_option=None, wagc_value=0.5):
     # WARNING: this function expects the index or slice to be correct
     print(f"CALL update_plotting({igather_start}, {igather_stop})")
 
+
+
     if igather_start == igather_stop - 1:
         # Single gather
+
+        data = sufile.igather[igather_start].data
+
+        data = apply_gain_data(data, gain_option, wagc_value)
+
+        if perc and perc != 100:
+            data = apply_clip_from_perc(data, perc)
+
         seismic_visualization.update_plot(
-            data=sufile.igather[igather_start].data,
+            data=data,
             x_positions=sufile.igather[igather_start].headers["offset"],
             interval_time_samples=interval_time_samples,
             gather_key="Offset [m]",
@@ -110,12 +148,12 @@ def spinner_value_callback(attr, old, new):
     slider.disabled = False
 
 
-def _get_igather_slice(start_position_1_based,  num_loadedgathers):
+def _get_igather_slice(start_position_1_based, num_loadedgathers):
     """
     Args:
       position (int): position of the gather, counting started at 1
       num_loadedgathers (int): number of gathers to be loaded
-    
+
     Returns:
       start_igather (int):
         start index, included endpoint for slicing gathers by index
@@ -128,7 +166,6 @@ def _get_igather_slice(start_position_1_based,  num_loadedgathers):
         return (start_igather, stop_igather)
     else:
         return (num_gathers - num_loadedgathers, num_gathers)
-
 
 
 def slider_value_callback(attr, old, new):
@@ -150,6 +187,41 @@ def slider_value_callback(attr, old, new):
     update_plotting(start_igather, stop_igather)
     spinner.disabled = False
     slider.disabled = False
+
+
+def perc_callback(attr, old, new):
+    print("PERC CALLBACK")
+    perc_value = float(new)
+    global start_igather, num_loadedgathers
+    update_plotting(start_igather, start_igather + num_loadedgathers, perc=perc_value)
+
+
+
+def gain_select_callback(attr, old, new):
+    print("gain select CALLBACK")
+    global wagc_input
+    wagc_value = float(wagc_input.value)
+    gain_selection = GAIN_OPTIONS[new]
+    perc_value = perc_input.value
+    print("agc_value", wagc_value)
+    print("gain_select", gain_selection)
+    print("perc_value", perc_value)
+    # global start_igather, num_loadedgathers
+    update_plotting(start_igather, start_igather + num_loadedgathers, perc=perc_value, gain_option=gain_selection, wagc_value=wagc_value)
+
+
+def gain_value_callback(attr, old, new):
+    print("gain value callback")
+    global gain_select_widget
+    wagc_value = float(new)
+    gain_selection = GAIN_OPTIONS[gain_select_widget.active]
+    perc_value = perc_input.value
+    print("agc_value", wagc_value)
+    print("gain_select", gain_selection)
+    print("perc_value", perc_value)
+    global start_igather, num_loadedgathers
+    update_plotting(start_igather, start_igather + num_loadedgathers, perc=perc_value, gain_option=gain_selection, wagc_value=wagc_value)
+
 
 
 # Widgets
@@ -183,11 +255,21 @@ seismic_visualization.assign_line_switch(switch_lines)
 seismic_visualization.asssign_image_switch(switch_image)
 seismic_visualization.assign_area_switch(switch_areas)
 
+perc_input = NumericInput(value=100, low=1, high=100, title="perc")
+perc_input.on_change("value", perc_callback)
+gain_select_widget = RadioButtonGroup(labels=GAIN_OPTIONS, active=0)
+gain_select_widget.on_change("active", gain_select_callback)
+wagc_input = TextInput(value="0.5", title="wagc")
+wagc_input.on_change("value", gain_value_callback)
+
 left_tools_column = column(
     simple_paragraph,
     row(Paragraph(text="Image"), switch_image),
     row(Paragraph(text="Lines"), switch_lines),
     row(Paragraph(text="Areas"), switch_areas),
+    perc_input,
+    gain_select_widget,
+    wagc_input,
 )
 
 bottom_tools_row = row(spinner, slider, sizing_mode="stretch_width")
