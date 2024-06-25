@@ -19,7 +19,7 @@ class ProgramModel(database.Model):  # type: ignore
         name="FK_program_groups_table_programs_table"
     ))
 
-    def getAttributes(self) -> dict[str, str]:
+    def getAttributes(self) -> dict[str, int | str]:
         return {
             "id": self.id,
             "name": self.name,
