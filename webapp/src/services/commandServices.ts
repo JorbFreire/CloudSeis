@@ -1,16 +1,21 @@
 import api from "./api"
 
 export async function createNewCommand(
-  workflowId: string,
+  token: string,
+  workflowId: number,
   name: string,
 ): Promise<ICommand | null> {
-
   try {
     const response = await api.post<ICommand>(
       `/command/create/${workflowId}`,
       {
         name,
-        parameters: ""
+        parameters: "[]"
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
       }
     )
     return response.data

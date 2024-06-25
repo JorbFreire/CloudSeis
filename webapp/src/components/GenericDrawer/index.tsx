@@ -33,7 +33,7 @@ export default function GenericDrawer({
           boxSizing: 'border-box',
           gap: "8px",
           padding: "8px",
-          zIndex: 0,
+          zIndex: 100,
         },
       }}
       variant="persistent"
