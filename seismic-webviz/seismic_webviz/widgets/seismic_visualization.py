@@ -3,7 +3,6 @@ from bokeh.models import ColumnDataSource, GlyphRenderer, Image, Switch
 import numpy as np
 import numpy.typing as npt
 from bokeh.plotting import figure
-from time import perf_counter
 
 
 MAX_TRACES_LINE_HAREA = 100

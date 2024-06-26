@@ -9,6 +9,16 @@ from widgets.seismic_visualization import SeismicVisualization
 GAIN_OPTIONS = ["None", "agc", "gagc"]
 
 
+def disable_widgets():
+    num_gathers_spinner.disabled = True
+    gather_index_start_slider.disabled = True
+
+
+def enable_widgets():
+    num_gathers_spinner.disabled = False
+    gather_index_start_slider.disabled = False
+
+
 def update_gather_label(gather_index_start: int, gather_index_stop: int):
     gather_value_start = sufile.gather_index_to_value(gather_index_start)
     gather_value_end = sufile.gather_index_to_value(gather_index_stop - 1)
@@ -70,15 +80,14 @@ def update_plotting(igather_start: int, igather_stop: int, perc=None, gain_optio
 
 
 def num_gathers_callback(attr, old, new):
-    print("--------------------------------------")
-    print(f"CALL spinner_value_callback(new={new})")
-    global gather_index_start, num_loadedgathers, num_gathers_spinner
-    num_gathers_spinner.disabled = True
-    gather_index_start_slider.disabled = True
+    disable_widgets()
 
-    num_loadedgathers = round(new)
+    global gather_index_start, num_gathers_spinner
+
+    num_loadedgathers: int = round(new)
 
     stop_igather = gather_index_start + num_loadedgathers
+
     # if exceeding to the right
     if stop_igather > num_gathers:
         stop_igather = num_gathers
@@ -86,14 +95,15 @@ def num_gathers_callback(attr, old, new):
         num_gathers_spinner.value = num_loadedgathers
 
     update_plotting(gather_index_start, stop_igather)
-    num_gathers_spinner.disabled = False
-    gather_index_start_slider.disabled = False
+
+    enable_widgets()
 
 
 def gather_index_start_callback(attr, old, new):
-    print("--------------------------------------")
-    print(f"CALL slider_value_callback(new={new})")
+    disable_widgets()
+
     global gather_index_start, num_loadedgathers, gather_index_start_slider
+
     num_gathers_spinner.disabled = True
     gather_index_start_slider.disabled = True
 
@@ -107,8 +117,8 @@ def gather_index_start_callback(attr, old, new):
         gather_index_start_slider.value = gather_index_start + 1
 
     update_plotting(gather_index_start, stop_igather)
-    num_gathers_spinner.disabled = False
-    gather_index_start_slider.disabled = False
+
+    enable_widgets()
 
 
 def perc_callback(attr, old, new):
@@ -249,6 +259,6 @@ left_tools_column = column(
 )
 bottom_tools_row = row(num_gathers_spinner, gather_index_start_slider, sizing_mode="stretch_width")
 row_tools_figure = row(children=[left_tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
-column_main = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
+main_layout = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
 
-curdoc().add_root(column_main)
+curdoc().add_root(main_layout)
