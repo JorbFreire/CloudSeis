@@ -1,2 +1,0 @@
-python perc.py -p 99 marmousi_CS_ep1_origin.su marmousi_CS_ep1_perc99.su \
-  ; suxwigb <marmousi_CS_ep1_perc99.su title='perc 99 from PY' &
