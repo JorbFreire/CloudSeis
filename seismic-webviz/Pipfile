@@ -10,8 +10,6 @@ seismicio = "==0.0.22"
 
 [dev-packages]
 ipython = "*"
-ipykernel = "*"
 
 [requires]
-python_version = "3.12"
-python_full_version = "3.12.3"
+python_version = "3"

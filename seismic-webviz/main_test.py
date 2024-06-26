@@ -5,10 +5,11 @@ from bokeh.models import Paragraph, Slider, Spinner, Switch, NumericInput, TextI
 from bokeh.plotting import curdoc
 from seismicio import readsu
 
-from seismic_visualization import SeismicVisualization
-from seismic_clip import apply_clip_from_perc
-from gain import do_agc, do_gagc
-GAIN_OPTIONS=["None", "agc", "gagc"]
+from widgets.seismic_visualization import SeismicVisualization
+from transforms.clip import apply_clip_from_perc
+from transforms.gain import do_agc, do_gagc
+
+GAIN_OPTIONS = ["None", "agc", "gagc"]
 
 # Parâmetros de entrada
 # ---------------------
@@ -45,27 +46,25 @@ else:
     )
 num_gathers = sufile.num_gathers
 
-simple_paragraph = Paragraph(text="Gathers")
+current_gather_label = Paragraph(text="Gathers")
 
 
 def update_information(gather_index_start: int, gather_index_stop: int):
     gather_value_start = sufile.gather_index_to_value(gather_index_start)
     gather_value_end = sufile.gather_index_to_value(gather_index_stop - 1)
-    simple_paragraph.text = f"Gather {gather_value_start} to {gather_value_end}"
+    current_gather_label.text = f"Gather {gather_value_start} to {gather_value_end}"
     # simple_paragraph.text = f"Gather WHATERVER"
 
 
 update_information(start_igather, start_igather + num_loadedgathers)
 
 
-
 def apply_gain_single_trace(data, gain_option: str, iwagc, nt: int):
     if gain_option == "agc":
         data = do_agc(data, iwagc, nt)
     elif gain_option == "gagc":
-        data = do_agc(data, iwagc, nt)
+        data = do_gagc(data, iwagc, nt)
     return data
-
 
 
 def apply_gain_data(data, gain_option, wagc):
@@ -79,15 +78,13 @@ def apply_gain_data(data, gain_option, wagc):
     for trace_index in range(num_traces):
         trace = data[:, trace_index]
         data[:, trace_index] = apply_gain_single_trace(trace, gain_option, iwagc, nt)
-    
+
     return data
 
 
 def update_plotting(igather_start: int, igather_stop: int, perc=None, gain_option=None, wagc_value=0.5):
     # WARNING: this function expects the index or slice to be correct
     print(f"CALL update_plotting({igather_start}, {igather_stop})")
-
-
 
     if igather_start == igather_stop - 1:
         # Single gather
@@ -196,7 +193,6 @@ def perc_callback(attr, old, new):
     update_plotting(start_igather, start_igather + num_loadedgathers, perc=perc_value)
 
 
-
 def gain_select_callback(attr, old, new):
     print("gain select CALLBACK")
     global wagc_input
@@ -207,7 +203,13 @@ def gain_select_callback(attr, old, new):
     print("gain_select", gain_selection)
     print("perc_value", perc_value)
     # global start_igather, num_loadedgathers
-    update_plotting(start_igather, start_igather + num_loadedgathers, perc=perc_value, gain_option=gain_selection, wagc_value=wagc_value)
+    update_plotting(
+        start_igather,
+        start_igather + num_loadedgathers,
+        perc=perc_value,
+        gain_option=gain_selection,
+        wagc_value=wagc_value,
+    )
 
 
 def gain_value_callback(attr, old, new):
@@ -220,8 +222,13 @@ def gain_value_callback(attr, old, new):
     print("gain_select", gain_selection)
     print("perc_value", perc_value)
     global start_igather, num_loadedgathers
-    update_plotting(start_igather, start_igather + num_loadedgathers, perc=perc_value, gain_option=gain_selection, wagc_value=wagc_value)
-
+    update_plotting(
+        start_igather,
+        start_igather + num_loadedgathers,
+        perc=perc_value,
+        gain_option=gain_selection,
+        wagc_value=wagc_value,
+    )
 
 
 # Widgets
@@ -263,7 +270,7 @@ wagc_input = TextInput(value="0.5", title="wagc")
 wagc_input.on_change("value", gain_value_callback)
 
 left_tools_column = column(
-    simple_paragraph,
+    current_gather_label,
     row(Paragraph(text="Image"), switch_image),
     row(Paragraph(text="Lines"), switch_lines),
     row(Paragraph(text="Areas"), switch_areas),
