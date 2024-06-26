@@ -121,12 +121,12 @@ def range_slider_input_handler(attr, old, new):
     )
 
 
-def spinner_value_callback(attr, old, new):
+def num_gathers_callback(attr, old, new):
     print("--------------------------------------")
     print(f"CALL spinner_value_callback(new={new})")
-    global start_igather, num_loadedgathers, spinner
-    spinner.disabled = True
-    slider.disabled = True
+    global start_igather, num_loadedgathers, num_gathers_spinner
+    num_gathers_spinner.disabled = True
+    gather_index_start_slider.disabled = True
 
     num_loadedgathers = round(new)
 
@@ -135,39 +135,19 @@ def spinner_value_callback(attr, old, new):
     if stop_igather > num_gathers:
         stop_igather = num_gathers
         num_loadedgathers = stop_igather - start_igather + 1
-        spinner.value = num_loadedgathers
+        num_gathers_spinner.value = num_loadedgathers
 
     update_plotting(start_igather, stop_igather)
-    spinner.disabled = False
-    slider.disabled = False
+    num_gathers_spinner.disabled = False
+    gather_index_start_slider.disabled = False
 
 
-def _get_igather_slice(start_position_1_based, num_loadedgathers):
-    """
-    Args:
-      position (int): position of the gather, counting started at 1
-      num_loadedgathers (int): number of gathers to be loaded
-
-    Returns:
-      start_igather (int):
-        start index, included endpoint for slicing gathers by index
-      stop_igather (int):
-        stop index, excluded endpoint for slicing gathers by index
-    """
-    start_igather = start_position_1_based - 1
-    stop_igather = start_igather + num_loadedgathers
-    if stop_igather <= num_gathers:
-        return (start_igather, stop_igather)
-    else:
-        return (num_gathers - num_loadedgathers, num_gathers)
-
-
-def slider_value_callback(attr, old, new):
+def gather_index_start_callback(attr, old, new):
     print("--------------------------------------")
     print(f"CALL slider_value_callback(new={new})")
-    global start_igather, num_loadedgathers, slider
-    spinner.disabled = True
-    slider.disabled = True
+    global start_igather, num_loadedgathers, gather_index_start_slider
+    num_gathers_spinner.disabled = True
+    gather_index_start_slider.disabled = True
 
     start_igather = round(new) - 1
     stop_igather = start_igather + num_loadedgathers
@@ -176,11 +156,11 @@ def slider_value_callback(attr, old, new):
     if stop_igather > num_gathers:
         start_igather = num_gathers - num_loadedgathers
         stop_igather = num_gathers
-        slider.value = start_igather + 1
+        gather_index_start_slider.value = start_igather + 1
 
     update_plotting(start_igather, stop_igather)
-    spinner.disabled = False
-    slider.disabled = False
+    num_gathers_spinner.disabled = False
+    gather_index_start_slider.disabled = False
 
 
 def perc_callback(attr, old, new):
@@ -211,9 +191,9 @@ def gain_select_callback(attr, old, new):
 
 def gain_value_callback(attr, old, new):
     print("gain value callback")
-    global gain_select_widget
+    global gain_type_selector
     wagc_value = float(new)
-    gain_selection = GAIN_OPTIONS[gain_select_widget.active]
+    gain_selection = GAIN_OPTIONS[gain_type_selector.active]
     perc_value = perc_input.value
     print("agc_value", wagc_value)
     print("gain_select", gain_selection)
@@ -228,21 +208,11 @@ def gain_value_callback(attr, old, new):
     )
 
 
-# Widgets
-# -------
-first_gather_index = 0
-last_gather_index = sufile.num_gathers - 1
+# Initialize widgets
+# ------------------
 
-spinner = Spinner(
-    title="Number of gathers to load",
-    low=1,
-    high=sufile.num_gathers,
-    step=1,
-    value=num_loadedgathers,
-)
-spinner.on_change("value_throttled", spinner_value_callback)
-
-slider = Slider(
+# Select gather(s) to visualize
+gather_index_start_slider = Slider(
     start=1,
     end=sufile.num_gathers,
     value=start_igather + 1,
@@ -250,37 +220,47 @@ slider = Slider(
     title="Gather sequential number start",
     width=1000,
 )
-slider.on_change("value_throttled", slider_value_callback)
+num_gathers_spinner = Spinner(
+    title="Number of gathers to load",
+    low=1,
+    high=sufile.num_gathers,
+    step=1,
+    value=num_loadedgathers,
+)
+gather_index_start_slider.on_change("value_throttled", gather_index_start_callback)
+num_gathers_spinner.on_change("value_throttled", num_gathers_callback)
 
-switch_lines = Switch(active=True)
-switch_image = Switch(active=True)
-switch_areas = Switch(active=True)
-seismic_visualization.assign_line_switch(switch_lines)
-seismic_visualization.asssign_image_switch(switch_image)
-seismic_visualization.assign_area_switch(switch_areas)
+# Toggle visibility
+lines_switch = Switch(active=True)
+image_switch = Switch(active=True)
+areas_switch = Switch(active=True)
+seismic_visualization.assign_line_switch(lines_switch)
+seismic_visualization.asssign_image_switch(image_switch)
+seismic_visualization.assign_area_switch(areas_switch)
 
+# Transform — percentile-based clip
 perc_input = NumericInput(value=100, low=1, high=100, title="perc")
 perc_input.on_change("value", perc_callback)
-gain_select_widget = RadioButtonGroup(labels=GAIN_OPTIONS, active=0)
-gain_select_widget.on_change("active", gain_select_callback)
+
+# Transform — gain
+gain_type_selector = RadioButtonGroup(labels=GAIN_OPTIONS, active=0)
+gain_type_selector.on_change("active", gain_select_callback)
 wagc_input = TextInput(value="0.5", title="wagc")
 wagc_input.on_change("value", gain_value_callback)
 
+# Contruct layout
+# ---------------
 left_tools_column = column(
     current_gather_label,
-    row(Paragraph(text="Image"), switch_image),
-    row(Paragraph(text="Lines"), switch_lines),
-    row(Paragraph(text="Areas"), switch_areas),
+    row(Paragraph(text="Image"), image_switch),
+    row(Paragraph(text="Lines"), lines_switch),
+    row(Paragraph(text="Areas"), areas_switch),
     perc_input,
-    gain_select_widget,
+    gain_type_selector,
     wagc_input,
 )
-
-bottom_tools_row = row(spinner, slider, sizing_mode="stretch_width")
-
+bottom_tools_row = row(num_gathers_spinner, gather_index_start_slider, sizing_mode="stretch_width")
 row_tools_figure = row(children=[left_tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
 column_main = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
 
 curdoc().add_root(column_main)
-
-print(f"Number of gathers: {sufile.num_gathers}\n")
