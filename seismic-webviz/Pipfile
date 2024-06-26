@@ -13,3 +13,6 @@ ipython = "*"
 
 [requires]
 python_version = "3"
+
+[scripts]
+serve = "bokeh serve seismic_webviz/main_test.py"

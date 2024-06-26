@@ -1,13 +1,10 @@
-# bokeh serve step_6.py
-
 from bokeh.layouts import column, row
-from bokeh.models import Paragraph, Slider, Spinner, Switch, NumericInput, TextInput, RadioButtonGroup
+from bokeh.models import NumericInput, Paragraph, RadioButtonGroup, Slider, Spinner, Switch, TextInput
 from bokeh.plotting import curdoc
 from seismicio import readsu
-
-from widgets.seismic_visualization import SeismicVisualization
 from transforms.clip import apply_clip_from_perc
 from transforms.gain import do_agc, do_gagc
+from widgets.seismic_visualization import SeismicVisualization
 
 GAIN_OPTIONS = ["None", "agc", "gagc"]
 
