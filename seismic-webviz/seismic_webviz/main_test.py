@@ -1,124 +1,12 @@
 from bokeh.layouts import column, row
-from bokeh.models import NumericInput, Paragraph, RadioButtonGroup, Slider, Spinner, Switch, TextInput
+from bokeh.models import NumericInput, Paragraph, RadioButtonGroup, Slider, TextInput
 from bokeh.plotting import curdoc
-from seismicio import readsu
-from transforms.clip import apply_clip_from_perc
-from transforms.gain import do_agc, do_gagc
-from widgets.seismic_visualization import SeismicVisualization
+from core import get_sufile
+from icecream import ic
+
+import widgets
 
 GAIN_OPTIONS = ["None", "agc", "gagc"]
-
-
-def disable_widgets():
-    num_gathers_spinner.disabled = True
-    gather_index_start_slider.disabled = True
-
-
-def enable_widgets():
-    num_gathers_spinner.disabled = False
-    gather_index_start_slider.disabled = False
-
-
-def update_gather_label(gather_index_start: int, gather_index_stop: int):
-    gather_value_start = sufile.gather_index_to_value(gather_index_start)
-    gather_value_end = sufile.gather_index_to_value(gather_index_stop - 1)
-    gather_label.text = f"Gather {gather_value_start} to {gather_value_end}"
-
-
-def apply_gain_single_trace(data, gain_option: str, iwagc, nt: int):
-    if gain_option == "agc":
-        data = do_agc(data, iwagc, nt)
-    elif gain_option == "gagc":
-        data = do_gagc(data, iwagc, nt)
-    return data
-
-
-def apply_gain_data(data, gain_option, wagc):
-    if gain_option == "None":
-        return data
-    dt: float = sufile.headers.dt[0] / 1000000.0  # microsseconds to seconds
-    nt: int = sufile.num_samples
-    iwagc = round(wagc / dt)
-    num_traces = data.shape[1]
-
-    for trace_index in range(num_traces):
-        trace = data[:, trace_index]
-        data[:, trace_index] = apply_gain_single_trace(trace, gain_option, iwagc, nt)
-
-    return data
-
-
-def update_plotting(igather_start: int, igather_stop: int, perc=None, gain_option=None, wagc_value=0.5):
-    # WARNING: this function expects the index or slice to be correct
-    print(f"CALL update_plotting({igather_start}, {igather_stop})")
-
-    if igather_start == igather_stop - 1:
-        # Single gather
-
-        data = sufile.igather[igather_start].data
-
-        data = apply_gain_data(data, gain_option, wagc_value)
-
-        if perc and perc != 100:
-            data = apply_clip_from_perc(data, perc)
-
-        seismic_visualization.update_plot(
-            data=data,
-            x_positions=sufile.igather[igather_start].headers["offset"],
-            interval_time_samples=interval_time_samples,
-            gather_key="Offset [m]",
-        )
-    else:
-        # Multiple gathers
-        seismic_visualization.update_plot(
-            data=sufile.igather[igather_start:igather_stop].data,
-            x_positions=None,
-            interval_time_samples=interval_time_samples,
-        )
-
-    update_gather_label(igather_start, igather_stop)
-
-
-def num_gathers_callback(attr, old, new):
-    disable_widgets()
-
-    global gather_index_start, num_gathers_spinner
-
-    num_loadedgathers: int = round(new)
-
-    stop_igather = gather_index_start + num_loadedgathers
-
-    # if exceeding to the right
-    if stop_igather > num_gathers:
-        stop_igather = num_gathers
-        num_loadedgathers = stop_igather - gather_index_start + 1
-        num_gathers_spinner.value = num_loadedgathers
-
-    update_plotting(gather_index_start, stop_igather)
-
-    enable_widgets()
-
-
-def gather_index_start_callback(attr, old, new):
-    disable_widgets()
-
-    global gather_index_start, num_loadedgathers, gather_index_start_slider
-
-    num_gathers_spinner.disabled = True
-    gather_index_start_slider.disabled = True
-
-    gather_index_start = round(new) - 1
-    stop_igather = gather_index_start + num_loadedgathers
-
-    # if exceeding to the right
-    if stop_igather > num_gathers:
-        gather_index_start = num_gathers - num_loadedgathers
-        stop_igather = num_gathers
-        gather_index_start_slider.value = gather_index_start + 1
-
-    update_plotting(gather_index_start, stop_igather)
-
-    enable_widgets()
 
 
 def perc_callback(attr, old, new):
@@ -166,98 +54,90 @@ def gain_value_callback(attr, old, new):
     )
 
 
-# Parâmetros de entrada
-# ---------------------
-file_path = "/storage1/Seismic/dados_teste/marmousi_4ms_CDP.su"
-gather_key = "cdp"
-num_loadedgathers: int = 1
-gather_index_start: int = 0  # zero-based indexing
+state: dict[str, int | float | str | None] = {
+    "gather_index_start": 0,  # zero-based indexing
+    "num_loadedgathers": 1,
+    "perc": 100,
+    "gain_option": "None",
+    "wagc_value": 0.5,
+    "num_gathers": None,
+    "interval_time_samples": None,
+    "num_time_samples": None,
+}
 
-# Ler dado sísmico
-# ----------------
-sufile = readsu(file_path, gather_key)
+sufile = get_sufile(
+    state,
+    filename="/storage1/Seismic/dados_teste/marmousi_4ms_CDP.su",
+    gather_key="cdp",
+)
 
-# Dados retirados dos headers
-# ---------------------------
-num_time_samples = sufile.num_samples
-interval_time_samples = sufile.headers.dt[0] / 1000000  # µs → s
+seismic_visualization = widgets.create_seismic_visualization(state, sufile)
 
-# SeismicVisualization
-# --------------------
-if num_loadedgathers == 1:
-    # Single gather
-    seismic_visualization = SeismicVisualization(
-        data=sufile.igather[gather_index_start].data,
-        x_positions=sufile.igather[gather_index_start].headers["offset"],
-        interval_time_samples=interval_time_samples,
-        gather_key="Offset [m]",
-    )
-else:
-    # Multiple gathers
-    seismic_visualization = SeismicVisualization(
-        data=sufile.igather[gather_index_start : gather_index_start + num_loadedgathers].data,
-        x_positions=None,
-        interval_time_samples=interval_time_samples,
-    )
-num_gathers = sufile.num_gathers
+gather_index_start_slider = widgets.create_gather_index_start_slider(state)
+
+num_loadedgathers_spinner = widgets.create_num_loadedgathers_spinner(state)
 
 
 # Initialize widgets
 # ------------------
 
+# gather_index_start_slider =
+
 # Current gather label
-gather_label = Paragraph(text="Gathers")
-update_gather_label(gather_index_start, gather_index_start + num_loadedgathers)
 
-# Select gather(s) to visualize
-gather_index_start_slider = Slider(
-    start=1,
-    end=sufile.num_gathers,
-    value=gather_index_start + 1,
-    step=1,
-    title="Gather sequential number start",
-    width=1000,
-)
-num_gathers_spinner = Spinner(
-    title="Number of gathers to load",
-    low=1,
-    high=sufile.num_gathers,
-    step=1,
-    value=num_loadedgathers,
-)
-gather_index_start_slider.on_change("value_throttled", gather_index_start_callback)
-num_gathers_spinner.on_change("value_throttled", num_gathers_callback)
+# Select starting gather index
+# gather_index_start_slider = Slider(
+#     start=1,
+#     end=sufile.num_gathers,
+#     value=gather_index_start + 1,
+#     step=1,
+#     title="Gather sequential number start",
+#     width=1000,
+# )
+# gather_index_start_slider.on_change(
+#     "value_throttled", gather_index_start_callback(num_loadedgathers, gather_index_start_slider)
+# )
 
-# Toggle visibility
-lines_switch = Switch(active=True)
-image_switch = Switch(active=True)
-areas_switch = Switch(active=True)
-seismic_visualization.assign_line_switch(lines_switch)
-seismic_visualization.asssign_image_switch(image_switch)
-seismic_visualization.assign_area_switch(areas_switch)
 
 # Transform — percentile-based clip
-perc_input = NumericInput(value=100, low=1, high=100, title="perc")
-perc_input.on_change("value", perc_callback)
+# perc_input = NumericInput(value=100, low=1, high=100, title="perc")
+# perc_input.on_change("value", perc_callback)
 
-# Transform — gain
-gain_type_selector = RadioButtonGroup(labels=GAIN_OPTIONS, active=0)
-gain_type_selector.on_change("active", gain_select_callback)
-wagc_input = TextInput(value="0.5", title="wagc")
-wagc_input.on_change("value", gain_value_callback)
+# # Transform — gain
+# gain_type_selector = RadioButtonGroup(labels=GAIN_OPTIONS, active=0)
+# gain_type_selector.on_change("active", gain_select_callback)
+# wagc_input = TextInput(value="0.5", title="wagc")
+# wagc_input.on_change("value", gain_value_callback)
+
+# # Contruct layout
+# # ---------------
+# left_tools_column = column(
+#     gather_label,
+#     row(Paragraph(text="Image"), image_switch),
+#     row(Paragraph(text="Lines"), lines_switch),
+#     row(Paragraph(text="Areas"), areas_switch),
+#     perc_input,
+#     gain_type_selector,
+#     wagc_input,
+# )
+# bottom_tools_row = row(
+#     widgets.create_num_gathers_spinner(), gather_index_start_slider, sizing_mode="stretch_width"
+# )
+# row_tools_figure = row(children=[left_tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
+# main_layout = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
+
+ic(sufile.num_gathers)
 
 # Contruct layout
 # ---------------
 left_tools_column = column(
-    gather_label,
-    row(Paragraph(text="Image"), image_switch),
-    row(Paragraph(text="Lines"), lines_switch),
-    row(Paragraph(text="Areas"), areas_switch),
-    perc_input,
-    gain_type_selector,
-    wagc_input,
+    row(Paragraph(text="Image"), seismic_visualization.image_switch),
+    row(Paragraph(text="Lines"), seismic_visualization.lines_switch),
+    row(Paragraph(text="Areas"), seismic_visualization.areas_switch),
 )
-bottom_tools_row = row(num_gathers_spinner, gather_index_start_slider, sizing_mode="stretch_width")
+bottom_tools_row = row(
+    num_loadedgathers_spinner, gather_index_start_slider, sizing_mode="stretch_width"
+)
 row_tools_figure = row(children=[left_tools_column, seismic_visualization.plot], sizing_mode="stretch_both")
 main_layout = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
 
