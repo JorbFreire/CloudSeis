@@ -1,8 +1,8 @@
 from bokeh.models import Slider
-from core.update_plotting import update_plotting
 from icecream import ic
 
-def create_gather_index_start_slider(state: dict):
+
+def create_gather_index_start_slider(state: dict, update_func) -> Slider:
     """
     State
     - [read] num_gathers, num_loadedgathers
@@ -33,7 +33,7 @@ def create_gather_index_start_slider(state: dict):
 
         state["gather_index_start"] = gather_index_start
         ic(state)
-        # update_plotting(gather_index_start, gather_index_stop)
+        update_func()
 
     gather_index_start_slider.on_change("value_throttled", callback)
 

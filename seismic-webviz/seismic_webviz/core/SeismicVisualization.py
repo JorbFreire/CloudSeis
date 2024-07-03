@@ -8,7 +8,7 @@ from bokeh.plotting import figure
 MAX_TRACES_LINE_HAREA = 100
 
 
-class SeismicVisualization:
+class SeismicVisualization():
 
     image_switch: Switch | None = None
     lines_switch: Switch | None = None

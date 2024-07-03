@@ -1,9 +1,8 @@
 from bokeh.models import Spinner
-from core.update_plotting import update_plotting
 from icecream import ic
 
 
-def create_num_loadedgathers_spinner(state: dict):
+def create_num_loadedgathers_spinner(state: dict, update_func) -> Spinner:
     """
     State
     - [read] num_gathers, gather_index_start
@@ -29,11 +28,9 @@ def create_num_loadedgathers_spinner(state: dict):
             num_loadedgathers_spinner.value = state["num_gathers"] - state["gather_index_start"]
             return
 
-        # TODO: should I update state["num_loadedgathers"] ?
         state["num_loadedgathers"] = num_loadedgathers
         ic(state)
-
-        # update_plotting(state["gather_index_start"], gather_index_stop)
+        update_func()
 
     num_loadedgathers_spinner.on_change("value_throttled", callback)
 

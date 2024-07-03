@@ -1,6 +1,6 @@
 from bokeh.models import Switch
 
-from core.SeismicVisualization import SeismicVisualization
+from ..core.SeismicVisualization import SeismicVisualization
 
 
 def create_seismic_visualization(state: dict, sufile):
