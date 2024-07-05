@@ -1,8 +1,12 @@
 from bokeh.models import Spinner
+from collections.abc import Callable
 from icecream import ic
 
 
-def create_num_loadedgathers_spinner(state: dict, update_func) -> Spinner:
+def create_num_loadedgathers_spinner(
+    state: dict,
+    handle_state_update: Callable,
+) -> Spinner:
     """
     State
     - [read] num_gathers, gather_index_start
@@ -29,8 +33,7 @@ def create_num_loadedgathers_spinner(state: dict, update_func) -> Spinner:
             return
 
         state["num_loadedgathers"] = num_loadedgathers
-        ic(state)
-        update_func()
+        handle_state_update()
 
     num_loadedgathers_spinner.on_change("value_throttled", callback)
 

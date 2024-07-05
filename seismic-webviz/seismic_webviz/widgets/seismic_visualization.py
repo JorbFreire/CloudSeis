@@ -1,16 +1,16 @@
 from bokeh.models import Switch
 
-from ..core.SeismicVisualization import SeismicVisualization
+from ..core.seismic_plot_wrapper import SeismicPlotWrapper
 
 
-def create_seismic_visualization(state: dict, sufile):
+def create_seismic_plot_wrapper(state: dict, sufile):
     """
     State:
     - [read] num_loadedgathers
     """
     if state["num_loadedgathers"] == 1:
         # Single gather
-        seismic_visualization = SeismicVisualization(
+        seismic_visualization = SeismicPlotWrapper(
             data=sufile.igather[state["gather_index_start"]].data,
             x_positions=sufile.igather[state["gather_index_start"]].headers["offset"],
             interval_time_samples=state["interval_time_samples"],
@@ -18,7 +18,7 @@ def create_seismic_visualization(state: dict, sufile):
         )
     else:
         # Multiple gathers
-        seismic_visualization = SeismicVisualization(
+        seismic_visualization = SeismicPlotWrapper(
             data=sufile.igather[
                 state["gather_index_start"] : state["gather_index_start"] + state["num_loadedgathers"]
             ].data,

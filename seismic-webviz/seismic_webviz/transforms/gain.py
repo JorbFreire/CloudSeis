@@ -1,4 +1,4 @@
-import sys
+from collections.abc import Callable
 from math import isclose, sqrt, exp
 
 import numpy as np
@@ -7,99 +7,35 @@ import numpy.typing as npt
 EPS: float = 3.8090232  # exp(-EPS*EPS) = 5e-7, "noise" level
 
 
-def err(*args, **kwargs):
-    print(*args, **kwargs, file=sys.stderr)
-    sys.exit(1)
+def _apply_gain_single_trace(data, gain_option: str, iwagc, nt: int):
+    if gain_option == "agc":
+        data = do_agc_single_trace(data, iwagc, nt)
+    elif gain_option == "gagc":
+        data = do_gagc_single_trace(data, iwagc, nt)
+    return data
 
 
-def warn(*args, **kwargs):
-    print(*args, **kwargs, file=sys.stderr)
+def apply_gain(data: npt.NDArray, gain_option: str, wagc: float, dt: float) -> npt.NDArray:
+    apply_gain_single_trace: Callable
+    if gain_option == "agc":
+        apply_gain_single_trace = do_agc_single_trace
+    elif gain_option == "gagc":
+        apply_gain_single_trace = do_gagc_single_trace
+    else:
+        return data
 
+    iwagc = round(wagc / dt)
+    nt = data.shape[0]
+    num_traces = data.shape[1]
 
-def gain(
-    data: npt.NDArray,
-    tpow: float,
-    epow: float,
-    etpow: float,
-    gpow: float,
-    vred: float,
-    agc: bool,
-    gagc: bool,
-    qbal: bool,
-    pbal: bool,
-    mbal: bool,
-    scale: float,
-    bias: float,
-    trap: float,
-    clip: float,
-    qclip: float,
-    iwagc: float,
-    tmin: float,
-    dt: float,
-    nt: int,
-    maxbal: bool,
-    pclip: float,
-    nclip: float,
-) -> npt.NDArray:
-    f_two: float = 2.0
-    f_one: float = 1.0
-    f_half: float = 0.5
-
-    if bias:
-        print("RUN bias")
-        data += bias
-    if tpow:
-        do_tpow(data, tpow, vred, tmin, dt, nt)
-    if epow:
-        do_epow(data, epow, etpow, tmin, dt, nt)
-    if not isclose(gpow, f_one):
-        print("RUN — !CLOSETO(gpow, f_one)")
-        if isclose(gpow, f_half):
-            err("not yet implemented")
-        elif isclose(gpow, f_two):
-            err("not yet implemented")
-        else:
-            err("not yet implemented")
-    if agc:
-        data = do_agc(data, iwagc, nt)
-    if gagc:
-        data = do_gagc(data, iwagc, nt)
-    if trap > 0.0:
-        data = do_trap(data, trap, nt)
-    if clip > 0.0:
-        data = do_clip(data, clip, nt)
-    # if pclip < FLT_MAX:
-    #     err("do_pclip() not yet implemented")
-    # if nclip > -FLT_MAX:
-    #     err("do_nclip() not yet implemented")
-    if qclip < 1.0 and (not qbal):
-        do_qclip(data, qclip, nt)
-    if qbal:
-        do_qbal(data, qclip, nt)
-    if pbal:
-        err("handling pbal True not yet implemented")
-    if mbal:
-        err("handling mbal True not yet implemented")
-    if maxbal:
-        err("handling maxbal True not yet implemented")
-    if not isclose(scale, f_one):
-        print("RUN — !CLOSETO(scale, f_one)")
-        data *= scale
+    for trace_index in range(num_traces):
+        trace = data[:, trace_index]
+        data[:, trace_index] = apply_gain_single_trace(trace, iwagc, nt)
 
     return data
 
 
-def do_tpow(data, tpow, vred, tmin, dt, nt):
-    # TODO
-    err("do_tpow() not yet implemented")
-
-
-def do_epow():
-    # TODO
-    err("do_epow() not yet implemented")
-
-
-def do_agc(data: npt.NDArray, iwagc: int, nt: int) -> npt.NDArray:
+def do_agc_single_trace(data: npt.NDArray, iwagc: int, nt: int) -> npt.NDArray:
 
     # allocate room for agc'd data and square of data
     agcdata = np.zeros(nt, dtype=float)
@@ -164,7 +100,7 @@ def do_agc(data: npt.NDArray, iwagc: int, nt: int) -> npt.NDArray:
     return agcdata
 
 
-def do_gagc(data: npt.NDArray, iwagc: int, nt: int) -> npt.NDArray:
+def do_gagc_single_trace(data: npt.NDArray, iwagc: int, nt: int) -> npt.NDArray:
     agcdata: npt.NDArray  # agc'd data
     w: npt.NDArray  # Gaussian window weights
     d2: npt.NDArray  # square of input data
@@ -208,34 +144,3 @@ def do_gagc(data: npt.NDArray, iwagc: int, nt: int) -> npt.NDArray:
         agcdata[i] = 0.0 if (not stmp) else data[i] / sqrt(stmp)
 
     return agcdata
-
-
-def do_trap(data, trap, nt):
-    # TODO
-    err("do_trap() not yet implemented")
-
-
-def do_clip(data, clip, nt):
-    # TODO
-    err("do_clip() not yet implemented")
-
-
-def do_pclip(data, pclip, nt):
-    # TODO
-    pass
-
-
-def do_nclip(data, nclip, nt):
-    # TODO
-    err("do_nclip() not yet implemented")
-
-
-def do_qclip(data, qclip, nt):
-    # TODO
-    pass
-
-
-def do_qbal(data, qclip, nt):
-    """Quantile balance"""
-    # TODO
-    err("do_qbal() not yet implemented")

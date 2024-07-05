@@ -32,7 +32,6 @@ def create_gather_index_start_slider(state: dict, update_func) -> Slider:
             return
 
         state["gather_index_start"] = gather_index_start
-        ic(state)
         update_func()
 
     gather_index_start_slider.on_change("value_throttled", callback)
