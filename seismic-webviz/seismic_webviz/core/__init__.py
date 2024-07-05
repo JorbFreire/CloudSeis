@@ -1,3 +1,4 @@
 from .get_sufile import get_sufile
 from .MultiGatherVisualization import MultiGatherVisualization
+from .StackVisualization import StackVisualization
 from .seismic_plot_wrapper import SeismicPlotWrapper

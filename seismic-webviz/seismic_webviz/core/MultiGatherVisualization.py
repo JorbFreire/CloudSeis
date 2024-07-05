@@ -133,4 +133,4 @@ class MultiGatherVisualization:
 
         self.gather_label_wrapper.update_widget(self.state)
         end_time = time.perf_counter()
-        print(f"elapsed_time {end_time - start_time} seconds")
+        print(f"elapsed time: {end_time - start_time} seconds")

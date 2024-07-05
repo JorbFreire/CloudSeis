@@ -370,3 +370,7 @@ class SeismicPlotWrapper:
         self.image_switch = switch
         self.image_switch.active = self.image_renderer.visible
         self.image_switch.js_link("active", self.image_renderer, "visible")
+
+    def toggle_lines_visible(self, value: bool) -> None:
+        self.multi_line_renderer.visible = value
+        self.lines_switch.active = value

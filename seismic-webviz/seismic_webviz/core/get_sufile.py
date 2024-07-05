@@ -1,6 +1,19 @@
 from seismicio import readsu
 
 
+def get_stack_sufile(state: dict, filename: str):
+    # Read seismic data
+    # -----------------
+    sufile = readsu(filename)
+
+    # Data from current seismic data
+    # ------------------------------
+    state["num_time_samples"] = sufile.num_samples
+    state["interval_time_samples"] = sufile.headers.dt[0] / 1000000  # µs → s
+
+    return sufile
+
+
 def get_sufile(state: dict, filename: str, gather_key: str):
     """
     State:
