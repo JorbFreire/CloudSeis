@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, type ComponentType, type ReactNode, useEffect } from 'react'
+import type { Dispatch, SetStateAction, ComponentType, ReactNode } from 'react'
 
 import Tabs from '@mui/material/Tabs';
 import CustomTab from 'components/CustomTab';
@@ -9,15 +9,16 @@ import {
   TabContent,
 } from './styles'
 
+type selectedTab = number | undefined
 
 // *** once <T> accepts any type extending "IgenericEntitiesType"
 // *** it shall be capable to render any matching array
 // *** not needing to convert it removing other filds missing at "IgenericEntitiesType"
 interface ICustomTabsNavigationProps<T extends IgenericEntitiesType> {
   tabs: Array<T>
-  setTabs: Dispatch<SetStateAction<Array<T>>>
-  selectedTab: number | undefined
-  setSelectedTab: Dispatch<SetStateAction<number | undefined>>
+  setTabs: genericSetterType<T>
+  selectedTab: selectedTab
+  setSelectedTab: genericSetterType<selectedTab>
 
   children?: ReactNode
 

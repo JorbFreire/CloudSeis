@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import { getGroups } from 'services/programServices'
 import { createNewCommand } from 'services/commandServices'
 import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
-import { useCommands } from 'providers/CommandsProvider'
+import { useCommandsStore } from 'store/commandsStore';
 import GenericDrawer from "../GenericDrawer"
 
 interface IProgramsDrawerProps {
@@ -17,7 +17,16 @@ export default function ProgramsDrawer({
   setIsOpen
 }: IProgramsDrawerProps) {
   const { singleSelectedWorkflowId } = useSelectedWorkflows()
-  const { commands, setCommands } = useCommands()
+  // *** Commands in the current selected workflow
+  const {
+    commands,
+    setCommands,
+  } = useCommandsStore((state) => ({
+    commands: state.commands,
+    setCommands: state.setCommands,
+  }))
+
+  // *** Groups of Commands, available commands to insert in the workflow
   const [programsGroups, setProgramsGroups] = useState<Array<IProgramsGroup>>([])
 
   const addProgramToCurrentWorkflow = (name: string) => {

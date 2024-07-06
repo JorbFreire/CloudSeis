@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from '@tanstack/react-location';
 
 // Fav button icons need futter optimiation and animation
 import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
@@ -9,8 +8,6 @@ import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDouble
 
 import { useLinesStore } from 'store/linesStore';
 import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
-import { useCommands } from 'providers/CommandsProvider';
-import { useSelectedCommandIndex } from 'providers/SelectedCommandProvider';
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
@@ -18,8 +15,6 @@ import ProjectTab from 'components/ProjectTab';
 import CustomTabsNavigation from 'components/CustomTabsNavigation';
 import CommandParameters from 'components/CommandParameters';
 import DefaultDNDList from 'components/DefaultDNDList';
-
-import { getWorkflowByID } from 'services/workflowServices'
 
 import {
   Container,
@@ -32,7 +27,6 @@ interface IProjectProps {
 }
 
 export default function Project({ projectId }: IProjectProps) {
-  const navigate = useNavigate()
   const {
     selectedWorkflows,
     setSelectedWorkflows,
@@ -43,8 +37,19 @@ export default function Project({ projectId }: IProjectProps) {
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
   const loadLines = useLinesStore((state) => state.loadLines)
-  const { commands, setCommands } = useCommands()
-  const { selectedCommandIndex, setSelectedCommandIndex } = useSelectedCommandIndex()
+  const {
+    commands,
+    loadCommands,
+    setCommands,
+    selectedCommandIndex,
+    setSelectedCommandIndex
+  } = useCommandsStore((state) => ({
+    commands: state.commands,
+    loadCommands: state.loadCommands,
+    setCommands: state.setCommands,
+    selectedCommandIndex: state.selectedCommandIndex,
+    setSelectedCommandIndex: state.setSelectedCommandIndex,
+  }))
 
   useEffect(() => {
     loadLines(projectId)
@@ -53,21 +58,7 @@ export default function Project({ projectId }: IProjectProps) {
   useEffect(() => {
     if (!singleSelectedWorkflowId)
       return
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return navigate({ to: "/login" })
-    getWorkflowByID(token, singleSelectedWorkflowId)
-      .then((result) => {
-        if (!result)
-          return
-        if (result === 401)
-          return navigate({ to: "/login" })
-
-        setCommands([...result.commands])
-        if (result.commands.length < 1)
-          return;
-        setSelectedCommandIndex(result.commands[0].id)
-      })
+    loadCommands(singleSelectedWorkflowId)
   }, [singleSelectedWorkflowId])
 
   return (

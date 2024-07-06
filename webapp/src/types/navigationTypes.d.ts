@@ -2,7 +2,7 @@ declare type navigationOrientationType = 'horizontal' | 'vertical'
 declare type navigationColorType = "primary" | "secondary" | "white"
 
 
-interface IContainerProps {
+declare interface IContainerProps {
   $orientation: navigationOrientationType
 }
 
