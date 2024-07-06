@@ -1,7 +1,7 @@
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import Button from '@mui/material/Button';
 
-import { useLines } from 'providers/LinesProvider'
+import { useLinesStore } from 'store/linesStore';
 
 interface ILineChildrenFolderProps {
   lineId: number
@@ -14,7 +14,7 @@ export default function LineChildrenFolder({
   entityType,
   data,
 }: ILineChildrenFolderProps) {
-  const { pushNewWorkflowToLine } = useLines()
+  const pushNewWorkflowToLine = useLinesStore((state) => state.pushNewWorkflowToLine)
 
   const generateNextWorkflowName = () => {
     if (data.length < 1)

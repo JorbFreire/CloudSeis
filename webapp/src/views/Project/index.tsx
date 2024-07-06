@@ -7,7 +7,7 @@ import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 
-import { useLines } from 'providers/LinesProvider'
+import { useLinesStore } from 'store/linesStore';
 import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
 import { useCommands } from 'providers/CommandsProvider';
 import { useSelectedCommandIndex } from 'providers/SelectedCommandProvider';
@@ -19,7 +19,6 @@ import CustomTabsNavigation from 'components/CustomTabsNavigation';
 import CommandParameters from 'components/CommandParameters';
 import DefaultDNDList from 'components/DefaultDNDList';
 
-import { getLinesByProjectID } from 'services/lineServices'
 import { getWorkflowByID } from 'services/workflowServices'
 
 import {
@@ -43,22 +42,12 @@ export default function Project({ projectId }: IProjectProps) {
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
-  const { setLines } = useLines()
+  const loadLines = useLinesStore((state) => state.loadLines)
   const { commands, setCommands } = useCommands()
   const { selectedCommandIndex, setSelectedCommandIndex } = useSelectedCommandIndex()
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return navigate({ to: "/login" })
-    getLinesByProjectID(token, projectId)
-      .then((result) => {
-        if (result === 401)
-          return navigate({ to: "/login" })
-
-        if (Array.isArray(result))
-          setLines([...result])
-      })
+    loadLines(projectId)
   }, [projectId])
 
   useEffect(() => {

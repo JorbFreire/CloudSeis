@@ -7,8 +7,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
+import { useLinesStore } from 'store/linesStore';
 import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
-import { useLines } from 'providers/LinesProvider'
 import LineChildrenFolder from './LineChildrenFolder'
 
 import { Container } from "./styles"
@@ -21,7 +21,7 @@ export default function ProjectTab() {
     setSingleSelectedWorkflowId
   } = useSelectedWorkflows()
 
-  const { lines } = useLines()
+  const lines = useLinesStore((state) => state.lines)
 
   const [expanded, setExpanded] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>("");
