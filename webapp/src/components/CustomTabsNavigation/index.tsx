@@ -36,9 +36,10 @@ export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
   color = "primary",
   orientation = "horizontal",
   // *** render empty element by default when no DndContextProvided
-  CustomDndContext = ({ children }) => (children),
+  CustomDndContext = ({ children }) => (<>{children}</>),
 }: ICustomTabsNavigationProps<T>) {
-  return Boolean(tabs.length) && (
+  // ? conditional rendering could be a high order component ?
+  return Boolean(tabs.length) ? (
     <Container $orientation={orientation}>
       {/* *** CustomDndContext is passed by optional props *** */}
       <CustomDndContext
@@ -77,5 +78,7 @@ export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
         )
       )}
     </Container>
+  ) : (
+    <></>
   )
 }
