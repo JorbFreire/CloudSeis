@@ -1,6 +1,6 @@
 from bokeh.models import Switch
 
-from ..core.seismic_plot_wrapper import SeismicPlotWrapper
+from ..core.SeismicPlotWrapper import SeismicPlotWrapper
 
 
 def create_seismic_plot_wrapper(state: dict, sufile):
