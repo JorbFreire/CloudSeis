@@ -23,14 +23,17 @@ on:
 
 jobs:
 
-  build:
+  tests:
     name: Test server
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
 
     - name: Install dependecies
-      run: cd server/ && pip install -r requirements.txt
+      run: pip install -r server/requirements.txt
 
     - name: Make
       run: make test
+
+    - name: run tests
+      run: cd server/ && pytest
