@@ -19,6 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
+    - name: Install pipenv
+      run: pip install pipenv
+
     - name: Generate server requirements
       run: cd server/ && pipenv requirements
 
