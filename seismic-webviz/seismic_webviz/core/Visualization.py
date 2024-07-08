@@ -5,4 +5,4 @@ class Visualization(MultiGatherVisualization, StackVisualization):
 		if gather_key:
 			MultiGatherVisualization.__init__(filename, gather_key)
 		else:
-			StackVisualization.__init__(self, filename)
+			StackVisualization.__init__(filename)
