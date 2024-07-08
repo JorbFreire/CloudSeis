@@ -4,6 +4,7 @@ on:
     paths:
       - '**Pipfile'
       - '**Pipfile.lock'
+      - '.github/workflows/generate_requirements.yml'
   workflow_run:
     workflows: [Run Tests]
     types:
