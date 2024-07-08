@@ -1,0 +1,36 @@
+name: Run Tests
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'server/**'
+      - 'webapp/**'  
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+    branches:
+      - master
+    paths:
+      - 'server/**'
+      - 'webapp/**'
+      - 'Makefile'
+      - 'docker-compose.yml'
+  workflow_dispatch: {}
+
+jobs:
+
+  build:
+    name: Test server
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Install dependecies
+      run: cd server/ && pip install -r requirements.txt
+
+    - name: Make
+      run: make test
