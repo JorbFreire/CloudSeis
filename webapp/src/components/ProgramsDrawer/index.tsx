@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from 'react'
 
 import { getGroups } from 'services/programServices'
 import { createNewCommand } from 'services/commandServices'
-import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
+import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
 import { useCommandsStore } from 'store/commandsStore';
 import GenericDrawer from "../GenericDrawer"
 
@@ -16,7 +16,7 @@ export default function ProgramsDrawer({
   isOpen,
   setIsOpen
 }: IProgramsDrawerProps) {
-  const { singleSelectedWorkflowId } = useSelectedWorkflows()
+  const singleSelectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
   // *** Commands in the current selected workflow
   const {
     commands,

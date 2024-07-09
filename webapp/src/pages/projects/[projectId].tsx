@@ -1,15 +1,12 @@
 import { useMatch } from '@tanstack/react-location'
-import SelectedWorkflowsProvider from 'providers/SelectedWorkflowsProvider'
 import ProjectView from 'views/Project'
 
 export default function ProjectPage() {
   const { params } = useMatch()
 
   return (
-    <SelectedWorkflowsProvider>
-      <ProjectView
-        projectId={Number(params.projectId)}
-      />
-    </SelectedWorkflowsProvider>
+    <ProjectView
+      projectId={Number(params.projectId)}
+    />
   )
 }

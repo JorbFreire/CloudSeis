@@ -8,7 +8,7 @@ import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDouble
 
 import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
-import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
+import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
@@ -33,7 +33,12 @@ export default function Project({ projectId }: IProjectProps) {
     setSelectedWorkflows,
     singleSelectedWorkflowId,
     setSingleSelectedWorkflowId,
-  } = useSelectedWorkflows()
+  } = useSelectedWorkflowsStore((state) => ({
+    selectedWorkflows: state.selectedWorkflows,
+    setSelectedWorkflows: state.setSelectedWorkflows,
+    singleSelectedWorkflowId: state.singleSelectedWorkflowId,
+    setSingleSelectedWorkflowId: state.setSingleSelectedWorkflowId,
+  }))
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 

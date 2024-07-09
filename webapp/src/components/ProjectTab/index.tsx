@@ -8,20 +8,19 @@ import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 import { useLinesStore } from 'store/linesStore';
-import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
+import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
 import LineChildrenFolder from './LineChildrenFolder'
 
 import { Container } from "./styles"
 
 export default function ProjectTab() {
-  const {
-    selectedWorkflows,
-    setSelectedWorkflows,
-    singleSelectedWorkflowId,
-    setSingleSelectedWorkflowId
-  } = useSelectedWorkflows()
-
   const lines = useLinesStore((state) => state.lines)
+  const {
+    selectWorkflow,
+  } = useSelectedWorkflowsStore((state) => ({
+    singleSelectedWorkflowId: state.singleSelectedWorkflowId,
+    selectWorkflow: state.selectWorkflow,
+  }))
 
   const [expanded, setExpanded] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>("");
@@ -37,32 +36,10 @@ export default function ProjectTab() {
       return
     const [key, id, name] = nodeId.split("-")
 
-    if (singleSelectedWorkflowId != undefined) {
-      const isAlredySingleSelected = id == singleSelectedWorkflowId.toString();
-      if (isAlredySingleSelected)
-        return
-    }
-
     if (key !== "workflow" || !id || !name)
       return
 
-    const isAlredySelected = selectedWorkflows.findIndex(
-      (element) => element.id == Number(id)
-    ) >= 0
-
-    setSelected(nodeId);
-    setSingleSelectedWorkflowId(Number(id))
-
-    if (isAlredySelected)
-      return
-
-    setSelectedWorkflows((oldState) => [
-      ...oldState,
-      {
-        id: Number(id),
-        name: name,
-      }
-    ])
+    selectWorkflow(Number(id), () => setSelected(nodeId))
   };
 
   return (
