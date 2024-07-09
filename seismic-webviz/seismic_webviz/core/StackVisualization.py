@@ -6,10 +6,9 @@ from bokeh.models import Paragraph
 from icecream import ic
 from seismicio.Models.SuDataModel import SuFile
 
-import seismic_webviz.widgets as widgets
-from seismic_webviz.transforms.clip import apply_clip_from_perc
-from seismic_webviz.transforms.gain import apply_gain
-from seismicio import readsu
+from ..widgets import widgets
+from ..transforms.clip import apply_clip_from_perc
+from ..transforms.gain import apply_gain
 from .get_sufile import get_stack_sufile
 
 
