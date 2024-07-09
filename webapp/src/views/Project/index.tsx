@@ -7,6 +7,7 @@ import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 
 import { useLinesStore } from 'store/linesStore';
+import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflows } from 'providers/SelectedWorkflowsProvider'
 
 import Console from 'components/Console'
