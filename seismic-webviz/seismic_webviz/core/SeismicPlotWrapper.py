@@ -1,5 +1,5 @@
 import numpy.typing as npt
-from bokeh.models import ColumnDataSource, GlyphRenderer, Switch
+from bokeh.models import ColumnDataSource, GlyphRenderer, Image, Switch
 import numpy as np
 import numpy.typing as npt
 from bokeh.plotting import figure
@@ -8,11 +8,11 @@ from bokeh.plotting import figure
 MAX_TRACES_LINE_HAREA = 100
 
 
-class SeismicVisualization:
+class SeismicPlotWrapper:
 
-    image_widget: Switch | None = None
-    line_widget: Switch | None = None
-    area_widget: Switch | None = None
+    image_switch: Switch | None = None
+    lines_switch: Switch | None = None
+    areas_switch: Switch | None = None
 
     def __init__(
         self,
@@ -65,8 +65,7 @@ class SeismicVisualization:
 
         # Time sample instants (data for all renderers)
         first_time_sample = 0.0
-        last_time_sample = first_time_sample + \
-            (num_time_samples - 1) * interval_time_samples
+        last_time_sample = first_time_sample + (num_time_samples - 1) * interval_time_samples
         time_sample_instants = np.linspace(
             start=first_time_sample, stop=last_time_sample, num=num_time_samples
         )
@@ -79,8 +78,7 @@ class SeismicVisualization:
 
         # Create multi_line renderer's source
         self.multi_line_source = ColumnDataSource(
-            data=self._compute_multi_line_source_data(
-                data_rescaled, x_positions, time_sample_instants)
+            data=self._compute_multi_line_source_data(data_rescaled, x_positions, time_sample_instants)
         )
 
         # Add renderers
@@ -88,8 +86,7 @@ class SeismicVisualization:
 
         # --- Add (single) image renderer ---
         # auxiliary data for image renderer parameters
-        width_time_sample_instants = np.abs(
-            time_sample_instants[0] - time_sample_instants[-1])
+        width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
         if num_traces == 1:
             self.image_renderer: GlyphRenderer = self.plot.image(
                 image="image",
@@ -112,8 +109,7 @@ class SeismicVisualization:
                 source=self.image_source,
                 x=x_positions[0] - distance_first_x_positions / 2,
                 y=first_time_sample,
-                dw=width_x_positions +
-                (distance_first_x_positions + distance_last_x_positions) / 2,
+                dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
                 dh=width_time_sample_instants,
                 palette="Greys256",
                 anchor="bottom_left",
@@ -126,7 +122,7 @@ class SeismicVisualization:
             ys="ys",
             source=self.multi_line_source,
             color=color,
-            visible=self.line_widget.active if self.line_widget else True,
+            visible=self.lines_switch.active if self.lines_switch else True,
         )
 
         # Add (multiple) harea renderers
@@ -228,14 +224,13 @@ class SeismicVisualization:
                 y=time_sample_instants,
                 color="black",
                 name="H",
-                visible=self.area_widget.active if self.area_widget else True,
+                visible=self.areas_switch.active if self.areas_switch else True,
             )
 
     def _update_image_glyph(self, x_positions: npt.NDArray, time_sample_instants: npt.NDArray):
         num_traces = x_positions.size
         first_time_sample = time_sample_instants[0]
-        width_time_sample_instants = np.abs(
-            time_sample_instants[0] - time_sample_instants[-1])
+        width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
         if num_traces == 1:
             self.image_renderer.glyph.update(
                 x=x_positions[0] - 1,
@@ -249,8 +244,7 @@ class SeismicVisualization:
             distance_last_x_positions = x_positions[-1] - x_positions[-2]
             self.image_renderer.glyph.update(
                 x=x_positions[0] - distance_first_x_positions / 2,
-                dw=width_x_positions +
-                (distance_first_x_positions + distance_last_x_positions) / 2,
+                dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
                 y=first_time_sample,
                 dh=width_time_sample_instants,
             )
@@ -284,8 +278,7 @@ class SeismicVisualization:
 
         # Time sample instants (data for all renderers)
         first_time_sample = 0.0
-        last_time_sample = first_time_sample + \
-            (num_time_samples - 1) * interval_time_samples
+        last_time_sample = first_time_sample + (num_time_samples - 1) * interval_time_samples
         time_sample_instants = np.linspace(
             start=first_time_sample, stop=last_time_sample, num=num_time_samples
         )
@@ -299,8 +292,7 @@ class SeismicVisualization:
         self._update_image_glyph(x_positions, time_sample_instants)
 
         # Update multi_line renderer's source
-        self._update_multi_line_source(
-            data_rescaled, x_positions, time_sample_instants)
+        self._update_multi_line_source(data_rescaled, x_positions, time_sample_instants)
 
         # Update harea renderers
         self._remove_hareas()
@@ -338,44 +330,47 @@ class SeismicVisualization:
 
     def _remove_hareas(self):
         """Remove all harea glyph renderers from this plot"""
-        self.plot.renderers = list(
-            filter(lambda gl: gl.name != "H", self.plot.renderers))
+        self.plot.renderers = list(filter(lambda gl: gl.name != "H", self.plot.renderers))
 
     def _set_up_renderers_on_trace_excess(self, num_traces: int):
         # If there are too many traces...
         if num_traces > MAX_TRACES_LINE_HAREA:
             # deactivate area widget
-            if self.area_widget:
-                self.area_widget.update(active=False, disabled=True)
+            if self.areas_switch:
+                self.areas_switch.update(active=False, disabled=True)
         else:
             # harea is allowed
-            if self.area_widget is not None:
-                self.area_widget.disabled = False
+            if self.areas_switch is not None:
+                self.areas_switch.disabled = False
 
     def assign_line_switch(self, switch: Switch):
         """Link the `active` attribute of a Switch instance (either a
         Switch or CheckBox instance) to the visibility of the line renderer"""
-        self.line_widget = switch
-        self.line_widget.active = self.multi_line_renderer.visible
-        self.line_widget.js_link("active", self.multi_line_renderer, "visible")
+        self.lines_switch = switch
+        self.lines_switch.active = self.multi_line_renderer.visible
+        self.lines_switch.js_link("active", self.multi_line_renderer, "visible")
 
     def assign_area_switch(self, switch: Switch):
         """Link the `active` attribute of a Switch instance (either a
         Switch or CheckBox instance) to the visibility of the area renderer"""
 
         def harea_switch_handler(attr, old, new: bool):
-            self.area_widget.disabled = True
+            self.areas_switch.disabled = True
             with self.plot.hold(render=True):
                 for gl in filter(lambda gl: gl.name == "H", self.plot.renderers):
                     gl.visible = new
-            self.area_widget.disabled = False
+            self.areas_switch.disabled = False
 
-        self.area_widget = switch
-        self.area_widget.on_change("active", harea_switch_handler)
+        self.areas_switch = switch
+        self.areas_switch.on_change("active", harea_switch_handler)
 
     def assign_image_switch(self, switch: Switch):
         """Link the `active` attribute of a Switch instance (either a
         Switch or CheckBox instance) to the visibility of the image renderer"""
-        self.image_widget = switch
-        self.image_widget.active = self.image_renderer.visible
-        self.image_widget.js_link("active", self.image_renderer, "visible")
+        self.image_switch = switch
+        self.image_switch.active = self.image_renderer.visible
+        self.image_switch.js_link("active", self.image_renderer, "visible")
+
+    def toggle_lines_visible(self, value: bool) -> None:
+        self.multi_line_renderer.visible = value
+        self.lines_switch.active = value

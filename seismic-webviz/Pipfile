@@ -5,15 +5,15 @@ name = "pypi"
 
 [packages]
 bokeh = "*"
-numpy = "*"
+numpy = "==1.25.1"
 seismicio = "==0.0.22"
 
 [dev-packages]
 ipython = "*"
-ipykernel = "*"
+icecream = "*"
 
 [requires]
-python_version = "3.*"
+python_version = "3"
 
 [scripts]
-serve = "bokeh serve core/main.py"
+serve = "bokeh serve main_test.py"
