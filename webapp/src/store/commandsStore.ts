@@ -6,17 +6,17 @@ import { getWorkflowByID } from 'services/workflowServices'
 type selectedCommandIndexType = number | undefined
 type commandsType = Array<ICommand>
 
-interface ILinesStoreState {
+interface ICommandsStoreState {
   selectedCommandIndex: selectedCommandIndexType
   setSelectedCommandIndex: (newIndex: number) => void
   commands: commandsType
   setCommands: (newValue: commandsType) => void
   loadCommands: (workflowId: number) => void
-  selectNewCommand: (newLine: any) => void
+  selectNewCommand: (newCommand: any) => void
   updateCommandParams: (index: number, newParameters: string) => void
 }
 
-export const useCommandsStore = create<ILinesStoreState>((set, get) => ({
+export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
   selectedCommandIndex: undefined,
   setSelectedCommandIndex: (newIndex) => {
     const token = localStorage.getItem("jwt")
