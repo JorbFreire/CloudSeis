@@ -1,11 +1,9 @@
 import sqlalchemy as dbTypes
 from sqlalchemy.orm import relationship, Mapped
 from typing import List
-
 from ..database.connection import database
-from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
-from .WorkflowModel import WorkflowModel
 
+from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 class DataSetModel(database.Model):
     __tablename__ = "datasets_table"
@@ -17,9 +15,9 @@ class DataSetModel(database.Model):
         name="FK_users_table_dataset_table"
     ))
 
-    projectId = dbTypes.Column(dbTypes.ForeignKey(
-        "projects_table.id",
-        name="FK_projects_datasets"
+    workflowId = dbTypes.Column(dbTypes.ForeignKey(
+        "workflows_table.id",
+        name="FK_workflows_tables_datasets_table"
     ))
 
     workflowParentAssociations: Mapped[
@@ -28,6 +26,7 @@ class DataSetModel(database.Model):
 
 
     def _getWorkflows(self) -> list[dict[str, str]]:
+        from .WorkflowModel import WorkflowModel
         if len(self.workflowParentAssociations) == 0:
             return []
         workflows = WorkflowModel.query.filter(
@@ -42,3 +41,5 @@ class DataSetModel(database.Model):
             "id": self.id,
             "workflows": self._getWorkflows()
         }
+
+# Add commands attributes

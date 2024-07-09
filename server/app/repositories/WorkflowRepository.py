@@ -46,8 +46,9 @@ class WorkflowRepository:
         newWorkflow = WorkflowModel(
             name=newWorkflowData["name"],
             file_name="",
-            owner_email=user.email
+            owner_email=user.email,
         )
+
         database.session.add(newWorkflow)
         database.session.commit()
 

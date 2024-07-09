@@ -7,6 +7,7 @@ from ..getFilePath import getSuFilePath
 
 from ..models.UserModel import UserModel
 from ..models.WorkflowModel import WorkflowModel
+from ..repositories.DatasetRepository import DatasetRepository
 
 class SeismicFileRepository:
     def _getParameter(self, parameterValues: list | str | float | int | bool) -> str:
@@ -54,17 +55,21 @@ class SeismicFileRepository:
         file.save(os.path.join(directory, unique_filename))
         return unique_filename
 
-        # File is blank if marmousi_CS.su is empty
-
     def update(self, unique_filename, workflowId) -> str:
-        source_file_path = getSuFilePath(unique_filename)
+        datasetRepository = DatasetRepository()
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
-        seismicUnixCommandsQueue = workflow.orderedCommandsList
+        user = UserModel.query.filter_by(email=workflow.owner_email).first()
+
+        datasetRepository.create(str(user.id), workflow.id)
+
         # todo: dynamically change the name of the file
+        source_file_path = getSuFilePath(unique_filename)
+        seismicUnixCommandsQueue = workflow.orderedCommandsList
         changed_file_path = getSuFilePath(f'2{unique_filename}')
         seismicUnixProcessString = self._getSemicUnixCommandString(
             seismicUnixCommandsQueue, source_file_path, changed_file_path
         )
+
         try:
             process_output = subprocess.check_output(
                 seismicUnixProcessString,
