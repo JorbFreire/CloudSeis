@@ -4,25 +4,27 @@ from bokeh.application import Application
 from .core import Visualization
 
 
-def on_session_created(session_context):
-    print("New session created!")
-    suFileName = session_context.request.arguments["file_name"][0].decode('UTF-8')
-    print("suFileName:")
-    print(suFileName)
-    
+def modify_doc(document):
+    session_context = document.session_context
+    request = session_context.request
+    arguments = request.arguments
+
+    file_name = arguments.get('file_name', [b''])[0].decode('utf-8')
+    gather_key = arguments.get('gather_key', [b''])[0].decode('utf-8')
+
     main = Visualization(
-        filename=suFileName,
+        filename=file_name,
+        gather_key=gather_key
     )
 
-    document = curdoc()
     # "main_model" could be "main_column"
     document.add_root(main.main_model)
 
 
-# Create a new Bokeh Application
-bokeh_app = Application(FunctionHandler(on_session_created))
+# *** Create a new Bokeh Application
+bokeh_app = Application(FunctionHandler(modify_doc))
 
-# Run the Bokeh server application
+# *** Run the Bokeh server application
 if __name__ == '__main__':
     from bokeh.server.server import Server
     server = Server({'/': bokeh_app}, allow_websocket_origin=["*"])
