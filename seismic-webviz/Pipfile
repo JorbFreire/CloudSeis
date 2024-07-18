@@ -16,4 +16,4 @@ icecream = "*"
 python_version = "3"
 
 [scripts]
-serve = "bokeh serve main_test.py"
+serve = "python -m seismic_webviz"
