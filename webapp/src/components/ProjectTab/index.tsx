@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
-
+import { useTimeout } from 'react-use';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -18,20 +18,25 @@ export default function ProjectTab() {
   const {
     selectWorkflow,
   } = useSelectedWorkflowsStore((state) => ({
-    singleSelectedWorkflowId: state.singleSelectedWorkflowId,
     selectWorkflow: state.selectWorkflow,
   }))
 
   const [expanded, setExpanded] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>("");
+  const [isAllowToSelect, _, resetAllowToSelectTimer] = useTimeout(1000);
 
   const handleToggle = (_: SyntheticEvent, nodeId: string[]) => {
     setExpanded(nodeId);
   };
 
   const handleSelect = (_: SyntheticEvent, nodeId: string) => {
+    if (!isAllowToSelect())
+      return
+    resetAllowToSelectTimer()
+
     const isWorkflow = nodeId.startsWith("workflow")
     const isDataset = nodeId.startsWith("dataset")
+
     if (!(isWorkflow || isDataset))
       return
     const [key, id, name] = nodeId.split("-")
@@ -40,7 +45,7 @@ export default function ProjectTab() {
       return
 
     selectWorkflow(Number(id), () => setSelected(nodeId))
-  };
+  }
 
   return (
     <Container>
