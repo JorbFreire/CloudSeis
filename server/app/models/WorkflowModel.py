@@ -5,6 +5,7 @@ from typing import List
 from ..database.connection import database
 from .CommandModel import CommandModel
 from .OrderedCommandsListModel import OrderedCommandsListModel
+from .DataSetModel import DataSetModel
 from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 
@@ -23,7 +24,7 @@ class WorkflowModel(database.Model):  # type: ignore
 
     commands: Mapped[
         List[CommandModel]
-    ] = relationship(CommandModel)
+    ] = relationship(CommandModel, cascade='all, delete-orphan')
 
     orderedCommandsList: Mapped[
         List[CommandModel]

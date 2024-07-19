@@ -34,6 +34,7 @@ def createSuFile(userId, *_, **kwargs):
 
 # Understans <unique_filename> -> What it is, which file is and why it is necessary
 @suFileRouter.route("/<unique_filename>/<workflowId>", methods=['PUT'])
+# @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateSuFile(unique_filename, workflowId):
     data = request.get_json()
     if data == None:
