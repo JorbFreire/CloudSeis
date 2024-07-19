@@ -32,6 +32,17 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
         name="FK_workflow_parents_association_table_projects_table"
     ))
 
+    def getProjectId(self) -> int:
+        # *** import inside functino to avoid circular import
+        # ! do not turn into global import
+        from .LineModel import LineModel
+
+        if self.projectId:
+            return self.projectId
+        if self.lineId:
+            line = LineModel.query.filter_by(id=self.lineId).first()
+            return line.projectId
+
     def getAttributes(self):
         return {
             "projectId": self.projectId,

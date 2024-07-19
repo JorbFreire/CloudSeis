@@ -1,13 +1,15 @@
 from json import loads
-import os
+from os import path, makedirs
 import subprocess
-from datetime import datetime
-from uuid import UUID
-from ..getFilePath import getSuFilePath
 
+from .SeismicFilePathRepository import SeismicFilePathRepository
 from ..models.UserModel import UserModel
 from ..models.WorkflowModel import WorkflowModel
 from ..repositories.DatasetRepository import DatasetRepository
+
+seismicFileRepository = SeismicFilePathRepository()
+datasetRepository = DatasetRepository()
+
 
 class SeismicFileRepository:
     def _getParameter(self, parameterValues: list | str | float | int | bool) -> str:
@@ -38,36 +40,37 @@ class SeismicFileRepository:
         for orderedCommands in commandsQueue:
             for seismicUnixProgram in orderedCommands.getCommands():
                 seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
-                seismicUnixProcessString += self._getAllParameters(loads((seismicUnixProgram["parameters"])))
+                seismicUnixProcessString += self._getAllParameters(
+                    loads((seismicUnixProgram["parameters"])))
                 seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
         return seismicUnixProcessString
 
-    def create(self, file, userId, projectId) -> str:
-        unique_filename = file.filename.replace(".su", "_").replace(" ", "_")
-        unique_filename = unique_filename + \
-            datetime.now().strftime("%d%m%Y_%H%M%S") + ".su"
+    def create(self, file, projectId) -> str:
+        filePath = seismicFileRepository.createByProjectId(
+            file.filename,
+            projectId
+        )
+        directory = path.dirname(filePath)
+        if not path.exists(directory):
+            makedirs(directory)
+        file.save(filePath)
+        return filePath
+        # *** File is blank if marmousi_CS.su is empty
 
-        user = UserModel.query.filter_by(id=UUID(userId)).first()
-
-        directory = f"static/{user.email}/{projectId}"
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        file.save(os.path.join(directory, unique_filename))
-        return unique_filename
-
-    def update(self, unique_filename, workflowId) -> str:
-        datasetRepository = DatasetRepository()
-        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+    def update(self, workflowId) -> str:
         user = UserModel.query.filter_by(email=workflow.owner_email).first()
+        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
 
         datasetRepository.create(str(user.id), workflow.id)
 
-        # todo: dynamically change the name of the file
-        source_file_path = getSuFilePath(unique_filename)
-        seismicUnixCommandsQueue = workflow.orderedCommandsList
-        changed_file_path = getSuFilePath(f'2{unique_filename}')
+        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+        source_file_path = seismicFileRepository.showByWorkflowId(workflowId)
+        target_file_path = seismicFileRepository.createByWorkflowId(workflowId)
+
         seismicUnixProcessString = self._getSemicUnixCommandString(
-            seismicUnixCommandsQueue, source_file_path, changed_file_path
+            workflow.orderedCommandsList,
+            source_file_path,
+            target_file_path
         )
 
         try:
