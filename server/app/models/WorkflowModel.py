@@ -5,7 +5,6 @@ from typing import List
 from ..database.connection import database
 from .CommandModel import CommandModel
 from .OrderedCommandsListModel import OrderedCommandsListModel
-from .DataSetModel import DataSetModel
 from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 

@@ -1,9 +1,11 @@
 import sqlalchemy as dbTypes
 from sqlalchemy.orm import relationship, Mapped
 from typing import List
-from ..database.connection import database
 
+from ..database.connection import database
+from .WorkflowModel import WorkflowModel
 from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
+
 
 class DataSetModel(database.Model):
     __tablename__ = "datasets_table"
@@ -24,9 +26,7 @@ class DataSetModel(database.Model):
         List[WorkflowParentsAssociationModel]
     ] = relationship(WorkflowParentsAssociationModel)
 
-
     def _getWorkflows(self) -> list[dict[str, str]]:
-        from .WorkflowModel import WorkflowModel
         if len(self.workflowParentAssociations) == 0:
             return []
         workflows = WorkflowModel.query.filter(
