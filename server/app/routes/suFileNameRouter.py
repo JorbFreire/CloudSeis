@@ -22,3 +22,13 @@ def showSuFilePath(_, workflowId):
     return jsonify({
         "file_path": file_path
     })
+
+
+@suFileNameRouter.route("/dataset/show-path/<workflowId>", methods=['GET'])
+@decorator_factory(requireAuthentication, routeModel=WorkflowModel)
+def showDatasetSuFilePath(_, workflowId):
+    # !not implemented
+    file_path = seismicFilePathRepository.showByWorkflowId(workflowId)
+    return jsonify({
+        "file_path": file_path
+    })

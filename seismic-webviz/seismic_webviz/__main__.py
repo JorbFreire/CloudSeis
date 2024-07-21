@@ -1,19 +1,47 @@
-from bokeh.plotting import curdoc
+import requests
+from os import getenv
 from bokeh.application.handlers import FunctionHandler
 from bokeh.application import Application
+
 from .core import Visualization
 
+BASE_URL = getenv(
+    'SERVER_URL',
+    'http://localhost:5000'
+)
 
-def modify_doc(document):
+
+def load_file_path(auth_token, workflowId) -> None | str:
+    api_url = f"{BASE_URL}/su-file-path/show-path/{workflowId}"
+    headers = {
+        "Authorization": f"Bearer {auth_token}"
+    }
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code != 200:
+        return None
+
+    absolute_file_path = response.json()["file_path"]
+    return absolute_file_path
+
+
+def modify_document(document):
     session_context = document.session_context
     request = session_context.request
     arguments = request.arguments
 
-    file_name = arguments.get('file_name', [b''])[0].decode('utf-8')
+    auth_token = request.cookies.get('Authorization', '')
     gather_key = arguments.get('gather_key', [b''])[0].decode('utf-8')
+    workflowId = arguments.get('workflowId', [b''])[0].decode('utf-8')
+
+    absolute_file_path = load_file_path(
+        auth_token=auth_token,
+        workflowId=workflowId
+    )
 
     main = Visualization(
-        filename=file_name,
+        filename=absolute_file_path,
         gather_key=gather_key
     )
 
@@ -22,7 +50,7 @@ def modify_doc(document):
 
 
 # *** Create a new Bokeh Application
-bokeh_app = Application(FunctionHandler(modify_doc))
+bokeh_app = Application(FunctionHandler(modify_document))
 
 # *** Run the Bokeh server application
 if __name__ == '__main__':

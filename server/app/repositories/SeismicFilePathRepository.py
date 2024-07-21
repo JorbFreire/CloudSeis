@@ -8,7 +8,7 @@ from ..models.ProjectModel import ProjectModel
 
 
 class SeismicFilePathRepository:
-    def _getRandomString():
+    def _getRandomString(self):
         return datetime.now().strftime("%d%m%Y_%H%M%S")
 
     def _getSuFilePath(self, unique_filename, user_email, projectId):
@@ -25,12 +25,12 @@ class SeismicFilePathRepository:
         file_path = self._getSuFilePath(
             workflow.file_name,
             workflow.owner_email,
-            workflow.getProjectId()
+            workflow.workflowParent[0].getProjectId()
         )
         return file_path
 
     # *** Expected to be used when uploading a new file
-    def createByProjectId(self, input_file_name, projectId):
+    def createByProjectId(self, input_file_name, projectId) -> str:
         project = ProjectModel.query.filter(id=projectId).first
         user = UserModel.query.filter_by(id=UUID(project.userId)).first()
 

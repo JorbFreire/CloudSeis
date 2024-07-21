@@ -4,16 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-bokeh = "*"
-numpy = "==1.25.1"
+bokeh = "~=3.5.0"
 seismicio = "==0.0.22"
+requests = "~=2.32.3"
+python-dotenv = "~=1.0.1"
 
 [dev-packages]
 ipython = "*"
 icecream = "*"
 
 [requires]
-python_version = "3"
+python_version = "3.12"
 
 [scripts]
 serve = "python -m seismic_webviz"
