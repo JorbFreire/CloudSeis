@@ -2,6 +2,7 @@ import requests
 from os import getenv
 from bokeh.application.handlers import FunctionHandler
 from bokeh.application import Application
+from bokeh.document.document import Document
 
 from .core import Visualization
 
@@ -11,7 +12,7 @@ BASE_URL = getenv(
 )
 
 
-def load_file_path(auth_token, workflowId) -> None | str:
+def load_file_path(auth_token: str, workflowId: int) -> None | str:
     api_url = f"{BASE_URL}/su-file-path/show-path/{workflowId}"
     headers = {
         "Authorization": f"Bearer {auth_token}"
@@ -26,7 +27,7 @@ def load_file_path(auth_token, workflowId) -> None | str:
     return absolute_file_path
 
 
-def modify_document(document):
+def modify_document(document: Document) -> None:
     session_context = document.session_context
     request = session_context.request
     arguments = request.arguments
@@ -37,7 +38,7 @@ def modify_document(document):
 
     absolute_file_path = load_file_path(
         auth_token=auth_token,
-        workflowId=workflowId
+        workflowId=int(workflowId)
     )
 
     main = Visualization(
@@ -50,7 +51,7 @@ def modify_document(document):
 
 
 # *** Create a new Bokeh Application
-bokeh_app = Application(FunctionHandler(modify_document))
+bokeh_app = Application(FunctionHandler(func=modify_document))
 
 # *** Run the Bokeh server application
 if __name__ == '__main__':
