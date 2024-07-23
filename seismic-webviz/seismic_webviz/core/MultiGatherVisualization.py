@@ -30,7 +30,10 @@ class MultiGatherVisualization:
 
         self.sufile: SuFile = get_sufile(self.state, filename, gather_key)
 
-        self.seismic_plot_wrapper = widgets.create_seismic_plot_wrapper(self.state, self.sufile)
+        self.seismic_plot_wrapper = widgets.create_seismic_plot_wrapper(
+            self.state,
+            self.sufile
+        )
 
         gather_index_start_slider = widgets.create_gather_index_start_slider(
             self.state,
@@ -53,7 +56,9 @@ class MultiGatherVisualization:
             self.handle_state_change,
         )
 
-        self.gather_label_wrapper = widgets.GatherValueWrapper(self.sufile.gather_index_to_value)
+        self.gather_label_wrapper = widgets.GatherValueWrapper(
+            self.sufile.gather_index_to_value
+        )
         self.gather_label_wrapper.update_widget(self.state)
 
         left_tools_column = column(
@@ -66,12 +71,18 @@ class MultiGatherVisualization:
             wagc_input,
         )
         bottom_tools_row = row(
-            num_loadedgathers_spinner, gather_index_start_slider, sizing_mode="stretch_width"
+            num_loadedgathers_spinner,
+            gather_index_start_slider,
+            sizing_mode="stretch_width"
         )
         row_tools_figure = row(
-            children=[left_tools_column, self.seismic_plot_wrapper.plot], sizing_mode="stretch_both"
+            children=[left_tools_column, self.seismic_plot_wrapper.plot],
+            sizing_mode="stretch_both"
         )
-        self.main_model = column(children=[row_tools_figure, bottom_tools_row], sizing_mode="stretch_both")
+        self.root_layout = column(
+            children=[row_tools_figure, bottom_tools_row],
+            sizing_mode="stretch_both"
+        )
 
     @staticmethod
     def _optionally_apply_pencentile_clip(data: npt.NDArray, percentile: None | int) -> npt.NDArray:
@@ -91,10 +102,11 @@ class MultiGatherVisualization:
         print("CALL handle_state_change")
         ic(self.state)
 
-        gather_index_stop = self.state["gather_index_start"] + self.state["num_loadedgathers"]
+        gather_index_stop = self.state["gather_index_start"] + \
+            self.state["num_loadedgathers"]
 
         if self.state["gather_index_start"] == gather_index_stop - 1:
-            # Single gather
+            # *** Single gather
 
             data = self.sufile.igather[self.state["gather_index_start"]].data
 
@@ -104,18 +116,23 @@ class MultiGatherVisualization:
                 wagc=self.state["wagc"],
                 dt=self.state["interval_time_samples"],
             )
-            data = self._optionally_apply_pencentile_clip(data, self.state["percentile_clip"])
+            data = self._optionally_apply_pencentile_clip(
+                data,
+                self.state["percentile_clip"]
+            )
 
             self.seismic_plot_wrapper.update_plot(
                 data=data,
-                x_positions=self.sufile.igather[self.state["gather_index_start"]].headers["offset"],
+                x_positions=self.sufile.igather[
+                    self.state["gather_index_start"]
+                ].headers["offset"],
                 interval_time_samples=self.state["interval_time_samples"],
                 gather_key="Offset [m]",
             )
         else:
-            # Multiple gathers
+            # *** Multiple gathers
 
-            data = self.sufile.igather[self.state["gather_index_start"] : gather_index_stop].data
+            data = self.sufile.igather[self.state["gather_index_start"]: gather_index_stop].data
 
             data = self._optionally_apply_gain(
                 data,
@@ -123,7 +140,10 @@ class MultiGatherVisualization:
                 wagc=self.state["wagc"],
                 dt=self.state["interval_time_samples"],
             )
-            data = self._optionally_apply_pencentile_clip(data, self.state["percentile_clip"])
+            data = self._optionally_apply_pencentile_clip(
+                data,
+                self.state["percentile_clip"]
+            )
 
             self.seismic_plot_wrapper.update_plot(
                 data,

@@ -26,7 +26,10 @@ class StackVisualization:
 
         self.sufile: SuFile = get_stack_sufile(self.state, filename)
 
-        self.seismic_plot_wrapper = widgets.create_seismic_plot_wrapper(self.state, self.sufile)
+        self.seismic_plot_wrapper = widgets.create_seismic_plot_wrapper(
+            self.state,
+            self.sufile
+        )
         self.seismic_plot_wrapper.toggle_lines_visible(False)
 
         percentile_clip_input = widgets.create_percentile_clip_input(
@@ -51,9 +54,13 @@ class StackVisualization:
             wagc_input,
         )
         row_tools_figure = row(
-            children=[left_tools_column, self.seismic_plot_wrapper.plot], sizing_mode="stretch_both"
+            children=[left_tools_column, self.seismic_plot_wrapper.plot],
+            sizing_mode="stretch_both"
         )
-        self.main_model = column(children=[row_tools_figure], sizing_mode="stretch_both")
+        self.root_layout = column(
+            children=[row_tools_figure],
+            sizing_mode="stretch_both"
+        )
 
     @staticmethod
     def _optionally_apply_pencentile_clip(data: npt.NDArray, percentile: None | int) -> npt.NDArray:
@@ -80,7 +87,10 @@ class StackVisualization:
             wagc=self.state["wagc"],
             dt=self.state["interval_time_samples"],
         )
-        data = self._optionally_apply_pencentile_clip(data, self.state["percentile_clip"])
+        data = self._optionally_apply_pencentile_clip(
+            data,
+            self.state["percentile_clip"]
+        )
 
         self.seismic_plot_wrapper.update_plot(
             data=data,
