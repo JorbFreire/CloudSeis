@@ -8,10 +8,10 @@ from ..models.ProjectModel import ProjectModel
 
 
 class SeismicFilePathRepository:
-    def _getRandomString(self):
+    def _getRandomString(self) -> str:
         return datetime.now().strftime("%d%m%Y_%H%M%S")
 
-    def _getSuFilePath(self, unique_filename, user_email, projectId):
+    def _getSuFilePath(self, unique_filename, user_email, projectId) -> str:
         file_path = f'{getcwd()}/static/{user_email}/{projectId}/{unique_filename}'
         return file_path
 
@@ -43,7 +43,7 @@ class SeismicFilePathRepository:
         return filePath
 
     # *** Expected to be used when updating a file and generating a dataset
-    def createByWorkflowId(self, workflowId):
+    def createByWorkflowId(self, workflowId) -> str:
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
 
         source_file_path = self.showByWorkflowId(workflowId)
