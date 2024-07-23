@@ -8,6 +8,7 @@ from ..middlewares.decoratorsFactory import decorator_factory
 datasetRouter = Blueprint("dataset-routes", __name__, url_prefix="/dataset")
 datasetRepository = DatasetRepository()
 
+
 @datasetRouter.route("/delete/<id>", methods=['DELETE'])
 @decorator_factory(requireAuthentication, routeModel=DataSetModel)
 def deleteDataset(_, id):
@@ -23,7 +24,7 @@ def showDataset(_, id):
 
 
 @datasetRouter.route("/list/<workflowId>", methods=['GET'])
-# @decorator_factory(requireAuthentication, routeModel=DataSetModel)
+@decorator_factory(requireAuthentication, routeModel=DataSetModel)
 def listDatasets(workflowId):
     datasets = datasetRepository.showAll(workflowId)
     return jsonify(datasets)
