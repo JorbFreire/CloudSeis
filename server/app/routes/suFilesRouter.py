@@ -24,21 +24,28 @@ def showSuFile(_, workflowId):
         return str(error)
 
 
+@suFileRouter.route("/list/<projectId>", methods=['GET'])
+@decorator_factory(requireAuthentication, routeModel=ProjectModel)
+def listSuFiles(_, projectId):
+    filesList = seismicFileRepository.listByProjectId(projectId)
+    return jsonify(filesList)
+
+
 @suFileRouter.route("/create/<projectId>", methods=['POST'])
 @decorator_factory(requireAuthentication, routeModel=ProjectModel)
-def createSuFile(userId, projectId):
+def createSuFile(_, projectId):
     file = request.files['file']
     if 'file' not in request.files:
         raise AppError("No file part in the request")
 
-    unique_filename = seismicFileRepository.create(file, userId, projectId)
+    unique_filename = seismicFileRepository.create(file, projectId)
     return {"unique_filename": unique_filename}
 
 
 # Understans <unique_filename> -> What it is, which file is and why it is necessary
-@suFileRouter.route("/<unique_filename>/<workflowId>", methods=['PUT'])
-# @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
-def updateSuFile(unique_filename, workflowId):
+@suFileRouter.route("/update/<workflowId>", methods=['PUT'])
+@decorator_factory(requireAuthentication, routeModel=WorkflowModel)
+def updateSuFile(_, workflowId):
     data = request.get_json()
     if data == None:
         return jsonify(

@@ -13,7 +13,6 @@ class ProjectModel(database.Model):  # type: ignore
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
-    # file_name = dbTypes.Column(dbTypes.String)
 
     userId = dbTypes.Column(dbTypes.ForeignKey(
         "users_table.id",

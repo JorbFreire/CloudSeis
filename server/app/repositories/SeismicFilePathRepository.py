@@ -1,6 +1,5 @@
 from os import getcwd, path, makedirs
 from datetime import datetime
-from uuid import UUID
 
 from ..models.WorkflowModel import WorkflowModel
 from ..models.UserModel import UserModel
@@ -31,8 +30,8 @@ class SeismicFilePathRepository:
 
     # *** Expected to be used when uploading a new file
     def createByProjectId(self, input_file_name, projectId) -> str:
-        project = ProjectModel.query.filter(id=projectId).first
-        user = UserModel.query.filter_by(id=UUID(project.userId)).first()
+        project = ProjectModel.query.filter_by(id=projectId).first()
+        user = UserModel.query.filter_by(id=project.userId).first()
 
         filePath = self._getSuFilePath(
             input_file_name,

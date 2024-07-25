@@ -3,8 +3,13 @@ from os import path, makedirs
 import subprocess
 
 from .SeismicFilePathRepository import SeismicFilePathRepository
+
+from ..database.connection import database
+
 from ..models.UserModel import UserModel
+from ..models.FileLinkModel import FileLinkModel
 from ..models.WorkflowModel import WorkflowModel
+
 from ..repositories.DatasetRepository import DatasetRepository
 
 seismicFileRepository = SeismicFilePathRepository()
@@ -41,15 +46,29 @@ class SeismicFileRepository:
             for seismicUnixProgram in orderedCommands.getCommands():
                 seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
                 seismicUnixProcessString += self._getAllParameters(
-                    loads((seismicUnixProgram["parameters"])))
+                    loads((seismicUnixProgram["parameters"]))
+                )
                 seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
         return seismicUnixProcessString
+
+    def listByProjectId(self, projectId):
+        fileLinks = FileLinkModel.query.filter_by(projectId=projectId).all()
+        return fileLinks
 
     def create(self, file, projectId) -> str:
         filePath = seismicFileRepository.createByProjectId(
             file.filename,
             projectId
         )
+
+        newFileLink = FileLinkModel(
+            projectId=projectId,
+            data_type="any for now",
+            name=path.basename(filePath)
+        )
+        database.session.add(newFileLink)
+        database.session.commit()
+
         directory = path.dirname(filePath)
         if not path.exists(directory):
             makedirs(directory)
@@ -78,6 +97,7 @@ class SeismicFileRepository:
                 seismicUnixProcessString,
                 shell=True
             )
+
             return str(process_output)
         except Exception as error:
             return str(error)

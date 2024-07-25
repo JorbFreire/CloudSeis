@@ -5,3 +5,4 @@ from .WorkflowModel import WorkflowModel
 from .UserModel import UserModel
 from .OrderedCommandsListModel import OrderedCommandsListModel
 from .DataSetModel import DataSetModel
+from .FileLinkModel import FileLinkModel
