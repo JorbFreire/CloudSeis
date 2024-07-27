@@ -53,7 +53,7 @@ def updateSuFile(_, workflowId):
             status=400
         )
 
-    process_output = seismicFileRepository.update(workflowId)
+    process_output = seismicFileRepository.update(userId, workflowId)
     return jsonify({
         "process_output": process_output
     })

@@ -29,6 +29,8 @@ def showSuFilePath(_, workflowId):
 def showDatasetSuFilePath(_, workflowId):
     # !not implemented
     file_path = seismicFilePathRepository.showByWorkflowId(workflowId)
+    target_path = seismicFilePathRepository.createByWorkflowId(workflowId)
     return jsonify({
-        "file_path": file_path
+        "file_path": file_path,
+        "target_path": target_path,
     })

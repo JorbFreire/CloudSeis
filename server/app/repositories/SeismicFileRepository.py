@@ -3,13 +3,10 @@ from os import path, makedirs
 import subprocess
 
 from .SeismicFilePathRepository import SeismicFilePathRepository
-
 from ..database.connection import database
-
 from ..models.UserModel import UserModel
 from ..models.FileLinkModel import FileLinkModel
 from ..models.WorkflowModel import WorkflowModel
-
 from ..repositories.DatasetRepository import DatasetRepository
 
 seismicFileRepository = SeismicFilePathRepository()
@@ -76,14 +73,19 @@ class SeismicFileRepository:
         return filePath
         # *** File is blank if marmousi_CS.su is empty
 
-    def update(self, workflowId) -> str:
-        user = UserModel.query.filter_by(email=workflow.owner_email).first()
+    def update(self, userId, workflowId) -> str: 
+        # Must create file at target_file_path
+        # Must get the file from the workflow
+        # Then save it into target_file_path
+
+        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+        datasetRepository.create(userId, workflowId)
+
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
 
-        datasetRepository.create(str(user.id), workflow.id)
-
-        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
         source_file_path = seismicFileRepository.showByWorkflowId(workflowId)
+        source_file_path += workflow.file_name
+
         target_file_path = seismicFileRepository.createByWorkflowId(workflowId)
 
         seismicUnixProcessString = self._getSemicUnixCommandString(
