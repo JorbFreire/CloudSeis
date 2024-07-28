@@ -27,8 +27,8 @@ def showSuFile(_, workflowId):
 @suFileRouter.route("/list/<projectId>", methods=['GET'])
 @decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def listSuFiles(_, projectId):
-    filesList = seismicFileRepository.listByProjectId(projectId)
-    return jsonify(filesList)
+    fileLinksList = seismicFileRepository.listByProjectId(projectId)
+    return jsonify(fileLinksList)
 
 
 @suFileRouter.route("/create/<projectId>", methods=['POST'])

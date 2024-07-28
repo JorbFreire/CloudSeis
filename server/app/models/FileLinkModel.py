@@ -25,3 +25,11 @@ class FileLinkModel(database.Model):  # type: ignore
         dbTypes.DateTime(timezone=True),
         onupdate=dbTypes.func.now()
     )
+
+    def getAttributes(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "data_type": self.data_type,
+            "projectId": self.projectId,
+        }

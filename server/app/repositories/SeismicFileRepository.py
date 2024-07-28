@@ -1,5 +1,5 @@
-from json import loads
 from os import path, makedirs
+import json
 import subprocess
 
 from .SeismicFilePathRepository import SeismicFilePathRepository
@@ -46,14 +46,22 @@ class SeismicFileRepository:
             for seismicUnixProgram in orderedCommands.getCommands():
                 seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
                 seismicUnixProcessString += self._getAllParameters(
-                    loads((seismicUnixProgram["parameters"]))
+                    json.loads((seismicUnixProgram["parameters"]))
                 )
                 seismicUnixProcessString += f' < {source_file_path} > {changed_file_path}'
         return seismicUnixProcessString
 
     def listByProjectId(self, projectId):
         fileLinks = FileLinkModel.query.filter_by(projectId=projectId).all()
-        return fileLinks
+
+        # *** iterate fileLinks and converte it to list of dicts
+        # *** so the api can return this as route response
+        fileLinksResponse = list(map(
+            lambda link: link.getAttributes(),
+            fileLinks
+        ))
+
+        return fileLinksResponse
 
     def create(self, file, projectId) -> str:
         filePath = seismicFileRepository.createByProjectId(

@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction, ComponentType, ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 
 import Tabs from '@mui/material/Tabs';
 import CustomTab from 'components/CustomTab';
@@ -21,9 +21,9 @@ interface ICustomTabsNavigationProps<T extends IgenericEntitiesType> {
   setSelectedTab: genericSetterType<selectedTab>
 
   children?: ReactNode
-
   color?: navigationColorType
   orientation?: navigationOrientationType
+
   CustomDndContext?: ComponentType<IDefaultDNDListProps<T>>
 }
 
@@ -36,7 +36,8 @@ export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
   children,
   color = "primary",
   orientation = "horizontal",
-  // *** render empty element by default when no DndContextProvided
+
+  // *** render empty element by default when no FixedLastTabOptions provided
   CustomDndContext = ({ children }) => (<>{children}</>),
 }: ICustomTabsNavigationProps<T>) {
   // ? conditional rendering could be a high order component ?

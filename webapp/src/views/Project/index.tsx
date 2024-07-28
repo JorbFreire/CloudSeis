@@ -16,6 +16,7 @@ import ProjectTab from 'components/ProjectTab';
 import CustomTabsNavigation from 'components/CustomTabsNavigation';
 import CommandParameters from 'components/CommandParameters';
 import DefaultDNDList from 'components/DefaultDNDList';
+import InputSelectorOptions from 'components/InputSelectorOptions';
 
 import {
   Container,
@@ -80,7 +81,13 @@ export default function Project({ projectId }: IProjectProps) {
             CustomDndContext={DefaultDNDList}
           >
             <CustomTabsNavigation
-              tabs={commands}
+              tabs={[
+                {
+                  id: 99,
+                  name: "Input"
+                },
+                ...commands,
+              ]}
               setTabs={setCommands}
               selectedTab={selectedCommandIndex}
               setSelectedTab={setSelectedCommandIndex}
@@ -89,10 +96,12 @@ export default function Project({ projectId }: IProjectProps) {
               orientation='vertical'
             >
               {
-                selectedCommandIndex && (
+                selectedCommandIndex && selectedCommandIndex < 99 ? (
                   <CommandParameters
                     command={commands.find(({ id }) => id == selectedCommandIndex)}
                   />
+                ) : (
+                  <InputSelectorOptions />
                 )
               }
             </CustomTabsNavigation>

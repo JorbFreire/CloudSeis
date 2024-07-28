@@ -1,14 +1,59 @@
-import { suCommandsQueue } from "types/seismicUnixTypes"
 import api from "./api"
 
-export async function updateFile(
-  unique_filename: string,
-  seismicUnixCommandsQueue: suCommandsQueue
-): Promise<ILine | null> {
+export async function listFiles(
+  token: string,
+  projectId: number,
+): Promise<any | null> {
   try {
-    const response = await api.put<ILine>(`/su-file/${unique_filename}/filters`, {
-      unique_filename,
-      seismicUnixCommandsQueue
+    const response = await api.get(
+      `/su-file/list/${projectId}`,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + token
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export async function createFile(
+  token: string,
+  projectId: number,
+  formData: any,
+): Promise<any | null> {
+  try {
+    const response = await api.post(
+      `/su-file/create/${projectId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + token
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export async function updateFile(
+  token: string,
+  unique_filename: string,
+  workflowId: number
+): Promise<any | null> {
+  try {
+    const response = await api.put(`/su-file/${unique_filename}/${workflowId}`, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
     })
     return response.data
   } catch (error) {
