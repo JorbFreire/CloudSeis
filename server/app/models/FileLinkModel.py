@@ -17,6 +17,11 @@ class FileLinkModel(database.Model):  # type: ignore
         name="FK_projects_table_file_link_table"
     ))
 
+    datasetId = dbTypes.Column(dbTypes.ForeignKey(
+        "datasets_table.id",
+        name="FK_datasets_table_file_link_table"
+    ))
+
     created_at = dbTypes.Column(
         dbTypes.DateTime(timezone=True),
         server_default=dbTypes.func.now()

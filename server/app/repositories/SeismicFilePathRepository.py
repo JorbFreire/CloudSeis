@@ -7,7 +7,7 @@ from ..models.ProjectModel import ProjectModel
 
 
 class SeismicFilePathRepository:
-    def _getRandomString(self) -> str:
+    def _getUniqueString(self) -> str:
         return datetime.now().strftime("%d%m%Y_%H%M%S")
 
     def _getSuFilePath(self, unique_filename, user_email, projectId) -> str:
@@ -19,7 +19,7 @@ class SeismicFilePathRepository:
 
         unique_filename = workflow.file_name.replace(".su", "_")
         unique_filename = unique_filename.replace(" ", "_")
-        unique_filename = f'{unique_filename}{self._getRandomString()}.su'
+        unique_filename = f'{unique_filename}{self._getUniqueString()}.su'
 
         file_path = self._getSuFilePath(
             workflow.file_name,
@@ -47,7 +47,7 @@ class SeismicFilePathRepository:
 
         source_file_path = self.showByWorkflowId(workflowId)
         directory = path.dirname(source_file_path)
-        target_file_path = f'{workflow.file_name.replace(".su", "_")}{self._getRandomString()}.su'
+        target_file_path = f'{workflow.file_name.replace(".su", "_")}{self._getUniqueString()}.su'
 
         target_file_path = path.join(
             directory,

@@ -2,14 +2,15 @@ from json import loads
 from os import path, makedirs
 import subprocess
 
+
 from .SeismicFilePathRepository import SeismicFilePathRepository
 from ..database.connection import database
-from ..models.UserModel import UserModel
 from ..models.FileLinkModel import FileLinkModel
 from ..models.WorkflowModel import WorkflowModel
+from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 from ..repositories.DatasetRepository import DatasetRepository
 
-seismicFileRepository = SeismicFilePathRepository()
+seismicFilePathRepository = SeismicFilePathRepository()
 datasetRepository = DatasetRepository()
 
 
@@ -53,7 +54,7 @@ class SeismicFileRepository:
         return fileLinks
 
     def create(self, file, projectId) -> str:
-        filePath = seismicFileRepository.createByProjectId(
+        filePath = seismicFilePathRepository.createByProjectId(
             file.filename,
             projectId
         )
@@ -79,14 +80,14 @@ class SeismicFileRepository:
         # Then save it into target_file_path
 
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
-        datasetRepository.create(userId, workflowId)
+        workflowParent = WorkflowParentsAssociationModel.query.filter_by(workflowId=workflowId).first()
 
-        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+        datasetAttributes = datasetRepository.create(userId, workflowId)
 
-        source_file_path = seismicFileRepository.showByWorkflowId(workflowId)
+        source_file_path = seismicFilePathRepository.showByWorkflowId(workflowId)
         source_file_path += workflow.file_name
 
-        target_file_path = seismicFileRepository.createByWorkflowId(workflowId)
+        target_file_path = seismicFilePathRepository.createByWorkflowId(workflowId)
 
         seismicUnixProcessString = self._getSemicUnixCommandString(
             workflow.orderedCommandsList,
@@ -94,12 +95,21 @@ class SeismicFileRepository:
             target_file_path
         )
 
+
+        newFileLink = FileLinkModel(
+            projectId=workflowParent.projectId,
+            datasetId=datasetAttributes["id"],
+            data_type="any for now",
+            name=path.basename(target_file_path)
+        )
+        database.session.add(newFileLink) # Must create everytime or just in success process? 
+        database.session.commit()
+
         try:
             process_output = subprocess.check_output(
                 seismicUnixProcessString,
                 shell=True
             )
-
             return str(process_output)
         except Exception as error:
             return str(error)

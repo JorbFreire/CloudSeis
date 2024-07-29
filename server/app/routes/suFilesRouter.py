@@ -45,14 +45,7 @@ def createSuFile(_, projectId):
 # Understans <unique_filename> -> What it is, which file is and why it is necessary
 @suFileRouter.route("/update/<workflowId>", methods=['PUT'])
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
-def updateSuFile(_, workflowId):
-    data = request.get_json()
-    if data == None:
-        return jsonify(
-            {"Error": "No body"},
-            status=400
-        )
-
+def updateSuFile(userId, workflowId):
     process_output = seismicFileRepository.update(userId, workflowId)
     return jsonify({
         "process_output": process_output
