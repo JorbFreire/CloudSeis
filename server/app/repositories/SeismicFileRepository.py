@@ -81,7 +81,8 @@ class SeismicFileRepository:
         if not path.exists(directory):
             makedirs(directory)
         file.save(filePath)
-        return filePath
+
+        return newFileLink.getAttributes()
         # *** File is blank if marmousi_CS.su is empty
 
     def update(self, workflowId) -> str:

@@ -38,11 +38,10 @@ def createSuFile(_, projectId):
     if 'file' not in request.files:
         raise AppError("No file part in the request")
 
-    unique_filename = seismicFileRepository.create(file, projectId)
-    return {"unique_filename": unique_filename}
+    fileLink = seismicFileRepository.create(file, projectId)
+    return {"fileLink": fileLink}
 
 
-# Understans <unique_filename> -> What it is, which file is and why it is necessary
 @suFileRouter.route("/update/<workflowId>", methods=['PUT'])
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateSuFile(_, workflowId):
