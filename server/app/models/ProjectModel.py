@@ -30,7 +30,7 @@ class ProjectModel(database.Model):  # type: ignore
 
     workflowParentAssociations: Mapped[
         List[WorkflowParentsAssociationModel]
-    ] = relationship(WorkflowParentsAssociationModel)
+    ] = relationship(WorkflowParentsAssociationModel, cascade='all, delete-orphan')
 
     lines: Mapped[
         List[LineModel]
