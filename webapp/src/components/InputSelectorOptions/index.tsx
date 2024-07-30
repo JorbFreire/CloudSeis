@@ -83,7 +83,6 @@ export default function InputSelectorOptions() {
         )}
 
         <Button
-          variant="contained"
           onClick={() => setIsFileUploadDialogOpen(true)}
         >
           Upload de novo arquivo
