@@ -113,7 +113,8 @@ class TestWorkflowRouter(unittest.TestCase):
             assert response.status_code == 200
             assert isinstance(response.json["id"], int)
             assert response.json["name"] == expected_response_data["name"]
-            assert response.json["file_name"] == ""
+            # ? how will it work now ?
+            assert response.json["file_link_id"] == None
             self.created_workflows.append(response.json)
 
     @pytest.mark.run(order=36)
@@ -139,7 +140,8 @@ class TestWorkflowRouter(unittest.TestCase):
             assert response.status_code == 200
             assert isinstance(response.json["id"], int)
             assert response.json["name"] == expected_response_data["name"]
-            assert response.json["file_name"] == ""
+            # ? how will it work now ?
+            assert response.json["file_link_id"] == None
             self.created_workflows.append(response.json)
 
     @pytest.mark.run(order=37)

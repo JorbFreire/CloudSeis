@@ -49,3 +49,27 @@ export async function createNewWorkflow(
     return null
   }
 }
+
+export async function updateWorkflowFileLink(
+  token: string,
+  workflowId: number,
+  fileLinkId: number,
+): Promise<IWorkflow | null> {
+  try {
+    const response = await api.put<IWorkflow>(
+      `/workflow/update/${workflowId}/file`,
+      {
+        fileLinkId
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}

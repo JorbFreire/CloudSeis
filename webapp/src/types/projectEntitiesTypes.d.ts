@@ -17,7 +17,7 @@ declare interface ILine extends IgenericEntitiesType {
 }
 
 declare interface IWorkflow extends IgenericEntitiesType {
-  file_name: string
+  file_link_id: number
   commands: Array<ICommand>
 }
 

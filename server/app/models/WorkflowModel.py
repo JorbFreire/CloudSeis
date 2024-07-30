@@ -6,6 +6,7 @@ from ..database.connection import database
 from .CommandModel import CommandModel
 from .OrderedCommandsListModel import OrderedCommandsListModel
 from .WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
+from .FileLinkModel import FileLinkModel
 
 
 class WorkflowModel(database.Model):  # type: ignore
@@ -13,8 +14,11 @@ class WorkflowModel(database.Model):  # type: ignore
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
-    # todo: file_name shall be moved to the project and make a selectable here
-    file_name = dbTypes.Column(dbTypes.String)
+
+    file_link_id = dbTypes.Column(dbTypes.ForeignKey(
+        "file_link_table.id",
+        name="FK_file_links_table_workflows_table"
+    ))
 
     owner_email = dbTypes.Column(dbTypes.ForeignKey(
         "users_table.email",
@@ -27,11 +31,15 @@ class WorkflowModel(database.Model):  # type: ignore
 
     orderedCommandsList: Mapped[
         List[CommandModel]
-    ] = relationship(OrderedCommandsListModel)
+    ] = relationship(OrderedCommandsListModel, cascade='all, delete-orphan')
 
     workflowParent: Mapped[
         WorkflowParentsAssociationModel
     ] = relationship(WorkflowParentsAssociationModel, cascade="all, delete-orphan")
+
+    def getSelectedFileName(self):
+        fileLink = FileLinkModel.query.filter_by(id=self.file_link_id).first()
+        return fileLink.name
 
     def getResumedAttributes(self) -> dict:
         return {
@@ -43,6 +51,6 @@ class WorkflowModel(database.Model):  # type: ignore
         return {
             "id": self.id,
             "name": self.name,
-            "file_name": self.file_name,
+            "file_link_id": self.file_link_id,
             "commands": self.orderedCommandsList[0].getCommands(),
         }

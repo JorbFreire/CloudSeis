@@ -2,6 +2,7 @@ from uuid import UUID
 from ..database.connection import database
 from ..models.UserModel import UserModel
 from ..models.WorkflowModel import WorkflowModel
+from ..models.FileLinkModel import FileLinkModel
 
 from ..models.ProjectModel import ProjectModel
 from ..models.LineModel import LineModel
@@ -45,7 +46,6 @@ class WorkflowRepository:
 
         newWorkflow = WorkflowModel(
             name=newWorkflowData["name"],
-            file_name="",
             owner_email=user.email,
         )
 
@@ -65,8 +65,19 @@ class WorkflowRepository:
     def updateName(self, userId, data):
         raise AppError("Not implemented")
 
-    def updateFilename(self, userId, data):
-        raise AppError("Not implemented")
+    def updateFilePath(self, workflowId, fileLinkId):
+        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+        if not workflow:
+            raise AppError("Workflow does not exist", 404)
+
+        fileLink = FileLinkModel.query.filter_by(id=fileLinkId).first()
+        if not fileLink:
+            raise AppError("FileLink does not exist", 404)
+
+        workflow.file_link_id = fileLink.id
+
+        database.session.commit()
+        return workflow.getAttributes()
 
     def delete(self, id):
         workflow = WorkflowModel.query.filter_by(id=id).first()

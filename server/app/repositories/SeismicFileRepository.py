@@ -83,20 +83,29 @@ class SeismicFileRepository:
         return newFileLink.getAttributes()
         # *** File is blank if marmousi_CS.su is empty
 
-    def update(self, userId, workflowId) -> str: 
+    def update(self, userId, workflowId) -> str:
         # Must create file at target_file_path
         # Must get the file from the workflow
         # Then save it into target_file_path
 
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
-        workflowParent = WorkflowParentsAssociationModel.query.filter_by(workflowId=workflowId).first()
+        workflowParent = WorkflowParentsAssociationModel.query.filter_by(
+            workflowId=workflowId
+        ).first()
 
         datasetAttributes = datasetRepository.create(userId, workflowId)
+        fileLink = FileLinkModel.query.filter_by(
+            id=workflow.file_link_id
+        ).first()
 
-        source_file_path = seismicFilePathRepository.showByWorkflowId(workflowId)
-        source_file_path += workflow.file_name
+        source_file_path = seismicFilePathRepository.showByWorkflowId(
+            workflowId
+        )
+        source_file_path += fileLink.name
 
-        target_file_path = seismicFilePathRepository.createByWorkflowId(workflowId)
+        target_file_path = seismicFilePathRepository.createByWorkflowId(
+            workflowId
+        )
 
         seismicUnixProcessString = self._getSemicUnixCommandString(
             workflow.orderedCommandsList,
@@ -104,21 +113,22 @@ class SeismicFileRepository:
             target_file_path
         )
 
-
-        newFileLink = FileLinkModel(
-            projectId=workflowParent.projectId,
-            datasetId=datasetAttributes["id"],
-            data_type="any for now",
-            name=path.basename(target_file_path)
-        )
-        database.session.add(newFileLink) # Must create everytime or just in success process? 
-        database.session.commit()
-
         try:
             process_output = subprocess.check_output(
                 seismicUnixProcessString,
                 shell=True
             )
+
+            newFileLink = FileLinkModel(
+                projectId=workflowParent.projectId,
+                datasetId=datasetAttributes["id"],
+                data_type="any for now",
+                name=path.basename(target_file_path)
+            )
+
+            database.session.add(newFileLink)
+            database.session.commit()
+
             return str(process_output)
         except Exception as error:
             return str(error)

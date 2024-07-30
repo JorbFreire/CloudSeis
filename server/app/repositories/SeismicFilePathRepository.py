@@ -17,12 +17,8 @@ class SeismicFilePathRepository:
     def showByWorkflowId(self, workflowId) -> str:
         workflow = WorkflowModel.query.filter_by(id=workflowId).first()
 
-        unique_filename = workflow.file_name.replace(".su", "_")
-        unique_filename = unique_filename.replace(" ", "_")
-        unique_filename = f'{unique_filename}{self._getUniqueString()}.su'
-
         file_path = self._getSuFilePath(
-            workflow.file_name,
+            workflow.getSelectedFileName(),
             workflow.owner_email,
             workflow.workflowParent[0].getProjectId()
         )
@@ -47,7 +43,7 @@ class SeismicFilePathRepository:
 
         source_file_path = self.showByWorkflowId(workflowId)
         directory = path.dirname(source_file_path)
-        target_file_path = f'{workflow.file_name.replace(".su", "_")}{self._getUniqueString()}.su'
+        target_file_path = f'{workflow.getSelectedFileName().replace(".su", "_")}{self._getUniqueString()}.su'
 
         target_file_path = path.join(
             directory,
