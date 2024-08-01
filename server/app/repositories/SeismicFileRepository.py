@@ -89,10 +89,7 @@ class SeismicFileRepository:
             workflowId=workflowId
         ).first()
 
-        # datasetAttributes = datasetRepository.create(userId, workflowId)
-        fileLink = FileLinkModel.query.filter_by(
-            id=workflow.file_link_id
-        ).first()
+        datasetAttributes = datasetRepository.create(userId, workflowId)
 
         source_file_path = seismicFilePathRepository.showByWorkflowId(
             workflowId
@@ -114,15 +111,15 @@ class SeismicFileRepository:
                 shell=True
             )
 
-            # newFileLink = FileLinkModel(
-            #     projectId=workflowParent.projectId,
-            #     datasetId=datasetAttributes["id"],
-            #     data_type="any for now",
-            #     name=path.basename(target_file_path)
-            # )
+            newFileLink = FileLinkModel(
+                projectId=workflowParent.projectId,
+                datasetId=datasetAttributes["id"],
+                data_type="any for now",
+                name=path.basename(target_file_path)
+            )
 
-            # database.session.add(newFileLink)
-            # database.session.commit()
+            database.session.add(newFileLink)
+            database.session.commit()
 
             return str(process_output)
         except Exception as error:

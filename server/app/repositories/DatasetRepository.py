@@ -14,38 +14,52 @@ commandRepository = CommandRepository()
 
 class DatasetRepository():
 
-    def create(self, userId, workflowId) -> dict:
+    def create(self, userId, baseWorkflowId) -> dict:
+        # *** this method duplicate a workflow and keep it as history
+        # *** being chidren of the dataset table.
+        # *** Keeping the generated file and the workflow used to get it
         user = UserModel.query.filter_by(id=UUID(userId)).first()
+
+        baseWorkflow = WorkflowModel.query.filter_by(
+            id=baseWorkflowId
+        ).first()
+
+        commands = CommandModel.query.filter_by(
+            workflowId=baseWorkflowId
+        ).all()
+
         dataset = DataSetModel(
-            workflowId=workflowId,
+            workflowId=baseWorkflowId,
             owner_email=user.email
         )
-        workflow = WorkflowModel.query.filter_by(id=workflowId).first()
-        commands = CommandModel.query.filter_by(workflowId=workflowId).all()
         database.session.add(dataset)
         database.session.commit()
 
         newWorkflowData = {
-            "name": workflow.name,
+            "name": f"{baseWorkflow.name} - dataset",
             "parentType": "datasetId",
         }
 
-        workflowRepository.create(
+        newWorkflow = workflowRepository.create(
             userId,
             newWorkflowData,
             dataset.id,
         )
 
+        workflowRepository.updateFilePath(
+            newWorkflow["id"],
+            baseWorkflow.file_link_id
+        )
+
         for command in commands:
             commandRepository.create(
                 userId,
-                workflowId,
+                newWorkflow["id"],
                 command.name,
                 command.parameters
             )
-            database.session.add(commands)
+            database.session.add(command)
 
-        database.session.add(workflow)
         database.session.commit()
 
         return dataset.getAttributes()
