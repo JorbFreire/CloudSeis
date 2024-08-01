@@ -25,13 +25,21 @@ export async function createNewCommand(
   }
 }
 
-export async function updateCommand(id: number, newParameters: string): Promise<ICommand | null> {
+export async function updateCommand(
+  token: string,
+  id: number,
+  newParameters: string
+): Promise<ICommand | null> {
   try {
     const response = await api.put<ICommand>(
       `/command/update/${id}`,
       {
-        id,
         parameters: newParameters
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
       }
     )
     return response.data

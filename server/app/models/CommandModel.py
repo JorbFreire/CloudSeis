@@ -16,6 +16,11 @@ class CommandModel(database.Model):  # type: ignore
         name="FK_users_table_commands_table"
     ))
 
+    program_id = dbTypes.Column(dbTypes.ForeignKey(
+        "programs_table.id",
+        name="FK_programs_table_commands_table"
+    ))
+
     workflowId = dbTypes.Column(dbTypes.ForeignKey(
         "workflows_table.id",
         name="FK_workflows_table_commands_table"
@@ -24,6 +29,7 @@ class CommandModel(database.Model):  # type: ignore
     def getAttributes(self) -> dict[str, str]:
         return {
             "id": self.id,
+            "program_id": self.program_id,
             "workflowId": self.workflowId,
             "name": self.name,
             "parameters": self.parameters

@@ -26,6 +26,7 @@ declare interface IResumedWorkflow extends IgenericEntitiesType {
 
 declare interface ICommand extends IgenericEntitiesType {
   workflowId: number
+  program_id: number
   // *** stringfied json, but currently [commit 7640f54] accepts any object
   parameters: string
 }

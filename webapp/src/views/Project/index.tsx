@@ -9,6 +9,7 @@ import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDouble
 import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
+import { updateFile } from 'services/fileServices'
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
@@ -22,6 +23,7 @@ import {
   Container,
   SelectedWorkflowsContainer,
   FloatButton,
+  RunButton,
 } from './styles'
 
 interface IProjectProps {
@@ -57,6 +59,15 @@ export default function Project({ projectId }: IProjectProps) {
     selectedCommandIndex: state.selectedCommandIndex,
     setSelectedCommandIndex: state.setSelectedCommandIndex,
   }))
+
+  const runWorkflow = () => {
+    const token = localStorage.getItem("jwt")
+    if (!token)
+      return
+    if (!singleSelectedWorkflowId)
+      return
+    updateFile(token, singleSelectedWorkflowId)
+  }
 
   useEffect(() => {
     loadLines(projectId)
@@ -106,7 +117,15 @@ export default function Project({ projectId }: IProjectProps) {
               }
             </CustomTabsNavigation>
           </CustomTabsNavigation>
+
+          <RunButton
+            variant='contained'
+            onClick={runWorkflow}
+          >
+            Run
+          </RunButton>
         </SelectedWorkflowsContainer>
+
 
         <FloatButton
           $top='16px'

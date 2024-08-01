@@ -70,7 +70,7 @@ export default function ProgramsDrawer({
               key={program.id}
             >
               {program.name}
-              <button onClick={() => addProgramToCurrentWorkflow(program.name)}>
+              <button onClick={() => addProgramToCurrentWorkflow(program.path_to_executable_file)}>
                 Add to queue
               </button>
             </h4>

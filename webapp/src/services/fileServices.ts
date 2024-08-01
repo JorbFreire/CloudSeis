@@ -46,15 +46,20 @@ export async function createFile(
 
 export async function updateFile(
   token: string,
-  unique_filename: string,
   workflowId: number
 ): Promise<any | null> {
   try {
-    const response = await api.put(`/su-file/${unique_filename}/${workflowId}`, {
-      headers: {
-        Authorization: 'Bearer ' + token
+    const response = await api.put(
+      `/su-file/update/${workflowId}`,
+      {
+        foo: "ok"
       },
-    })
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        },
+      }
+    )
     return response.data
   } catch (error) {
     console.error(error)

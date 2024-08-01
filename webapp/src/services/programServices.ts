@@ -22,9 +22,9 @@ export async function getPrograms(groupId: number): Promise<Array<IseismicProgra
   }
 }
 
-export async function getParameters(parameterId: number): Promise<Array<IParameter>> {
+export async function getParameters(programId: number): Promise<Array<IParameter>> {
   try {
-    const response = await api.get<Array<IParameter>>(`/programs/parameters/list/${parameterId}`)
+    const response = await api.get<Array<IParameter>>(`/programs/parameters/list/${programId}`)
     return response.data
   } catch (error) {
     console.error(error)
