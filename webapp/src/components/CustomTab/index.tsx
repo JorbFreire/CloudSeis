@@ -1,13 +1,19 @@
 import { useSortable } from '@dnd-kit/sortable';
-import Tooltip from '@mui/material/Tooltip';
 import { CSS } from '@dnd-kit/utilities';
+import Tooltip from '@mui/material/Tooltip';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
-import { Container } from './styles'
+import {
+  Container,
+  TabBody,
+  ActionButton
+} from './styles'
 
 // todo: turn into generic and make two tab components
 export default function CustomTab({
   value,
   label,
+  onRemove,
   $color = "primary",
   $orientation = "horizontal",
   // *** for some reason, "...props" is necessery for tabs component ***
@@ -27,19 +33,28 @@ export default function CustomTab({
   };
 
   return (
-    <Tooltip title={label} >
-      <Container
-        {...props}
-        value={value}
-        label={label}
-        $color={$color}
-        $orientation={$orientation}
+    <>
+      <Tooltip title={label} >
+        <Container>
+          <TabBody
+            {...props}
+            value={value}
+            label={label}
+            $color={$color}
+            $orientation={$orientation}
 
-        ref={setNodeRef}
-        style={style}
-        {...attributes}
-        {...listeners}
-      />
-    </Tooltip>
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+          />
+          {$orientation == "vertical" && (
+            <ActionButton onClick={onRemove}>
+              <CloseRoundedIcon />
+            </ActionButton>
+          )}
+        </Container>
+      </Tooltip>
+    </>
   )
 }

@@ -41,11 +41,13 @@ export const Text = styled.text`
 `
 
 export const RunButton = styled(Button)`
-  position: absolute !important;
-  z-index: 10;
-  bottom: 20px;
-  left: 20px;
-
-  width: 100px;
-  height: 40px;
+  &.MuiButtonBase-root {
+    position: absolute;
+    z-index: 10;
+    bottom: 20px;
+    left: 20px;
+  
+    width: 256px;
+    height: 40px;
+  }
 `

@@ -19,6 +19,7 @@ interface ICustomTabsNavigationProps<T extends IgenericEntitiesType> {
   setTabs: genericSetterType<T>
   selectedTab: selectedTab
   setSelectedTab: genericSetterType<selectedTab>
+  onRemove?: onRemoveActionType
 
   children?: ReactNode
   color?: navigationColorType
@@ -32,6 +33,7 @@ export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
   setTabs,
   selectedTab,
   setSelectedTab,
+  onRemove,
 
   children,
   color = "primary",
@@ -41,6 +43,22 @@ export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
   CustomDndContext = ({ children }) => (<>{children}</>),
 }: ICustomTabsNavigationProps<T>) {
   // ? conditional rendering could be a high order component ?
+  const removeElementFromState = () => {
+    if (!selectedTab || selectedTab == 999999)
+      return
+
+    const newTabs = tabs.filter((element, index) =>
+      index != selectedTab &&
+      element.id != 999999
+    )
+
+    if (onRemove)
+      onRemove(tabs[selectedTab].id)
+
+    setTabs(newTabs)
+    setSelectedTab(999999)
+  }
+
   return Boolean(tabs.length) ? (
     <Container $orientation={orientation}>
       {/* *** CustomDndContext is passed by optional props *** */}
@@ -61,6 +79,7 @@ export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
               key={tab.id}
               value={tab.id}
               label={tab.name}
+              onRemove={removeElementFromState}
               $color={color}
               $orientation={orientation}
             />

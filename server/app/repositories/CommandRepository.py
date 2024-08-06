@@ -1,12 +1,17 @@
 from uuid import UUID
+from copy import copy
+from json import dumps
+
 from ..models.UserModel import UserModel
 from ..database.connection import database
 from ..models.CommandModel import CommandModel
 from ..models.OrderedCommandsListModel import OrderedCommandsListModel
 from ..models.WorkflowModel import WorkflowModel
+from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
 from ..errors.AppError import AppError
-from copy import copy
-from json import dumps
+
+
+orderedCommandsListRepository = OrderedCommandsListRepository()
 
 
 class CommandRepository:
@@ -62,6 +67,14 @@ class CommandRepository:
         command = CommandModel.query.filter_by(id=id).first()
         if not command:
             raise AppError("Command does not exist", 404)
+
+        orderedCommandsList = OrderedCommandsListModel.query.filter_by(
+            workflowId=command.workflowId
+        ).first()
+
+        newOrder = orderedCommandsList.commandIds.remove(id)
+
+        orderedCommandsListRepository.update(command.workflowId, newOrder)
 
         database.session.delete(command)
         database.session.commit()

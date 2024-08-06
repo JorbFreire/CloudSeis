@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import Tab from '@mui/material/Tab';
+import IconButton from "@mui/material/IconButton";
 
 export function getCustumTabOrientationStyles($orientation: navigationOrientationType) {
   if ($orientation == "horizontal")
@@ -12,6 +13,7 @@ export function getCustumTabOrientationStyles($orientation: navigationOrientatio
     `
   if ($orientation == "vertical")
     return css`
+      width: 256px;
       border-radius: 8px 0 0 8px;
       margin-bottom: 8px;
     `
@@ -47,14 +49,18 @@ export function getCustomTabColorStyles($color: navigationColorType) {
   `
 }
 
-export const Container = styled(Tab) <ICustomTabContainerProps>`
+export const Container = styled.div`
+  position: relative;
+`
+
+export const TabBody = styled(Tab) <ICustomTabContainerProps>`
   &.MuiTab-root.MuiButtonBase-root {
     display: flex;
     align-items: flex-start;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 256px;    
-    
+    max-width: 256px;
+
     ${({ $orientation }) => getCustumTabOrientationStyles($orientation)}
     ${({ $color }) => getCustomTabColorStyles($color)}
 
@@ -85,5 +91,17 @@ export const Container = styled(Tab) <ICustomTabContainerProps>`
         display: none;
       }
     }
+  }
+`
+
+export const ActionButton = styled(IconButton)`
+  &.MuiIconButton-root {
+    position: absolute;
+    right: 8px;
+    top: 2px;
+    z-index: 10;
+
+    height: 44px;
+    width: 44px;
   }
 `

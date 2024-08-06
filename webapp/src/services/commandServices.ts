@@ -64,3 +64,23 @@ export async function updateCommandsOrder(
     return null
   }
 }
+
+export async function deleteCommand(
+  token: string,
+  commandId: string,
+): Promise<IOrderedCommandsList | null> {
+  try {
+    const response = await api.delete<IOrderedCommandsList>(
+      `/command/delete/${commandId}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}

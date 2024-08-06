@@ -10,6 +10,7 @@ import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { updateFile } from 'services/fileServices'
+import { deleteCommand } from 'services/commandServices'
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
@@ -94,7 +95,7 @@ export default function Project({ projectId }: IProjectProps) {
             <CustomTabsNavigation
               tabs={[
                 {
-                  id: 99,
+                  id: 999999,
                   name: "Input"
                 },
                 ...commands,
@@ -102,12 +103,18 @@ export default function Project({ projectId }: IProjectProps) {
               setTabs={setCommands}
               selectedTab={selectedCommandIndex}
               setSelectedTab={setSelectedCommandIndex}
+              onRemove={(selectedCommandId: number) => {
+                const token = localStorage.getItem("jwt")
+                if (!token)
+                  return
+                deleteCommand(token, selectedCommandId.toString()).then()
+              }}
               CustomDndContext={DefaultDNDList}
               color='white'
               orientation='vertical'
             >
               {
-                selectedCommandIndex && selectedCommandIndex < 99 ? (
+                selectedCommandIndex && selectedCommandIndex < 999999 ? (
                   <CommandParameters
                     command={commands.find(({ id }) => id == selectedCommandIndex)}
                   />
@@ -122,7 +129,7 @@ export default function Project({ projectId }: IProjectProps) {
             variant='contained'
             onClick={runWorkflow}
           >
-            Run
+            Run Workflow
           </RunButton>
         </SelectedWorkflowsContainer>
 

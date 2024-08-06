@@ -8,7 +8,7 @@ class CommandModel(database.Model):  # type: ignore
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
-    # stringfied JSON
+    # *** stringfied JSON
     parameters = dbTypes.Column(dbTypes.Text)
 
     owner_email = dbTypes.Column(dbTypes.ForeignKey(

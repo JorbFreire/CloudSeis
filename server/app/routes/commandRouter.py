@@ -16,6 +16,7 @@ commandRouter = Blueprint(
     __name__,
     url_prefix="/command"
 )
+
 commandRepository = CommandRepository()
 orderedCommandsListRepository = OrderedCommandsListRepository()
 
