@@ -1,5 +1,4 @@
 from uuid import UUID
-from types import SimpleNamespace
 
 from ..database.connection import database
 from ..models.UserModel import UserModel
@@ -7,11 +6,11 @@ from ..models.DataSetModel import DataSetModel
 from ..models.WorkflowModel import WorkflowModel
 from ..models.CommandModel import CommandModel
 
-from .WorkflowRepository import workflowRepository
-from .CommandRepository import commandRepository
+from ..repositories.WorkflowRepository import workflowRepository
+from ..repositories.CommandRepository import commandRepository
 
 
-def create(userId, baseWorkflowId) -> dict:
+def createDataset(userId, baseWorkflowId) -> dict:
     # *** this method duplicate a workflow and keep it as history
     # *** being chidren of the dataset table.
     # *** Keeping the generated file and the workflow used to get it
@@ -60,8 +59,3 @@ def create(userId, baseWorkflowId) -> dict:
     database.session.commit()
 
     return dataset.getAttributes()
-
-
-datasetRepository = SimpleNamespace(
-    create=create,
-)
