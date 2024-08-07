@@ -5,8 +5,8 @@ from jwt import encode
 from ..errors.AuthError import AuthError
 from ..models.UserModel import UserModel
 from ..config.private_key import private_key
-from ..services import checkPassword
-from ..services import validateToken
+from ..services.passwordServices import checkPassword
+from ..services.passwordServices import validateToken
 
 
 def create(email, password) -> str:
