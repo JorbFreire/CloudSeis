@@ -6,9 +6,10 @@ from ..errors.AuthError import AuthError
 from ..models.UserModel import UserModel
 from ..hash.hash import checkPassword
 from ..config.private_key import private_key
+from ..services import validateToken
 
 
-def createSession(email, password) -> str:
+def create(email, password) -> str:
     user = UserModel.query.filter_by(email=email).first()
     if not user or not checkPassword(password, user.password):
         raise AuthError("Invalid email or password")
@@ -25,18 +26,18 @@ def createSession(email, password) -> str:
     return {"token": token}
 
 
-def validateSession(token: str):
-    payload = validateSession(token)
+def validate(token: str):
+    payload = validateToken(token)
     return payload
 
 
-def revalidateSession():
+def revalidate():
     # todo: revalidateSession shall be implemented but is not a priority
     pass
 
 
 sessionController = SimpleNamespace(
-    createSession=createSession,
-    validateSession=validateSession,
-    revalidateSession=revalidateSession,
+    create=create,
+    validate=validate,
+    revalidate=revalidate,
 )

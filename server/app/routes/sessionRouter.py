@@ -14,11 +14,11 @@ sessionRouter = Blueprint("session-routes", __name__, url_prefix="/session")
 def create():
     data = request.get_json()
 
-    token = sessionController.createSession(data["email"], data["password"])
+    token = sessionController.create(data["email"], data["password"])
     return jsonify(token)
 
 
 @sessionRouter.route("/validate/<token>", methods=['POST'])
 def create(token):
-    sessionController.validateSession(token)
+    sessionController.validate(token)
     return ('', 200)

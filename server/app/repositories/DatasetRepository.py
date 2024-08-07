@@ -5,11 +5,9 @@ from ..models.UserModel import UserModel
 from ..models.DataSetModel import DataSetModel
 from ..models.WorkflowModel import WorkflowModel
 from ..models.CommandModel import CommandModel
-from .WorkflowRepository import WorkflowRepository
-from .CommandRepository import CommandRepository
 
-workflowRepository = WorkflowRepository()
-commandRepository = CommandRepository()
+from .WorkflowRepository import workflowRepository
+from .CommandRepository import commandRepository
 
 
 class DatasetRepository():

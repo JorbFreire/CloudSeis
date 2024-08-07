@@ -4,10 +4,11 @@ from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
 
-from ..models.WorkflowModel import WorkflowModel
-from ..repositories.CommandRepository import CommandRepository
-from ..repositories.OrderedCommandsListRepository import OrderedCommandsListRepository
+from ..controllers import commandController
+from ..repositories.OrderedCommandsListRepository import orderedCommandsListRepository
+
 from ..serializers.CommandSerializer import CommandCreateSchema, CommandUpdateParametersSchema, CommandsUpdateOrderSchema
+from ..models.WorkflowModel import WorkflowModel
 from ..models.CommandModel import CommandModel
 
 
@@ -17,14 +18,11 @@ commandRouter = Blueprint(
     url_prefix="/command"
 )
 
-commandRepository = CommandRepository()
-orderedCommandsListRepository = OrderedCommandsListRepository()
-
 
 @commandRouter.route("/show/<id>", methods=['GET'])
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def showCommand(_, id):
-    command = commandRepository.show(id)
+    command = commandController.show(id)
     return jsonify(command)
 
 
@@ -33,7 +31,7 @@ def showCommand(_, id):
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def createCommand(userId, workflowId):
     data = request.get_json()
-    newCommand = commandRepository.create(
+    newCommand = commandController.create(
         userId,
         workflowId,
         data["name"],
@@ -47,7 +45,7 @@ def createCommand(userId, workflowId):
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def updateCommand(_, id):
     data = request.get_json()
-    updatedCommand = commandRepository.updateParameters(
+    updatedCommand = commandController.updateParameters(
         id,
         data["parameters"]
     )
@@ -58,16 +56,17 @@ def updateCommand(_, id):
 @decorator_factory(validateRequestBody, SerializerSchema=CommandsUpdateOrderSchema)
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def updateOrder(_, workflowId):
+    # ! need refactor
     data = request.get_json()
     updatedCommandList = orderedCommandsListRepository.update(
         workflowId,
         data["newOrder"]
     )
-    return jsonify(updatedCommandList)
+    return jsonify(updatedCommandList.getAttributes())
 
 
 @commandRouter.route("/delete/<id>", methods=['DELETE'])
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def deleteCommand(_, id):
-    command = commandRepository.delete(id)
+    command = commandController.delete(id)
     return jsonify(command)

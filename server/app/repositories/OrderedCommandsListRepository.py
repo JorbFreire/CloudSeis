@@ -1,25 +1,33 @@
+from types import SimpleNamespace
+
 from ..database.connection import database
 from ..models.OrderedCommandsListModel import OrderedCommandsListModel
 from ..errors.AppError import AppError
 
 
-class OrderedCommandsListRepository:
-    def create(self, workflowId):
-        orderedCommandsList = OrderedCommandsListModel(
-            workflowId=workflowId,
-            commandIds=[],
-        )
-        database.session.add(orderedCommandsList)
-        database.session.commit()
+def create(workflowId):
+    orderedCommandsList = OrderedCommandsListModel(
+        workflowId=workflowId,
+        commandIds=[],
+    )
+    database.session.add(orderedCommandsList)
+    database.session.commit()
 
-    def update(self, workflowId, newOrder):
-        orderedCommandsList = OrderedCommandsListModel.query.filter_by(
-            workflowId=workflowId
-        ).first()
-        if not orderedCommandsList:
-            raise AppError("OrderedComandsList does not exist")
 
-        orderedCommandsList.commandIds = newOrder
-        database.session.commit()
+def update(workflowId, newOrder):
+    orderedCommandsList = OrderedCommandsListModel.query.filter_by(
+        workflowId=workflowId
+    ).first()
+    if not orderedCommandsList:
+        raise AppError("OrderedComandsList does not exist")
 
-        return orderedCommandsList.getAttributes()
+    orderedCommandsList.commandIds = newOrder
+    database.session.commit()
+
+    return orderedCommandsList
+
+
+orderedCommandsListRepository = SimpleNamespace(
+    create=create,
+    update=update,
+)
