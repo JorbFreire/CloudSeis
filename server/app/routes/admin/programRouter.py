@@ -3,19 +3,16 @@ from flask import Blueprint, request, jsonify
 from ...middlewares.decoratorsFactory import decorator_factory
 from ...middlewares.validateRequestBody import validateRequestBody
 
-from ...repositories.ProgramRepository import ProgramRepository
-from ...repositories.ProgramFileRepository import ProgramFileRepository
+from ...controllers import programController
 from ...errors.AppError import AppError
 from ...serializers.ProgramSerializer import ProgramCreateSchema
 
 programRouter = Blueprint("program-routes", __name__, url_prefix="/programs")
-programRepository = ProgramRepository()
-programFileRepository = ProgramFileRepository()
 
 
 @programRouter.route("/list/<groupId>", methods=['GET'])
 def listPrograms(groupId):
-    programs = programRepository.showByGroupId(groupId)
+    programs = programController.showByGroupId(groupId)
     return jsonify(programs)
 
 
@@ -31,7 +28,7 @@ def createProgram(groupId):
         unique_filename = programFileRepository.create(file)
         data["path_to_executable_file"] = unique_filename
 
-    newProgram = programRepository.create(groupId, data)
+    newProgram = programController.create(groupId, data)
     return jsonify(newProgram)
 
 
@@ -46,11 +43,11 @@ def updateProgram(programId):
         unique_filename = programFileRepository.create(file)
         data["path_to_executable_file"] = unique_filename
 
-    updatedProgram = programRepository.update(programId, data)
+    updatedProgram = programController.update(programId, data)
     return jsonify(updatedProgram)
 
 
 @programRouter.route("/delete/<programId>", methods=['DELETE'])
 def deleteProgram(programId):
-    program = programRepository.delete(programId)
+    program = programController.delete(programId)
     return jsonify(program)

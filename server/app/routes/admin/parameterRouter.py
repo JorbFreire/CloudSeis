@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-from ...repositories.ParameterRepository import ParameterRepository
+from ...controllers.admin import parameterController
 from ...errors.AppError import AppError
 
 parameterRouter = Blueprint(
@@ -8,18 +8,17 @@ parameterRouter = Blueprint(
     __name__,
     url_prefix="/programs/parameters"
 )
-parameterRepository = ParameterRepository()
 
 
 @parameterRouter.route("/list/<programId>", methods=['GET'])
 def listPrograms(programId):
-    programs = parameterRepository.showByProgramId(programId)
+    programs = parameterController.showByProgramId(programId)
     return jsonify(programs)
 
 
 @parameterRouter.route("/create/<programId>", methods=['POST'])
 def createProgram(programId):
-    newParameter = parameterRepository.create(programId)
+    newParameter = parameterController.create(programId)
     return jsonify(newParameter)
 
 
@@ -29,11 +28,11 @@ def updateProgram(parameterId):
     if data == None:
         raise AppError("No body", 400)
 
-    updatedParameter = parameterRepository.update(parameterId, data)
+    updatedParameter = parameterController.update(parameterId, data)
     return jsonify(updatedParameter)
 
 
 @parameterRouter.route("/delete/<parameterId>", methods=['DELETE'])
 def deleteProgram(parameterId):
-    parameter = parameterRepository.delete(parameterId)
+    parameter = parameterController.delete(parameterId)
     return jsonify(parameter)

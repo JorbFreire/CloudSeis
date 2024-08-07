@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-from ...repositories.ProgramGroupRepository import ProgramGroupRepository
+from ...controllers import programGroupController
 from ...errors.AppError import AppError
 
 programGroupRouter = Blueprint(
@@ -8,12 +8,11 @@ programGroupRouter = Blueprint(
     __name__,
     url_prefix="/programs/groups"
 )
-programGroupRepository = ProgramGroupRepository()
 
 
 @programGroupRouter.route("/list", methods=['GET'])
 def listGroups():
-    program_groups = programGroupRepository.listAll()
+    program_groups = programGroupController.listAll()
     return jsonify(program_groups)
 
 
@@ -23,7 +22,7 @@ def createProgramGroup():
     if data == None:
         raise AppError("No body", 400)
 
-    newProgramGroup = programGroupRepository.create(data)
+    newProgramGroup = programGroupController.create(data)
     return jsonify(newProgramGroup)
 
 
@@ -33,11 +32,11 @@ def updateProgramGroup():
     if data == None:
         raise AppError("No body", 400)
 
-    updatedProgramGroup = programGroupRepository.update()
+    updatedProgramGroup = programGroupController.update()
     return jsonify(updatedProgramGroup)
 
 
 @programGroupRouter.route("/delete/<groupId>", methods=['DELETE'])
 def deleteProgram(groupId):
-    programGroup = programGroupRepository.delete(groupId)
+    programGroup = programGroupController.delete(groupId)
     return jsonify(programGroup)
