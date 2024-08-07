@@ -10,10 +10,8 @@ from ..errors.AppError import AppError
 from ..errors.AuthError import AuthError
 from ..errors.AppError import AppError
 
-from ..repositories.SessionRepository import SessionRepository
+from ..services.validateToken import validateToken
 
-
-sessionRepository = SessionRepository()
 
 def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False):
     def wrapper(routeModel=routeModel, *args, **kwargs):
@@ -28,7 +26,7 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
         except:
             pass
 
-        payload = sessionRepository.validateSession(token)
+        payload = validateToken(token)
 
         userId = payload["id"]
         user = UserModel.query.filter_by(id=UUID(userId)).first()

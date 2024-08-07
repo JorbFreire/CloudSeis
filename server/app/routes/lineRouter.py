@@ -5,23 +5,22 @@ from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
 
+from ..controllers import lineController
+from ..serializers.LineSerializer import LineCreateSchema, LineUpdateSchema
 from ..models.LineModel import LineModel
 from ..models.ProjectModel import ProjectModel
-from ..repositories.LineRepository import LineRepository
-from ..serializers.LineSerializer import LineCreateSchema, LineUpdateSchema
 
 lineRouter = Blueprint(
     "line-routes",
     __name__,
     url_prefix="/line"
 )
-lineRepository = LineRepository()
 
 
 @lineRouter.route("/list/<projectId>", methods=['GET'])
 @decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def listLines(_, projectId):
-    lines = lineRepository.showByProjectId(projectId)
+    lines = lineController.showByProjectId(projectId)
     return jsonify(lines)
 
 
@@ -30,7 +29,7 @@ def listLines(_, projectId):
 @decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def createLine(userId, projectId):
     data = request.get_json()
-    newLine = lineRepository.create(
+    newLine = lineController.create(
         userId,
         projectId,
         data["name"]
@@ -43,7 +42,7 @@ def createLine(userId, projectId):
 @decorator_factory(requireAuthentication, routeModel=LineModel)
 def updateLine(_, lineId):
     data = request.get_json()
-    updatedLine = lineRepository.update(
+    updatedLine = lineController.update(
         lineId,
         data["name"]
     )
@@ -53,13 +52,5 @@ def updateLine(_, lineId):
 @lineRouter.route("/delete/<lineId>", methods=['DELETE'])
 @decorator_factory(requireAuthentication, routeModel=LineModel)
 def deleteLine(_, lineId):
-    line = lineRepository.delete(lineId)
+    line = lineController.delete(lineId)
     return jsonify(line)
-
-# DEBUG ROUTE
-
-
-@lineRouter.route("/listall/debug", methods=['GET'])
-def listall():
-    lines = lineRepository.listAllDebug()
-    return jsonify(lines)
