@@ -42,9 +42,11 @@ def delete(id):
         workflowId=command.workflowId
     ).first()
 
-    newOrder = orderedCommandsList.commandIds.remove(id)
-
-    orderedCommandsListRepository.update(command.workflowId, newOrder)
+    orderedCommandsList.commandIds.remove(int(id))
+    orderedCommandsListRepository.update(
+        command.workflowId,
+        orderedCommandsList.commandIds
+    )
 
     database.session.delete(command)
     database.session.commit()
