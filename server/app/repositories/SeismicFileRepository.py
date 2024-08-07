@@ -8,10 +8,9 @@ from ..database.connection import database
 from ..models.FileLinkModel import FileLinkModel
 from ..models.WorkflowModel import WorkflowModel
 from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
-from ..repositories.DatasetRepository import DatasetRepository
+from ..repositories.DatasetRepository import datasetRepository
 
 seismicFilePathRepository = SeismicFilePathRepository()
-datasetRepository = DatasetRepository()
 
 
 class SeismicFileRepository:

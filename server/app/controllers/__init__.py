@@ -5,3 +5,4 @@ from .lineController import lineController
 
 from .workflowController import workflowController
 from .commandController import commandController
+from .datasetController import datasetController
