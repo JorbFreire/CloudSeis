@@ -4,8 +4,8 @@ from jwt import encode
 
 from ..errors.AuthError import AuthError
 from ..models.UserModel import UserModel
-from ..hash.hash import checkPassword
 from ..config.private_key import private_key
+from ..services import checkPassword
 from ..services import validateToken
 
 

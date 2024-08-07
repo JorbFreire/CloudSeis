@@ -4,7 +4,7 @@ from types import SimpleNamespace
 from ..database.connection import database
 from ..models.UserModel import UserModel
 from ..errors.AppError import AppError
-from ..hash.hash import hashPassword
+from ..services import hashPassword
 
 
 def showAll() -> list[dict]:
