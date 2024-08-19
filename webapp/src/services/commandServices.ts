@@ -1,4 +1,9 @@
+import { AxiosError } from "axios"
+import useNotificationStore from 'store/notificationStore';
+
 import api from "./api"
+
+const notificationStore = useNotificationStore.getState()
 
 export async function createNewCommand(
   token: string,
@@ -21,6 +26,10 @@ export async function createNewCommand(
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }
@@ -45,6 +54,10 @@ export async function updateCommand(
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }
@@ -61,6 +74,10 @@ export async function updateCommandsOrder(
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }
@@ -81,6 +98,10 @@ export async function deleteCommand(
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }

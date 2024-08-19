@@ -1,10 +1,14 @@
 import { AxiosError } from "axios"
+import useNotificationStore from 'store/notificationStore';
+
 import api from "./api"
+
+const notificationStore = useNotificationStore.getState()
 
 export async function getWorkflowByID(
   token: string,
   id: number,
-): Promise<IWorkflow | null | 401> {
+): Promise<IWorkflow | null> {
   try {
     const response = await api.get<IWorkflow>(
       `/workflow/show/${id}`,
@@ -18,8 +22,9 @@ export async function getWorkflowByID(
   } catch (error) {
     console.error(error);
     const axiosError = error as AxiosError
-    if (axiosError.status === 401)
-      return 401
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }
@@ -46,6 +51,10 @@ export async function createNewWorkflow(
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }
@@ -70,6 +79,10 @@ export async function updateWorkflowFileLink(
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }

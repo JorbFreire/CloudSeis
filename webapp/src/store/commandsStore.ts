@@ -13,7 +13,7 @@ interface ICommandsStoreState {
   setCommands: (newValue: commandsType) => void
   loadCommands: (workflowId: number) => void
   selectNewCommand: (newCommand: any) => void
-  updateCommandParams: (index: number, newParameters: string) => void
+  updateCommandParams: (index: number, newParameters: string) => Promise<void>
 }
 
 export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
@@ -34,8 +34,6 @@ export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
       .then((result) => {
         if (!result)
           return
-        if (result === 401)
-          return
 
         set({ commands: [...result.commands] })
         if (result.commands.length < 1)
@@ -45,9 +43,12 @@ export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
   },
   selectNewCommand: (newCommand) => { return },
   updateCommandParams: async (index: number, newParameters: string) => {
+    const token = localStorage.getItem("jwt")
+    if (!token)
+      return
     if (!get().commands[index])
       return;
-    const updatedCommand = await updateCommand(get().commands[index].id, newParameters)
+    const updatedCommand = await updateCommand(token, get().commands[index].id, newParameters)
     if (!updatedCommand)
       return
     set((state) => ({

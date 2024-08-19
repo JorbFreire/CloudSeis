@@ -1,10 +1,14 @@
 import { AxiosError } from "axios"
+import useNotificationStore from 'store/notificationStore';
+
 import api from "./api"
+
+const notificationStore = useNotificationStore.getState()
 
 export async function getLinesByProjectID(
   token: string,
   projectId: number
-): Promise<Array<ILine> | number> {
+): Promise<Array<ILine> | null> {
   try {
     const response = await api.get<Array<ILine>>(`/line/list/${projectId}`, {
       headers: {
@@ -15,9 +19,10 @@ export async function getLinesByProjectID(
   } catch (error) {
     console.error(error);
     const axiosError = error as AxiosError
-    if (axiosError.status === 401)
-      return axiosError.status
-    return []
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    return null
   }
 }
 
@@ -42,6 +47,10 @@ export async function createNewLine(
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }

@@ -40,6 +40,7 @@ export default function FileUploadDialog({
 
     //! projectId is mocked
     createFile(token, 1, formData).then((result) => {
+      if (!result) return
       addFileLink(result.fileLink)
       setOpen(false)
     })

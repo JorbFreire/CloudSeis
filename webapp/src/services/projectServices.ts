@@ -1,7 +1,11 @@
 import { AxiosError } from "axios"
+import useNotificationStore from 'store/notificationStore';
+
 import api from "./api"
 
-export async function getProjectsByUser(token: string): Promise<Array<IProject> | number> {
+const notificationStore = useNotificationStore.getState()
+
+export async function getProjectsByUser(token: string): Promise<Array<IProject> | null> {
   try {
     const response = await api.get<Array<IProject>>(`/project/list`, {
       headers: {
@@ -12,8 +16,10 @@ export async function getProjectsByUser(token: string): Promise<Array<IProject> 
   } catch (error) {
     console.error(error)
     const axiosError = error as AxiosError
-    if (axiosError.status === 401)
-      return axiosError.status
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    // ! should be null ?
     return []
   }
 }
@@ -32,6 +38,10 @@ export async function createNewProject(token: string, name: string): Promise<IPr
     return response.data
   } catch (error) {
     console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return null
   }
 }
@@ -50,8 +60,9 @@ export async function deleteProject(token: string, id: number): Promise<IProject
   } catch (error) {
     console.error(error)
     const axiosError = error as AxiosError
-    if (axiosError.status === 401)
-      return axiosError.status
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
     return 400
   }
 }

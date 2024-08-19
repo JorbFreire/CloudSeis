@@ -20,7 +20,6 @@ import {
 } from './styles'
 
 export default function ProjectsList() {
-  const navigate = useNavigate()
   const [projects, setProjects] = useState<Array<IProject>>([])
 
   const pushNewProject = (newProject: IProject) => {
@@ -29,25 +28,15 @@ export default function ProjectsList() {
 
   const triggerDeleteButton = (projectId: number) => {
     const token = localStorage.getItem("jwt")
-    if (!token)
-      return navigate({ to: "/login" })
+    if (!token) return
     deleteProject(token, projectId)
-      .then((result) => {
-        // todo: create error handler hook
-        if (result === 401)
-          return navigate({ to: "/login" })
-      })
   }
 
   useEffect(() => {
     const token = localStorage.getItem("jwt")
-    if (!token)
-      return navigate({ to: "/login" })
+    if (!token) return
     getProjectsByUser(token)
       .then((result) => {
-        // todo: create error handler hook
-        if (result === 401)
-          return navigate({ to: "/login" })
         Array.isArray(result) && setProjects(result)
       })
   }, [])

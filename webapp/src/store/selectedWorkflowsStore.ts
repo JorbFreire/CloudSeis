@@ -52,8 +52,7 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
       .then(result => {
         if (!result)
           return
-        if (result === 401)
-          return
+
         set((state) => ({
           singleSelectedWorkflowId: result.id,
           selectedWorkflows: [

@@ -26,12 +26,10 @@ export default function Login() {
     setIsLoading(true)
 
     createNewSession({ email, password }).then(response => {
-      if (!response)
-        return console.error("cannot login, we dont know why")
+      if (!response) return
       localStorage.setItem("jwt", response)
       navigate({ to: "/projects" })
-    }
-    )
+    })
 
     setIsLoading(false)
   }

@@ -21,9 +21,6 @@ export const useLinesStore = create<ILinesStoreState>((set) => ({
       return
     getLinesByProjectID(token, projectId)
       .then((result) => {
-        if (result === 401)
-          return
-
         if (Array.isArray(result))
           set({ lines: result })
       })
