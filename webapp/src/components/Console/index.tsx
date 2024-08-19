@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
 
-import { useConsoleLogs } from 'providers/ConsoleLogsProvider'
+import { useLogsStore } from 'store/logsStore'
 import GenericDrawer from '../GenericDrawer'
 
 interface IConsoleProps {
@@ -9,7 +9,7 @@ interface IConsoleProps {
 }
 
 export default function Console({ isOpen, setIsOpen }: IConsoleProps) {
-  const [consoleLogs] = useConsoleLogs()
+  const consoleLogs = useLogsStore((state) => state.logs)
   return (
     <GenericDrawer
       isOpen={isOpen}
