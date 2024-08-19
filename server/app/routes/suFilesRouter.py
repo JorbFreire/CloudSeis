@@ -6,18 +6,18 @@ from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..models.ProjectModel import ProjectModel
 from ..models.WorkflowModel import WorkflowModel
-from ..repositories.SeismicFileRepository import SeismicFileRepository
-from ..repositories.SeismicFilePathRepository import SeismicFilePathRepository
+
+from ..controllers.suFileController import suFileController
+from ..services.seismicFilePathServices import showWorkflowFilePath
 
 suFileRouter = Blueprint("su-file-routes", __name__, url_prefix="/su-file")
-seismicFileRepository = SeismicFileRepository()
-seismicFilePathRepository = SeismicFilePathRepository()
 
 
 @suFileRouter.route("/show/<workflowId>", methods=['GET'])
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def showSuFile(_, workflowId):
-    file_path = seismicFilePathRepository.showByWorkflowId(workflowId)
+    # *** no controller layer for this route, no adcional rules *** #
+    file_path = showWorkflowFilePath(workflowId)
     try:
         return send_file(file_path)  # Faz o download ??
     except Exception as error:
@@ -27,7 +27,7 @@ def showSuFile(_, workflowId):
 @suFileRouter.route("/list/<projectId>", methods=['GET'])
 @decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def listSuFiles(_, projectId):
-    fileLinksList = seismicFileRepository.listByProjectId(projectId)
+    fileLinksList = suFileController.listByProjectId(projectId)
     return jsonify(fileLinksList)
 
 
@@ -38,14 +38,14 @@ def createSuFile(_, projectId):
     if 'file' not in request.files:
         raise AppError("No file part in the request")
 
-    fileLink = seismicFileRepository.create(file, projectId)
+    fileLink = suFileController.create(file, projectId)
     return {"fileLink": fileLink}
 
 
 @suFileRouter.route("/update/<workflowId>", methods=['PUT'])
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateSuFile(userId, workflowId):
-    process_output = seismicFileRepository.update(userId, workflowId)
+    process_output = suFileController.update(userId, workflowId)
     return jsonify({
         "process_output": process_output
     })

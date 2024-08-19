@@ -1,9 +1,17 @@
 from types import SimpleNamespace
+from flask import request
 
 from ...database.connection import database
 from ...models.ProgramGroupModel import ProgramGroupModel
 from ...models.ProgramModel import ProgramModel
 from ...errors.AppError import AppError
+from ...services.programFileServices import createProgramFilePath
+
+
+def _createProgramFilePath():
+    file = request.files['file']
+    unique_filename = createProgramFilePath(file)
+    return unique_filename
 
 
 def showByGroupId(groupId):
@@ -15,6 +23,8 @@ def showByGroupId(groupId):
 
 
 def create(groupId, newProgramData):
+    if 'file' in request.files:
+        newProgram["path_to_executable_file"] = _createProgramFilePath()
     programGroup = ProgramGroupModel.query.filter_by(
         id=groupId
     ).first()
@@ -33,6 +43,8 @@ def create(groupId, newProgramData):
 
 
 def update(programId, programNewData):
+    if 'file' in request.files:
+        programNewData["path_to_executable_file"] = _createProgramFilePath()
     program = ProgramModel.query.filter_by(
         id=programId
     ).first()
