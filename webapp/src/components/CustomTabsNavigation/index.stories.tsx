@@ -31,7 +31,7 @@ const meta = {
       description: "setState to `selectedTab` state",
     },
     CustomDndContext: {
-      description: `Component to provider drag and drop context. By default will
+      description: `Component to provide drag and drop context. By default will
                     render the the children without doing anything`,
     },
     color: {
