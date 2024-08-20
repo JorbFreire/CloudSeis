@@ -18,7 +18,7 @@ export default function Console({ isOpen, setIsOpen }: IConsoleProps) {
     >
       <h2>Console</h2>
       {consoleLogs && consoleLogs.map((message) => (
-        <p>{message}</p>
+        <p key={message} >{message}</p>
       ))}
       <br />
     </GenericDrawer>
