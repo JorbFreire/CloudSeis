@@ -20,13 +20,13 @@ export default function NotificationManager({ children }: INotificationManager) 
     if (!notificationMessage)
       return
     if (notificationMessage.content instanceof AxiosError) {
-      if (notificationMessage.content.status == 401)
-        // todo: redirect when 401
+      if (notificationMessage.content.status == 401) {
         enqueueSnackbar(
           "Erro de autenticação, redirecionando...",
           { variant: "error" }
         );
-      return navigate({ to: "/login" })
+        return navigate({ to: "/login" })
+      }
     }
 
 
