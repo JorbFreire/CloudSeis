@@ -1,23 +1,26 @@
-declare type navigationOrientationType = 'horizontal' | 'vertical'
-declare type navigationColorType = "primary" | "secondary" | "white"
+import type { StaticTabKey } from 'enums/StaticTabKey'
+declare global {
+  type navigationOrientationType = 'horizontal' | 'vertical'
+  type navigationColorType = "primary" | "secondary" | "white"
 
-declare type onRemoveActionType = (itemId: number) => void
+  type onRemoveActionType = (itemId: number | StaticTabKey) => void
 
-declare interface IContainerProps {
-  $orientation: navigationOrientationType
-}
+  interface IContainerProps {
+    $orientation: navigationOrientationType
+  }
 
-declare interface ICustomTabContainerProps extends IContainerProps {
-  $color: navigationColorType
-}
+  interface ICustomTabContainerProps extends IContainerProps {
+    $color: navigationColorType
+  }
 
 
-declare interface ICustomTabProps extends ICustomTabContainerProps {
-  label: string
-  value: number
-  onRemove(): void
-}
+  interface ICustomTabProps extends ICustomTabContainerProps {
+    label: string
+    value: number | StaticTabKey
+    onRemove(): void
+  }
 
-declare interface ITabContentProps extends IContainerProps {
-  $color: navigationColorType
+  interface ITabContentProps extends IContainerProps {
+    $color: navigationColorType
+  }
 }

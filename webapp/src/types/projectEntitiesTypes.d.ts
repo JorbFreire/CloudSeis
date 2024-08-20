@@ -1,40 +1,44 @@
-// *** generic entities also represets for of "resumed" version of entities ***
-declare interface IgenericEntitiesType {
-  id: number
-  name: string
-}
+import type { StaticTabKey } from 'enums/StaticTabKey'
+// *** generic entities also represets "resumed" version of entities ***
 
-declare interface IProject extends IgenericEntitiesType {
-  userId: string
-  // !turn into isostring date type
-  created_at: string
-  modified_at: string
-}
+declare global {
+  interface IgenericEntitiesType {
+    id: number | StaticTabKey
+    name: string
+  }
 
-declare interface ILine extends IgenericEntitiesType {
-  projectId: number
-  workflows: Array<IResumedWorkflow>
-}
+  interface IProject extends IgenericEntitiesType {
+    userId: string
+    // !turn into isostring date type
+    created_at: string
+    modified_at: string
+  }
 
-declare interface IWorkflow extends IgenericEntitiesType {
-  file_link_id: number
-  commands: Array<ICommand>
-}
+  interface ILine extends IgenericEntitiesType {
+    projectId: number
+    workflows: Array<IResumedWorkflow>
+  }
 
-declare interface IResumedWorkflow extends IgenericEntitiesType {
-}
+  interface IWorkflow extends IgenericEntitiesType {
+    file_link_id: number
+    commands: Array<ICommand>
+  }
 
-declare interface ICommand extends IgenericEntitiesType {
-  workflowId: number
-  program_id: number
-  // *** stringfied json, but currently [commit 7640f54] accepts any object
-  parameters: string
-}
+  interface IResumedWorkflow extends IgenericEntitiesType {
+  }
 
-declare type listOfCommandIdsType = Array<string>
+  interface ICommand extends IgenericEntitiesType {
+    workflowId: number
+    program_id: number
+    // *** stringfied json, but currently [commit 7640f54] accepts any object
+    parameters: string
+  }
 
-declare interface IOrderedCommandsList {
-  id: string
-  workflowId: string
-  commandIds: listOfCommandIdsType
+  type listOfCommandIdsType = Array<string>
+
+  interface IOrderedCommandsList {
+    id: string
+    workflowId: string
+    commandIds: listOfCommandIdsType
+  }
 }

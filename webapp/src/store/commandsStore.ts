@@ -2,8 +2,10 @@ import { create } from 'zustand'
 
 import { updateCommand } from 'services/commandServices'
 import { getWorkflowByID } from 'services/workflowServices'
+import { StaticTabKey } from 'enums/StaticTabKey'
 
-type selectedCommandIndexType = number | undefined
+// ! StaticTabKey here looks too much, needs refactoring
+type selectedCommandIndexType = number | StaticTabKey | undefined
 type commandsType = Array<ICommand>
 
 interface ICommandsStoreState {

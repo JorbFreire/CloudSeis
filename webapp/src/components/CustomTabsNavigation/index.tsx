@@ -3,13 +3,14 @@ import type { ComponentType, ReactNode } from 'react'
 import Tabs from '@mui/material/Tabs';
 import CustomTab from 'components/CustomTab';
 import { IDefaultDNDListProps } from 'components/DefaultDNDList/types'
+import { StaticTabKey, isFixedTab } from 'enums/StaticTabKey'
 
 import {
   Container,
   TabContent,
 } from './styles'
 
-type selectedTab = number | undefined
+type selectedTabType = number | StaticTabKey | undefined
 
 // *** once <T> accepts any type extending "IgenericEntitiesType"
 // *** it shall be capable to render any matching array
@@ -17,8 +18,8 @@ type selectedTab = number | undefined
 interface ICustomTabsNavigationProps<T extends IgenericEntitiesType> {
   tabs: Array<T>
   setTabs: genericSetterType<T>
-  selectedTab: selectedTab
-  setSelectedTab: genericSetterType<selectedTab>
+  selectedTab: selectedTabType
+  setSelectedTab: genericSetterType<selectedTabType>
   onRemove?: onRemoveActionType
 
   children?: ReactNode
@@ -44,19 +45,19 @@ export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
 }: ICustomTabsNavigationProps<T>) {
   // ? conditional rendering could be a high order component ?
   const removeElementFromState = () => {
-    if (!selectedTab || selectedTab == 999999)
+    if (!selectedTab || isFixedTab(selectedTab))
       return
 
     const newTabs = tabs.filter((element, index) =>
       index != selectedTab &&
-      element.id != 999999
+      !isFixedTab(element.id)
     )
 
-    if (onRemove)
+    if (onRemove && typeof selectedTab == "number")
       onRemove(tabs[selectedTab].id)
 
     setTabs(newTabs)
-    setSelectedTab(999999)
+    setSelectedTab(StaticTabKey.Input)
   }
 
   return Boolean(tabs.length) ? (

@@ -1,5 +1,6 @@
 import { AxiosError } from "axios"
 import useNotificationStore from 'store/notificationStore';
+import { StaticTabKey } from 'enums/StaticTabKey'
 
 import api from "./api"
 
@@ -36,7 +37,7 @@ export async function createNewCommand(
 
 export async function updateCommand(
   token: string,
-  id: number,
+  id: number | StaticTabKey,
   newParameters: string
 ): Promise<ICommand | null> {
   try {
