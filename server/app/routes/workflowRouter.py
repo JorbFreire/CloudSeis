@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify
 
-from icecream import ic
-
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
@@ -44,7 +42,6 @@ def updateWorkflow(_, workflowId):
         workflowId,
         data["fileLinkId"]
     )
-    ic(updatedWorkflow)
     return jsonify(updatedWorkflow)
 
 

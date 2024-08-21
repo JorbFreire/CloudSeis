@@ -8,6 +8,7 @@ from ..models.CommandModel import CommandModel
 
 from ..repositories.WorkflowRepository import workflowRepository
 from ..repositories.CommandRepository import commandRepository
+from ..repositories.OrderedCommandsListRepository import orderedCommandsListRepository
 
 
 def createDataset(userId, baseWorkflowId) -> dict:
@@ -42,15 +43,17 @@ def createDataset(userId, baseWorkflowId) -> dict:
         dataset.id,
     )
 
+    orderedCommandsListRepository.create(newWorkflow.id)
+
     workflowRepository.updateFilePath(
-        newWorkflow["id"],
+        newWorkflow.id,
         baseWorkflow.file_link_id
     )
 
     for command in commands:
         commandRepository.create(
             userId,
-            newWorkflow["id"],
+            newWorkflow.id,
             command.name,
             command.parameters
         )

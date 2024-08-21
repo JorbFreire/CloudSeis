@@ -16,7 +16,7 @@ export async function createNewCommand(
       `/command/create/${workflowId}`,
       {
         name,
-        parameters: "[]"
+        parameters: "{}"
       },
       {
         headers: {

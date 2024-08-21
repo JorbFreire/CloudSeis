@@ -6,7 +6,7 @@ from ...models.ParameterModel import ParameterModel
 from ...errors.AppError import AppError
 
 
-def showByProgramId(self, programId):
+def showByProgramId(programId):
     parameters = ParameterModel.query.filter_by(programId=programId).all()
     if not parameters:
         raise AppError("There are no parameters for this program", 404)
@@ -14,7 +14,7 @@ def showByProgramId(self, programId):
     return [parameter.getAttributes() for parameter in parameters]
 
 
-def create(self, programId):
+def create(programId):
     program = ProgramModel.query.filter_by(
         id=programId
     ).first()
@@ -33,7 +33,7 @@ def create(self, programId):
     return newProgram.getAttributes()
 
 
-def update(self, parameterId, parameterNewData):
+def update(parameterId, parameterNewData):
     parameter = ParameterModel.query.filter_by(
         id=parameterId
     ).first()
@@ -49,7 +49,7 @@ def update(self, parameterId, parameterNewData):
     return parameter.getAttributes()
 
 
-def delete(self, id):
+def delete(id):
     parameter = ParameterModel.query.filter_by(id=id).first()
     if not parameter:
         raise AppError("Parameter does not exist", 404)
