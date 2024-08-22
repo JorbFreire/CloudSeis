@@ -6,11 +6,6 @@ from ..models.UserModel import UserModel
 from ..models.ProjectModel import ProjectModel
 
 
-# todo: turn into services and call in controller
-def _generateUniqueString() -> str:
-    return datetime.now().strftime("%d%m%Y_%H%M%S")
-
-
 def _generateSuFilePath(unique_filename, user_email, projectId) -> str:
     file_path = f'{getcwd()}/static/{user_email}/{projectId}/{unique_filename}'
     return file_path
@@ -49,7 +44,7 @@ def createDatasetFilePath(workflowId) -> str:
 
     source_file_path = showWorkflowFilePath(workflowId)
     directory = path.dirname(source_file_path)
-    target_file_path = f'{workflow.getSelectedFileName().replace(".su", "_")}{_generateUniqueString()}.su'
+    target_file_path = f'{workflow.output_name}.su'
 
     target_file_path = path.join(
         directory,

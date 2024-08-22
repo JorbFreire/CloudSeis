@@ -14,6 +14,7 @@ class WorkflowModel(database.Model):  # type: ignore
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
     name = dbTypes.Column(dbTypes.String)
+    output_name = dbTypes.Column(dbTypes.String)
 
     file_link_id = dbTypes.Column(dbTypes.ForeignKey(
         "file_link_table.id",
@@ -52,5 +53,6 @@ class WorkflowModel(database.Model):  # type: ignore
             "id": self.id,
             "name": self.name,
             "file_link_id": self.file_link_id,
+            "output_name": self.output_name,
             "commands": self.orderedCommandsList[0].getCommands(),
         }

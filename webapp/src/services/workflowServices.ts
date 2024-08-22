@@ -86,3 +86,31 @@ export async function updateWorkflowFileLink(
     return null
   }
 }
+
+export async function updateWorkflowOutputName(
+  token: string,
+  workflowId: number,
+  outputName: string,
+): Promise<IWorkflow | null> {
+  try {
+    const response = await api.put<IWorkflow>(
+      `/workflow/update/${workflowId}/output-name`,
+      {
+        outputName
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    return null
+  }
+}

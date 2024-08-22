@@ -2,8 +2,12 @@ import type { StaticTabKey } from 'enums/StaticTabKey'
 // *** generic entities also represets "resumed" version of entities ***
 
 declare global {
-  interface IgenericEntitiesType {
+  interface IgenericTab {
     id: number | StaticTabKey
+    name: string
+  }
+  interface IgenericEntitiesType {
+    id: number
     name: string
   }
 
@@ -21,13 +25,14 @@ declare global {
 
   interface IWorkflow extends IgenericEntitiesType {
     file_link_id: number
+    output_name: string
     commands: Array<ICommand>
   }
 
   interface IResumedWorkflow extends IgenericEntitiesType {
   }
 
-  interface ICommand extends IgenericEntitiesType {
+  interface ICommand extends IgenericTab {
     workflowId: number
     program_id: number
     // *** stringfied json, but currently [commit 7640f54] accepts any object

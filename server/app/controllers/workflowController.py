@@ -1,3 +1,4 @@
+import re
 from types import SimpleNamespace
 
 from ..database.connection import database
@@ -42,6 +43,18 @@ def updateFilePath(workflowId, fileLinkId):
     return workflow.getAttributes()
 
 
+def updateOutput(workflowId, newOutputValue):
+    # ! breaks MVC !
+    workflow = WorkflowModel.query.filter_by(id=workflowId).first()
+    if not workflow:
+        raise AppError("Workflow does not exist", 404)
+
+    workflow.output_name = re.sub(r'[^a-zA-Z0-9\-_()]', '', newOutputValue)
+
+    database.session.commit()
+    return workflow.getAttributes()
+
+
 def delete(id):
     workflow = WorkflowModel.query.filter_by(id=id).first()
     if not workflow:
@@ -57,5 +70,6 @@ workflowController = SimpleNamespace(
     create=create,
     updateName=updateName,
     updateFilePath=updateFilePath,
+    updateOutput=updateOutput,
     delete=delete,
 )

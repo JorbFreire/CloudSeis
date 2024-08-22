@@ -4,6 +4,9 @@ import Button from "@mui/material/Button"
 import Tooltip from "@mui/material/Tooltip"
 
 export const Container = styled.form`
+  display: flex;
+  flex-direction: column;
+  max-width: 512px;
 `
 
 export const CustomTextField = styled(TextField)`

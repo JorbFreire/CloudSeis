@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify
+from icecream import ic
 
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..middlewares.validateRequestBody import validateRequestBody
 
 from ..controllers import workflowController
-from ..serializers.WorkflowSerializer import WorkflowCreateSchema, WorkflowFileLinkUpdateSchema
+from ..serializers.WorkflowSerializer import WorkflowCreateSchema, WorkflowFileLinkUpdateSchema, WorkflowOutputNameUpdateSchema
 from ..models.WorkflowModel import WorkflowModel
 
 
@@ -37,10 +38,24 @@ def createWorkflow(userId, parentId):
 @decorator_factory(validateRequestBody, SerializerSchema=WorkflowFileLinkUpdateSchema)
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateWorkflow(_, workflowId):
+    # ! breaks MVC !
     data = request.get_json()
     updatedWorkflow = workflowController.updateFilePath(
         workflowId,
         data["fileLinkId"]
+    )
+    return jsonify(updatedWorkflow)
+
+
+@workflowRouter.route("/update/<workflowId>/output-name", methods=['PUT'])
+@decorator_factory(validateRequestBody, SerializerSchema=WorkflowOutputNameUpdateSchema)
+@decorator_factory(requireAuthentication, routeModel=WorkflowModel)
+def updateWorkflow(_, workflowId):
+    # ! breaks MVC !
+    data = request.get_json()
+    updatedWorkflow = workflowController.updateOutput(
+        workflowId,
+        data["outputName"]
     )
     return jsonify(updatedWorkflow)
 

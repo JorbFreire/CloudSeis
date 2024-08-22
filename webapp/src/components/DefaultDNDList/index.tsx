@@ -34,7 +34,7 @@ function getModifiers(orientation: navigationOrientationType) {
   return [...modifiers, restrictToVerticalAxis]
 }
 
-export default function DefaultDNDList<T extends IgenericEntitiesType>({
+export default function DefaultDNDList<T extends IgenericTab>({
   children,
   orientation = "horizontal",
   items,

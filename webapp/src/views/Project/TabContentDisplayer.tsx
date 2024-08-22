@@ -2,6 +2,7 @@ import { useCommandsStore } from 'store/commandsStore'
 
 import CommandParameters from 'components/CommandParameters';
 import InputSelectorOptions from 'components/InputSelectorOptions';
+import OutputConfigOptions from 'components/OutputConfigOptions'
 import { StaticTabKey } from 'enums/StaticTabKey'
 
 export default function TabContentDisplayer() {
@@ -19,7 +20,7 @@ export default function TabContentDisplayer() {
         return <InputSelectorOptions />
 
       case StaticTabKey.Output:
-        return <h1> OUT PUT TAB </h1>
+        return <OutputConfigOptions />
 
       default:
         return (
@@ -30,5 +31,5 @@ export default function TabContentDisplayer() {
     }
   }
 
-  return selectedCommandIndex && getTabContent()
+  return selectedCommandIndex ? getTabContent() : <></>
 }

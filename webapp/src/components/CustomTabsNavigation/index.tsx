@@ -12,10 +12,10 @@ import {
 
 type selectedTabType = number | StaticTabKey | undefined
 
-// *** once <T> accepts any type extending "IgenericEntitiesType"
+// *** once <T> accepts any type extending "IgenericTab"
 // *** it shall be capable to render any matching array
-// *** not needing to convert it removing other filds missing at "IgenericEntitiesType"
-interface ICustomTabsNavigationProps<T extends IgenericEntitiesType> {
+// *** not needing to convert it removing other filds missing at "IgenericTab"
+interface ICustomTabsNavigationProps<T extends IgenericTab> {
   tabs: Array<T>
   setTabs: genericSetterType<T>
   selectedTab: selectedTabType
@@ -29,7 +29,7 @@ interface ICustomTabsNavigationProps<T extends IgenericEntitiesType> {
   CustomDndContext?: ComponentType<IDefaultDNDListProps<T>>
 }
 
-export default function CustomTabsNavigation<T extends IgenericEntitiesType>({
+export default function CustomTabsNavigation<T extends IgenericTab>({
   tabs,
   setTabs,
   selectedTab,

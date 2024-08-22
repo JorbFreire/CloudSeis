@@ -48,7 +48,7 @@ export default function CustomTab({
             {...attributes}
             {...listeners}
           />
-          {$orientation == "vertical" && (
+          {$orientation == "vertical" && Number.isInteger(value) && (
             <ActionButton onClick={onRemove}>
               <CloseRoundedIcon />
             </ActionButton>

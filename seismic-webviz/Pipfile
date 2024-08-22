@@ -8,6 +8,7 @@ bokeh = "~=3.5.0"
 seismicio = "==0.0.22"
 requests = "~=2.32.3"
 python-dotenv = "~=1.0.1"
+numpy = "~=1.26"
 
 [dev-packages]
 ipython = "*"

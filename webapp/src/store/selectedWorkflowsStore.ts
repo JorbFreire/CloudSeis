@@ -7,6 +7,9 @@ type singleSelectedWorkflowIdType = number | undefined
 
 interface ISelectedWorkflowsStoreState {
   selectedWorkflows: selectedWorkflowsType
+  // todo: "singleSelectedWorkflowId" shall be converted to "singleSelectedWorkflow"
+  // *** this will improve performance by not needing many forEachs to get selectedWorkflow info  
+  // *** at some components.
   singleSelectedWorkflowId: singleSelectedWorkflowIdType
   setSelectedWorkflows: (newWorkflows: selectedWorkflowsType) => void
   setSingleSelectedWorkflowId: (newWorkflowId: singleSelectedWorkflowIdType) => void
@@ -61,7 +64,8 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
               id: result.id,
               name: result.name,
               file_link_id: result.file_link_id,
-              commands: result.commands
+              commands: result.commands,
+              output_name: result.output_name
             },
           ]
         }))

@@ -2,11 +2,11 @@ import { Dispatch, ReactNode, SetStateAction } from "react"
 
 // ? make tabs compatible with dnd items
 // ? not needing to use tabs in every DND list
-interface IgenericEntityWithOptionalName {
+interface IgenericTabWithOptionalName {
   name?: string;
 }
 
-type itemType = IgenericEntitiesType & IgenericEntityWithOptionalName;
+type itemType = IgenericTab & IgenericTabWithOptionalName;
 
 type itemsListType<T extends itemType> = Array<T>
 
