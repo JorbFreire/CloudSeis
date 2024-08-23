@@ -4,4 +4,6 @@ __pycache__
 .pytest_cache
 static/*
 vars.sh
+cloudseis.sh
+*.vim
 !.gitkeep

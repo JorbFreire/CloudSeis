@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-from icecream import ic
 
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication

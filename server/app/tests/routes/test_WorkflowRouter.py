@@ -1,19 +1,18 @@
 import pytest
-import unittest
 
 from server.app.database.connection import database
 from ..conftest import _app
 from ..Mock import Mock
 
 
-class TestWorkflowRouter(unittest.TestCase):
+class TestWorkflowRouter:
     url_prefix = "/workflow"
     client = pytest.client
     mock = Mock()
     created_workflows: list[dict] = []
 
     @pytest.fixture(autouse=True, scope='class')
-    def _init_database(self):
+    def _init_and_clean_database(self):
         with _app.app_context():
             database.drop_all()
             database.create_all()
@@ -22,7 +21,12 @@ class TestWorkflowRouter(unittest.TestCase):
             self.mock.loadProject()
             self.mock.loadLine()
 
-    @pytest.mark.run(order=31)
+        yield
+        with _app.app_context():
+            database.drop_all()
+            database.create_all()
+
+    @pytest.mark.order(31)
     def test_empty_get(self):
         expected_response_data = {
             "Error": "No instance found for this id"
@@ -34,9 +38,9 @@ class TestWorkflowRouter(unittest.TestCase):
             }
         )
         assert response.status_code == 404
-        assert response.json["Error"] == expected_response_data["Error"]
+        assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.run(order=32)
+    @pytest.mark.order(32)
     def test_create_new_workflow_with_bad_parent(self):
         expected_response_data = {
             'Error': {
@@ -54,9 +58,9 @@ class TestWorkflowRouter(unittest.TestCase):
             }
         )
         assert response.status_code == 422
-        assert response.json["Error"] == expected_response_data["Error"]
+        assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.run(order=33)
+    @pytest.mark.order(33)
     def test_create_new_workflow_with_inexistent_project(self):
         expected_response_data = {
             "Error": "No instance found for this id"
@@ -72,10 +76,10 @@ class TestWorkflowRouter(unittest.TestCase):
             }
         )
         assert response.status_code == 404
-        assert response.json["Error"] == expected_response_data["Error"]
+        assert response.json['Error'] == expected_response_data['Error']
 
     # todo: test bad request cases with dateset to block manual dataset
-    @pytest.mark.run(order=34)
+    @pytest.mark.order(34)
     def test_create_new_workflow_with_inexistent_line(self):
         expected_response_data = {
             "Error": "No instance found for this id"
@@ -91,9 +95,9 @@ class TestWorkflowRouter(unittest.TestCase):
             }
         )
         assert response.status_code == 404
-        assert response.json["Error"] == expected_response_data["Error"]
+        assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.run(order=35)
+    @pytest.mark.order(35)
     def test_create_new_workflow_at_line(self):
         for i in range(3):
             expected_response_data = {
@@ -111,20 +115,20 @@ class TestWorkflowRouter(unittest.TestCase):
                 }
             )
             assert response.status_code == 200
-            assert isinstance(response.json["id"], int)
-            assert response.json["name"] == expected_response_data["name"]
+            assert isinstance(response.json['id'], int)
+            assert response.json['name'] == expected_response_data['name']
             # ? how will it work now ?
-            assert response.json["file_link_id"] == None
+            assert response.json['file_link_id'] == None
             self.created_workflows.append(response.json)
 
-    @pytest.mark.run(order=36)
+    @pytest.mark.order(36)
     def test_create_new_workflow_at_project(self):
         for i in range(3):
             expected_response_data = {
                 "name": f'NEW WORKFLOW-{i}',
                 "parent": {
                     "parentType": "projectId",
-                    "parentId": self.mock.project["id"]
+                    "parentId": self.mock.project['id']
                 },
             }
             response = self.client.post(
@@ -138,13 +142,17 @@ class TestWorkflowRouter(unittest.TestCase):
                 }
             )
             assert response.status_code == 200
-            assert isinstance(response.json["id"], int)
-            assert response.json["name"] == expected_response_data["name"]
+            assert isinstance(response.json['id'], int)
+            assert response.json['name'] == expected_response_data['name']
             # ? how will it work now ?
-            assert response.json["file_link_id"] == None
+            assert response.json['file_link_id'] == None
             self.created_workflows.append(response.json)
 
-    @pytest.mark.run(order=37)
+    @pytest.mark.order(37)
+    def test_update_workflow_name(self):
+        pass
+
+    @pytest.mark.order(38)
     def test_invalid_token_workflow(self):
         for workflow in self.created_workflows:
             response = self.client.delete(
@@ -155,7 +163,7 @@ class TestWorkflowRouter(unittest.TestCase):
             )
             assert response.status_code == 401
 
-    @pytest.mark.run(order=38)
+    @pytest.mark.order(39)
     def test_delete_workflow(self):
         for workflow in self.created_workflows:
             response = self.client.delete(
@@ -166,9 +174,3 @@ class TestWorkflowRouter(unittest.TestCase):
             )
             assert response.status_code == 200
             assert response.json == workflow
-
-    @pytest.mark.run(order=39)
-    def test_clean_up_database(self):
-        with _app.app_context():
-            database.drop_all()
-            database.create_all()

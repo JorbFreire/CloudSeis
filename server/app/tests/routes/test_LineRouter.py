@@ -14,7 +14,7 @@ class TestLineRouter(unittest.TestCase):
     #! this fixture implementation shall be checked to be
     #! fully adopted on ent-to-end tests at this app
     @pytest.fixture(autouse=True, scope='class')
-    def _init_database(self):
+    def _init_and_clean_database(self):
         with _app.app_context():
             database.drop_all()
             database.create_all()
@@ -23,19 +23,27 @@ class TestLineRouter(unittest.TestCase):
             self.mock.loadProject()
             self.mock.loadWorkflow()
 
+        yield
+        with _app.app_context():
+            database.drop_all()
+            database.create_all()
+
+    @pytest.mark.order(21)
+    def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no Lines for this project"
         }
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.project['id']}",
             headers={
-                "Authorization": self.mock.token
-            }
+                "Authorization": self.mock.token,
+            },
         )
         assert response.status_code == 404
-        assert response.json["Error"] == expected_response_data["Error"]
+        assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.run(order=22)
+
+    @pytest.mark.order(22)
     def test_create_new_line(self):
         for i in range(3):
             expected_response_data = {
@@ -53,12 +61,12 @@ class TestLineRouter(unittest.TestCase):
                 }
             )
             assert response.status_code == 200
-            assert isinstance(response.json["id"], int)
-            assert expected_response_data["name"] == response.json["name"]
-            assert expected_response_data["projectId"] == response.json["projectId"]
+            assert isinstance(response.json['id'], int)
+            assert expected_response_data['name'] == response.json['name']
+            assert expected_response_data['projectId'] == response.json['projectId']
             self.created_lines.append(response.json)
 
-    @pytest.mark.run(order=24)
+    @pytest.mark.order(23)
     def test_list_lines(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.project['id']}",
@@ -70,7 +78,29 @@ class TestLineRouter(unittest.TestCase):
         assert isinstance(response.json, list)
         assert response.json == self.created_lines
 
-    @pytest.mark.run(order=25)
+    @pytest.mark.order(24)
+    def test_update_line_name(self):
+        for line in self.created_lines:
+            expected_response_data = {
+                "id": line['id'],
+                "projectId": self.mock.project['id'],
+                "name": f"new_line_name_{line['id']}",
+                "workflows": []
+            }
+            response = self.client.put(
+                f"{self.url_prefix}/update/{line['id']}",
+                headers={
+                    "Authorization": self.mock.token
+                },
+                json={
+                    "name": f"new_line_name_{line['id']}",
+                },
+            )
+
+            assert response.status_code == 200
+            assert response.json == expected_response_data
+
+    @pytest.mark.order(25)
     def test_invalid_token_line(self):
         for line in self.created_lines:
             response = self.client.delete(
@@ -81,7 +111,7 @@ class TestLineRouter(unittest.TestCase):
             )
             assert response.status_code == 401
 
-    @pytest.mark.run(order=26)
+    @pytest.mark.order(26)
     def test_delete_line(self):
         for line in self.created_lines:
             response = self.client.delete(
@@ -91,9 +121,3 @@ class TestLineRouter(unittest.TestCase):
                 }
             )
             assert response.status_code == 200
-
-    @pytest.mark.run(order=27)
-    def test_clean_up_database(self):
-        with _app.app_context():
-            database.drop_all()
-            database.create_all()
