@@ -87,7 +87,7 @@ def update(userId, workflowId) -> str:
         database.session.add(newFileLink)
         database.session.commit()
 
-        return str(process_output)
+        return process_output.decode("utf-8")
     except Exception as error:
         return str(error)
 

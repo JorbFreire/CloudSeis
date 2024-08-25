@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 
 import { useGatherKeyStore } from 'store/gatherKeyStore'
+import { useLogsStore } from 'store/logsStore';
 import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
@@ -40,6 +41,7 @@ export default function Project({ projectId }: IProjectProps) {
     setSingleSelectedWorkflowId: state.setSingleSelectedWorkflowId,
   }))
 
+  const pushNewLog = useLogsStore(state => state.pushNewLog)
   const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
@@ -65,6 +67,7 @@ export default function Project({ projectId }: IProjectProps) {
     if (!singleSelectedWorkflowId) return
     updateFile(token, singleSelectedWorkflowId).then((result) => {
       if (!result) return
+      pushNewLog(singleSelectedWorkflowId, result.process_output)
       let vizualizerURL = `http://localhost:5006/?`
       const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
       if (gatherKeyFromStore)
