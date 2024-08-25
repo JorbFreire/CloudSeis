@@ -67,7 +67,10 @@ export default function Project({ projectId }: IProjectProps) {
     if (!singleSelectedWorkflowId) return
     updateFile(token, singleSelectedWorkflowId).then((result) => {
       if (!result) return
+
       pushNewLog(singleSelectedWorkflowId, result.process_output)
+      if (result.process_output) return
+
       let vizualizerURL = `http://localhost:5006/?`
       const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
       if (gatherKeyFromStore)
