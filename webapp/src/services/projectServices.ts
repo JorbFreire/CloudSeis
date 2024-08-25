@@ -19,8 +19,7 @@ export async function getProjectsByUser(token: string): Promise<Array<IProject> 
     notificationStore.triggerNotification({
       content: axiosError
     });
-    // ! should be null ?
-    return []
+    return null
   }
 }
 
@@ -46,7 +45,7 @@ export async function createNewProject(token: string, name: string): Promise<IPr
   }
 }
 
-export async function deleteProject(token: string, id: number): Promise<IProject | number> {
+export async function deleteProject(token: string, id: number): Promise<IProject | null> {
   try {
     const response = await api.delete<IProject>(
       `/project/delete/${id}`,
@@ -63,6 +62,6 @@ export async function deleteProject(token: string, id: number): Promise<IProject
     notificationStore.triggerNotification({
       content: axiosError
     });
-    return 400
+    return null
   }
 }
