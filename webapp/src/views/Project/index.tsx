@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 
+import { useGatherKeyStore } from 'store/gatherKeyStore'
 import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
@@ -38,6 +39,8 @@ export default function Project({ projectId }: IProjectProps) {
     singleSelectedWorkflowId: state.singleSelectedWorkflowId,
     setSingleSelectedWorkflowId: state.setSingleSelectedWorkflowId,
   }))
+
+  const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
@@ -60,7 +63,14 @@ export default function Project({ projectId }: IProjectProps) {
     const token = localStorage.getItem("jwt")
     if (!token) return
     if (!singleSelectedWorkflowId) return
-    updateFile(token, singleSelectedWorkflowId)
+    updateFile(token, singleSelectedWorkflowId).then((result) => {
+      if (!result) return
+      let vizualizerURL = `http://localhost:5006/?`
+      const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
+      if (gatherKeyFromStore)
+        vizualizerURL += `gather_key=${gatherKeyFromStore}&`
+      window.open(`${vizualizerURL}workflowId=${singleSelectedWorkflowId}`, '_blank')
+    })
   }
 
   useEffect(() => {
@@ -95,6 +105,10 @@ export default function Project({ projectId }: IProjectProps) {
                   id: StaticTabKey.Output,
                   name: "Output"
                 },
+                {
+                  id: StaticTabKey.Vizualizer,
+                  name: "Visualization"
+                },
               ]}
               setTabs={setCommands}
               selectedTab={selectedCommandIndex}
@@ -108,7 +122,7 @@ export default function Project({ projectId }: IProjectProps) {
               color='white'
               orientation='vertical'
             >
-              {<TabContentDisplayer />}
+              <TabContentDisplayer />
             </CustomTabsNavigation>
           </CustomTabsNavigation>
 
