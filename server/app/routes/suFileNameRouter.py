@@ -26,11 +26,8 @@ def showSuFilePath(_, workflowId):
 @suFileNameRouter.route("/dataset/show-path/<workflowId>", methods=['GET'])
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def showDatasetSuFilePath(_, workflowId):
-    # ! not implemented ! #
     # *** no controller layer for this route, no adcional rules *** #
-    file_path = showWorkflowFilePath(workflowId)
-    target_path = createDatasetFilePath(workflowId)
+    file_path = createDatasetFilePath(workflowId)
     return jsonify({
         "file_path": file_path,
-        "target_path": target_path,
     })

@@ -1,16 +1,21 @@
+
+from typing import Literal
+from icecream import ic
+
 import requests
 from bokeh.application.handlers import FunctionHandler
 from bokeh.application import Application
 from bokeh.document.document import Document
-
 
 from ..core import Visualization
 from .config import BASE_URL
 
 
 def app_factory():
-    def find_file_path(auth_token: str, workflowId: int) -> None | str:
-        api_url = f"{BASE_URL}/su-file-path/show-path/{workflowId}"
+    def find_file_path(auth_token: str, workflowId: int, origin: Literal["input", "output"]) -> None | str:
+        api_url = f"{BASE_URL}/su-file-path/dataset/show-path/{workflowId}"
+        if origin == "input":
+            api_url = api_url.replace("/dataset", "")
         headers = {
             "Authorization": f"Bearer {auth_token}"
         }
@@ -31,10 +36,12 @@ def app_factory():
         auth_token = request.cookies.get('Authorization', '')
         gather_key = arguments.get('gather_key', [b''])[0].decode('utf-8')
         workflowId = arguments.get('workflowId', [b''])[0].decode('utf-8')
+        origin = arguments.get('origin', [b''])[0].decode('utf-8')
 
         absolute_file_path = find_file_path(
             auth_token=auth_token,
-            workflowId=int(workflowId)
+            workflowId=int(workflowId),
+            origin=origin
         )
 
         visualization_manager = Visualization(
