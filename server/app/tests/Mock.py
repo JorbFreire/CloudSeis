@@ -2,28 +2,27 @@ import pytest
 
 DEFAULT_PASSWORD = "password123"
 
-
-def createSession(email, password=DEFAULT_PASSWORD):
-    response = pytest.client.post(
-        "/session/",
-        json={
-            "email": email,
-            "password": password
-        }
-    )
-    return response.json["token"]
-
-
 class Mock():
-    user = None
-    project = None
-    line = None
-    workflow = None
-    token = None
+    client = pytest.client
+    user = dict()
+    project = dict()
+    line = dict()
+    workflow = dict()
+    token: str = ""
+
+    def createSession(self, email, password=DEFAULT_PASSWORD):
+        response = self.client.post(
+            "/session/",
+            json={
+                "email": email,
+                "password": password
+            }
+        )
+        return response.json["token"]
 
     def loadUser(self, name="root"):
         email = f'{name}@email.com'
-        response = pytest.client.post(
+        response = self.client.post(
             "/user/create",
             json={
                 "name": name,
@@ -36,12 +35,12 @@ class Mock():
         return user_data
 
     def loadSession(self):
-        token = createSession(email=self.user["email"])
+        token = self.createSession(email=self.user["email"])
         self.token = token
         return token
 
     def loadProject(self):
-        response = pytest.client.post(
+        response = self.client.post(
             "/project/create",
             json={
                 "name": "project_test",
@@ -56,7 +55,7 @@ class Mock():
         return project_data
 
     def loadLine(self):
-        response = pytest.client.post(
+        response = self.client.post(
             f"/line/create/{self.project['id']}",
             json={
                 "name": "line_test",
@@ -71,7 +70,7 @@ class Mock():
         return line_data
 
     def loadWorkflow(self):
-        response = pytest.client.post(
+        response = self.client.post(
             f"/workflow/create/{self.project['id']}",
             json={
                 "name": "workflow_test",
