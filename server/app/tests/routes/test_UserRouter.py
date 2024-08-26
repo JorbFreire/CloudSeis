@@ -71,6 +71,7 @@ class TestUserRouter:
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], str)
+            # *** shoud never return the password
             assert "password" not in response.json
             assert expected_response_data['name'] == response.json['name']
             assert expected_response_data['email'] == response.json['email']

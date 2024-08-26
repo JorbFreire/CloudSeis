@@ -1,5 +1,4 @@
 import pytest
-from werkzeug.test import Client
 
 from server.app.database.connection import database
 from ..conftest import _app
@@ -61,6 +60,7 @@ class TestCommandRouter:
 
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
+
     @pytest.mark.order(43)
     def test_create_new_command(self):
         for i in range(3):

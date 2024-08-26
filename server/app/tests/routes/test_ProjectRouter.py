@@ -1,9 +1,9 @@
-from _pytest import scope
 import pytest
 
 from server.app.database.connection import database
 from ..conftest import _app
 from ..Mock import Mock
+
 
 class TestProjectRouter:
     url_prefix = "/project"
