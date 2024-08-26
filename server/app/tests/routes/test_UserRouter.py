@@ -24,7 +24,7 @@ class TestUserRouter:
             database.drop_all()
             database.create_all()
 
-    @pytest.mark.order(1)
+    @pytest.mark.run(order=1)
     def test_empty_get(self):
         """Test that listing users returns 404 if no users exist."""
         expected_response_data = {
@@ -34,7 +34,7 @@ class TestUserRouter:
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.order(2)
+    @pytest.mark.run(order=2)
     def test_weak_password(self):
         """Test creating a user with a weak password returns a validation error."""
         expected_response_data = {
@@ -53,7 +53,7 @@ class TestUserRouter:
         assert response.status_code == 422
         assert response.json == expected_response_data
 
-    @pytest.mark.order(3)
+    @pytest.mark.run(order=3)
     def test_create_new_user(self):
         """Test creating multiple new users with valid data."""
         for i in range(3):
@@ -77,7 +77,7 @@ class TestUserRouter:
             assert expected_response_data['email'] == response.json['email']
             self.created_users.append(response.json)
 
-    @pytest.mark.order(4)
+    @pytest.mark.run(order=4)
     def test_list_users(self):
         """Test that listing users returns the users that were created."""
         response = self.client.get(f"{self.url_prefix}/list")
@@ -85,7 +85,7 @@ class TestUserRouter:
         assert isinstance(response.json, list)
         assert response.json == self.created_users
 
-    @pytest.mark.order(5)
+    @pytest.mark.run(order=5)
     def test_update_user(self):
         """Test updating a user's name with a valid session token."""
         for user in self.created_users:
@@ -98,7 +98,7 @@ class TestUserRouter:
             assert response.status_code == 200
             assert response.json['name'] == f"updated_{user['name']}"
 
-    @pytest.mark.order(6)
+    @pytest.mark.run(order=6)
     def test_invalid_token_user(self):
         """Test updating a user with an invalid token."""
         for _ in self.created_users:
@@ -108,7 +108,7 @@ class TestUserRouter:
             )
             assert response.status_code == 401
 
-    @pytest.mark.order(7)
+    @pytest.mark.run(order=7)
     def test_delete_user(self):
         """Test deleting users with a valid session token."""
         for user in self.created_users:
