@@ -14,12 +14,14 @@ class FileLinkModel(database.Model):  # type: ignore
 
     projectId = dbTypes.Column(dbTypes.ForeignKey(
         "projects_table.id",
-        name="FK_projects_table_file_link_table"
+        name="FK_projects_table_file_link_table",
+        ondelete="CASCADE"
     ))
 
     datasetId = dbTypes.Column(dbTypes.ForeignKey(
         "datasets_table.id",
-        name="FK_datasets_table_file_link_table"
+        name="FK_datasets_table_file_link_table",
+        ondelete="CASCADE"
     ))
 
     created_at = dbTypes.Column(

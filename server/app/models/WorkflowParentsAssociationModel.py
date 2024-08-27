@@ -14,26 +14,30 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
     workflowId = dbTypes.Column(
         dbTypes.ForeignKey(
             "workflows_table.id",
-            name="FK_workflow_parents_association_table_workflows_table"
+            name="FK_workflow_parents_association_table_workflows_table",
+            ondelete="CASCADE"
         ),
-        primary_key=True
+        primary_key=True,
     )
     datasetId = dbTypes.Column(dbTypes.ForeignKey(
         "datasets_table.id",
-        name="FK_workflow_parents_association_table_dataset_table"
+        name="FK_workflow_parents_association_table_dataset_table",
+        ondelete="CASCADE"
     ))
     # Feature de ser filho ou de project ou de line
     lineId = dbTypes.Column(dbTypes.ForeignKey(
         "lines_table.id",
-        name="FK_workflow_parents_association_table_lines_table"
+        name="FK_workflow_parents_association_table_lines_table",
+        ondelete="CASCADE"
     ))
     projectId = dbTypes.Column(dbTypes.ForeignKey(
         "projects_table.id",
-        name="FK_workflow_parents_association_table_projects_table"
+        name="FK_workflow_parents_association_table_projects_table",
+        ondelete="CASCADE"
     ))
 
     def getProjectId(self) -> int:
-        # *** import inside functino to avoid circular import
+        # *** import inside function to avoid circular import
         # ! do not turn into global import
         from .LineModel import LineModel
 

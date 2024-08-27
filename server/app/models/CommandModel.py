@@ -23,7 +23,8 @@ class CommandModel(database.Model):  # type: ignore
 
     workflowId = dbTypes.Column(dbTypes.ForeignKey(
         "workflows_table.id",
-        name="FK_workflows_table_commands_table"
+        name="FK_workflows_table_commands_table",
+        ondelete="CASCADE"
     ))
 
     def getAttributes(self) -> dict[str, str]:

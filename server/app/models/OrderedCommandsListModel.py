@@ -13,7 +13,8 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
     # todo: the parent shall be changed to project
     workflowId = dbTypes.Column(dbTypes.ForeignKey(
         "workflows_table.id",
-        name="FK_workflows_table_workflow_commands_list_table"
+        name="FK_workflows_table_workflow_commands_list_table",
+        ondelete="CASCADE"
     ))
 
     # ! thats a huge workarround, but should work

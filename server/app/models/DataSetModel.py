@@ -19,7 +19,8 @@ class DataSetModel(database.Model):
 
     workflowId = dbTypes.Column(dbTypes.ForeignKey(
         "workflows_table.id",
-        name="FK_workflows_tables_datasets_table"
+        name="FK_workflows_tables_datasets_table",
+        ondelete="CASCADE"
     ))
 
     workflowParentAssociations: Mapped[

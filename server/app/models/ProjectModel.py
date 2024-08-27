@@ -16,7 +16,8 @@ class ProjectModel(database.Model):  # type: ignore
 
     userId = dbTypes.Column(dbTypes.ForeignKey(
         "users_table.id",
-        name="FK_users_table_projects_table"
+        name="FK_users_table_projects_table",
+        ondelete="CASCADE"
     ))
 
     created_at = dbTypes.Column(

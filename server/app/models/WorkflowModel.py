@@ -31,7 +31,7 @@ class WorkflowModel(database.Model):  # type: ignore
     ] = relationship(CommandModel, cascade='all, delete-orphan')
 
     orderedCommandsList: Mapped[
-        List[CommandModel]
+        List[OrderedCommandsListModel]
     ] = relationship(OrderedCommandsListModel, cascade='all, delete-orphan')
 
     workflowParent: Mapped[
