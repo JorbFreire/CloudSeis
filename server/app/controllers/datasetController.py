@@ -1,4 +1,3 @@
-from uuid import UUID
 from types import SimpleNamespace
 
 from ..errors.AppError import AppError
