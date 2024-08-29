@@ -9,6 +9,7 @@ from ..models.CommandModel import CommandModel
 from ..repositories.WorkflowRepository import workflowRepository
 from ..repositories.CommandRepository import commandRepository
 from ..repositories.OrderedCommandsListRepository import orderedCommandsListRepository
+from ..repositories.WorkflowParentsAssociationRepository import workflowParentsAssociationRepository
 
 
 def createDataset(userId, baseWorkflowId) -> dict:
@@ -35,6 +36,7 @@ def createDataset(userId, baseWorkflowId) -> dict:
     newWorkflowData = {
         "name": f"{baseWorkflow.name} - dataset",
         "parentType": "datasetId",
+        "output_name": baseWorkflow.output_name,
     }
 
     newWorkflow = workflowRepository.create(
@@ -44,6 +46,12 @@ def createDataset(userId, baseWorkflowId) -> dict:
     )
 
     orderedCommandsListRepository.create(newWorkflow.id)
+
+    workflowParentsAssociationRepository.create(
+        newWorkflow.id,
+        "datasetId",
+        dataset.id
+    )
 
     workflowRepository.updateFilePath(
         newWorkflow.id,
@@ -55,7 +63,8 @@ def createDataset(userId, baseWorkflowId) -> dict:
             userId,
             newWorkflow.id,
             command.name,
-            command.parameters
+            command.parameters,
+            command.program_id
         )
         database.session.add(command)
 

@@ -19,11 +19,13 @@ def create(userId, newWorkflowData, parentId):
         raise AppError("User does not exist", 404)
 
     # ! raise error when find any issue
+    # ! thats unused here, parents domain shall be refactored
     validateWorkflowParent(parentType, parentId)
 
     newWorkflow = WorkflowModel(
         name=newWorkflowData["name"],
         owner_email=user.email,
+        output_name=newWorkflowData.get("output_name") or ""
     )
 
     database.session.add(newWorkflow)

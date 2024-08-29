@@ -10,7 +10,7 @@ from ..models.WorkflowModel import WorkflowModel
 from ..errors.AppError import AppError
 
 
-def create(userId, workflowId, name, parameters):
+def create(userId, workflowId, name, parameters, program_id):
     user = UserModel.query.filter_by(id=UUID(userId)).first()
     if not user:
         raise AppError("User does not exist", 404)
@@ -29,7 +29,8 @@ def create(userId, workflowId, name, parameters):
         name=name,
         parameters=parameters,
         workflowId=workflowId,
-        owner_email=user.email
+        owner_email=user.email,
+        program_id=program_id
     )
     database.session.add(newCommand)
     database.session.commit()

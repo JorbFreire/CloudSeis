@@ -10,7 +10,6 @@ def showById(id):
     dataset = DataSetModel.query.filter_by(id=id).first()
     if not dataset:
         raise AppError("Dataset does not exist", 404)
-
     return dataset.getAttributes()
 
 
@@ -19,7 +18,8 @@ def showAll(workflowId):
     if len(datasets) == 0:
         raise AppError("There are no datasets", 404)
 
-    return [dataset.getAttributes() for dataset in datasets]
+    # ! to complex, could be refactored
+    return [workflow for dataset in datasets for workflow in dataset.getWorkflows()]
 
 
 def delete(id):

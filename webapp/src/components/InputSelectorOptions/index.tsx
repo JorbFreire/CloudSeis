@@ -35,7 +35,7 @@ export default function InputSelectorOptions() {
   const visualizeInputFile = () => {
     if (!singleSelectedWorkflowId) return
 
-    let vizualizerURL = `${import.meta.env.VITE_API_URL}/?`
+    let vizualizerURL = `${import.meta.env.VITE_VISUALIZER_URL}/?`
     const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
     if (gatherKeyFromStore)
       vizualizerURL += `gather_key=${gatherKeyFromStore}&`

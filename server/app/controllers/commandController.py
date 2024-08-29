@@ -15,8 +15,14 @@ def show(id):
     return command.getAttributes()
 
 
-def create(userId, workflowId, name, parameters):
-    newCommand = commandRepository.create(userId, workflowId, name, parameters)
+def create(userId, workflowId, name, parameters, program_id):
+    newCommand = commandRepository.create(
+        userId,
+        workflowId,
+        name,
+        parameters,
+        program_id
+    )
     return newCommand.getAttributes()
 
 

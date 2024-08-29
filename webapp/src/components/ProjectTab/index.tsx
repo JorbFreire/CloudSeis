@@ -10,6 +10,7 @@ import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { useLinesStore } from 'store/linesStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
 import LineChildrenFolder from './LineChildrenFolder'
+import DataSetsFolder from './DataSetsFolder'
 
 import { Container } from "./styles"
 
@@ -36,6 +37,7 @@ export default function ProjectTab() {
 
     const isWorkflow = nodeId.startsWith("workflow")
     const isDataset = nodeId.startsWith("dataset")
+
 
     if (!(isWorkflow || isDataset))
       return
@@ -65,11 +67,8 @@ export default function ProjectTab() {
               data={line.workflows}
             />
 
-            <LineChildrenFolder
-              lineId={line.id}
-              entityType='dataset'
-              data={line.workflows}
-            />
+
+            <DataSetsFolder line={line} />
           </TreeItem>
         ))}
       </TreeView>

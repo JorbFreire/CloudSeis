@@ -27,7 +27,7 @@ class DataSetModel(database.Model):
         List[WorkflowParentsAssociationModel]
     ] = relationship(WorkflowParentsAssociationModel)
 
-    def _getWorkflows(self) -> list[dict[str, str]]:
+    def getWorkflows(self) -> list[dict[str, str]]:
         if len(self.workflowParentAssociations) == 0:
             return []
         workflows = WorkflowModel.query.filter(
@@ -40,7 +40,7 @@ class DataSetModel(database.Model):
     def getAttributes(self) -> dict:
         return {
             "id": self.id,
-            "workflows": self._getWorkflows()
+            "workflows": self.getWorkflows()
         }
 
 # Add commands attributes

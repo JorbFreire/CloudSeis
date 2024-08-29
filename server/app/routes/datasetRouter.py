@@ -24,8 +24,7 @@ def showDataset(_, id):
 
 
 @datasetRouter.route("/list/<workflowId>", methods=['GET'])
-# ! Erro pois encontra multiplos valores para o mesmo workflowId
-# ! @decorator_factory(requireAuthentication, routeModel=DataSetModel)
+# @decorator_factory(requireAuthentication, routeModel=DataSetModel)
 def listDatasets(workflowId):
     datasets = datasetController.showAll(workflowId)
     return jsonify(datasets)

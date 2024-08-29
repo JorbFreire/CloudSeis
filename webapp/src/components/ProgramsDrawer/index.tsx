@@ -29,7 +29,7 @@ export default function ProgramsDrawer({
   // *** Groups of Commands, available commands to insert in the workflow
   const [programsGroups, setProgramsGroups] = useState<Array<IProgramsGroup>>([])
 
-  const addProgramToCurrentWorkflow = (name: string) => {
+  const addProgramToCurrentWorkflow = (name: string, program_id: number) => {
     const token = localStorage.getItem("jwt")
     if (!token)
       return
@@ -37,6 +37,7 @@ export default function ProgramsDrawer({
       createNewCommand(
         token,
         singleSelectedWorkflowId,
+        program_id,
         name
       ).then((result) => {
         if (!result) return;
@@ -70,7 +71,12 @@ export default function ProgramsDrawer({
               key={program.id}
             >
               {program.name}
-              <button onClick={() => addProgramToCurrentWorkflow(program.path_to_executable_file)}>
+              <button
+                onClick={() => addProgramToCurrentWorkflow(
+                  program.path_to_executable_file,
+                  program.id,
+                )}
+              >
                 Add to queue
               </button>
             </h4>

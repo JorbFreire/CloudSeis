@@ -35,7 +35,8 @@ def createCommand(userId, workflowId):
         userId,
         workflowId,
         data["name"],
-        data["parameters"]
+        data["parameters"],
+        data["program_id"]
     )
     return jsonify(newCommand)
 

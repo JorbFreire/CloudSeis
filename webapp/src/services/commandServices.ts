@@ -9,6 +9,7 @@ const notificationStore = useNotificationStore.getState()
 export async function createNewCommand(
   token: string,
   workflowId: number,
+  program_id: number,
   name: string,
 ): Promise<ICommand | null> {
   try {
@@ -16,6 +17,7 @@ export async function createNewCommand(
       `/command/create/${workflowId}`,
       {
         name,
+        program_id,
         parameters: "{}"
       },
       {

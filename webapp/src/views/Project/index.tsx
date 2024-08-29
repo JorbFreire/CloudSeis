@@ -71,7 +71,7 @@ export default function Project({ projectId }: IProjectProps) {
       pushNewLog(singleSelectedWorkflowId, result.process_output)
       if (result.process_output) return
 
-      let vizualizerURL = `${import.meta.env.VITE_API_URL}/?`
+      let vizualizerURL = `${import.meta.env.VITE_VISUALIZER_URL}/?`
       const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
       if (gatherKeyFromStore)
         vizualizerURL += `gather_key=${gatherKeyFromStore}&`

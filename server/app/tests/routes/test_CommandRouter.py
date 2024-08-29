@@ -52,6 +52,7 @@ class TestCommandRouter:
             json={
                 "name": "NO EXISTING PARENT",
                 "parameters": "SUDEFAULT",
+                "program_id": 1,
             },
             headers={
                 "Authorization": self.mock.token,
@@ -63,17 +64,20 @@ class TestCommandRouter:
 
     @pytest.mark.order(43)
     def test_create_new_command(self):
+        # ! needs to mock program, shall fix it when testing adm routes
         for i in range(3):
             expected_response_data = {
                 "name": f"NEW COMMAND-{i}",
                 "workflowId": self.mock.workflow['id'],
                 "parameters": "SUDEFAULT",
+                "program_id": 1,
             }
             response = self.client.post(
                 f"{self.url_prefix}/create/{self.mock.workflow['id']}",
                 json={
                     "name": f"NEW COMMAND-{i}",
                     "parameters": "SUDEFAULT",
+                    "program_id": 1,
                 },
                 headers={
                     "Authorization": self.mock.token
