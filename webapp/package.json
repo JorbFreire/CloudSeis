@@ -23,8 +23,8 @@
     "@mui/x-tree-view": "^6.17.0",
     "@tanstack/react-location": "^3.7.4",
     "@types/styled-components": "^5.1.26",
-    "axios": "^1.2.3",
-    "express": "^4.18.2",
+    "axios": "^1.7.4",
+    "express": "^4.20.0",
     "generouted": "^1.6.3",
     "notistack": "^3.0.1",
     "react": "^18.2.0",
@@ -57,7 +57,7 @@
     "newtype-ts": "^0.3.5",
     "storybook": "^7.6.17",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3",
+    "vite": "^3.2.11",
     "vitest": "^2.0.5"
   }
 }
