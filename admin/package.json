@@ -16,7 +16,7 @@
     "@mui/material": "^5.15.10",
     "@mui/x-tree-view": "^6.17.0",
     "@tanstack/react-location": "^3.7.4",
-    "axios": "^1.6.7",
+    "axios": "^1.7.4",
     "generouted": "^1.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,6 +33,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "typescript": "^5.2.2",
-    "vite": "^5.1.0"
+    "vite": "^5.1.8"
   }
 }
