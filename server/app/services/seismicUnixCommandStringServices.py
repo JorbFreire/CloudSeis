@@ -34,7 +34,7 @@ def getSemicUnixCommandString(commandsQueue: list, source_file_path: str, target
     # leting the command line program handle it if not mandatory
     seismicUnixProcessString = ""
     for orderedCommands in commandsQueue:
-        for seismicUnixProgram in orderedCommands.getCommands():
+        for seismicUnixProgram, seismicUnixProgramIndex in orderedCommands.getCommands():
             seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
             seismicUnixProcessString += _getAllParameters(
                 json.loads((seismicUnixProgram["parameters"]))
@@ -42,6 +42,11 @@ def getSemicUnixCommandString(commandsQueue: list, source_file_path: str, target
             # ! *** *** *** *** *** *** ***
             # todo: it *MUST* be improved when handling multiple commands
             # ! *** *** *** *** *** *** ***
-            seismicUnixProcessString += f' < {source_file_path} > {target_file_path}'
+            if (seismicUnixProgramIndex == 0):
+                seismicUnixProcessString += f'< {source_file_path}'
+            if (seismicUnixProgramIndex <= len(seismicUnixProgram)-1):
+                seismicUnixProcessString += ' | '
+            if (seismicUnixProgramIndex == len(seismicUnixProgram)-1):
+                seismicUnixProcessString += f'> {target_file_path}'
     ic(seismicUnixProcessString)
     return seismicUnixProcessString
