@@ -1,9 +1,10 @@
 import pytest
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 from server.app.create_app import create_app
 
-load_dotenv()
+dotenv_path = find_dotenv()
+result = load_dotenv(dotenv_path, override=True)
 _app = create_app("test")
 
 def _client():
