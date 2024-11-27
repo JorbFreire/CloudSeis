@@ -25,7 +25,6 @@ class TestProjectRouter:
             database.drop_all()
             database.create_all()
 
-    @pytest.mark.order(11)
     def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no Projects for this user"
@@ -39,7 +38,6 @@ class TestProjectRouter:
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.order(12)
     def test_create_new_project(self):
         for i in range(3):
             expected_response_data = {
@@ -61,7 +59,6 @@ class TestProjectRouter:
             assert expected_response_data['userId'] == response.json['userId']
             self.created_projects.append(response.json)
 
-    @pytest.mark.order(13)
     def test_list_projects(self):
         response = self.client.get(
             f"{self.url_prefix}/list",
@@ -73,7 +70,6 @@ class TestProjectRouter:
         assert isinstance(response.json, list)
         assert response.json == self.created_projects
 
-    @pytest.mark.order(14)
     def test_update_project_name(self):
         for project in self.created_projects:
             new_name = f"new_project_name_{project['id']}"
@@ -91,7 +87,6 @@ class TestProjectRouter:
             assert response.status_code == 200
             assert response.json == project
 
-    @pytest.mark.order(15)
     def test_invalid_token_project(self):
         for project in self.created_projects:
             response = self.client.delete(
@@ -102,7 +97,6 @@ class TestProjectRouter:
             )
             assert response.status_code == 401
 
-    @pytest.mark.order(16)
     def test_delete_project(self):
         for project in self.created_projects:
             response = self.client.delete(

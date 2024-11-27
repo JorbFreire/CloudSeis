@@ -1,11 +1,11 @@
 import pytest
-import unittest
+
 from server.app.database.connection import database
 from ..conftest import _app
 from ..Mock import Mock
 
 
-class TestLineRouter(unittest.TestCase):
+class TestLineRouter:
     url_prefix = "/line"
     client = pytest.client
     mock = Mock()
@@ -28,7 +28,6 @@ class TestLineRouter(unittest.TestCase):
             database.drop_all()
             database.create_all()
 
-    @pytest.mark.order(21)
     def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no Lines for this project"
@@ -43,7 +42,6 @@ class TestLineRouter(unittest.TestCase):
         assert response.json['Error'] == expected_response_data['Error']
 
 
-    @pytest.mark.order(22)
     def test_create_new_line(self):
         for i in range(3):
             expected_response_data = {
@@ -66,7 +64,6 @@ class TestLineRouter(unittest.TestCase):
             assert expected_response_data['projectId'] == response.json['projectId']
             self.created_lines.append(response.json)
 
-    @pytest.mark.order(23)
     def test_list_lines(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.project['id']}",
@@ -78,7 +75,6 @@ class TestLineRouter(unittest.TestCase):
         assert isinstance(response.json, list)
         assert response.json == self.created_lines
 
-    @pytest.mark.order(24)
     def test_update_line_name(self):
         for line in self.created_lines:
             expected_response_data = {
@@ -100,7 +96,6 @@ class TestLineRouter(unittest.TestCase):
             assert response.status_code == 200
             assert response.json == expected_response_data
 
-    @pytest.mark.order(25)
     def test_invalid_token_line(self):
         for line in self.created_lines:
             response = self.client.delete(
@@ -111,7 +106,6 @@ class TestLineRouter(unittest.TestCase):
             )
             assert response.status_code == 401
 
-    @pytest.mark.order(26)
     def test_delete_line(self):
         for line in self.created_lines:
             response = self.client.delete(

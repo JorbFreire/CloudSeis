@@ -26,7 +26,6 @@ class TestWorkflowRouter:
             database.drop_all()
             database.create_all()
 
-    @pytest.mark.order(31)
     def test_empty_get(self):
         expected_response_data = {
             "Error": "No instance found for this id"
@@ -40,7 +39,6 @@ class TestWorkflowRouter:
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.order(32)
     def test_create_new_workflow_with_bad_parent(self):
         expected_response_data = {
             'Error': {
@@ -60,7 +58,6 @@ class TestWorkflowRouter:
         assert response.status_code == 422
         assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.order(33)
     def test_create_new_workflow_with_inexistent_project(self):
         expected_response_data = {
             "Error": "No instance found for this id"
@@ -79,7 +76,6 @@ class TestWorkflowRouter:
         assert response.json['Error'] == expected_response_data['Error']
 
     # todo: test bad request cases with dateset to block manual dataset
-    @pytest.mark.order(34)
     def test_create_new_workflow_with_inexistent_line(self):
         expected_response_data = {
             "Error": "No instance found for this id"
@@ -97,7 +93,6 @@ class TestWorkflowRouter:
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
 
-    @pytest.mark.order(35)
     def test_create_new_workflow_at_line(self):
         for i in range(3):
             expected_response_data = {
@@ -121,7 +116,6 @@ class TestWorkflowRouter:
             assert response.json['file_link_id'] == None
             self.created_workflows.append(response.json)
 
-    @pytest.mark.order(36)
     def test_create_new_workflow_at_project(self):
         for i in range(3):
             expected_response_data = {
@@ -148,11 +142,9 @@ class TestWorkflowRouter:
             assert response.json['file_link_id'] == None
             self.created_workflows.append(response.json)
 
-    @pytest.mark.order(37)
     def test_update_workflow_name(self):
         pass
 
-    @pytest.mark.order(38)
     def test_invalid_token_workflow(self):
         for workflow in self.created_workflows:
             response = self.client.delete(
@@ -163,7 +155,6 @@ class TestWorkflowRouter:
             )
             assert response.status_code == 401
 
-    @pytest.mark.order(39)
     def test_delete_workflow(self):
         for workflow in self.created_workflows:
             response = self.client.delete(

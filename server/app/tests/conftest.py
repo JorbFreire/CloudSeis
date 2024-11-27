@@ -15,13 +15,20 @@ def pytest_configure():
 
 def pytest_collection_modifyitems(items):
     CLASS_ORDER = [ "TestUserRouter", "TestProjectRouter", "TestLineRouter", "TestWorkflowRouter" ]
-    sorted_items = items.copy()
-    class_mapping = {item: item.cls.__name__ for item in items if hasattr(item, 'cls') and item.cls}
+    class_mapping = {}
+    sorted_items = []
+
+    for item in items:
+        if hasattr(item, 'cls') and item.cls:
+            class_mapping[item] = item.cls.__name__
 
     for class_ in CLASS_ORDER:
-        sorted_items = [it for it in sorted_items if class_mapping[it] != class_] + [
-            it for it in sorted_items if class_mapping[it] == class_
-        ]
+        current_class_items = []
 
+        for item in items:
+            if class_mapping[item] == class_:
+                current_class_items.append(item)
+
+        sorted_items += current_class_items
 
     items[:] = sorted_items
