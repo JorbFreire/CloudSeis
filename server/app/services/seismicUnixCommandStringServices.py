@@ -1,5 +1,4 @@
 import json
-from icecream import ic
 
 
 def _getParameter(parameterValues: list | str | float | int | bool) -> str:
@@ -19,7 +18,6 @@ def _getParameter(parameterValues: list | str | float | int | bool) -> str:
 
 def _getAllParameters(parameters) -> str:
     parametersProcessString = ""
-    ic(parameters)
     for parameterKey, parameterValues in parameters.items():
         if not parameterValues:
             continue
@@ -33,20 +31,19 @@ def getSemicUnixCommandString(commandsQueue: list, source_file_path: str, target
     # parameters with empty values (like empty string or empty lists) will be ignored,
     # leting the command line program handle it if not mandatory
     seismicUnixProcessString = ""
-    for orderedCommands in commandsQueue:
-        for seismicUnixProgram, seismicUnixProgramIndex in orderedCommands.getCommands():
+    for orderedCommandsObject in commandsQueue:
+        # ! this is bad naming and bad typing, must be improved
+        orderedCommandsList = orderedCommandsObject.getCommands()
+        for seismicUnixProgramIndex, seismicUnixProgram in enumerate(orderedCommandsList):
             seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
             seismicUnixProcessString += _getAllParameters(
                 json.loads((seismicUnixProgram["parameters"]))
             )
-            # ! *** *** *** *** *** *** ***
-            # todo: it *MUST* be improved when handling multiple commands
-            # ! *** *** *** *** *** *** ***
             if (seismicUnixProgramIndex == 0):
                 seismicUnixProcessString += f'< {source_file_path}'
-            if (seismicUnixProgramIndex <= len(seismicUnixProgram)-1):
+            if (seismicUnixProgramIndex <= len(orderedCommandsList)-1):
                 seismicUnixProcessString += ' | '
-            if (seismicUnixProgramIndex == len(seismicUnixProgram)-1):
+            if (seismicUnixProgramIndex == len(orderedCommandsList)-1):
                 seismicUnixProcessString += f'> {target_file_path}'
-    ic(seismicUnixProcessString)
+
     return seismicUnixProcessString
