@@ -63,8 +63,8 @@ class UserRepository:
     # Test method
     def testCreation(self, userData) -> dict:
         user = UserModel.query.filter_by(email=userData["email"]).first()
-        
+
         if user:
             return user.getAttributes()
-        
+
         return self.create(userData)

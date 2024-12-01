@@ -14,6 +14,7 @@ import ProgramCommandOrFileInput from './ProgramCommandOrFileInput';
 import { createNewProgram, updateProgram, deleteProgram } from '../services/programServices'
 import { useProgramGroups } from '../providers/GroupsProvider'
 import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider'
+import { Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 
 
 export default function ProgramForm() {
@@ -21,6 +22,7 @@ export default function ProgramForm() {
   const { selectedProgram } = useSelectedProgramCommand()
 
   const [openGroupFormDialog, setOpenGroupFormDialog] = useState<boolean>(false)
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
 
   const [programName, setProgramName] = useState("")
   const [programDescription, setProgramDescription] = useState("")
@@ -30,7 +32,15 @@ export default function ProgramForm() {
   const [customProgram, setCustomProgram] = useState<FileList | null>(null)
 
   const submitProgram = () => {
-    if(!groupId) return
+    if (!programName || !programDescription || !programPath) {
+      alert("Por favor, preencha todos os campos")
+      return
+    }
+    else if (!groupId) {
+      alert("Por favor, selecione um grupo")
+      return
+    }
+
     // update state on setProgramGroups
     const programData = {
       name: programName,
@@ -46,11 +56,30 @@ export default function ProgramForm() {
         programData
       ).then((updatedProgram) => updatedProgram && updateProgramOnGroup(updatedProgram))
 
+    resetProgramForm()
+
     return createNewProgram(
       groupId,
       customProgram,
       programData
     ).then((newProgram) => newProgram && addNewProgramOnGroup(newProgram))
+
+  }
+
+  const resetProgramForm = () => {
+    setProgramName("")
+    setProgramDescription("")
+    setProgramPath("")
+    setGroupId(null)
+    setCustomProgram(null)
+  }
+
+  const confirmDelete = () => {
+    if (selectedProgram) {
+      deleteProgram(selectedProgram.id)
+      setOpenConfirmDialog(false)
+      window.location.reload()
+    }
   }
 
   useEffect(() => {
@@ -85,35 +114,57 @@ export default function ProgramForm() {
         setProgramPath={setProgramPath}
         setCustomProgram={setCustomProgram}
       />
-      <FormControl>
-        <InputLabel id="groupId-select">Grupo</InputLabel>
-        <Select
-          label="Grupo"
-          value={groupId}
-          onChange={(event) => setGroupId(event.target.value as number)}
-          labelId="groupId-select"
-        >
-          {programGroups.map(group => (
-            <MenuItem key={group.id} value={group.id}>
-              {group.name}
-            </MenuItem>
-          ))}
-          <Button onClick={() => setOpenGroupFormDialog(true)}>
-            Novo Grupo
-          </Button>
-        </Select>
-      </FormControl>
+      <Stack direction="row"  >
+        <FormControl fullWidth>
+          <InputLabel id="groupId-select">Grupo</InputLabel>
+          <Select
+            label="Grupo"
+            value={groupId}
+            onChange={(event) => setGroupId(event.target.value as number)}
+            labelId="groupId-select"
+          >
+            {programGroups.map(group => (
+              <MenuItem key={group.id} value={group.id}>
+                {group.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button onClick={() => setOpenGroupFormDialog(true)}>
+          Novo Grupo
+        </Button>
+      </Stack>
 
       <Stack direction="row" sx={{ gap: "8px" }} >
         <Button variant="contained" onClick={submitProgram}>
           Salvar {!selectedProgram && " Novo Programa"}
         </Button>
         {selectedProgram && (
-          <Button onClick={() => deleteProgram(selectedProgram.id)}>
+          <Button onClick={() => setOpenConfirmDialog(true)}>
             Apagar programa
           </Button>
         )}
       </Stack>
+      <Dialog
+        open={openConfirmDialog}
+        onClose={() => setOpenConfirmDialog(false)}
+        aria-labelledby='confirm-delete-dialog'
+      >
+        <DialogTitle id="confirm-delete-dialog">Sim</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Tem certeza que deseja deletar o programa "{selectedProgram?.name}"?
+            A ação não pode ser desfeita.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)}>Cancelar</Button>
+          <Button variant="contained" color="error" onClick={confirmDelete}>
+            Deletar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
 
       <ParameterForm />
 

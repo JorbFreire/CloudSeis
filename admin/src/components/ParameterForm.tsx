@@ -91,7 +91,7 @@ export default function ParameterForm() {
               onChange={(event) => updateParameterField({index, key: "isRequired", newIsRequiredValue: event.target.checked})}
             />
           }
-          label={parameter.isRequired ? "Obrigatorio" : "Opcioonal"}
+          label={parameter.isRequired ? "Obrigatorio" : "Opcional"}
           sx={{width: "192px"}}
         />
 

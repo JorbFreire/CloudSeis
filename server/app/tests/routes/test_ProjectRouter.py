@@ -1,4 +1,3 @@
-from flask import Response
 import pytest
 import unittest
 from server.app.database.connection import database
