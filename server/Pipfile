@@ -48,6 +48,7 @@ typing-extensions = "==4.7.1"
 urllib3 = "==2.2.2"
 werkzeug = "==3.0.6"
 xyzservices = "==2022.9.0"
+tqdm = "==4.67.1"
 
 [dev-packages]
 pytest = "==7.4.4"

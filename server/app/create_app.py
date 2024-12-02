@@ -11,6 +11,8 @@ from .routes import router
 from .errors.AppError import AppError
 from .errors.AuthError import AuthError
 
+from .cli import populate_database_programs, new_default_programs_from_database
+
 
 def create_app(mode: Literal["production", "development", "test"] = "development"):
     app = Flask(__name__)
@@ -48,4 +50,15 @@ def create_app(mode: Literal["production", "development", "test"] = "development
     app.register_error_handler(ValidationError, handle_validation_exception)
     app.register_error_handler(AppError, handle_app_exception)
     app.register_error_handler(AuthError, handle_auth_exception)
+
+    @app.cli.command('populate-programs')
+    @app.cli.command('pp')
+    def populate_programs():
+        populate_database_programs()
+
+    @app.cli.command('export-programs')
+    @app.cli.command('ep')
+    def new_default_programs():
+        new_default_programs_from_database()
+
     return app

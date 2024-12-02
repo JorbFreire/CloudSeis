@@ -1,53 +1,61 @@
-[
-  {
-    "name": "Default 1",
-    "description": "about the program",
-    "path_to_executable_file": "some/path",
-    "parameters": [
-      {
-        "name": "parameter name",
-        "description": "about the parameter",
-        "input_type": "string"
-      },
-      {
-        "name": "parameter name",
-        "description": "about the parameter",
-        "input_type": "string"
-      }
-    ]
-  },
-  {
-    "name": "Default 2",
-    "description": "about the program",
-    "path_to_executable_file": "some/path",
-    "parameters": [
-      {
-        "name": "parameter name",
-        "description": "about the parameter",
-        "input_type": "string"
-      },
-      {
-        "name": "parameter name",
-        "description": "about the parameter",
-        "input_type": "string"
-      }
-    ]
-  },
-  {
-    "name": "Default 3",
-    "description": "about the program",
-    "path_to_executable_file": "some/path",
-    "parameters": [
-      {
-        "name": "parameter name",
-        "description": "about the parameter",
-        "input_type": "string"
-      },
-      {
-        "name": "parameter name",
-        "description": "about the parameter",
-        "input_type": "string"
-      }
-    ]
-  }
-]
+{
+  "count_programs": 2,
+  "programGroups": [
+    {
+      "name": "filtros",
+      "description": "",
+      "programs": [
+        {
+          "name": "sufilter",
+          "description": "Applies a zero-phase, sine-squared tapered filter",
+          "path_to_executable_file": "sufilter",
+          "parameters": [
+            {
+              "name": "dt",
+              "description": "time sampling interval",
+              "input_type": "string",
+              "isRequired": false
+            },
+            {
+              "name": "amps",
+              "description": "array of filter amplitudes",
+              "input_type": "string",
+              "isRequired": true
+            },
+            {
+              "name": "f",
+              "description": "array of filter frequencies",
+              "input_type": "string",
+              "isRequired": true
+            }
+          ]
+        },
+        {
+          "name": "suwind",
+          "description": "Window traces by key word",
+          "path_to_executable_file": "suwind",
+          "parameters": [
+            {
+              "name": "key",
+              "description": " Key header word to window on (see segy.h)",
+              "input_type": "string",
+              "isRequired": false
+            },
+            {
+              "name": "min",
+              "description": "min value of key header word to pass",
+              "input_type": "number",
+              "isRequired": true
+            },
+            {
+              "name": "max",
+              "description": "max value of key header word to pass",
+              "input_type": "number",
+              "isRequired": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
