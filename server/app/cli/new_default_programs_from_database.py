@@ -1,5 +1,4 @@
 import json
-from turtle import delay
 from tqdm import tqdm
 
 from ..models.ProgramGroupModel import ProgramGroupModel
