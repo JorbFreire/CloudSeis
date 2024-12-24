@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import type { FormEvent } from "react"
 
 import { getParameters } from "services/programServices"
-import { updateCommand } from "services/commandServices"
+import { useCommandsStore } from "store/commandsStore"
 
 import {
   Container,
@@ -16,19 +16,16 @@ interface ICommandParametersProps {
 }
 
 export default function CommandParameters({ command }: ICommandParametersProps) {
+  const { updateCommandParams } = useCommandsStore()
+
   const [availableParameters, setAvailableParameters] = useState<Array<IseismicProgramParameters>>([])
   const [commandParameters, setCommandParameters] = useState<IobjectWithDynamicFields | null>(null)
 
   const submitParametersUpdate = (event: FormEvent) => {
     event.preventDefault()
-
-    const token = localStorage.getItem("jwt")
-    if (!token)
+    if (!command || typeof command.id == 'string')
       return
-    if (!command)
-      return
-
-    updateCommand(token, command.id, JSON.stringify(commandParameters))
+    updateCommandParams(command.id, JSON.stringify(commandParameters))
   }
 
   useEffect(() => {
@@ -51,7 +48,8 @@ export default function CommandParameters({ command }: ICommandParametersProps) 
             label={parameterField.name}
             // todo: "type" must be improved to handle complex typing rendering stuff like a select list 
             type={parameterField.input_type}
-            required={parameterField.isRequired}
+            // ! display "required" status some other way
+            // required={parameterField.isRequired}
 
             value={commandParameters ? commandParameters[parameterField.name] : ""}
             onChange={(event) => {
