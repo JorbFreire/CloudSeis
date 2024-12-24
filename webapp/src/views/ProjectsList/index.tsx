@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from '@tanstack/react-location';
 import { Link } from '@tanstack/react-location';
 
 import Table from '@mui/material/Table';
@@ -26,10 +25,14 @@ export default function ProjectsList() {
     setProjects([...projects, newProject])
   }
 
-  const triggerDeleteButton = (projectId: number) => {
+  const triggerDeleteButton = async (projectId: number) => {
     const token = localStorage.getItem("jwt")
     if (!token) return
-    deleteProject(token, projectId)
+    const responseData = await deleteProject(token, projectId)
+    if (responseData)
+      setProjects((oldProjects) => oldProjects.filter(
+        (oldProject) => oldProject.id !== projectId
+      ))
   }
 
   useEffect(() => {
