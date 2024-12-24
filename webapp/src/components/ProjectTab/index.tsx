@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
+import { useLocation } from '@tanstack/react-location';
 import { useTimeout } from 'react-use';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Button from '@mui/material/Button';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
+import { defaultLineName } from 'constants/defaults';
 import { useLinesStore } from 'store/linesStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
 import LineChildrenFolder from './LineChildrenFolder'
@@ -15,6 +18,8 @@ import DataSetsFolder from './DataSetsFolder'
 import { Container } from "./styles"
 
 export default function ProjectTab() {
+  const location = useLocation()
+  const projectId = Number(location.current.pathname.split('/')[2])
   const lines = useLinesStore((state) => state.lines)
   const {
     selectWorkflow,
@@ -66,7 +71,6 @@ export default function ProjectTab() {
               entityType='workflow'
               data={line.workflows}
             />
-
 
             <DataSetsFolder line={line} />
           </TreeItem>

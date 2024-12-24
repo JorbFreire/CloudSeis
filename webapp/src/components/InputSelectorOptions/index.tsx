@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useLocation } from "@tanstack/react-location";
 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,6 +14,9 @@ import FileUploadDialog from "./FileUploadDialog"
 import { Container } from "./styles"
 
 export default function InputSelectorOptions() {
+  const location = useLocation()
+  const projectId = Number(location.current.pathname.split('/')[2])
+
   const {
     selectedWorkflows,
     singleSelectedWorkflowId,
@@ -63,8 +67,7 @@ export default function InputSelectorOptions() {
     if (!token)
       return
 
-    //! projectId is mocked
-    listFiles(token, 1).then((result) => {
+    listFiles(token, projectId).then((result) => {
       if (!result)
         return
       setFileLinks(result)

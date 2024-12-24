@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useLocation } from "@tanstack/react-location"
 import type { Dispatch, SetStateAction } from "react"
 
 import Dialog from '@mui/material/Dialog'
@@ -21,6 +22,9 @@ export default function FileUploadDialog({
   setOpen,
   addFileLink,
 }: IFileUploadDialogProps) {
+  const location = useLocation()
+  const projectId = Number(location.current.pathname.split('/')[2])
+
   const singleSelectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
   const [file, setFile] = useState<any>(null)
 
@@ -38,8 +42,11 @@ export default function FileUploadDialog({
     const formData = new FormData();
     formData.append('file', file);
 
-    //! projectId is mocked
-    createFile(token, 1, formData).then((result) => {
+    createFile(
+      token,
+      projectId,
+      formData
+    ).then((result) => {
       if (!result) return
       addFileLink(result.fileLink)
       setOpen(false)
