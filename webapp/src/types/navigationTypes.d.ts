@@ -1,4 +1,4 @@
-import type { StaticTabKey } from 'enums/StaticTabKey'
+import type { StaticTabKey } from 'constants/StaticTabKey'
 declare global {
   type navigationOrientationType = 'horizontal' | 'vertical'
   type navigationColorType = "primary" | "secondary" | "white"

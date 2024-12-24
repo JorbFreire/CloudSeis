@@ -1,6 +1,6 @@
 import { AxiosError } from "axios"
 import useNotificationStore from 'store/notificationStore';
-import { StaticTabKey } from 'enums/StaticTabKey'
+import { StaticTabKey } from 'constants/StaticTabKey'
 
 import api from "./api"
 

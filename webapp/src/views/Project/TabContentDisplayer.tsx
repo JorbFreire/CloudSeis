@@ -5,19 +5,19 @@ import InputSelectorOptions from 'components/InputSelectorOptions';
 import OutputConfigOptions from 'components/OutputConfigOptions'
 import VizualizerConfigOptions from 'components/VizualizerConfigOptions'
 
-import { StaticTabKey } from 'enums/StaticTabKey'
+import { StaticTabKey } from 'constants/StaticTabKey'
 
 export default function TabContentDisplayer() {
   const {
     commands,
-    selectedCommandIndex,
+    selectedCommandId,
   } = useCommandsStore((state) => ({
     commands: state.commands,
-    selectedCommandIndex: state.selectedCommandIndex,
+    selectedCommandId: state.selectedCommandId,
   }))
 
   const getTabContent = () => {
-    switch (selectedCommandIndex) {
+    switch (selectedCommandId) {
       case StaticTabKey.Input:
         return <InputSelectorOptions />
 
@@ -28,13 +28,15 @@ export default function TabContentDisplayer() {
         return <VizualizerConfigOptions />
 
       default:
-        return (
-          <CommandParameters
-            command={commands.find(({ id }) => id == selectedCommandIndex)}
-          />
-        )
+        const selectedCommand = commands.find(({ id }) => id == selectedCommandId)
+        if (typeof selectedCommand?.id != "string")
+          return (
+            <CommandParameters
+              command={selectedCommand}
+            />
+          )
     }
   }
 
-  return selectedCommandIndex ? getTabContent() : <></>
+  return selectedCommandId ? getTabContent() : <></>
 }

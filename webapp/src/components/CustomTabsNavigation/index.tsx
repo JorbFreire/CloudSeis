@@ -3,14 +3,14 @@ import type { ComponentType, ReactNode } from 'react'
 import Tabs from '@mui/material/Tabs';
 import CustomTab from 'components/CustomTab';
 import { IDefaultDNDListProps } from 'components/DefaultDNDList/types'
-import { StaticTabKey, isFixedTab } from 'enums/StaticTabKey'
+import { StaticTabKey } from 'constants/StaticTabKey'
 
 import {
   Container,
   TabContent,
 } from './styles'
 
-type selectedTabType = number | StaticTabKey | undefined
+type selectedTabIdType = number | StaticTabKey | undefined
 
 // *** once <T> accepts any type extending "IgenericTab"
 // *** it shall be capable to render any matching array
@@ -18,8 +18,8 @@ type selectedTabType = number | StaticTabKey | undefined
 interface ICustomTabsNavigationProps<T extends IgenericTab> {
   tabs: Array<T>
   setTabs: genericSetterType<T>
-  selectedTab: selectedTabType
-  setSelectedTab: genericSetterType<selectedTabType>
+  selectedTabId: selectedTabIdType
+  setSelectedTabId: genericSetterType<selectedTabIdType>
   onRemove?: onRemoveActionType
 
   children?: ReactNode
@@ -32,8 +32,8 @@ interface ICustomTabsNavigationProps<T extends IgenericTab> {
 export default function CustomTabsNavigation<T extends IgenericTab>({
   tabs,
   setTabs,
-  selectedTab,
-  setSelectedTab,
+  selectedTabId,
+  setSelectedTabId,
   onRemove,
 
   children,
@@ -45,19 +45,17 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
 }: ICustomTabsNavigationProps<T>) {
   // ? conditional rendering could be a high order component ?
   const removeElementFromState = () => {
-    if (!selectedTab || isFixedTab(selectedTab))
+    // !issue when deleting
+    if (!selectedTabId || typeof selectedTabId == 'string')
       return
 
-    const newTabs = tabs.filter((element, index) =>
-      index != selectedTab &&
-      !isFixedTab(element.id)
-    )
+    const newTabs = tabs.filter((element) => element.id != selectedTabId)
 
-    if (onRemove && typeof selectedTab == "number")
-      onRemove(tabs[selectedTab].id)
+    if (onRemove && typeof selectedTabId == "number")
+      onRemove(selectedTabId)
 
     setTabs(newTabs)
-    setSelectedTab(StaticTabKey.Input)
+    setSelectedTabId(StaticTabKey.Input)
   }
 
   return Boolean(tabs.length) ? (
@@ -69,8 +67,8 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
         setItems={setTabs}
       >
         <Tabs
-          value={selectedTab}
-          onChange={(_, newId) => setSelectedTab(newId)}
+          value={selectedTabId}
+          onChange={(_, newId) => setSelectedTabId(newId)}
           variant="scrollable"
           scrollButtons="auto"
           orientation={orientation}
@@ -89,7 +87,7 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
       </CustomDndContext>
 
       {tabs.map(
-        (tab) => selectedTab == tab.id && (
+        (tab) => selectedTabId == tab.id && (
           <TabContent
             key={tab.id}
             $color={color}

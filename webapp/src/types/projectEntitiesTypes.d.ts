@@ -1,4 +1,4 @@
-import type { StaticTabKey } from 'enums/StaticTabKey'
+import type { StaticTabKey } from 'constants/StaticTabKey'
 // *** generic entities also represets "resumed" version of entities ***
 
 declare global {

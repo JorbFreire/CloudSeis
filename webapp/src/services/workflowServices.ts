@@ -1,5 +1,8 @@
 import { AxiosError } from "axios"
+
 import useNotificationStore from 'store/notificationStore';
+import { defaultOutputName } from 'constants/defaults'
+
 
 import api from "./api"
 
@@ -40,7 +43,8 @@ export async function createNewWorkflow(
       `/workflow/create/${parentId}`,
       {
         parentType,
-        name
+        name,
+        output_name: defaultOutputName
       },
       {
         headers: {

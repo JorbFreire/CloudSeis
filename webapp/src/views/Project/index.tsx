@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-
 import { useGatherKeyStore } from 'store/gatherKeyStore'
 import { useLogsStore } from 'store/logsStore';
 import { useLinesStore } from 'store/linesStore';
@@ -8,7 +7,7 @@ import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { updateFile } from 'services/fileServices'
 import { deleteCommand } from 'services/commandServices'
-import { StaticTabKey } from 'enums/StaticTabKey'
+import { StaticTabKey } from 'constants/StaticTabKey'
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
@@ -51,14 +50,14 @@ export default function Project({ projectId }: IProjectProps) {
     commands,
     loadCommands,
     setCommands,
-    selectedCommandIndex,
-    setSelectedCommandIndex
+    selectedCommandId,
+    setSelectedCommandId
   } = useCommandsStore((state) => ({
     commands: state.commands,
     loadCommands: state.loadCommands,
     setCommands: state.setCommands,
-    selectedCommandIndex: state.selectedCommandIndex,
-    setSelectedCommandIndex: state.setSelectedCommandIndex,
+    selectedCommandId: state.selectedCommandId,
+    setSelectedCommandId: state.setSelectedCommandId,
   }))
 
   const runWorkflow = () => {
@@ -75,6 +74,7 @@ export default function Project({ projectId }: IProjectProps) {
       const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
       if (gatherKeyFromStore)
         vizualizerURL += `gather_key=${gatherKeyFromStore}&`
+
       window.open(`${vizualizerURL}workflowId=${singleSelectedWorkflowId}`, '_blank')
     })
   }
@@ -96,29 +96,15 @@ export default function Project({ projectId }: IProjectProps) {
           <CustomTabsNavigation
             tabs={selectedWorkflows}
             setTabs={setSelectedWorkflows}
-            selectedTab={singleSelectedWorkflowId}
-            setSelectedTab={setSingleSelectedWorkflowId}
+            selectedTabId={singleSelectedWorkflowId}
+            setSelectedTabId={setSingleSelectedWorkflowId}
             CustomDndContext={DefaultDNDList}
           >
             <CustomTabsNavigation
-              tabs={[
-                {
-                  id: StaticTabKey.Input,
-                  name: "Input"
-                },
-                ...commands,
-                {
-                  id: StaticTabKey.Output,
-                  name: "Output"
-                },
-                {
-                  id: StaticTabKey.Vizualizer,
-                  name: "Visualization"
-                },
-              ]}
+              tabs={commands}
               setTabs={setCommands}
-              selectedTab={selectedCommandIndex}
-              setSelectedTab={setSelectedCommandIndex}
+              selectedTabId={selectedCommandId}
+              setSelectedTabId={setSelectedCommandId}
               onRemove={(selectedCommandId: number | StaticTabKey) => {
                 const token = localStorage.getItem("jwt")
                 if (!token) return

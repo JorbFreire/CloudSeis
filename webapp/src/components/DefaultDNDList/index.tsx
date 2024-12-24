@@ -51,15 +51,15 @@ export default function DefaultDNDList<T extends IgenericTab>({
   function handleDragEnd(event: any) {
     const { active, over } = event;
 
-    if (active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id == active.id);
-        const newIndex = items.findIndex((item) => item.id == over.id);
+    if ((typeof active.id == 'string' || typeof over.id == 'string')) return
+    if (active.id == over.id) return
 
-        const result = arrayMove(items, oldIndex, newIndex);
-        return result
-      });
-    }
+    const oldIndex = items.findIndex((item) => item.id == active.id);
+    const newIndex = items.findIndex((item) => item.id == over.id);
+
+    const result = arrayMove(items, oldIndex, newIndex);
+
+    setItems(result);
   }
 
   return (

@@ -23,11 +23,11 @@ const meta = {
     setTabs: {
       description: "setState to the tabs list state",
     },
-    selectedTab: {
+    selectedTabId: {
       control: "number",
       description: "Key the tab selected to display. Necessary to drag and drop feature.",
     },
-    setSelectedTab: {
+    setSelectedTabId: {
       description: "setState to `selectedTab` state",
     },
     CustomDndContext: {
@@ -71,17 +71,17 @@ function getTabs(amount: number) {
 
 export const FewTabs: Story = {
   args: {
-    selectedTab: 1,
+    selectedTabId: 1,
     tabs: getTabs(5),
-    setSelectedTab: () => undefined,
+    setSelectedTabId: () => undefined,
   },
 };
 
 export const ManyTabs: Story = {
   args: {
-    selectedTab: 1,
+    selectedTabId: 1,
     tabs: getTabs(30),
-    setSelectedTab: () => undefined,
+    setSelectedTabId: () => undefined,
   },
 };
 
@@ -90,10 +90,10 @@ export const DragableTabs = () => {
   return (
     <div style={{ height: '500px' }}>
       <CustomTabsNavigation
-        selectedTab={1}
+        selectedTabId={1}
         tabs={tabs}
         setTabs={setTabs}
-        setSelectedTab={() => undefined}
+        setSelectedTabId={() => undefined}
         CustomDndContext={DefaultDNDList}
       />
     </div>
