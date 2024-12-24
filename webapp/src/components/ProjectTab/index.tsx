@@ -20,7 +20,14 @@ import { Container } from "./styles"
 export default function ProjectTab() {
   const location = useLocation()
   const projectId = Number(location.current.pathname.split('/')[2])
-  const lines = useLinesStore((state) => state.lines)
+
+  const {
+    lines,
+    saveNewLine
+  } = useLinesStore((state) => ({
+    lines: state.lines,
+    saveNewLine: state.saveNewLine
+  }))
   const {
     selectWorkflow,
   } = useSelectedWorkflowsStore((state) => ({
@@ -30,6 +37,15 @@ export default function ProjectTab() {
   const [expanded, setExpanded] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>("");
   const [isAllowToSelect, _, resetAllowToSelectTimer] = useTimeout(1000);
+
+  const generateNextLineName = () => {
+    if (lines.length < 1)
+      return defaultLineName
+
+    return (
+      `${defaultLineName} (${lines.length + 1})`
+    )
+  }
 
   const handleToggle = (_: SyntheticEvent, nodeId: string[]) => {
     setExpanded(nodeId);
@@ -64,7 +80,15 @@ export default function ProjectTab() {
         onNodeToggle={handleToggle}
         onNodeSelect={handleSelect}
       >
-        {lines.map((line,) => (
+        <Button
+          onClick={() => saveNewLine(
+            projectId,
+            generateNextLineName()
+          )}
+        >
+          New Line
+        </Button>
+        {Boolean(lines.length) && lines.map((line) => (
           <TreeItem key={line.id} nodeId={`line-${line.id}`} label={line.name}>
             <LineChildrenFolder
               lineId={line.id}

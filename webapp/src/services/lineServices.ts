@@ -33,9 +33,8 @@ export async function createNewLine(
 ): Promise<ILine | null> {
   try {
     const response = await api.post<ILine>(
-      `/line/create`,
+      `/line/create/${projectId}`,
       {
-        projectId,
         name
       },
       {

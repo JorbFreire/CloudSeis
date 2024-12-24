@@ -25,6 +25,7 @@ export const useLinesStore = create<ILinesStoreState>((set) => ({
           set({ lines: result })
       })
   },
+
   saveNewLine: (projectId: number, name: string) => {
     const token = localStorage.getItem("jwt")
     if (!token)
