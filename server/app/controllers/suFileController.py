@@ -2,7 +2,6 @@ from os import path, makedirs
 from types import SimpleNamespace
 import subprocess
 
-
 from ..database.connection import database
 from ..models.FileLinkModel import FileLinkModel
 from ..models.WorkflowModel import WorkflowModel
@@ -12,6 +11,7 @@ from ..services.createDataset import createDataset
 from ..services.seismicFilePathServices import showWorkflowFilePath, createUploadedFilePath, createDatasetFilePath
 from ..services.seismicUnixCommandStringServices import getSemicUnixCommandString
 
+from ..errors.FileError import FileError
 
 def listByProjectId(projectId):
     fileLinks = FileLinkModel.query.filter_by(projectId=projectId).all()
@@ -55,6 +55,9 @@ def update(userId, workflowId) -> str:
         workflowId=workflowId
     ).first()
 
+    if not workflow.output_name:
+        raise FileError("Output name should be set before running workflow")
+
     datasetAttributes = createDataset(userId, workflowId)
 
     source_file_path = showWorkflowFilePath(
@@ -76,9 +79,8 @@ def update(userId, workflowId) -> str:
             seismicUnixProcessString,
             shell=True
         )
-
         newFileLink = FileLinkModel(
-            projectId=workflowParent.projectId,
+            projectId=workflowParent.getProjectId(),
             datasetId=datasetAttributes["id"],
             data_type="any for now",
             name=path.basename(target_file_path)
