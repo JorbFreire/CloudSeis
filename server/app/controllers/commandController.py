@@ -1,5 +1,6 @@
 from json import dumps
 from types import SimpleNamespace
+from copy import copy
 
 from ..database.connection import database
 from ..models.CommandModel import CommandModel
@@ -48,10 +49,14 @@ def delete(id):
         workflowId=command.workflowId
     ).first()
 
-    orderedCommandsList.commandIds.remove(int(id))
+    # ? not sure "copy" is necessary, but removing directly from
+    # ? original orderedCommandsList was not working
+    tempOrderedCommandsList = copy(orderedCommandsList.commandIds)
+    tempOrderedCommandsList.remove(int(id))
+    
     orderedCommandsListRepository.update(
         command.workflowId,
-        orderedCommandsList.commandIds
+        tempOrderedCommandsList
     )
 
     database.session.delete(command)
