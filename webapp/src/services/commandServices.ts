@@ -66,14 +66,20 @@ export async function updateCommand(
 }
 
 export async function updateCommandsOrder(
+  token: string,
   workflowId: string,
-  newOrder: listOfCommandIdsType
-): Promise<IOrderedCommandsList | null> {
+  newOrder: idsType
+): Promise<orderedCommandsListType | null> {
   try {
-    const response = await api.put<IOrderedCommandsList>(`/command/order`, {
-      workflowId,
-      newOrder
-    })
+    const response = await api.put<orderedCommandsListType>(
+      `/command/order/${workflowId}`,
+      { newOrder },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
     return response.data
   } catch (error) {
     console.error(error)
@@ -88,9 +94,9 @@ export async function updateCommandsOrder(
 export async function deleteCommand(
   token: string,
   commandId: string,
-): Promise<IOrderedCommandsList | null> {
+): Promise<ICommand | null> {
   try {
-    const response = await api.delete<IOrderedCommandsList>(
+    const response = await api.delete<ICommand>(
       `/command/delete/${commandId}`,
       {
         headers: {

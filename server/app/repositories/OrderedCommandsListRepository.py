@@ -24,7 +24,7 @@ def update(workflowId, newOrder):
     orderedCommandsList.commandIds = newOrder
     database.session.commit()
 
-    return orderedCommandsList
+    return orderedCommandsList.getCommands()
 
 
 orderedCommandsListRepository = SimpleNamespace(

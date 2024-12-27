@@ -20,8 +20,6 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
     # ! thats a huge workarround, but should work
     # each integer represents an id on command table
     # that way will be easy to keep the list of commands ordered
-    # ! need fix: when delete command, its id keeps here
-    # todo: add relation to commands so it can be finded and removed
     commandIds = dbTypes.Column(dbTypes.ARRAY(dbTypes.Integer))
 
     def getCommands(self) -> list[dict[str, str]]:
@@ -34,10 +32,3 @@ class OrderedCommandsListModel(database.Model):  # type: ignore
             ).first()
             commands.append(command.getAttributes())
         return commands
-
-    def getAttributes(self) -> dict[str, str | list[int]]:
-        return {
-            "id": self.id,
-            "workflowId": self.workflowId,
-            "commandIds": self.commandIds
-        }

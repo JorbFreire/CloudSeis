@@ -39,11 +39,7 @@ declare global {
     parameters: string
   }
 
-  type listOfCommandIdsType = Array<string>
+  type orderedCommandsListType = Array<ICommand>
 
-  interface IOrderedCommandsList {
-    id: string
-    workflowId: string
-    commandIds: listOfCommandIdsType
-  }
+  type idsType = Array<number>
 }

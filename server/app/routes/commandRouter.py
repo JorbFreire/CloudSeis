@@ -63,7 +63,7 @@ def updateOrder(_, workflowId):
         workflowId,
         data["newOrder"]
     )
-    return jsonify(updatedCommandList.getAttributes())
+    return jsonify(updatedCommandList)
 
 
 @commandRouter.route("/delete/<id>", methods=['DELETE'])

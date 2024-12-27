@@ -6,8 +6,8 @@ import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { updateFile } from 'services/fileServices'
-import { deleteCommand } from 'services/commandServices'
-import { StaticTabKey } from 'constants/StaticTabKey'
+import { updateCommandsOrder, deleteCommand } from 'services/commandServices'
+import { StaticTabKey } from 'constants/staticCommands'
 
 import Console from 'components/Console'
 import ProgramsDrawer from 'components/ProgramsDrawer';
@@ -79,6 +79,27 @@ export default function Project({ projectId }: IProjectProps) {
     })
   }
 
+  const setUpdateCommandsOrder = (newOrderCommands: orderedCommandsListType) => {
+    const token = localStorage.getItem("jwt")
+    if (!token) return
+    if (!singleSelectedWorkflowId) return
+
+    setCommands([...newOrderCommands])
+
+    const newOrderIds: idsType = newOrderCommands
+      .map((command) => command.id)
+      .filter((id) => typeof id === "number")
+
+    updateCommandsOrder(
+      token,
+      singleSelectedWorkflowId.toString(),
+      newOrderIds
+    ).catch(() => {
+      // ! reverting order changes when face any errors
+      setCommands([...newOrderCommands])
+    })
+  }
+
   useEffect(() => {
     loadLines(projectId)
   }, [projectId])
@@ -102,13 +123,13 @@ export default function Project({ projectId }: IProjectProps) {
           >
             <CustomTabsNavigation
               tabs={commands}
-              setTabs={setCommands}
+              setTabs={setUpdateCommandsOrder}
               selectedTabId={selectedCommandId}
               setSelectedTabId={setSelectedCommandId}
               onRemove={(selectedCommandId: number | StaticTabKey) => {
                 const token = localStorage.getItem("jwt")
                 if (!token) return
-                deleteCommand(token, selectedCommandId.toString()).then()
+                deleteCommand(token, selectedCommandId.toString())
               }}
               CustomDndContext={DefaultDNDList}
               color='white'
