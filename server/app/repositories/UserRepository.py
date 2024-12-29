@@ -7,14 +7,14 @@ from ..hash.hash import hashPassword
 
 
 class UserRepository:
-    def showAll(self) -> list[dict]:
+    def showAll(self) -> list[dict[str, str]]:
         users: list[UserModel] = UserModel.query.all()
         if not users:
             raise AppError("There are no users", 404)
 
         return [user.getAttributes() for user in users]
 
-    def showById(self, id) -> dict:
+    def showById(self, id: str) -> dict[str, str]:
         user = UserModel.query.filter_by(id=UUID(id)).first()
 
         if not user:
@@ -22,7 +22,7 @@ class UserRepository:
 
         return user.getAttributes()
 
-    def create(self, newUserData) -> dict:
+    def create(self, newUserData: dict[str, str]) -> dict[str, str]:
         user = UserModel.query.filter_by(email=newUserData["email"]).first()
         if user:
             raise AppError("Email alredy used")
@@ -38,7 +38,7 @@ class UserRepository:
         database.session.commit()
         return newUser.getAttributes()
 
-    def update(self, id, newUserData) -> dict:
+    def update(self, id: str, newUserData: dict[str, str]) -> dict[str, str]:
         user = UserModel.query.filter_by(id=UUID(id)).first()
         if not user:
             raise AppError("User does not exist", 404)
@@ -51,7 +51,7 @@ class UserRepository:
         database.session.commit()
         return user.getAttributes()
 
-    def delete(self, id) -> dict:
+    def delete(self, id: str) -> dict[str, str]:
         user = UserModel.query.filter_by(id=UUID(id)).first()
         if not user:
             raise AppError("User does not exist", 404)
@@ -61,7 +61,7 @@ class UserRepository:
         return user.getAttributes()
 
     # Test method
-    def testCreation(self, userData) -> dict:
+    def testCreation(self, userData: dict[str, str]) -> dict[str, str]:
         user = UserModel.query.filter_by(email=userData["email"]).first()
 
         if user:

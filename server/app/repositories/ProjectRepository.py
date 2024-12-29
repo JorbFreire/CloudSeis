@@ -9,7 +9,7 @@ from ..errors.AppError import AppError
 
 
 class ProjectRepository:
-    def showByUserId(self, userId):
+    def showByUserId(self, userId: str) -> list[dict[str, str]]:
         projects = ProjectModel.query.filter_by(
             userId=UUID(userId)
         ).all()
@@ -18,7 +18,7 @@ class ProjectRepository:
 
         return [project.getAttributes() for project in projects]
 
-    def create(self, userId, newProjectName: str):
+    def create(self, userId: str, newProjectName: str) -> dict[str, str]:
         user = UserModel.query.filter_by(id=UUID(userId)).first()
         if not user:
             raise AppError("User does not exist", 404)
@@ -31,7 +31,7 @@ class ProjectRepository:
         database.session.commit()
         return newProject.getAttributes()
 
-    def updateName(self, projectId, newProjectName):
+    def updateName(self, projectId: str | int, newProjectName: str) -> dict[str, str]:
         project = ProjectModel.query.filter_by(
             id=projectId
         ).first()
@@ -42,7 +42,7 @@ class ProjectRepository:
         database.session.commit()
         return project.getAttributes()
 
-    def delete(self, projectId):
+    def delete(self, projectId: str | int) -> dict[str, str]:
         project = ProjectModel.query.filter_by(
             id=projectId
         ).first()
@@ -54,7 +54,7 @@ class ProjectRepository:
         return project.getAttributes()
 
     # * It does not include workflows inside lines
-    def listWorkflowsByProjectId(self, projectId) -> list[dict[str, str]]:
+    def listWorkflowsByProjectId(self, projectId: str | int) -> list[dict[str, str]]:
         project = ProjectModel.query.filter_by(
             id=projectId
         ).first()

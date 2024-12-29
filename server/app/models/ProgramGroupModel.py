@@ -17,7 +17,7 @@ class ProgramGroupModel(database.Model):  # type: ignore
         List[ProgramModel]
     ] = relationship(ProgramModel)
 
-    def getAttributes(self) -> dict[str, int | str | dict[str, str | int]]:
+    def getAttributes(self) -> dict[str, str | list[dict[str, str]]]:
         return {
             "id": self.id,
             "name": self.name,

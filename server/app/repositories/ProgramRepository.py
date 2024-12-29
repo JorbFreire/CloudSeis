@@ -36,10 +36,10 @@ class ProgramRepository:
         if not program:
             raise AppError("Program does not exist", 404)
 
-        programNewData.name = programNewData["name"]
-        programNewData.description = programNewData["description"]
-        programNewData.path_to_executable_file = programNewData["path_to_executable_file"]
-        programNewData.groupId = programNewData["groupId"]
+        program.name = programNewData["name"]
+        program.description = programNewData["description"]
+        program.path_to_executable_file = programNewData["path_to_executable_file"]
+        program.groupId = programNewData["groupId"]
 
         database.session.commit()
         return program.getAttributes()

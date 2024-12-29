@@ -12,7 +12,7 @@ userRepository = UserRepository()
 
 @userRouter.route("/create", methods=['POST'])
 @decorator_factory(validateRequestBody, SerializerSchema=UserCreateSchema)
-def createUser():
+def createUser() -> dict[str, str]:
     data = request.get_json()
 
     newUser = userRepository.create(data)
@@ -21,14 +21,14 @@ def createUser():
 
 # *** debug route, could be turned of on production
 @userRouter.route("/list", methods=['GET'])
-def listUsers():
+def listUsers() -> dict[str, str]:
     users = userRepository.showAll()
     return jsonify(users)
 
 
 # *** maybe also a debug function that could be turned of on production ***
 @userRouter.route("/show/<userId>", methods=['GET'])
-def showUser(userId):
+def showUser(userId: str) -> dict[str, str]:
     user = userRepository.showById(userId)
     return jsonify(user)
 
@@ -36,7 +36,7 @@ def showUser(userId):
 @userRouter.route("/update", methods=['PUT'])
 @decorator_factory(validateRequestBody, SerializerSchema=UserUpdateSchema)
 @decorator_factory(requireAuthentication)
-def updateUser(userId):
+def updateUser(userId: str) -> dict[str, str]:
     data = request.get_json()
     updatedUser = userRepository.update(userId, data)
     return jsonify(updatedUser)
@@ -44,13 +44,13 @@ def updateUser(userId):
 
 @userRouter.route("/delete", methods=['DELETE'])
 @decorator_factory(requireAuthentication)
-def deleteUser(userId):
+def deleteUser(userId: str) -> dict[str, str]:
     user = userRepository.delete(userId)
     return jsonify(user)
 
 # Route for test
 @userRouter.route("/test", methods=['POST'])
-def test():
+def test() -> dict[str, str]:
     data = request.get_json()
     user = userRepository.testCreation(data)
 

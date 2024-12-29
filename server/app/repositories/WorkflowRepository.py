@@ -17,14 +17,14 @@ orderedCommandsListRepository = OrderedCommandsListRepository()
 
 
 class WorkflowRepository:
-    def showById(self, id):
+    def showById(self, id: str | int) -> dict[str, str | int | dict[str, str | int]]:
         workflow = WorkflowModel.query.filter_by(id=id).first()
         if not workflow:
             raise AppError("Workflow does not exist", 404)
 
         return workflow.getAttributes()
 
-    def create(self, userId, newWorkflowData, parentId):
+    def create(self, userId: str, newWorkflowData: dict[str, str], parentId: str | int) -> dict[str, str | int | dict[str, str | int]]:
         parentType = newWorkflowData["parentType"]
 
         user = UserModel.query.filter_by(id=UUID(userId)).first()

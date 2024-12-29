@@ -8,14 +8,14 @@ from ..errors.AppError import AppError
 
 
 class LineRepository:
-    def showByProjectId(self, projectId):
+    def showByProjectId(self, projectId: str | int) -> list[dict[str, str | list[dict[str, str]]]]:
         lines = LineModel.query.filter_by(projectId=projectId).all()
         if not lines:
             raise AppError("There are no Lines for this project", 404)
 
         return [line.getAttributes() for line in lines]
 
-    def create(self, userId, projectId, newLineName):
+    def create(self, userId: str, projectId: str | int, newLineName: str) -> dict[str, str]:
         project = ProjectModel.query.filter_by(
             id=projectId
         ).first()
@@ -34,7 +34,7 @@ class LineRepository:
         database.session.commit()
         return newLine.getAttributes()
 
-    def update(self, id, newLineData):
+    def update(self, id: str | int, newLineData: str) -> dict[str, str]:
         line = LineModel.query.filter_by(id=id).first()
         if not line:
             raise AppError("Line does not exist", 404)
@@ -44,7 +44,7 @@ class LineRepository:
 
         return line.getAttributes()
 
-    def delete(self, id):
+    def delete(self, id: str | int) -> dict[str, str]:
         line = LineModel.query.filter_by(id=id).first()
         if not line:
             raise AppError("Line does not exist", 404)
@@ -54,6 +54,6 @@ class LineRepository:
         return line.getAttributes()
 
     # DEBUG METHOD
-    def listAllDebug(self):
+    def listAllDebug(self) -> list[dict[str, str]]:
         lines = LineModel.query.all()
         return [line.getAttributes() for line in lines]
