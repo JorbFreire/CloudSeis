@@ -7,6 +7,9 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber"
 
 import ParameterForm from './ParameterForm';
 import GroupFormDialog from './GroupFormDialog';
@@ -31,14 +34,17 @@ export default function ProgramForm() {
 
   const [customProgram, setCustomProgram] = useState<FileList | null>(null)
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const submitProgram = () => {
     if (!programName || !programDescription || !programPath) {
-      alert("Por favor, preencha todos os campos")
-      return
+      setSnackbarMessage("Por favor, preencha todos os campos")
+      return setSnackbarOpen(true)
     }
-    else if (!groupId) {
-      alert("Por favor, selecione um grupo")
-      return
+    if (!groupId) {
+      setSnackbarMessage("Por favor, selecione um grupo")
+      return setSnackbarOpen(true)
     }
 
     // update state on setProgramGroups
@@ -74,11 +80,16 @@ export default function ProgramForm() {
     setCustomProgram(null)
   }
 
+  const closeSnackbar = () => {
+    setSnackbarOpen(false)
+    setSnackbarMessage("")
+  }
+
   const confirmDelete = () => {
     if (selectedProgram) {
       deleteProgram(selectedProgram.id)
       setOpenConfirmDialog(false)
-      window.location.reload()
+      resetProgramForm()
     }
   }
 
@@ -145,6 +156,28 @@ export default function ProgramForm() {
           </Button>
         )}
       </Stack>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <SnackbarContent
+          sx={{
+            backgroundColor: "#ff9800",
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            padding: "8px 16px",
+          }}
+          message={
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <WarningAmberIcon sx={{ marginRight: "8px" }} />
+              {snackbarMessage}
+            </span>
+          }
+        />
+      </Snackbar>
       <Dialog
         open={openConfirmDialog}
         onClose={() => setOpenConfirmDialog(false)}

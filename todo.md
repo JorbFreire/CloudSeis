@@ -1,8 +1,8 @@
 ## Before adding no features:
 
-[X] Test User Routes
-[X] Test Project routes
-[X] Test Line Routes
+[x] Test User Routes
+[x] Test Project routes
+[x] Test Line Routes
 [x] Test Workflow routes
 [x] Test Workflow listing on projects and lines
 [x] Fix workflow delete route
@@ -29,11 +29,18 @@
 [x] Fix save program popup
 [x] Ask jorb about to find a better place to the "New group" button
 [ ] Fix delete parameters functionality of index page
+    - Probably is because it use the index of the parameters in the list as its id
 [x] Reset Form when save new program
-[ ] Check how the front-end gets the route to display the program names
 [x] Make confirmation popup when deleting program
-[ ] Reload the page for the program desappear when deleted
-[ ] Require filled forms fields to make new program
+[x] Reload the page for the program desappear when deleted
+[x] Require filled forms fields to make new program
+[x] Ask jorb difference between ProgramModel and ProgramGroupModel in the back-end
+[ ] Add typing of Literal Strings options for the front-end
+[x] Add feedback when adding/editing parameters
+    - Ask about the debounce used in the parameters forms to jorb
+[x] Add exemple form for parameters and add in the database
+    - Fix front ending sending json without example as one of the keys
+[ ] Add new program buttom (must reset states)
 
 ### Programs
 [ ] surange - will return the ranges of all SU header fields that are nonzero.

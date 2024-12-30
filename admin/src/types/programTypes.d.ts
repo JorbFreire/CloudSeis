@@ -2,6 +2,7 @@ declare interface IParameter {
   id: number
   name: string
   description: string
+  example: string
   input_type: string
   isRequired: boolean
   // *** "hasChanges" shall not be sent to database ***
@@ -28,6 +29,6 @@ declare interface IProgramsGroupConstructor {
 
 declare interface IProgramsGroup extends IProgramsGroupConstructor {
   id: number
-  programs: Array<IGenericProgram>  
+  programs: Array<IGenericProgram>
 }
 
