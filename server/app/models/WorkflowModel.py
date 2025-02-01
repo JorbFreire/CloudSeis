@@ -38,17 +38,17 @@ class WorkflowModel(database.Model):  # type: ignore
         WorkflowParentsAssociationModel
     ] = relationship(WorkflowParentsAssociationModel, cascade="all, delete-orphan")
 
-    def getSelectedFileName(self):
+    def getSelectedFileName(self) -> str:
         fileLink = FileLinkModel.query.filter_by(id=self.file_link_id).first()
         return fileLink.name
 
-    def getResumedAttributes(self) -> dict:
+    def getResumedAttributes(self) -> dict[str, str | int]:
         return {
             "id": self.id,
             "name": self.name,
         }
 
-    def getAttributes(self) -> dict:
+    def getAttributes(self) -> dict[str, str | int | dict[str, str | int]]:
         return {
             "id": self.id,
             "name": self.name,

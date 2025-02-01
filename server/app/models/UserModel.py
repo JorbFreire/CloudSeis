@@ -19,7 +19,7 @@ class UserModel(database.Model):  # type: ignore
         List[ProjectModel]
     ] = relationship(ProjectModel, cascade='all, delete-orphan')
 
-    def getAttributes(self) -> dict:
+    def getAttributes(self) -> dict[str, str]:
         return {
             "id": str(self.id),
             "name": self.name,

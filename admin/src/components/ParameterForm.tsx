@@ -7,6 +7,9 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 
 import DeleteButton from "./DeleteButton";
 import {
@@ -22,38 +25,48 @@ export default function ParameterForm() {
 
   const [parameters, setParamenters] = useState<Array<IParameter>>([])
   const [parametersDebounced] = useDebounce(parameters, 2000)
+  const [feedbackSnackbar, setFeedbackSnackbar] = useState(false)
 
   interface IupdateParameterFieldProps {
     index: number
-    key: "name" | "input_type" | "description" | "isRequired"
+    key: "name" | "input_type" | "description" | "example" | "isRequired"
     newValue?: string
     newIsRequiredValue?: boolean
   }
 
   const updateParameterField = ({ index, key, newValue, newIsRequiredValue }: IupdateParameterFieldProps) => {
     const newParameters = [...parameters]
-    if(key == "isRequired")
-      newParameters[index][key] = Boolean(newIsRequiredValue)
-    else
-      newParameters[index][key] = String(newValue)
+    if (key == "isRequired") newParameters[index][key] = Boolean(newIsRequiredValue)
+    else newParameters[index][key] = String(newValue)
 
     newParameters[index].hasChanges = true
     setParamenters(newParameters)
   }
 
+  const triggerSnackbar = () => {
+    setFeedbackSnackbar(true);
+    setTimeout(() => {
+      setFeedbackSnackbar(false);
+    }, 2000);
+  };
+
   useEffect(() => {
-    if(!selectedProgram)
-      return setParamenters([])
+    if (!selectedProgram) return setParamenters([])
     getParameters(selectedProgram.id).then(programParameters => setParamenters(programParameters))
   }, [selectedProgram])
 
   useEffect(() => {
+    let hasUpdates = false;
     parametersDebounced.forEach((paremeter) => {
       if(paremeter.hasChanges) {
         console.log("achou um parametro com mudanças")
         updateParameter(paremeter)
+        hasUpdates = true;
       }
     })
+    if (hasUpdates) {
+      triggerSnackbar();
+    }
   }, [parametersDebounced])
 
   return selectedProgram && (
@@ -84,6 +97,12 @@ export default function ParameterForm() {
           onChange={(event) => updateParameterField({index, key: "description", newValue: event.target.value})}
           fullWidth
         />
+        <TextField
+          label="Exemplo de uso"
+          value={parameter.example}
+          onChange={(event) => updateParameterField({index, key: "example", newValue: event.target.value})}
+          fullWidth
+        />
         <FormControlLabel
           control={
             <Switch
@@ -91,9 +110,26 @@ export default function ParameterForm() {
               onChange={(event) => updateParameterField({index, key: "isRequired", newIsRequiredValue: event.target.checked})}
             />
           }
-          label={parameter.isRequired ? "Obrigatorio" : "Opcioonal"}
+          label={parameter.isRequired ? "Obrigatorio" : "Opcional"}
           sx={{width: "192px"}}
         />
+
+        {/* Snackbar */}
+        <Snackbar open={feedbackSnackbar} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <SnackbarContent
+            sx={{
+              backgroundColor: "#4caf50",
+              display: "flex",
+              alignItems: "center",
+            }}
+            message={
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <CheckCircleIcon sx={{ marginRight: "8px" }} />
+                Parâmetros salvos com sucesso
+              </span>
+            }
+          />
+        </Snackbar>
 
         <DeleteButton
           onClick={() => {

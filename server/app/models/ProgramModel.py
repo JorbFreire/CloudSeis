@@ -2,7 +2,6 @@ import sqlalchemy as dbTypes
 
 from ..database.connection import database
 
-
 class ProgramModel(database.Model):  # type: ignore
     __tablename__ = "programs_table"
 

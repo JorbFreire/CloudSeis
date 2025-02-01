@@ -12,7 +12,7 @@ userRouter = Blueprint("user-routes", __name__, url_prefix="/user")
 
 @userRouter.route("/create", methods=['POST'])
 @decorator_factory(validateRequestBody, SerializerSchema=UserCreateSchema)
-def createUser():
+def createUser() -> dict[str, str]:
     data = request.get_json()
 
     newUser = userController.create(data)
@@ -21,7 +21,7 @@ def createUser():
 
 # *** debug/test route, should be turned of on production
 @userRouter.route("/list", methods=['GET'])
-def listUsers():
+def listUsers() -> dict[str, str]:
     users = userController.showAll()
     return jsonify(users)
 
@@ -29,7 +29,7 @@ def listUsers():
 @userRouter.route("/update", methods=['PUT'])
 @decorator_factory(validateRequestBody, SerializerSchema=UserUpdateSchema)
 @decorator_factory(requireAuthentication)
-def updateUser(userId):
+def updateUser(userId: str) -> dict[str, str]:
     data = request.get_json()
     updatedUser = userController.update(userId, data)
     return jsonify(updatedUser)
@@ -37,6 +37,6 @@ def updateUser(userId):
 
 @userRouter.route("/delete", methods=['DELETE'])
 @decorator_factory(requireAuthentication)
-def deleteUser(userId):
+def deleteUser(userId: str) -> dict[str, str]:
     user = userController.delete(userId)
     return jsonify(user)

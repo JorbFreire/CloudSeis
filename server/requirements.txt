@@ -1,5 +1,5 @@
 -i https://pypi.org/simple
-alembic==1.11.1; python_version >= '3.7'
+alembic==1.11.1
 appdirs==1.4.4
 asttokens==2.4.1
 bcrypt==4.1.2; python_version >= '3.7'

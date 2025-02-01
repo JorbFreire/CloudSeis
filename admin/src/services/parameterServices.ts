@@ -29,6 +29,7 @@ export async function updateParameter(
     const response = await api.put<IParameter>(`/programs/parameters/update/${parameterInfo.id}`, {
       name: parameterInfo.name,
       description: parameterInfo.description,
+      example: parameterInfo.example,
       input_type: parameterInfo.input_type,
       isRequired: parameterInfo.isRequired,
     })
