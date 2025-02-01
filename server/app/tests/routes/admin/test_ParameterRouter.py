@@ -107,6 +107,24 @@ class TestParameterRouter:
             assert response.json == expected_response_data
             self.created_parameters[index]["description"] = response.json["description"]
 
+    def test_update_parameter_only_example(self):
+        for index, parameter in enumerate(self.created_parameters):
+            expected_response_data = deepcopy(parameter)
+            expected_response_data["example"] = "New Usage Example: 0.,1.,...,1.,0."
+
+            response = self.client.put(
+                f"{self.url_prefix}/update/{parameter['id']}",
+                json={
+                    "example": "New Usage Example: 0.,1.,...,1.,0.",
+                },
+                headers={
+                    "Authorization": self.mock.token
+                },
+            )
+            assert response.status_code == 200
+            assert response.json == expected_response_data
+            self.created_parameters[index]["example"] = response.json["example"]
+
     def test_update_parameter_only_input_type(self):
         for index, parameter in enumerate(self.created_parameters):
             expected_response_data = deepcopy(parameter)

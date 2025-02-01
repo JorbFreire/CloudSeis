@@ -24,6 +24,7 @@ def create(programId):
     newParameter = ParameterModel(
         name="",
         description="",
+        example="",
         input_type="",
         isRequired=False,
         programId=programId
@@ -44,6 +45,8 @@ def update(parameterId, parameterNewData):
         parameter.name = parameterNewData["name"]
     if "description" in parameterNewData:
         parameter.description = parameterNewData["description"]
+    if "example" in parameterNewData:
+        parameter.example = parameterNewData["example"]
     if "input_type" in parameterNewData:
         parameter.input_type = parameterNewData["input_type"]
     if "isRequired" in parameterNewData:
