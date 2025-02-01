@@ -8,6 +8,9 @@ class Mock():
     project = dict()
     line = dict()
     workflow = dict()
+
+    programGroup = dict()
+    program = dict()
     token: str = ""
 
     def createSession(self, email, password=DEFAULT_PASSWORD):
@@ -83,3 +86,35 @@ class Mock():
         workflow_data = response.json
         self.workflow = workflow_data
         return workflow_data
+    
+    def loadProgramGroup(self):
+        response = self.client.post(
+            f"/programs/groups/create",
+            json={
+                "name": "program_test",
+                "description": "no description"
+            },
+            headers={
+                "Authorization": self.token,
+            }
+        )
+        programGroupData = response.json
+        self.programGroup = programGroupData
+        return programGroupData
+    
+    def loadProgram(self):
+        response = self.client.post(
+            f"/programs/create/{self.programGroup['id']}",
+            data={
+                "name": "program_test",
+                "description": "no description",
+                "path_to_executable_file": "program_test",
+            },
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded", 
+                "Authorization": self.token,
+            }
+        )
+        programData = response.json
+        self.program = programData
+        return programData

@@ -1,7 +1,10 @@
 from flask import Blueprint, request, jsonify
 
+from ...middlewares.decoratorsFactory import decorator_factory
+from ...middlewares.validateRequestBody import validateRequestBody
+
 from ...controllers.admin import parameterController
-from ...errors.AppError import AppError
+from ...serializers.ParameterSerializer import ParameterUpdateSchema
 
 parameterRouter = Blueprint(
     "program-parameter-routes",
@@ -23,10 +26,9 @@ def createProgram(programId):
 
 
 @parameterRouter.route("/update/<parameterId>", methods=['PUT'])
-def updateProgram(parameterId):
+@decorator_factory(validateRequestBody, SerializerSchema=ParameterUpdateSchema)
+def updateParameter(parameterId):
     data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
 
     updatedParameter = parameterController.update(parameterId, data)
     return jsonify(updatedParameter)

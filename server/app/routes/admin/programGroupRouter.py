@@ -1,7 +1,11 @@
 from flask import Blueprint, request, jsonify
 
+from ...middlewares.decoratorsFactory import decorator_factory
+from ...middlewares.validateRequestBody import validateRequestBody
+
 from ...controllers import programGroupController
 from ...errors.AppError import AppError
+from ...serializers.ProgramGroupSerializer import ProgramGroupCreateSchema
 
 programGroupRouter = Blueprint(
     "programs-groups-routes",
@@ -17,10 +21,9 @@ def listGroups():
 
 
 @programGroupRouter.route("/create", methods=['POST'])
+@decorator_factory(validateRequestBody, SerializerSchema=ProgramGroupCreateSchema)
 def createProgramGroup():
     data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
 
     newProgramGroup = programGroupController.create(data)
     return jsonify(newProgramGroup)
@@ -29,9 +32,7 @@ def createProgramGroup():
 @programGroupRouter.route("/update", methods=['PUT'])
 def updateProgramGroup():
     data = request.get_json()
-    if data == None:
-        raise AppError("No body", 400)
-
+    # ! not implemented 
     updatedProgramGroup = programGroupController.update()
     return jsonify(updatedProgramGroup)
 

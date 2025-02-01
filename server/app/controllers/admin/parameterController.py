@@ -21,16 +21,16 @@ def create(programId):
     if not program:
         raise AppError("Program does not exist", 404)
 
-    newProgram = ParameterModel(
+    newParameter = ParameterModel(
         name="",
         description="",
         input_type="",
         isRequired=False,
         programId=programId
     )
-    database.session.add(newProgram)
+    database.session.add(newParameter)
     database.session.commit()
-    return newProgram.getAttributes()
+    return newParameter.getAttributes()
 
 
 def update(parameterId, parameterNewData):
@@ -40,10 +40,14 @@ def update(parameterId, parameterNewData):
     if not parameter:
         raise AppError("Parameter does not exist", 404)
 
-    parameter.name = parameterNewData["name"]
-    parameter.description = parameterNewData["description"]
-    parameter.input_type = parameterNewData["input_type"]
-    parameter.isRequired = parameterNewData["isRequired"]
+    if "name" in parameterNewData:
+        parameter.name = parameterNewData["name"]
+    if "description" in parameterNewData:
+        parameter.description = parameterNewData["description"]
+    if "input_type" in parameterNewData:
+        parameter.input_type = parameterNewData["input_type"]
+    if "isRequired" in parameterNewData:
+        parameter.isRequired = parameterNewData["isRequired"]
 
     database.session.commit()
     return parameter.getAttributes()

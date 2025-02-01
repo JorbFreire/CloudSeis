@@ -5,7 +5,7 @@ from ...middlewares.validateRequestBody import validateRequestBody
 
 from ...controllers import programController
 from ...errors.AppError import AppError
-from ...serializers.ProgramSerializer import ProgramCreateSchema
+from ...serializers.ProgramSerializer import ProgramCreateSchema, ProgramUpdateSchema
 
 programRouter = Blueprint("program-routes", __name__, url_prefix="/programs")
 
@@ -20,18 +20,19 @@ def listPrograms(groupId):
 @decorator_factory(validateRequestBody, SerializerSchema=ProgramCreateSchema)
 def createProgram(groupId):
     data = request.form
-    if data == None:
-        raise AppError("No body", 400)
+    if len(data) == 0:
+        raise AppError("No body, JSON is not accepted for this route", 422)
 
     newProgram = programController.create(groupId, data)
     return jsonify(newProgram)
 
 
 @programRouter.route("/update/<programId>", methods=['PUT'])
+@decorator_factory(validateRequestBody, SerializerSchema=ProgramUpdateSchema)
 def updateProgram(programId):
     data = request.form
-    if data == None:
-        raise AppError("No body", 400)
+    if len(data) == 0:
+        raise AppError("No body, JSON is not accepted for this route", 422)
 
     updatedProgram = programController.update(programId, data)
     return jsonify(updatedProgram)

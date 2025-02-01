@@ -14,7 +14,15 @@ def pytest_configure():
     pytest.client = _client()
 
 def pytest_collection_modifyitems(items):
-    CLASS_ORDER = [ "TestUserRouter", "TestProjectRouter", "TestLineRouter", "TestWorkflowRouter" ]
+    CLASS_ORDER = [
+        "TestUserRouter",
+        "TestProjectRouter",
+        "TestLineRouter",
+        "TestWorkflowRouter",
+        "TestProgramGroupRouter",
+        "TestProgramGroupRouter",
+        "TestParameterRouter",
+    ]
     class_mapping = {}
     sorted_items = []
 
