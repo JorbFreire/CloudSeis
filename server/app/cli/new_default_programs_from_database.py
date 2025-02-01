@@ -6,7 +6,6 @@ from ..models.ProgramModel import ProgramModel
 from ..models.ParameterModel import ParameterModel
 
 from .get_CLI_file_path import get_CLI_file_path
-from ..create_app import create_app
 
 def new_default_programs_from_database():
     groups_result = []

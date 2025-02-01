@@ -12,7 +12,6 @@ from .get_CLI_file_path import get_CLI_file_path
 # *** Forcely run it on an alredy initialized database may lead 
 # *** to duplicated programs other issues.
 def populate_database_programs():
-    let = 1111
     with open(get_CLI_file_path()) as file:
         fileContent = json.loads(file.read())
         count_programs = fileContent["count_programs"]
