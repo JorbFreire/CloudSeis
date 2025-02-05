@@ -116,14 +116,14 @@ class TestProgramGroupRouter:
         assert response.status_code == 200
         assert isinstance(response.json, list)
         assert len(response.json) == len(self.created_groups)
-        for index in range(len(self.created_groups)):
-            expected_response_data = self.created_groups[index]
+
+        for index, group in enumerate(self.created_groups):
             assert response.status_code == 200
             assert isinstance(response.json[index]['id'], int)
-            assert response.json[index]['id'] == expected_response_data['id']
-            assert response.json[index]['name'] == expected_response_data['name']
-            assert response.json[index]['description'] == expected_response_data['description']
-            assert response.json[index]['programs'] == expected_response_data['programs']
+            assert response.json[index]['id'] == group['id']
+            assert response.json[index]['name'] == group['name']
+            assert response.json[index]['description'] == group['description']
+            assert response.json[index]['programs'] == group['programs']
 
     def test_delete_program(self):
         for program_group in self.created_groups:

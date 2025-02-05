@@ -192,15 +192,16 @@ class TestParameterRouter:
         )
         assert response.status_code == 200
         assert isinstance(response.json, list)
-        for index in range(len(self.created_parameters)):
+        assert len(response.json) == len(self.created_parameters)
+
+        for index, parameter in enumerate(self.created_parameters):
             assert response.status_code == 200
             assert isinstance(response.json[index]['id'], int)
-            assert response.json[index]['id'] == self.created_parameters[index]['id']
-            assert response.json[index]['name'] == self.created_parameters[index]['name']
-            assert response.json[index]['description'] == self.created_parameters[index]['description']
-            assert response.json[index]['input_type'] == self.created_parameters[index]['input_type']
-            assert response.json[index]['isRequired'] == self.created_parameters[index]['isRequired']
-        assert len(response.json) == len(self.created_parameters)
+            assert response.json[index]['id'] == parameter['id']
+            assert response.json[index]['name'] == parameter['name']
+            assert response.json[index]['description'] == parameter['description']
+            assert response.json[index]['input_type'] == parameter['input_type']
+            assert response.json[index]['isRequired'] == parameter['isRequired']
 
     def test_delete_parameter(self):
         for program in self.created_parameters:
