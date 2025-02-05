@@ -23,8 +23,19 @@ def create(newGroupData):
     return newProgramGroup.getAttributes()
 
 
-def update():
-    pass
+def update(id: str | int, newGroupData: dict[str, str]) -> dict[str, str]:
+    programGroup = ProgramGroupModel.query.filter_by(id=id).first()
+
+    if not programGroup:
+        raise AppError("Group does not exist", 404)
+
+    if "name" in newGroupData:
+        programGroup.name = newGroupData["name"]
+    if "description" in newGroupData:
+        programGroup.description = newGroupData["description"]
+
+    database.session.commit()
+    return programGroup.getAttributes()
 
 
 def delete(id):

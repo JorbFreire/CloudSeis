@@ -62,6 +62,50 @@ class TestProgramGroupRouter:
             assert response.json['description'] == expected_response_data['description']
             self.created_groups.append(response.json)
 
+    def test_update_program_group_name(self):
+        for index, group in enumerate(self.created_groups):
+            expected_response_data = {
+                "id": group['id'],
+                "name": f"GROUP {group['id']} new name",
+                "description": group['description'],
+                "programs": [],
+            }
+            response = self.client.put(
+                f"{self.url_prefix}/update/{group['id']}",
+                json={
+                    "name": f"GROUP {group['id']} new name",
+                },
+                headers={
+                    "Authorization": self.mock.token
+                },
+            )
+
+            assert response.status_code == 200
+            assert response.json == expected_response_data
+            self.created_groups[index]['name'] = response.json['name']
+
+    def test_update_program_group_description(self):
+        for index, group in enumerate(self.created_groups):
+            expected_response_data = {
+                "id": group['id'],
+                "name": group['name'],
+                "description": "some new updated description",
+                "programs": [],
+            }
+            response = self.client.put(
+                f"{self.url_prefix}/update/{group['id']}",
+                json={
+                    "description": "some new updated description",
+                },
+                headers={
+                    "Authorization": self.mock.token
+                },
+            )
+
+            assert response.status_code == 200
+            assert response.json == expected_response_data
+            self.created_groups[index]['description'] = response.json['description']
+
     def test_list_program_groups(self):
         response = self.client.get(
             f"{self.url_prefix}/list",
@@ -73,12 +117,13 @@ class TestProgramGroupRouter:
         assert isinstance(response.json, list)
         assert len(response.json) == len(self.created_groups)
         for index in range(len(self.created_groups)):
+            expected_response_data = self.created_groups[index]
             assert response.status_code == 200
             assert isinstance(response.json[index]['id'], int)
-            assert response.json[index]['id'] == self.created_groups[index]['id']
-            assert response.json[index]['name'] == self.created_groups[index]['name']
-            assert response.json[index]['description'] == self.created_groups[index]['description']
-            assert response.json[index]['programs'] == self.created_groups[index]['programs']
+            assert response.json[index]['id'] == expected_response_data['id']
+            assert response.json[index]['name'] == expected_response_data['name']
+            assert response.json[index]['description'] == expected_response_data['description']
+            assert response.json[index]['programs'] == expected_response_data['programs']
 
     def test_delete_program(self):
         for program_group in self.created_groups:

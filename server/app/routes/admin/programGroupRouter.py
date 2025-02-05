@@ -4,8 +4,7 @@ from ...middlewares.decoratorsFactory import decorator_factory
 from ...middlewares.validateRequestBody import validateRequestBody
 
 from ...controllers import programGroupController
-from ...errors.AppError import AppError
-from ...serializers.ProgramGroupSerializer import ProgramGroupCreateSchema
+from ...serializers.ProgramGroupSerializer import ProgramGroupCreateSchema, ProgramGroupUpdateSchema
 
 programGroupRouter = Blueprint(
     "programs-groups-routes",
@@ -29,11 +28,12 @@ def createProgramGroup():
     return jsonify(newProgramGroup)
 
 
-@programGroupRouter.route("/update", methods=['PUT'])
-def updateProgramGroup():
+@programGroupRouter.route("/update/<groupId>", methods=['PUT'])
+@decorator_factory(validateRequestBody, SerializerSchema=ProgramGroupUpdateSchema)
+def updateProgramGroup(groupId):
     data = request.get_json()
-    # ! not implemented 
-    updatedProgramGroup = programGroupController.update()
+
+    updatedProgramGroup = programGroupController.update(groupId, data)
     return jsonify(updatedProgramGroup)
 
 
