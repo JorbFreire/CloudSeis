@@ -34,7 +34,6 @@ def populate_database_programs():
                 database.session.commit()
 
                 for programInfo in programGroupInfo["programs"]:
-                    import pdb; pdb.set_trace();
                     createdProgram = ProgramModel(
                         name = programInfo["name"],
                         description = programInfo["description"],
