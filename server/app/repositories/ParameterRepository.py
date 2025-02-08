@@ -22,7 +22,7 @@ class ParameterRepository:
         newParameter = ParameterModel(
             name="",
             description="",
-            examples="",
+            example="",
             input_type="",
             isRequired=False,
             programId=programId

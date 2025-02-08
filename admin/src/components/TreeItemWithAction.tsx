@@ -3,6 +3,9 @@ import type { ReactNode } from 'react';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import Box from '@mui/material/Box'
 import DeleteButton from '../components/DeleteButton';
+import Button from '@mui/material/Button';
+
+import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider';
 
 interface ILabelContentProps {
   labelText: string
@@ -38,6 +41,7 @@ export default function TreeItemWithAction({
   labelText,
   deleteAction
 }: ITreeItemWithActionProps) {
+  const { setSelectedProgram } = useSelectedProgramCommand()
   return (
     <TreeItem
       nodeId={nodeId}
@@ -48,6 +52,9 @@ export default function TreeItemWithAction({
         />
       }
     >
+      <Button variant="contained" onClick={() => setSelectedProgram(null)}>
+        Novo programa
+      </Button>
       {children}
     </TreeItem>
   )
