@@ -35,7 +35,7 @@ class TestProjectRouter:
                 "Authorization": self.mock.token
             }
         )
-        assert response.status_code == 404
+        assert response.status_code == 409
         assert response.json['Error'] == expected_response_data['Error']
 
     def test_create_new_project(self):

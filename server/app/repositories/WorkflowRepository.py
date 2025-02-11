@@ -15,8 +15,6 @@ def create(userId, newWorkflowData, parentId):
     parentType = newWorkflowData["parentType"]
 
     user = UserModel.query.filter_by(id=UUID(userId)).first()
-    if not user:
-        raise AppError("User does not exist", 404)
 
     # ! raise error when find any issue
     # ! thats unused here, parents domain shall be refactored
@@ -37,11 +35,11 @@ def create(userId, newWorkflowData, parentId):
 def updateFilePath(workflowId, fileLinkId):
     workflow = WorkflowModel.query.filter_by(id=workflowId).first()
     if not workflow:
-        raise AppError("Workflow does not exist", 404)
+        raise AppError("Workflow does not exist", 409)
 
     fileLink = FileLinkModel.query.filter_by(id=fileLinkId).first()
     if not fileLink:
-        raise AppError("FileLink does not exist", 404)
+        raise AppError("FileLink does not exist", 409)
 
     workflow.file_link_id = fileLink.id
 

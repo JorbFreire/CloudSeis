@@ -33,12 +33,12 @@ class TestParameterRouter:
             "Error": "There are no parameters for this program"
         }
         response = self.client.get(
-            f"{self.url_prefix}/list/{self.mock.programGroup['id']}",
+            f"{self.url_prefix}/list/{self.mock.program['id']}",
             headers={
                 "Authorization": self.mock.token
             }
         )
-        assert response.status_code == 404
+        assert response.status_code == 409
         assert response.json['Error'] == expected_response_data['Error']
 
     def test_create_new_parameter_with_inexistent_program(self):

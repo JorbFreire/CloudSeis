@@ -14,15 +14,13 @@ def showByUserId(userId):
         userId=UUID(userId)
     ).all()
     if not projects:
-        raise AppError("There are no Projects for this user", 404)
+        raise AppError("There are no Projects for this user", 409)
 
     return [project.getAttributes() for project in projects]
 
 
 def create(userId, newProjectName: str):
     user = UserModel.query.filter_by(id=UUID(userId)).first()
-    if not user:
-        raise AppError("User does not exist", 404)
 
     newProject = ProjectModel(
         name=newProjectName,

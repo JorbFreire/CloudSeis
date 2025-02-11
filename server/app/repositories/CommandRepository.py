@@ -12,14 +12,12 @@ from ..errors.AppError import AppError
 
 def create(userId, workflowId, name, parameters, program_id):
     user = UserModel.query.filter_by(id=UUID(userId)).first()
-    if not user:
-        raise AppError("User does not exist", 404)
 
     workflow = WorkflowModel.query.filter_by(
         id=workflowId
     ).first()
     if not workflow:
-        raise AppError("Workflow does not exist", 404)
+        raise AppError("Workflow does not exist", 409)
 
     orderedCommandsList = OrderedCommandsListModel.query.filter_by(
         workflowId=workflowId

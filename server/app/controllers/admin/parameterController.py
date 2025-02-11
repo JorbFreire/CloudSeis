@@ -7,9 +7,13 @@ from ...errors.AppError import AppError
 
 
 def showByProgramId(programId):
+    program = ProgramModel.query.filter_by(id=programId).first()
+    if not program:
+        raise AppError("Program does not exist", 404)
+    
     parameters = ParameterModel.query.filter_by(programId=programId).all()
     if not parameters:
-        raise AppError("There are no parameters for this program", 404)
+        raise AppError("There are no parameters for this program", 409)
 
     return [parameter.getAttributes() for parameter in parameters]
 

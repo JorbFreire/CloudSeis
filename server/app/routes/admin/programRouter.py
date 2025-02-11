@@ -21,7 +21,7 @@ def listPrograms(groupId):
 def createProgram(groupId):
     data = request.form
     if len(data) == 0:
-        raise AppError("No body, JSON is not accepted for this route", 422)
+        raise AppError("No body, JSON is not accepted for this route", 415)
 
     newProgram = programController.create(groupId, data)
     return jsonify(newProgram)
@@ -32,7 +32,7 @@ def createProgram(groupId):
 def updateProgram(programId):
     data = request.form
     if len(data) == 0:
-        raise AppError("No body, JSON is not accepted for this route", 422)
+        raise AppError("No body, JSON is not accepted for this route", 415)
 
     updatedProgram = programController.update(programId, data)
     return jsonify(updatedProgram)

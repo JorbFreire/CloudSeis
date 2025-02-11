@@ -36,7 +36,7 @@ class TestProgramGroupRouter:
                 "Authorization": self.mock.token
             }
         )
-        assert response.status_code == 404
+        assert response.status_code == 409
         assert response.json['Error'] == expected_response_data['Error']
 
     def test_create_new_program_with_inexistent_group(self):
@@ -72,7 +72,7 @@ class TestProgramGroupRouter:
                 "Authorization": self.mock.token,
             }
         )
-        assert response.status_code == 422
+        assert response.status_code == 415
         assert response.json['Error'] == expected_response_data['Error']
 
 

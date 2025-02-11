@@ -8,7 +8,7 @@ from ...errors.AppError import AppError
 def listAll():
     programGroups = ProgramGroupModel.query.all()
     if not programGroups:
-        raise AppError("There are no program groups created", 404)
+        raise AppError("There are no program groups created", 409)
 
     return [programGroup.getAttributes() for programGroup in programGroups]
 

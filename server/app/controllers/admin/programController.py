@@ -15,21 +15,28 @@ def _createProgramFilePath():
 
 
 def showByGroupId(groupId):
-    programs = ProgramModel.query.filter_by(groupId=groupId).all()
-    if not programs:
-        raise AppError("There are no programs for this group", 404)
-
-    return [program.getAttributes() for program in programs]
-
-
-def create(groupId, newProgramData):
-    if 'file' in request.files:
-        newProgram["path_to_executable_file"] = _createProgramFilePath()
     programGroup = ProgramGroupModel.query.filter_by(
         id=groupId
     ).first()
     if not programGroup:
         raise AppError("Program Group does not exist", 404)
+
+    programs = ProgramModel.query.filter_by(groupId=groupId).all()
+    if not programs:
+        raise AppError("There are no programs for this group", 409)
+
+    return [program.getAttributes() for program in programs]
+
+
+def create(groupId, newProgramData):
+    programGroup = ProgramGroupModel.query.filter_by(
+        id=groupId
+    ).first()
+    if not programGroup:
+        raise AppError("Program Group does not exist", 404)
+
+    if 'file' in request.files:
+        newProgram["path_to_executable_file"] = _createProgramFilePath()
 
     newProgram = ProgramModel(
         name=newProgramData["name"],

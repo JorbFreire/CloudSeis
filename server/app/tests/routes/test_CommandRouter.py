@@ -42,7 +42,6 @@ class TestCommandRouter:
 
     def test_create_new_command_with_inexistent_workflow(self):
         expected_response_data = {
-            # !"Error": "Workflow does not exist"
             "Error": "No instance found for this id"
         }
         response = self.client.post(

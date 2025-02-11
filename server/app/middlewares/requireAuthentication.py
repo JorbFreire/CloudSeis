@@ -30,6 +30,8 @@ def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False)
 
         userId = payload["id"]
         user = UserModel.query.filter_by(id=UUID(userId)).first()
+        if not user:
+            raise AppError("User does not exist", 404)
 
         if isAdminRequired and not user.is_admin:
             raise AuthError("Must be admin")
