@@ -38,8 +38,8 @@ class TestParameterRouter:
                 "Authorization": self.mock.token
             }
         )
-        assert response.status_code == 409
-        assert response.json['Error'] == expected_response_data['Error']
+        assert response.status_code == 200
+        assert response.json == []
 
     def test_create_new_parameter_with_inexistent_program(self):
         expected_response_data = {

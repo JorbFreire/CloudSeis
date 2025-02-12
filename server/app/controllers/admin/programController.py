@@ -23,7 +23,7 @@ def showByGroupId(groupId):
 
     programs = ProgramModel.query.filter_by(groupId=groupId).all()
     if not programs:
-        raise AppError("There are no programs for this group", 409)
+        return []
 
     return [program.getAttributes() for program in programs]
 

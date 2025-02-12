@@ -14,7 +14,7 @@ def showByUserId(userId):
         userId=UUID(userId)
     ).all()
     if not projects:
-        raise AppError("There are no Projects for this user", 409)
+        return []
 
     return [project.getAttributes() for project in projects]
 

@@ -27,17 +27,14 @@ class TestProgramGroupRouter:
             database.create_all()
 
     def test_empty_get(self):
-        expected_response_data = {
-            "Error": "There are no programs for this group"
-        }
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.programGroup['id']}",
             headers={
                 "Authorization": self.mock.token
             }
         )
-        assert response.status_code == 409
-        assert response.json['Error'] == expected_response_data['Error']
+        assert response.status_code == 200
+        assert response.json == []
 
     def test_create_new_program_with_inexistent_group(self):
         expected_response_data = {

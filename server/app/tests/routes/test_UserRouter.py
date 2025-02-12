@@ -25,13 +25,10 @@ class TestUserRouter:
             database.create_all()
 
     def test_empty_get(self):
-        """Test that listing users returns 409 if no users exist."""
-        expected_response_data = {
-            "Error": "There are no users"
-        }
+        """Test that listing users returns empty list if no users exist."""
         response = self.client.get(f"{self.url_prefix}/list")
-        assert response.status_code == 409
-        assert response.json['Error'] == expected_response_data['Error']
+        assert response.status_code == 200
+        assert response.json == []
 
     def test_weak_password(self):
         """Test creating a user with a weak password returns a validation error."""

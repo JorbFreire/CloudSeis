@@ -11,7 +11,7 @@ from ..errors.AppError import AppError
 def showByProjectId(projectId):
     lines = LineModel.query.filter_by(projectId=projectId).all()
     if not lines:
-        raise AppError("There are no Lines for this project", 409)
+        return []
 
     return [line.getAttributes() for line in lines]
 

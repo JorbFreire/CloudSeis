@@ -13,7 +13,7 @@ def showByProgramId(programId):
     
     parameters = ParameterModel.query.filter_by(programId=programId).all()
     if not parameters:
-        raise AppError("There are no parameters for this program", 409)
+        return []
 
     return [parameter.getAttributes() for parameter in parameters]
 

@@ -29,17 +29,14 @@ class TestLineRouter:
             database.create_all()
 
     def test_empty_get(self):
-        expected_response_data = {
-            "Error": "There are no Lines for this project"
-        }
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.project['id']}",
             headers={
                 "Authorization": self.mock.token,
             },
         )
-        assert response.status_code == 409
-        assert response.json['Error'] == expected_response_data['Error']
+        assert response.status_code == 200
+        assert response.json == []
 
 
     def test_create_new_line(self):

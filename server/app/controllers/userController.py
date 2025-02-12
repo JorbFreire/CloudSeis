@@ -10,7 +10,7 @@ from ..services.passwordServices import hashPassword
 def showAll() -> list[dict]:
     users: list[UserModel] = UserModel.query.all()
     if not users:
-        raise AppError("There are no users", 409)
+        return []
 
     return [user.getAttributes() for user in users]
 
