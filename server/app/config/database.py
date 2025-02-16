@@ -7,7 +7,7 @@ migrations_root_path = path.join(database_root_path, 'migrations')
 
 modeKeyType = Literal["production", "development", "test"]
 
-def get_db_uri(mode: modeKeyType):
+def get_db_uri(mode: modeKeyType) -> str:
     dbConfigOptions = {
         "production": {
             "dbname": getenv("DATABASE_NAME"),

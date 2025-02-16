@@ -133,7 +133,7 @@ export default function ParameterForm() {
 
         <DeleteButton
           onClick={() => {
-            deleteParameter(index).then(() => {
+            deleteParameter(parameter.id).then(() => {
               const newParameters = [...parameters]
               newParameters.splice(index, 1)
               setParamenters(newParameters)
