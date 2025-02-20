@@ -2,7 +2,7 @@
 
 CloudSeis is a cloud-based seismic data processing software based on the desktop app [BotoSeis](https://github.com/botoseis/BotoSeis)
 <br />
-CloudSeis is mainly a wrapper for [SeismicUnix](https://github.com/JohnWStockwellJr/SeisUnix)
+CloudSeis is mainly a wrapper for [SeismicUnix](https://github.com/JohnWStockwellJr/SeisUnix) allowing usage through API and web UI, adding tooling for store, track and organize data processing steps.
 
 ## Getting Started
 
@@ -25,49 +25,48 @@ bash -c "$(wget -qO- https://gist.githubusercontent.com/botoseis/4ca681cb9ef706c
 ```
 
 ### Quicky start
-run the `docker-compose.yml` file with `docker-compose` and let docker handle it all. 
+   >  Requires **docker-compose**
+
+Go to root and run the Makefile. It will make available the necessery services for end user.
 ```bash
-docker-compose -f docker-compose.yml up
-```
-It shall start all project containers. To run each container individually, run:
-```bash
-```
-to manully run any instance without docker, check each folder `README.md`.
-
-
-
-
-# Manual run
-### Run the server
-
-Once inside the `server` folder, install its dependencies and run the dev environment as shown below.
-```bash
-pip3 install -r requirements.txt
-```
-```bash
-flask run
+make
 ```
 
 
-#### Database
-To run the migrations, run on your terminal in the server folder:
+For automate tests, make the test database available by runing:
 ```bash
-flask db upgrade
-```
-To create a new migration:
-```bash
-flask db migrate -m 'Migration Name'
-```
+make test
+``` 
 
-### Run the Webapp
-
-Once inside the `Webapp` folder, install its dependencies and run the dev environment as shown below.
+For manage or make new programs available, run the admin dashboard:
 ```bash
-yarn
-```
-```bash
-yarn dev
+make adm
 ```
 
-## Architecture and database modeling
 
+Each service can be run and managed individualy with docker-compose.
+
+To manully run any instance without docker, check each folder `README.md`.
+
+
+# Architeture
+
+### Services
+
+The project is divided in 4 services:
+ - server <br />
+   Base API that handle every persistent storage on the aplication
+ - admin <br />
+   Web interface that provides management of the programs available for the end user. The admin can create, delete and modify programs information. It will reflect in the end user view. 
+ - webapp <br />
+   The end user view. Where the avarage end user must interact with it's workflows, files and history information
+ - seismic-webviz <br />
+   Vizualization web interface. Usualy it opens as result of some action at the webapp, displaying visualization tools for the selected data or for the resulting data of some process.
+
+### Database diagram
+
+![Database diagram, simplified version](
+  ./assets/database_simplified_diagram.png
+)
+Database diagram simplified for easier understanding of data flow. <br />
+Mostly every table have a column to identify who can access and modify each row.
