@@ -45,7 +45,6 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
 }: ICustomTabsNavigationProps<T>) {
   // ? conditional rendering could be a high order component ?
   const removeElementFromState = () => {
-    // !issue when deleting
     if (!selectedTabId || typeof selectedTabId == 'string')
       return
 
@@ -81,6 +80,7 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
               onRemove={removeElementFromState}
               $color={color}
               $orientation={orientation}
+              $isActive={tab.is_active}
             />
           ))}
         </Tabs>

@@ -37,17 +37,44 @@ export async function createNewCommand(
   }
 }
 
-export async function updateCommand(
+export async function updateCommandParameters(
   token: string,
+  // ! id type must be reviewed, StaticTabKey would cause errors
   id: number | StaticTabKey,
   newParameters: string
 ): Promise<ICommand | null> {
   try {
     const response = await api.put<ICommand>(
-      `/command/update/${id}`,
+      `/command/update/${id}/parameters`,
       {
         parameters: newParameters
       },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    return null
+  }
+}
+
+export async function updateCommandIsActive(
+  token: string,
+  // ! id type must be reviewed, StaticTabKey would cause errors
+  id: number | StaticTabKey,
+): Promise<ICommand | null> {
+  try {
+    const response = await api.put<ICommand>(
+      `/command/update/${id}/is_active`,
+      {},
       {
         headers: {
           Authorization: 'Bearer ' + token

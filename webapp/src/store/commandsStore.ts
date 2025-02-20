@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { updateCommand } from 'services/commandServices'
+import { updateCommandParameters } from 'services/commandServices'
 import { getWorkflowByID } from 'services/workflowServices'
 import {
   preProcessingCommands,
@@ -65,7 +65,7 @@ export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
 
     if (!get().commands[commandIndexToUpdate])
       return;
-    const updatedCommand = await updateCommand(token, id, newParameters)
+    const updatedCommand = await updateCommandParameters(token, id, newParameters)
     if (!updatedCommand)
       return
     set((state) => ({

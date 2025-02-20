@@ -7,7 +7,10 @@ class CommandModel(database.Model):  # type: ignore
     __tablename__ = "commands_table"
 
     id = dbTypes.Column(dbTypes.Integer, primary_key=True)
+    # *** the "name" property shall be important when using
+    # *** the same program multiple tipe at the same workflow
     name = dbTypes.Column(dbTypes.String)
+    is_active = dbTypes.Column(dbTypes.Boolean, nullable=True)
     # *** stringfied JSON
     parameters = dbTypes.Column(dbTypes.Text)
 
@@ -33,5 +36,6 @@ class CommandModel(database.Model):  # type: ignore
             "program_id": self.program_id,
             "workflowId": self.workflowId,
             "name": self.name,
+            "is_active": self.is_active,
             "parameters": self.parameters
         }

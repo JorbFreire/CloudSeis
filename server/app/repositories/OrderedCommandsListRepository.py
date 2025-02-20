@@ -12,6 +12,7 @@ def create(workflowId):
     )
     database.session.add(orderedCommandsList)
     database.session.commit()
+    return orderedCommandsList
 
 
 def update(workflowId, newOrder):

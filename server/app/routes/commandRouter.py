@@ -41,7 +41,7 @@ def createCommand(userId, workflowId):
     return jsonify(newCommand)
 
 
-@commandRouter.route("/update/<id>", methods=['PUT'])
+@commandRouter.route("/update/<id>/parameters", methods=['PUT'])
 @decorator_factory(validateRequestBody, SerializerSchema=CommandUpdateParametersSchema)
 @decorator_factory(requireAuthentication, routeModel=CommandModel)
 def updateCommand(_, id):
@@ -50,6 +50,13 @@ def updateCommand(_, id):
         id,
         data["parameters"]
     )
+    return jsonify(updatedCommand)
+
+
+@commandRouter.route("/update/<id>/is_active", methods=['PUT'])
+@decorator_factory(requireAuthentication, routeModel=CommandModel)
+def updateCommand(_, id):
+    updatedCommand = commandController.updateIsActive(id)
     return jsonify(updatedCommand)
 
 

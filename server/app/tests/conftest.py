@@ -22,6 +22,8 @@ def pytest_collection_modifyitems(items):
         "TestProgramGroupRouter",
         "TestProgramGroupRouter",
         "TestParameterRouter",
+        "TestCommandRouter",
+        "TestSuFileRouter",
     ]
     class_mapping = {}
     sorted_items = []

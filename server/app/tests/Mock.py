@@ -1,13 +1,21 @@
 import pytest
+from os import path
 
 DEFAULT_PASSWORD = "password123"
 
 class Mock():
     client = pytest.client
+    base_marmousi_stack_path = path.join(
+        path.dirname(__file__),
+        "mock_seismic_data",
+        "marmousi_4ms_stack.su"
+    )
     user = dict()
     project = dict()
     line = dict()
     workflow = dict()
+    # *** valid sufilter command
+    sufilterCommand = dict()
 
     programGroup = dict()
     program = dict()
@@ -102,13 +110,17 @@ class Mock():
         self.programGroup = programGroupData
         return programGroupData
     
-    def loadProgram(self):
+    def loadProgram(
+        self,
+        name="program_test",
+        description="no description",
+    ):
         response = self.client.post(
             f"/programs/create/{self.programGroup['id']}",
             data={
-                "name": "program_test",
-                "description": "no description",
-                "path_to_executable_file": "program_test",
+                "name": name,
+                "description": description,
+                "path_to_executable_file": name,
             },
             headers={
                 "Content-Type": "application/x-www-form-urlencoded", 
@@ -118,3 +130,29 @@ class Mock():
         programData = response.json
         self.program = programData
         return programData
+
+    def loadSufilterCommand(self):
+        # *** load valid sufilter program
+        # *** load valid command with valid paremeters for sufilter
+        self.loadProgram(
+            name="sufilter",
+            description="applies a zero-phase, sine-squared tapered filter"
+        )
+        parameters = {
+            "f": "10, 20, 150, 200",
+            "amps": "0, 1, 1, 0"
+        }
+        response = self.client.post(
+            f"/dataset/create/{self.workflow['id']}",
+            json={
+                "name": "sufilter",
+                "parameters": parameters,
+                "program_id": self.program['id'],
+            },
+            headers={
+                "Authorization": self.token
+            }
+        )
+        commandData = response.json
+        self.sufilterCommand = commandData
+        return commandData

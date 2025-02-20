@@ -2,6 +2,11 @@ import styled, { css } from "styled-components";
 import Tab from '@mui/material/Tab';
 import IconButton from "@mui/material/IconButton";
 
+
+interface IActionButtonProps {
+  $isActive: boolean
+}
+
 export function getCustumTabOrientationStyles($orientation: navigationOrientationType) {
   if ($orientation == "horizontal")
     return css`
@@ -63,6 +68,8 @@ export const TabBody = styled(Tab) <ICustomTabContainerProps>`
 
     ${({ $orientation }) => getCustumTabOrientationStyles($orientation)}
     ${({ $color }) => getCustomTabColorStyles($color)}
+    ${({ $isActive }) => !$isActive && 'font-style: italic; text-decoration-line: line-through; opacity: 87%'}
+
 
     .MuiTouchRipple-root {
       z-index: 3;
@@ -94,13 +101,17 @@ export const TabBody = styled(Tab) <ICustomTabContainerProps>`
   }
 `
 
+export const ActionButtonsContainer = styled.div`
+  position: absolute;
+  right: 8px;
+  top: 2px;
+  z-index: 10;
+`
+
 export const ActionButton = styled(IconButton)`
   &.MuiIconButton-root {
-    position: absolute;
-    right: 8px;
-    top: 2px;
     z-index: 10;
-
+    
     height: 44px;
     width: 44px;
   }

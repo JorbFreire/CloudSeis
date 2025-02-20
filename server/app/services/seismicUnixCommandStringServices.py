@@ -35,6 +35,8 @@ def getSemicUnixCommandString(commandsQueue: list, source_file_path: str, target
         # ! this is bad naming and bad typing, must be improved
         orderedCommandsList = orderedCommandsObject.getCommands()
         for seismicUnixProgramIndex, seismicUnixProgram in enumerate(orderedCommandsList):
+            if not seismicUnixProgram.is_active:
+                continue
             seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
             seismicUnixProcessString += _getAllParameters(
                 json.loads((seismicUnixProgram["parameters"]))

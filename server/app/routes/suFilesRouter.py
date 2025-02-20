@@ -34,14 +34,17 @@ def listSuFiles(_, projectId):
 @suFileRouter.route("/create/<projectId>", methods=['POST'])
 @decorator_factory(requireAuthentication, routeModel=ProjectModel)
 def createSuFile(_, projectId):
-    file = request.files['file']
     if 'file' not in request.files:
         raise AppError("No file part in the request")
+    file = request.files['file']
 
     fileLink = suFileController.create(file, projectId)
     return {"fileLink": fileLink}
 
 
+# *** maybe not a great domain once a new file can be generated
+# *** with the chosen commands not necesserily ocurring an update
+# *** at the base seismic data file
 @suFileRouter.route("/update/<workflowId>", methods=['PUT'])
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateSuFile(userId, workflowId):

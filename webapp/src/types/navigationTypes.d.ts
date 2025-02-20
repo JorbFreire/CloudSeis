@@ -11,6 +11,7 @@ declare global {
 
   interface ICustomTabContainerProps extends IContainerProps {
     $color: navigationColorType
+    $isActive: boolean
   }
 
 

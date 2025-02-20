@@ -1,4 +1,5 @@
 from uuid import UUID
+from copy import copy
 
 from ..database.connection import database
 from ..models.UserModel import UserModel
@@ -44,8 +45,7 @@ def createDataset(userId, baseWorkflowId) -> dict:
         newWorkflowData,
         dataset.id,
     )
-
-    orderedCommandsListRepository.create(newWorkflow.id)
+    orderedCommandsList = orderedCommandsListRepository.create(newWorkflow.id)
 
     workflowParentsAssociationRepository.create(
         newWorkflow.id,
@@ -58,7 +58,15 @@ def createDataset(userId, baseWorkflowId) -> dict:
         baseWorkflow.file_link_id
     )
 
+    # ? not sure "copy" is necessary, but removing directly from
+    # ? original orderedCommandsList was not working
+    tempOrderedCommandsList = copy(orderedCommandsList.commandIds)
+
     for command in commands:
+        # *** no need to save the commented command at dataset history
+        if not command.is_active:
+            tempOrderedCommandsList.remove(int(id))
+            continue
         commandRepository.create(
             userId,
             newWorkflow.id,

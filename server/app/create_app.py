@@ -10,6 +10,7 @@ from .database.connection import database, migrate
 from .routes import router
 from .errors.AppError import AppError
 from .errors.AuthError import AuthError
+from .errors.FileError import FileError
 
 from .cli import populate_database_programs, new_default_programs_from_database
 
@@ -47,9 +48,14 @@ def create_app(mode: Literal["production", "development", "test"] = "development
         # *** status code 403 means that it requires admin role
         return jsonify({"Error": message}), error.statusCode
 
+    @app.errorhandler(AppError)
+    def handle_file_exception(error):
+        return jsonify({"Error": error.message}), error.statusCode
+
     app.register_error_handler(ValidationError, handle_validation_exception)
     app.register_error_handler(AppError, handle_app_exception)
     app.register_error_handler(AuthError, handle_auth_exception)
+    app.register_error_handler(FileError, handle_file_exception)
 
     @app.cli.command('populate-programs')
     @app.cli.command('pp')

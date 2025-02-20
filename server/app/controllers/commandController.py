@@ -40,6 +40,16 @@ def updateParameters(id, newParameters):
     return command.getAttributes()
 
 
+def updateIsActive(id):
+    command = CommandModel.query.filter_by(id=id).first()
+    if not command:
+        raise AppError("Command does not exist", 404)
+    command.is_active = not command.is_active
+    database.session.commit()
+
+    return command.getAttributes()
+
+
 def delete(id):
     command = CommandModel.query.filter_by(id=id).first()
     if not command:
@@ -69,5 +79,6 @@ commandController = SimpleNamespace(
     show=show,
     create=create,
     updateParameters=updateParameters,
+    updateIsActive=updateIsActive,
     delete=delete,
 )
