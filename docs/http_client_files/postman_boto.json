@@ -1,0 +1,1648 @@
+{
+  "info": {
+    "name": "boto",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "bruno",
+      "event": []
+    },
+    {
+      "name": "seismic_webviz",
+      "item": [
+        {
+          "name": "Plot stack",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "insomnia/2023.5.8",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "",
+            "url": {
+              "raw": "{{base_seismic_webviz}}",
+              "protocol": "",
+              "host": [
+                "{{base_seismic_webviz}}"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "gather_key",
+                  "value": "ep"
+                },
+                {
+                  "key": "workflowId",
+                  "value": "2"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Plot",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "insomnia/2023.5.8",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "",
+            "url": {
+              "raw": "{{base_seismic_webviz}}",
+              "protocol": "",
+              "host": [
+                "{{base_seismic_webviz}}"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "gather_key",
+                  "value": "ep"
+                },
+                {
+                  "key": "workflowId",
+                  "value": "2"
+                }
+              ],
+              "variable": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "server-admin-routes",
+      "item": [
+        {
+          "name": "ProgramGroups",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/groups/create",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "groups",
+                    "create"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"Grupo 1\",\n\t\"description\": \"descrição do grupo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/groups/delete/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "groups",
+                    "delete",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "list",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/groups/list",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "groups",
+                    "list"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Programs",
+          "item": [
+            {
+              "name": "create json",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/create/5",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "create",
+                    "5"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Sugain",
+                      "disabled": false,
+                      "type": "default"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Sugain é um comando",
+                      "disabled": false,
+                      "type": "default"
+                    },
+                    {
+                      "key": "path_to_executable_file",
+                      "value": "sugain",
+                      "disabled": false,
+                      "type": "default"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "create parameter",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/parameters/create",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "parameters",
+                    "create"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Sugain",
+                      "disabled": false,
+                      "type": "default"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Sugain é um comando",
+                      "disabled": false,
+                      "type": "default"
+                    },
+                    {
+                      "key": "path_to_executable_file",
+                      "value": "sugain",
+                      "disabled": false,
+                      "type": "default"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/create/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "create",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Sugain",
+                      "disabled": false,
+                      "type": "default"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Sugain é um comando",
+                      "disabled": false,
+                      "type": "default"
+                    },
+                    {
+                      "key": "path_to_executable_file",
+                      "value": "sugain",
+                      "disabled": false,
+                      "type": "default"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/delete/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "delete",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "list",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "KASDG-TOKEN-AGKASDBJG",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/programs/list/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "programs",
+                    "list",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "server-default-routes",
+      "item": [
+        {
+          "name": "Projects",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/project/create",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "project",
+                    "create"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"ABACAXI\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/project/delete/2",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "project",
+                    "delete",
+                    "2"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "list workflows",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/project/root-workflows/list/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "project",
+                    "root-workflows",
+                    "list",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "list",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/project/list",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "project",
+                    "list"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "update",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/project/update/2",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "project",
+                    "update",
+                    "2"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"NEW PROJECTaaaa\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Commands",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  },
+                  {
+                    "key": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/command/create/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "command",
+                    "create",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"sufilter\",\n  \"parameters\": \"{'f':'','amps':'','dt':'tracl'}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/command/delete/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "command",
+                    "delete",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "show",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/command/show/2",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "command",
+                    "show",
+                    "2"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "update",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/command/update/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "command",
+                    "update",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"NEW PROJECTaaaa\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lines",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  },
+                  {
+                    "key": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/line/create/3",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "line",
+                    "create",
+                    "3"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Primeira linha\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/line/delete/2",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "line",
+                    "delete",
+                    "2"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "list",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/line/list/3",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "line",
+                    "list",
+                    "3"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "update name",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/line/update/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "line",
+                    "update",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"first line\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Session",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  },
+                  {
+                    "key": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/session",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "session"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"admin@boto.com\",\n  \"password\": \"J#6m&N7o@S*4rFp!3vLx@9Tx2W\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Datasets",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  },
+                  {
+                    "key": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/dataset/create",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "dataset",
+                    "create"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"projectId\": 1,\n\t\"workflowId\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/workflow/delete/2",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "workflow",
+                    "delete",
+                    "2"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "show",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/workflow/show/20",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "workflow",
+                    "show",
+                    "20"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "update",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/workflow/update/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "workflow",
+                    "update",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"NEW PROJECTaaaa\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "User",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/user/create",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "create"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"admin\",\n  \"email\": \"admin@boto.com\",\n  \"password\": \"J#6m&N7o@S*4rFp!3vLx@9Tx2W\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/user/delete",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "delete"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "list",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/user/list",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "list"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "show",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/user/show/ce5ceb2d-c412-408f-b46c-bc5dad42a5c7",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "show",
+                    "ce5ceb2d-c412-408f-b46c-bc5dad42a5c7"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "Update",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/user/update",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "update"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"email\": \"email@update1.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "SU file",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/su-file",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "su-file"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "value": "",
+                      "disabled": false,
+                      "type": "default"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "show",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/su-file",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "su-file"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "Update",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/su-file/marmousi_CS_23072023_175425.su/filters",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "su-file",
+                    "marmousi_CS_23072023_175425.su",
+                    "filters"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"updateOptions\": [\n\t\t{\n\t\t\t\"name\": \"sufilter\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"f\": [10,20,150,200],\n\t\t\t\t\"amps\": [1,1,0,0]\n\t\t\t}\n\t\t}\n\t]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "SU file path",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/su-file",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "su-file"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "value": "",
+                      "disabled": false,
+                      "type": "default"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "show",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/su-file-path/show-path/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "su-file-path",
+                    "show-path",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "Update",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/su-file/marmousi_CS_23072023_175425.su/filters",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "su-file",
+                    "marmousi_CS_23072023_175425.su",
+                    "filters"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"updateOptions\": [\n\t\t{\n\t\t\t\"name\": \"sufilter\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"f\": [10,20,150,200],\n\t\t\t\t\"amps\": [1,1,0,0]\n\t\t\t}\n\t\t}\n\t]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Workflows",
+          "item": [
+            {
+              "name": "create",
+              "event": [],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  },
+                  {
+                    "key": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/workflow/create/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "workflow",
+                    "create",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"NEW WORKFLOW!\",\n\t\"parentType\": \"lineId\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "delete",
+              "event": [],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/workflow/delete/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "workflow",
+                    "delete",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "show",
+              "event": [],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/workflow/show/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "workflow",
+                    "show",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                }
+              }
+            },
+            {
+              "name": "update",
+              "event": [],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "disabled": false,
+                    "type": "default"
+                  }
+                ],
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "",
+                "url": {
+                  "raw": "{{base_url}}/workflow/update/1",
+                  "protocol": "",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "workflow",
+                    "update",
+                    "1"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"NEW PROJECTaaaa\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_seismic_webviz",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "base_url",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "JWT",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

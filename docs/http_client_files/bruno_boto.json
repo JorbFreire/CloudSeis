@@ -1,0 +1,1499 @@
+{
+  "name": "boto",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "seismic_webviz",
+      "items": [
+        {
+          "type": "http",
+          "name": "Plot stack",
+          "seq": 4,
+          "request": {
+            "url": "{{base_seismic_webviz}}",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "User-Agent",
+                "value": "insomnia/2023.5.8",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "gather_key",
+                "value": "ep",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "workflowId",
+                "value": "2",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Plot",
+          "seq": 3,
+          "request": {
+            "url": "{{base_seismic_webviz}}",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "User-Agent",
+                "value": "insomnia/2023.5.8",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "gather_key",
+                "value": "ep",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "workflowId",
+                "value": "2",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "server-admin-routes",
+      "items": [
+        {
+          "type": "folder",
+          "name": "ProgramGroups",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 4,
+              "request": {
+                "url": "{{base_url}}/programs/groups/create",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"Grupo 1\",\n  \"description\": \"descrição do grupo\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/programs/groups/delete/1",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "list",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/programs/groups/list",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "Programs",
+          "items": [
+            {
+              "type": "http",
+              "name": "create json",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/programs/create/5",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "multipartForm",
+                  "formUrlEncoded": [],
+                  "multipartForm": [
+                    {
+                      "type": "text",
+                      "name": "name",
+                      "value": "Sugain",
+                      "enabled": true
+                    },
+                    {
+                      "type": "text",
+                      "name": "description",
+                      "value": "Sugain é um comando",
+                      "enabled": true
+                    },
+                    {
+                      "type": "text",
+                      "name": "path_to_executable_file",
+                      "value": "sugain",
+                      "enabled": true
+                    }
+                  ],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "create parameter",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/programs/parameters/create",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "multipartForm",
+                  "formUrlEncoded": [],
+                  "multipartForm": [
+                    {
+                      "type": "text",
+                      "name": "name",
+                      "value": "Sugain",
+                      "enabled": true
+                    },
+                    {
+                      "type": "text",
+                      "name": "description",
+                      "value": "Sugain é um comando",
+                      "enabled": true
+                    },
+                    {
+                      "type": "text",
+                      "name": "path_to_executable_file",
+                      "value": "sugain",
+                      "enabled": true
+                    }
+                  ],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/programs/create/1",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "multipartForm",
+                  "formUrlEncoded": [],
+                  "multipartForm": [
+                    {
+                      "type": "text",
+                      "name": "name",
+                      "value": "Sugain",
+                      "enabled": true
+                    },
+                    {
+                      "type": "text",
+                      "name": "description",
+                      "value": "Sugain é um comando",
+                      "enabled": true
+                    },
+                    {
+                      "type": "text",
+                      "name": "path_to_executable_file",
+                      "value": "sugain",
+                      "enabled": true
+                    }
+                  ],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 7,
+              "request": {
+                "url": "{{base_url}}/programs/delete/1",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "list",
+              "seq": 8,
+              "request": {
+                "url": "{{base_url}}/programs/list/1",
+                "method": "GET",
+                "headers": [
+                  {
+                    "name": "Authorization",
+                    "value": "KASDG-TOKEN-AGKASDBJG",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "server-default-routes",
+      "items": [
+        {
+          "type": "folder",
+          "name": "Projects",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/project/create",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"ABACAXI\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 7,
+              "request": {
+                "url": "{{base_url}}/project/delete/2",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "list workflows",
+              "seq": 10,
+              "request": {
+                "url": "{{base_url}}/project/root-workflows/list/1",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "list",
+              "seq": 9,
+              "request": {
+                "url": "{{base_url}}/project/list",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "update",
+              "seq": 8,
+              "request": {
+                "url": "{{base_url}}/project/update/2",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"NEW PROJECTaaaa\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "Commands",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/command/create/1",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  },
+                  {
+                    "name": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"sufilter\",\n  \"parameters\": \"{'f':'','amps':'','dt':'tracl'}\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/command/delete/1",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "show",
+              "seq": 8,
+              "request": {
+                "url": "{{base_url}}/command/show/2",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "update",
+              "seq": 7,
+              "request": {
+                "url": "{{base_url}}/command/update/1",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"NEW PROJECTaaaa\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "Lines",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/line/create/3",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  },
+                  {
+                    "name": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"Primeira linha\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/line/delete/2",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "list",
+              "seq": 8,
+              "request": {
+                "url": "{{base_url}}/line/list/3",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "update name",
+              "seq": 7,
+              "request": {
+                "url": "{{base_url}}/line/update/1",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"first line\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "Session",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 2,
+              "request": {
+                "url": "{{base_url}}/session",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  },
+                  {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"email\": \"admin@boto.com\",\n  \"password\": \"J#6m&N7o@S*4rFp!3vLx@9Tx2W\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "Datasets",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/dataset/create",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  },
+                  {
+                    "name": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"projectId\": 1,\n  \"workflowId\": 3\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/workflow/delete/2",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "show",
+              "seq": 8,
+              "request": {
+                "url": "{{base_url}}/workflow/show/20",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "update",
+              "seq": 7,
+              "request": {
+                "url": "{{base_url}}/workflow/update/1",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"NEW PROJECTaaaa\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "User",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/user/create",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"admin\",\n  \"email\": \"admin@boto.com\",\n  \"password\": \"J#6m&N7o@S*4rFp!3vLx@9Tx2W\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 7,
+              "request": {
+                "url": "{{base_url}}/user/delete",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "list",
+              "seq": 10,
+              "request": {
+                "url": "{{base_url}}/user/list",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "show",
+              "seq": 9,
+              "request": {
+                "url": "{{base_url}}/user/show/ce5ceb2d-c412-408f-b46c-bc5dad42a5c7",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "Update",
+              "seq": 8,
+              "request": {
+                "url": "{{base_url}}/user/update",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"email\": \"email@update1.com\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "SU file",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/su-file",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "multipartForm",
+                  "formUrlEncoded": [],
+                  "multipartForm": [
+                    {
+                      "type": "text",
+                      "name": "file",
+                      "value": "",
+                      "enabled": true
+                    }
+                  ],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "show",
+              "seq": 4,
+              "request": {
+                "url": "{{base_url}}/su-file",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "Update",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/su-file/marmousi_CS_23072023_175425.su/filters",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"updateOptions\": [\n    {\n      \"name\": \"sufilter\",\n      \"parameters\": {\n        \"f\": [10,20,150,200],\n        \"amps\": [1,1,0,0]\n      }\n    }\n  ]\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "SU file path",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/su-file",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "multipartForm",
+                  "formUrlEncoded": [],
+                  "multipartForm": [
+                    {
+                      "type": "text",
+                      "name": "file",
+                      "value": "",
+                      "enabled": true
+                    }
+                  ],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "show",
+              "seq": 4,
+              "request": {
+                "url": "{{base_url}}/su-file-path/show-path/1",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "Update",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/su-file/marmousi_CS_23072023_175425.su/filters",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"updateOptions\": [\n    {\n      \"name\": \"sufilter\",\n      \"parameters\": {\n        \"f\": [10,20,150,200],\n        \"amps\": [1,1,0,0]\n      }\n    }\n  ]\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "Workflows",
+          "items": [
+            {
+              "type": "http",
+              "name": "create",
+              "seq": 5,
+              "request": {
+                "url": "{{base_url}}/workflow/create/1",
+                "method": "POST",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  },
+                  {
+                    "name": "User-Agent",
+                    "value": "Insomnia/2023.5.2",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"NEW WORKFLOW!\",\n  \"parentType\": \"lineId\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "delete",
+              "seq": 6,
+              "request": {
+                "url": "{{base_url}}/workflow/delete/1",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "show",
+              "seq": 8,
+              "request": {
+                "url": "{{base_url}}/workflow/show/1",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "update",
+              "seq": 7,
+              "request": {
+                "url": "{{base_url}}/workflow/update/1",
+                "method": "PUT",
+                "headers": [
+                  {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true
+                  }
+                ],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"name\": \"NEW PROJECTaaaa\"\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "activeEnvironmentUid": "U4TerC79ZTMlMIUIkWMXB",
+  "environments": [
+    {
+      "variables": [
+        {
+          "name": "base_seismic_webviz",
+          "value": "http://localhost:5006",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        },
+        {
+          "name": "base_url",
+          "value": "http://localhost:5000",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        },
+        {
+          "name": "JWT",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFlMjk0YWViLTZhN2QtNDViMS1iM2UzLTczMzBkZDNiNTBjMCIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYm90by5jb20ifQ.rWCCZAYo5Ix4BFsDmvn7NCB2nEFKcf655UgpOJ-jYBQ",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        }
+      ],
+      "name": "dev"
+    }
+  ],
+  "root": {
+    "request": {
+      "headers": [
+        {
+          "name": "Cookie",
+          "value": "Authorization={{JWT}}",
+          "enabled": true,
+          "uid": "MayXa5Kwr8YVMCYoqFpN3"
+        }
+      ]
+    }
+  },
+  "brunoConfig": {
+    "version": "1",
+    "name": "boto",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "size": 0.008179664611816406,
+    "filesCount": 45
+  }
+}
