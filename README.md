@@ -66,7 +66,7 @@ The project is divided in 4 services:
 ### Database diagram
 
 ![Database diagram, simplified version](
-  ./assets/database_simplified_diagram.png
+  ./docs/assets/database_simplified_diagram.png
 )
 Database diagram simplified for easier understanding of data flow. <br />
 Mostly every table have a column to identify who can access and modify each row.
