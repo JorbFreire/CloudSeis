@@ -19,7 +19,7 @@ def showWorkflowFilePath(workflowId) -> str:
     file_path = _generateSuFilePath(
         workflow.getSelectedFileName(),
         workflow.owner_email,
-        workflow.workflowParent[0].getProjectId()
+        workflow.workflowParent.getProjectId()
     )
     return file_path
 
