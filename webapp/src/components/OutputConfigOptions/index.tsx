@@ -19,10 +19,8 @@ export default function OutputConfigOptions() {
   }
 
   const submitOutputName = () => {
-    const token = localStorage.getItem("jwt")
-    if (!token) return
     if (!singleSelectedWorkflowId) return
-    updateWorkflowOutputName(token, singleSelectedWorkflowId, outputFileName)
+    updateWorkflowOutputName(singleSelectedWorkflowId, outputFileName)
   }
 
   useEffect(() => {

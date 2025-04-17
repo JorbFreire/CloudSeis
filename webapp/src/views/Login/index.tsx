@@ -27,7 +27,6 @@ export default function Login() {
 
     createNewSession({ email, password }).then(response => {
       if (!response) return
-      localStorage.setItem("jwt", response)
       navigate({ to: "/projects" })
     })
 
@@ -35,10 +34,7 @@ export default function Login() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-    validateSession(token).then((isValid) => {
+    validateSession().then((isValid) => {
       if (isValid)
         return navigate({ to: "/projects" })
       localStorage.removeItem("jwt")

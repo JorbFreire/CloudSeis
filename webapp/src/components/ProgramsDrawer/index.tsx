@@ -30,12 +30,8 @@ export default function ProgramsDrawer({
   const [programsGroups, setProgramsGroups] = useState<Array<IProgramsGroup>>([])
 
   const addProgramToCurrentWorkflow = (name: string, program_id: number) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
     if (singleSelectedWorkflowId) {
       createNewCommand(
-        token,
         singleSelectedWorkflowId,
         program_id,
         name

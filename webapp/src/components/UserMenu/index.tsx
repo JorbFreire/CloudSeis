@@ -17,7 +17,6 @@ export default function UserMenu() {
   };
 
   const logout = () => {
-    localStorage.removeItem("jwt")
     navigate({ to: "/login" })
     handleClose()
   }

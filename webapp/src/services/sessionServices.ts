@@ -10,11 +10,8 @@ interface sessionRequestBody {
   password: string
 }
 
-interface sessionResponse {
-  token: string
-}
-
-export async function validateSession(token: string): Promise<boolean> {
+export async function validateSession(): Promise<boolean> {
+  const token = "mock-token"
   try {
     // ! insecure
     const response = await api.get(`/session/validate/${token}`)
@@ -34,15 +31,15 @@ export async function validateSession(token: string): Promise<boolean> {
 export async function createNewSession({
   email,
   password
-}: sessionRequestBody): Promise<string | null> {
+}: sessionRequestBody): Promise<true | null> {
   try {
-    const response = await api.post<sessionResponse>(`/session/`, {
+    console.log("try to login")
+    await api.post(`/session/`, {
       email,
       password
     })
-    return response.data.token
+    return true
   } catch (error) {
-    console.error(error)
     const axiosError = error as AxiosError
     notificationStore.triggerNotification({
       content: axiosError

@@ -5,13 +5,10 @@ import api from "./api"
 
 const notificationStore = useNotificationStore.getState()
 
-export async function getProjectsByUser(token: string): Promise<Array<IProject> | null> {
+export async function getProjectsByUser(): Promise<Array<IProject> | null> {
   try {
-    const response = await api.get<Array<IProject>>(`/project/list`, {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    })
+    const response = await api.get<Array<IProject>>(`/project/list`)
+    console.log("response", response)
     return response.data
   } catch (error) {
     console.error(error)
@@ -23,16 +20,11 @@ export async function getProjectsByUser(token: string): Promise<Array<IProject> 
   }
 }
 
-export async function createNewProject(token: string, name: string): Promise<IProject | null> {
+export async function createNewProject(name: string): Promise<IProject | null> {
   try {
     const response = await api.post<IProject>(
       `/project/create`,
-      { name },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      }
+      { name }
     )
     return response.data
   } catch (error) {
@@ -45,15 +37,10 @@ export async function createNewProject(token: string, name: string): Promise<IPr
   }
 }
 
-export async function deleteProject(token: string, id: number): Promise<IProject | null> {
+export async function deleteProject(id: number): Promise<IProject | null> {
   try {
     const response = await api.delete<IProject>(
-      `/project/delete/${id}`,
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      }
+      `/project/delete/${id}`
     )
     return response.data
   } catch (error) {

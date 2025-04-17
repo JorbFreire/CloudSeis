@@ -6,18 +6,11 @@ import api from "./api"
 const notificationStore = useNotificationStore.getState()
 
 export async function listFiles(
-  token: string,
   projectId: number,
 ): Promise<Array<IfileLink> | null> {
   try {
     const response = await api.get(
-      `/su-file/list/${projectId}`,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: 'Bearer ' + token
-        },
-      }
+      `/su-file/list/${projectId}`
     )
     return response.data
   } catch (error) {
@@ -31,7 +24,6 @@ export async function listFiles(
 }
 
 export async function createFile(
-  token: string,
   projectId: number,
   formData: any,
 ): Promise<{ fileLink: IfileLink } | null> {
@@ -42,7 +34,6 @@ export async function createFile(
       {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: 'Bearer ' + token
         },
       }
     )
@@ -58,20 +49,11 @@ export async function createFile(
 }
 
 export async function updateFile(
-  token: string,
   workflowId: number
 ): Promise<any | null> {
   try {
     const response = await api.put(
-      `/su-file/update/${workflowId}`,
-      {
-        foo: "ok"
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        },
-      }
+      `/su-file/update/${workflowId}`
     )
     return response.data
   } catch (error) {

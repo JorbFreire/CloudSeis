@@ -6,15 +6,10 @@ import api from "./api"
 const notificationStore = useNotificationStore.getState()
 
 export async function getLinesByProjectID(
-  token: string,
   projectId: number
 ): Promise<Array<ILine> | null> {
   try {
-    const response = await api.get<Array<ILine>>(`/line/list/${projectId}`, {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    })
+    const response = await api.get<Array<ILine>>(`/line/list/${projectId}`)
     return response.data
   } catch (error) {
     console.error(error);
@@ -27,7 +22,6 @@ export async function getLinesByProjectID(
 }
 
 export async function createNewLine(
-  token: string,
   projectId: number,
   name: string
 ): Promise<ILine | null> {
@@ -36,11 +30,6 @@ export async function createNewLine(
       `/line/create/${projectId}`,
       {
         name
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
       }
     )
     return response.data

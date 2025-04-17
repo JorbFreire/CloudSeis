@@ -35,10 +35,7 @@ export default function CustomTab({
   } = useSortable({ id: value });
 
   const handleUpdateCommandIsActive = () => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-    updateCommandIsActive(token, value)
+    updateCommandIsActive(value)
   }
 
   const style = {

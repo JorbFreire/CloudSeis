@@ -1,6 +1,5 @@
 
 from typing import Literal
-from icecream import ic
 
 import requests
 from bokeh.application.handlers import FunctionHandler
@@ -16,11 +15,11 @@ def app_factory():
         api_url = f"{BASE_URL}/su-file-path/dataset/show-path/{workflowId}"
         if origin == "input":
             api_url = api_url.replace("/dataset", "")
-        headers = {
+        cookies = {
             "Authorization": f"Bearer {auth_token}"
         }
 
-        response = requests.get(api_url, headers=headers)
+        response = requests.get(api_url, cookies=cookies)
 
         if response.status_code != 200:
             return None
@@ -37,7 +36,6 @@ def app_factory():
         gather_key = arguments.get('gather_key', [b''])[0].decode('utf-8')
         workflowId = arguments.get('workflowId', [b''])[0].decode('utf-8')
         origin = arguments.get('origin', [b''])[0].decode('utf-8')
-
         absolute_file_path = find_file_path(
             auth_token=auth_token,
             workflowId=int(workflowId),

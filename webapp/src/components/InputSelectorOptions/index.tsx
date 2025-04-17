@@ -46,28 +46,26 @@ export default function InputSelectorOptions() {
     window.open(`${vizualizerURL}workflowId=${singleSelectedWorkflowId}&origin=input`, '_blank')
   }
 
-  const submitWorkflowFileLinkUpdate = () => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
+  const submitWorkflowFileLinkUpdate = (fileLinkId: string) => {
+    const oldFileLinkId = selectedFileLinkId
+    setSelectedFileLinkId(fileLinkId)
+
     if (!singleSelectedWorkflowId)
       return
-    if (!selectedFileLinkId)
+    if (!fileLinkId)
       return
 
     updateWorkflowFileLink(
-      token,
       singleSelectedWorkflowId,
-      Number(selectedFileLinkId)
-    )
+      Number(fileLinkId)
+    ).catch((error) => {
+      console.log(error)
+      setSelectedFileLinkId(oldFileLinkId)
+    })
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-
-    listFiles(token, projectId).then((result) => {
+    listFiles(projectId).then((result) => {
       if (!result)
         return
       setFileLinks(result)
@@ -89,7 +87,7 @@ export default function InputSelectorOptions() {
         id="demo-simple-select"
         value={selectedFileLinkId}
         label="Arquivo"
-        onChange={(event) => setSelectedFileLinkId(event.target.value)}
+        onChange={(event) => submitWorkflowFileLinkUpdate(event.target.value)}
       >
         {fileLinks.map((fileLink) =>
           <MenuItem value={fileLink.id}>
@@ -103,13 +101,6 @@ export default function InputSelectorOptions() {
           Upload de novo arquivo
         </Button>
       </Select>
-
-      <Button
-        variant="contained"
-        onClick={submitWorkflowFileLinkUpdate}
-      >
-        Alterar arquivo
-      </Button>
 
       <Button
         variant="contained"

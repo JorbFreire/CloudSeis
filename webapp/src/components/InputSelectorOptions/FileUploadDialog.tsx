@@ -29,10 +29,6 @@ export default function FileUploadDialog({
   const [file, setFile] = useState<any>(null)
 
   const saveNewFile = () => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-
     if (!singleSelectedWorkflowId)
       return
 
@@ -43,7 +39,6 @@ export default function FileUploadDialog({
     formData.append('file', file);
 
     createFile(
-      token,
       projectId,
       formData
     ).then((result) => {

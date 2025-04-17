@@ -29,10 +29,6 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
     set({ singleSelectedWorkflowId: newWorkflowId }),
 
   selectWorkflow: (workflowId: number, afterSelect) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-
     if (get().singleSelectedWorkflowId != undefined) {
       const isAlredySingleSelected = workflowId == get().singleSelectedWorkflowId;
       if (isAlredySingleSelected)
@@ -51,7 +47,7 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
       return
     }
 
-    getWorkflowByID(token, workflowId)
+    getWorkflowByID(workflowId)
       .then(result => {
         if (!result)
           return

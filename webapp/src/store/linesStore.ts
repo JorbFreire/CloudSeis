@@ -16,10 +16,7 @@ interface ILinesStoreState {
 export const useLinesStore = create<ILinesStoreState>((set) => ({
   lines: [],
   loadLines: (projectId: number) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-    getLinesByProjectID(token, projectId)
+    getLinesByProjectID(projectId)
       .then((result) => {
         if (Array.isArray(result))
           set({ lines: result })
@@ -27,10 +24,7 @@ export const useLinesStore = create<ILinesStoreState>((set) => ({
   },
 
   saveNewLine: (projectId: number, name: string) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-    createNewLine(token, projectId, name)
+    createNewLine(projectId, name)
       .then(result => {
         if (!result)
           return
@@ -38,11 +32,7 @@ export const useLinesStore = create<ILinesStoreState>((set) => ({
       })
   },
   pushNewWorkflowToLine: (lineId: number, name: string) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-
-    createNewWorkflow(token, lineId, "lineId", name)
+    createNewWorkflow(lineId, "lineId", name)
       .then(result => {
         if (!result)
           return

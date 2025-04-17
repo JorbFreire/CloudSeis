@@ -11,14 +11,7 @@ export default function DatasetWorkflows({ workflowId }: IDatasetWorkflows) {
   const [datasets, setDatasets] = useState<Array<IWorkflow>>([])
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt")
-    if (!token) return
-
-    api.get<Array<IWorkflow>>(`/dataset/list/${workflowId}`, {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    }).then((response) => {
+    api.get<Array<IWorkflow>>(`/dataset/list/${workflowId}`).then((response) => {
       setDatasets(response.data)
     })
   }, [])

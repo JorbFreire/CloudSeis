@@ -1,7 +1,11 @@
 from typing import Literal
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask_jwt_extended import (
+    JWTManager
+)
 from marshmallow import ValidationError
+from datetime import timedelta
 
 from .config.database import migrations_root_path, get_db_uri
 from .config.upload import upload_folder
@@ -15,7 +19,7 @@ from .errors.FileError import FileError
 from .cli import populate_database_programs, new_default_programs_from_database
 
 
-def create_app(mode: Literal["production", "development", "test"] = "development"):
+def create_app(mode: Literal["PRODUCTION", "DEVELOPMENT", "TEST"] = "DEVELOPMENT"):
     app = Flask(__name__)
     app.config['UPLOAD_FOLDER'] = upload_folder
     app.config['SQLALCHEMY_DATABASE_URI'] = get_db_uri(mode)
@@ -24,13 +28,33 @@ def create_app(mode: Literal["production", "development", "test"] = "development
     database.init_app(app)
     migrate.init_app(app, database, migrations_root_path)
 
-    if mode == "test":
+    if mode == "TEST":
         app.config.update({
             "TESTING": True,
         })
 
+    app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+    app.config["JWT_COOKIE_SECURE"] = True
+    app.config["JWT_COOKIE_HTTPONLY"] = True
+
+    if mode == "PRODUCTION":
+        app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+        app.config["JWT_COOKIE_SAMESITE"] = "None"
+        CORS(app, supports_credentials=True, origins=[
+            "https://client1.domain.com",
+            "https://client2.domain.com"
+        ])
+    else:
+        app.config["JWT_COOKIE_SAMESITE"] = "Lax"
+        CORS(app, supports_credentials=True, origins=[
+            "http://127.0.0.1:5006",
+            "http://127.0.0.1:5173",
+            "*"
+        ])
+
+    jwt = JWTManager(app)
+
     app.register_blueprint(router)
-    CORS(app)
 
     @app.errorhandler(ValidationError)
     def handle_validation_exception(error):
@@ -43,7 +67,7 @@ def create_app(mode: Literal["production", "development", "test"] = "development
     @app.errorhandler(AuthError)
     def handle_auth_exception(error):
         message = "Not authorized"
-        if mode == "development":
+        if mode == "DEVELOPMENT":
             message = error.message
         # *** status code 403 means that it requires admin role
         return jsonify({"Error": message}), error.statusCode

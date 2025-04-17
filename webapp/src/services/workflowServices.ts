@@ -9,17 +9,11 @@ import api from "./api"
 const notificationStore = useNotificationStore.getState()
 
 export async function getWorkflowByID(
-  token: string,
   id: number,
 ): Promise<IWorkflow | null> {
   try {
     const response = await api.get<IWorkflow>(
-      `/workflow/show/${id}`,
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      }
+      `/workflow/show/${id}`
     )
     return response.data
   } catch (error) {
@@ -33,7 +27,6 @@ export async function getWorkflowByID(
 }
 
 export async function createNewWorkflow(
-  token: string,
   parentId: number,
   parentType: "projectId" | "lineId",
   name: string,
@@ -45,11 +38,6 @@ export async function createNewWorkflow(
         parentType,
         name,
         output_name: defaultOutputName
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
       }
     )
     return response.data
@@ -64,7 +52,6 @@ export async function createNewWorkflow(
 }
 
 export async function updateWorkflowFileLink(
-  token: string,
   workflowId: number,
   fileLinkId: number,
 ): Promise<IWorkflow | null> {
@@ -73,11 +60,6 @@ export async function updateWorkflowFileLink(
       `/workflow/update/${workflowId}/file`,
       {
         fileLinkId
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
       }
     )
     return response.data
@@ -92,7 +74,6 @@ export async function updateWorkflowFileLink(
 }
 
 export async function updateWorkflowOutputName(
-  token: string,
   workflowId: number,
   outputName: string,
 ): Promise<IWorkflow | null> {
@@ -101,11 +82,6 @@ export async function updateWorkflowOutputName(
       `/workflow/update/${workflowId}/output-name`,
       {
         outputName
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
       }
     )
     return response.data

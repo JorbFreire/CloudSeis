@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 
+from flask import jsonify, make_response, current_app
 from jwt import encode
 
 from ..errors.AuthError import AuthError
@@ -24,7 +25,23 @@ def create(email, password) -> str:
     except:
         raise AuthError("Could not generate token")
 
-    return {"token": token}
+    response = make_response(jsonify({"message": "Logged in"}))
+
+    # ! cookie domain needs more testing 
+    cookie_domain = current_app.config.get("JWT_COOKIE_DOMAIN")
+    if not cookie_domain:
+        cookie_domain = None
+    response.set_cookie(
+        "Authorization",
+        token,
+        httponly=current_app.config["JWT_COOKIE_HTTPONLY"],  
+        secure=current_app.config["JWT_COOKIE_SECURE"],  
+        samesite=current_app.config["JWT_COOKIE_SAMESITE"],  
+        path="/",
+        domain=cookie_domain
+    )
+
+    return response
 
 
 def validate(token: str):

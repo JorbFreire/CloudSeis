@@ -15,9 +15,9 @@ from ..services.validateToken import validateToken
 
 def requireAuthentication(routeFunction, routeModel=None, isAdminRequired=False):
     def wrapper(routeModel=routeModel, *args, **kwargs):
-        token = request.headers.get('Authorization')
+        token = request.cookies.get("Authorization")
         data = {}
-
+    
         if not token:
             raise AuthError("No token")
 

@@ -61,10 +61,8 @@ export default function Project({ projectId }: IProjectProps) {
   }))
 
   const runWorkflow = () => {
-    const token = localStorage.getItem("jwt")
-    if (!token) return
     if (!singleSelectedWorkflowId) return
-    updateFile(token, singleSelectedWorkflowId).then((result) => {
+    updateFile(singleSelectedWorkflowId).then((result) => {
       if (!result) return
 
       pushNewLog(singleSelectedWorkflowId, result.process_output)
@@ -80,8 +78,6 @@ export default function Project({ projectId }: IProjectProps) {
   }
 
   const setUpdateCommandsOrder = (newOrderCommands: orderedCommandsListType) => {
-    const token = localStorage.getItem("jwt")
-    if (!token) return
     if (!singleSelectedWorkflowId) return
 
     setCommands([...newOrderCommands])
@@ -91,7 +87,6 @@ export default function Project({ projectId }: IProjectProps) {
       .filter((id) => typeof id === "number")
 
     updateCommandsOrder(
-      token,
       singleSelectedWorkflowId.toString(),
       newOrderIds
     ).catch(() => {
@@ -126,11 +121,9 @@ export default function Project({ projectId }: IProjectProps) {
               setTabs={setUpdateCommandsOrder}
               selectedTabId={selectedCommandId}
               setSelectedTabId={setSelectedCommandId}
-              onRemove={(selectedCommandId: number | StaticTabKey) => {
-                const token = localStorage.getItem("jwt")
-                if (!token) return
-                deleteCommand(token, selectedCommandId.toString())
-              }}
+              onRemove={(commandId: number | StaticTabKey) =>
+                deleteCommand(commandId.toString())
+              }
               CustomDndContext={DefaultDNDList}
               color='white'
               orientation='vertical'

@@ -25,9 +25,6 @@ interface ICommandsStoreState {
 export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
   selectedCommandId: StaticTabKey.Input,
   setSelectedCommandId: (newIndex) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
     set(() => ({ selectedCommandId: newIndex }))
   },
   commands: [],
@@ -35,10 +32,7 @@ export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
     return ({ commands: [...newValue] })
   }),
   loadCommands: (workflowId) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
-    getWorkflowByID(token, workflowId)
+    getWorkflowByID(workflowId)
       .then((result) => {
         if (!result)
           return
@@ -56,16 +50,13 @@ export const useCommandsStore = create<ICommandsStoreState>((set, get) => ({
       })
   },
   updateCommandParams: async (id: number | StaticTabKey, newParameters: string) => {
-    const token = localStorage.getItem("jwt")
-    if (!token)
-      return
     const commandIndexToUpdate = get().commands.findIndex(
       (command) => command.id == id
     )
 
     if (!get().commands[commandIndexToUpdate])
       return;
-    const updatedCommand = await updateCommandParameters(token, id, newParameters)
+    const updatedCommand = await updateCommandParameters(id, newParameters)
     if (!updatedCommand)
       return
     set((state) => ({

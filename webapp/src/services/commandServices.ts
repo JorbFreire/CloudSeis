@@ -7,7 +7,6 @@ import api from "./api"
 const notificationStore = useNotificationStore.getState()
 
 export async function createNewCommand(
-  token: string,
   workflowId: number,
   program_id: number,
   name: string,
@@ -19,11 +18,6 @@ export async function createNewCommand(
         name,
         program_id,
         parameters: "{}"
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
       }
     )
     return response.data
@@ -38,7 +32,6 @@ export async function createNewCommand(
 }
 
 export async function updateCommandParameters(
-  token: string,
   // ! id type must be reviewed, StaticTabKey would cause errors
   id: number | StaticTabKey,
   newParameters: string
@@ -48,11 +41,6 @@ export async function updateCommandParameters(
       `/command/update/${id}/parameters`,
       {
         parameters: newParameters
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
       }
     )
     return response.data
@@ -67,19 +55,12 @@ export async function updateCommandParameters(
 }
 
 export async function updateCommandIsActive(
-  token: string,
   // ! id type must be reviewed, StaticTabKey would cause errors
   id: number | StaticTabKey,
 ): Promise<ICommand | null> {
   try {
     const response = await api.put<ICommand>(
       `/command/update/${id}/is_active`,
-      {},
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      }
     )
     return response.data
   } catch (error) {
@@ -93,19 +74,13 @@ export async function updateCommandIsActive(
 }
 
 export async function updateCommandsOrder(
-  token: string,
   workflowId: string,
   newOrder: idsType
 ): Promise<orderedCommandsListType | null> {
   try {
     const response = await api.put<orderedCommandsListType>(
       `/command/order/${workflowId}`,
-      { newOrder },
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      }
+      { newOrder }
     )
     return response.data
   } catch (error) {
@@ -119,17 +94,11 @@ export async function updateCommandsOrder(
 }
 
 export async function deleteCommand(
-  token: string,
   commandId: string,
 ): Promise<ICommand | null> {
   try {
     const response = await api.delete<ICommand>(
-      `/command/delete/${commandId}`,
-      {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      }
+      `/command/delete/${commandId}`
     )
     return response.data
   } catch (error) {

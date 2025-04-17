@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 
 from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.validateRequestBody import validateRequestBody
@@ -14,11 +14,11 @@ sessionRouter = Blueprint("session-routes", __name__, url_prefix="/session")
 def create():
     data = request.get_json()
 
-    token = sessionController.create(data["email"], data["password"])
-    return jsonify(token)
+    response = sessionController.create(data["email"], data["password"])
+    return response
 
 
 @sessionRouter.route("/validate/<token>", methods=['POST'])
 def create(token):
     sessionController.validate(token)
-    return ('', 200)
+    return ('', 501)

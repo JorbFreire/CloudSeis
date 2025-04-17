@@ -26,9 +26,7 @@ export default function ProjectsList() {
   }
 
   const triggerDeleteButton = async (projectId: number) => {
-    const token = localStorage.getItem("jwt")
-    if (!token) return
-    const responseData = await deleteProject(token, projectId)
+    const responseData = await deleteProject(projectId)
     if (responseData)
       setProjects((oldProjects) => oldProjects.filter(
         (oldProject) => oldProject.id !== projectId
@@ -36,12 +34,9 @@ export default function ProjectsList() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt")
-    if (!token) return
-    getProjectsByUser(token)
-      .then((result) => {
-        Array.isArray(result) && setProjects(result)
-      })
+    getProjectsByUser().then((result) => {
+      Array.isArray(result) && setProjects(result)
+    })
   }, [])
 
   return (
