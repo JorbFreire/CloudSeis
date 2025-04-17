@@ -44,14 +44,14 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
   CustomDndContext = ({ children }) => (<>{children}</>),
 }: ICustomTabsNavigationProps<T>) {
   // ? conditional rendering could be a high order component ?
-  const removeElementFromState = () => {
-    if (!selectedTabId || typeof selectedTabId == 'string')
+  const removeElementFromState = (tabId: number | StaticTabKey) => {
+    if (!tabId || typeof tabId == 'string')
       return
 
-    const newTabs = tabs.filter((element) => element.id != selectedTabId)
+    const newTabs = tabs.filter((element) => element.id != tabId)
 
-    if (onRemove && typeof selectedTabId == "number")
-      onRemove(selectedTabId)
+    if (onRemove && typeof tabId == "number")
+      onRemove(tabId)
 
     setTabs(newTabs)
     setSelectedTabId(StaticTabKey.Input)
@@ -77,10 +77,11 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
               key={tab.id}
               value={tab.id}
               label={tab.name}
-              onRemove={removeElementFromState}
+              onRemove={() => removeElementFromState(tab.id)}
               $color={color}
               $orientation={orientation}
-              $isActive={tab.is_active}
+              // *** undefined "is_active" is considered as active
+              $isActive={tab.is_active ?? true}
             />
           ))}
         </Tabs>

@@ -6,7 +6,7 @@ declare global {
     id: number | StaticTabKey
     name: string
     // ! is_active at a generic must be reviewed
-    is_active: boolean
+    is_active?: boolean
   }
 
   type literals = Array<string>
@@ -40,7 +40,7 @@ declare global {
   interface ICommand extends IgenericTab {
     workflowId: number
     program_id: number
-    is_active: boolean
+    is_active?: boolean
     // *** stringfied json, but currently [commit 7640f54] accepts any object
     parameters: string
   }
