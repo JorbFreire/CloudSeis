@@ -21,9 +21,11 @@ export default function ProgramsDrawer({
   const {
     commands,
     setCommands,
+    setSelectedCommandId
   } = useCommandsStore((state) => ({
     commands: state.commands,
     setCommands: state.setCommands,
+    setSelectedCommandId: state.setSelectedCommandId,
   }))
 
   // *** Groups of Commands, available commands to insert in the workflow
@@ -38,8 +40,13 @@ export default function ProgramsDrawer({
       ).then((result) => {
         if (!result) return;
         const newCommands = [...commands]
-        newCommands.push(result)
+        const posProcessingStaticTabsAmount = 2
+        newCommands.splice(newCommands.length - posProcessingStaticTabsAmount, 0, result)
         setCommands(newCommands)
+
+        // *** Turn focous on the new command
+        if (typeof result.id !== "number") return
+        setSelectedCommandId(result.id)
       })
     }
   }
