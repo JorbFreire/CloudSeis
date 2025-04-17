@@ -12,6 +12,7 @@ import {
   ActionButtonsContainer,
   ActionButton
 } from './styles'
+import { useCommandsStore } from 'store/commandsStore';
 
 // use is_active to turn down opacity
 // todo: turn into generic and make two tab components
@@ -34,8 +35,28 @@ export default function CustomTab({
     transition,
   } = useSortable({ id: value });
 
+  const {
+    commands,
+    setCommands,
+  } = useCommandsStore((state) => ({
+    commands: state.commands,
+    setCommands: state.setCommands,
+  }))
+
   const handleUpdateCommandIsActive = () => {
     updateCommandIsActive(value)
+    const newCommandsList = commands.map(command => {
+      if (
+        command.id === value &&
+        "is_active" in command
+      )
+        return {
+          ...command,
+          is_active: !command.is_active
+        }
+      return command
+    })
+    setCommands(newCommandsList)
   }
 
   const style = {
@@ -62,6 +83,7 @@ export default function CustomTab({
           />
           {$orientation == "vertical" && Number.isInteger(value) && (
             <ActionButtonsContainer>
+              {/* ! comment disabled should not be in generic component */}
               <ActionButton onClick={handleUpdateCommandIsActive}>
                 <CommentsDisabledRoundedIcon />
               </ActionButton>

@@ -8,7 +8,6 @@ const notificationStore = useNotificationStore.getState()
 export async function getProjectsByUser(): Promise<Array<IProject> | null> {
   try {
     const response = await api.get<Array<IProject>>(`/project/list`)
-    console.log("response", response)
     return response.data
   } catch (error) {
     console.error(error)
