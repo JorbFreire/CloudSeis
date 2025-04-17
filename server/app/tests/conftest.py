@@ -5,7 +5,7 @@ from server.app.create_app import create_app
 
 dotenv_path = find_dotenv()
 result = load_dotenv(dotenv_path, override=True)
-_app = create_app("test")
+_app = create_app("TEST")
 
 def _client():
     return _app.test_client()
