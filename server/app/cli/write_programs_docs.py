@@ -6,7 +6,7 @@ from read_programs_docs import read_program_doc, jsonofy_sdoc
 
 logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
-PROGRAMS_DIR = "home/user/SeismicUnix/src/su/main"
+PROGRAMS_DIR = "home/user/SeismicUnix/src/su/main" # ~/ does not work
 
 def write_programs_docs() -> None:
     for folder_name in sorted(os.listdir(PROGRAMS_DIR)):
