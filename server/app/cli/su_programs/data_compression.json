@@ -14,21 +14,21 @@
                             "name": "blocksize1",
                             "description": "blocksize in direction 1",
                             "example": "16",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "blocksize2",
                             "description": "blocksize in direction 2",
                             "example": "16",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "error",
                             "description": "acceptable error",
                             "example": "0.01",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -42,7 +42,7 @@
                             "name": "gpow",
                             "description": "exponent used to compress the dynamic",
                             "example": "0.5",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -56,7 +56,7 @@
                             "name": "gpow",
                             "description": "exponent used to compress the dynamic",
                             "example": "0.5",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]

@@ -28,21 +28,21 @@
                             "name": "time",
                             "description": "1",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "bendian",
                             "description": "1 if the software is running on big endian machine",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "datum",
                             "description": "if not specified trace header word delrt is used",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

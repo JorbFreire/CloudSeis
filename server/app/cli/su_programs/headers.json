@@ -14,7 +14,7 @@
                             "name": "swap",
                             "description": "=1 to swap bytes",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -35,21 +35,21 @@
                             "name": "degree",
                             "description": "=1 convert seconds of arc to degrees",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "linewidth",
                             "description": "marksize=2 mark=8 | ...",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "linewidth",
                             "description": "marksize=2 mark=8 | ...",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -78,27 +78,27 @@
                             "description": "number of samples per trace",
                             "example": "the",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "ftn",
                             "description": "Fortran flag",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tsort",
                             "description": "trace sorting code:",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntrpr",
                             "description": "number of data traces per record",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -113,21 +113,21 @@
                             "description": "output key",
                             "example": "ep",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "key2",
                             "description": "input key",
                             "example": "fldr",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "mode",
                             "description": "how to assign a key1-value, when the key2-value",
                             "example": "extrapolate",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "key3",
@@ -154,21 +154,21 @@
                             "name": "scale",
                             "description": "value(key) = scale * azimuth",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "az",
                             "description": "azimuth convention flag",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sector",
                             "description": "if set, defines output in sectors of size",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -182,14 +182,14 @@
                             "name": "offset",
                             "description": "if offset=1 then set offset header field",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "signedflag",
                             "description": "is offset signed? if =1 signedflag=1",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -210,7 +210,7 @@
                             "name": "cmp",
                             "description": "if cmp=1, then compute midpoint coordinates and",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -252,49 +252,49 @@
                             "name": "igiext",
                             "description": "Output igi extent (default 0 means extent is only igiout itself)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "igcext",
                             "description": "Output igc extent (default 0 means extent is only igcout itself)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "intype",
                             "description": "Default 3 if a 3D Grid is input, otherwise -2.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "recdp",
                             "description": "Reset the trace cdp key to its central cdp number.",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "reigi",
                             "description": "Reset the trace igi key to its central igi number.",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "reigc",
                             "description": "Reset the trace igc key to its central igc number.",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "check",
                             "description": "Do not print checking details.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -308,14 +308,14 @@
                             "name": "check",
                             "description": "Do not print checking details.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "point_crz",
                             "description": "and point_cru=2 means receiver point 100 will",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -329,56 +329,56 @@
                             "name": "check",
                             "description": "Do not print checking details. The options of this program",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "inloc",
                             "description": "Location options. The option here determines which input names",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "extrapi",
                             "description": "do not extrapolate at ends in igi direction.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "extrapc",
                             "description": "do not extrapolate at ends in igc direction.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "extrapt",
                             "description": "do not extrapolate at ends in independent values.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "igiout",
                             "description": "Output igi range (default is entire igi range of grid).",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "igcout",
                             "description": "Output igc range (default is entire igc range of grid).",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "outind",
                             "description": "Output independent dimension range. One, two, or three numbers.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -392,7 +392,7 @@
                             "name": "iecho",
                             "description": "Full spatial output (do not just output at the input locations).",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -406,42 +406,42 @@
                             "name": "igilow",
                             "description": "Add cells at low igi end (default is not to add cells).",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "igihigh",
                             "description": "Add cells at high igi end (default is not to add cells).",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "igclow",
                             "description": "Add cells at low igc end (default is not to add cells).",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "igchigh",
                             "description": "Add cells at high igc end (default is not to add cells).",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "iflip",
                             "description": "Defaults to not exchanging any grid corners.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "check",
                             "description": "Do not print grid checking details.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -455,14 +455,14 @@
                             "name": "verbose",
                             "description": "<>0 output informations",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "cdpmin",
                             "description": "min cdp bin number",
                             "example": "1001",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -504,21 +504,21 @@
                             "name": "linewidth",
                             "description": "marksize=2 mark=8 | ...",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "linewidth",
                             "description": "marksize=2 mark=8 | ...",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "linewidth",
                             "description": "marksize=2 mark=8 > chart.ps",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -630,7 +630,7 @@
                             "name": "verbose",
                             "description": "chatty, =0 just print keyword number",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -644,7 +644,7 @@
                             "name": "num",
                             "description": "number of traces to dump",
                             "example": "4",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -658,7 +658,7 @@
                             "name": "hpf",
                             "description": "header print format is float",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -678,21 +678,21 @@
                             "name": "rev",
                             "description": "for SPS revision 0 format.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "(Default)   silent run.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ibin",
                             "description": "(default)   inline binsize (cdp interval)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -818,7 +818,7 @@
                             "name": "unrepeat",
                             "description": "Read the text file and generate an integer from 1 and    ,",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -889,7 +889,7 @@
                             "description": "At least one key word.",
                             "example": "key1,...",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "output",
@@ -902,7 +902,7 @@
                             "name": "verbose",
                             "description": "quiet",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -930,14 +930,14 @@
                             "name": "scale",
                             "description": "scalar multiplier for header value",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "const",
                             "description": "additive constant for header value",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -952,13 +952,13 @@
                             "description": "One key word.",
                             "example": "keyword",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "verbose",
                             "description": "quiet",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -972,42 +972,42 @@
                             "name": "xt",
                             "description": "Translation of X",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "yt",
                             "description": "Translation of Y",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "zt",
                             "description": "Translation of Z",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "xr",
                             "description": "Rotation around X in degrees",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "yr",
                             "description": "Rotation aroun Y  in degrees",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "zr",
                             "description": "Rotation around Z in degrees",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -1022,20 +1022,20 @@
                             "description": "of column file",
                             "example": "Name",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "key",
                             "description": "of column entires",
                             "example": "key1,key2,...Number",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "mc",
                             "description": "Column number to use to match rows to traces",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1057,7 +1057,7 @@
                             "description": "number of samples per trace",
                             "example": "the",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "head",
@@ -1070,14 +1070,14 @@
                             "name": "ftn",
                             "description": "Fortran flag",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "1= echo number of traces pasted",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1098,7 +1098,7 @@
                             "name": "a",
                             "description": "=1 flag to add original value to final key",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1119,14 +1119,14 @@
                             "name": "min",
                             "description": "minimum random number",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "max",
                             "description": "maximum radnom number",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1140,7 +1140,7 @@
                             "name": "dim",
                             "description": "dim seismic flag",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1168,14 +1168,14 @@
                             "name": "a",
                             "description": "starting value of the count in the ensemble",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "b",
                             "description": "increment or decrement within the ensemble",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1190,7 +1190,7 @@
                             "description": "... is the list of header fields as they appear in infile",
                             "example": "key1,key2",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "key",
@@ -1245,7 +1245,7 @@
                             "name": "ftn",
                             "description": "Fortran flag",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1399,7 +1399,7 @@
                             "name": "unrepeat",
                             "description": "Read the text file and generate an integer from 1 and    ,",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1440,7 +1440,7 @@
                             "name": "idx",
                             "description": "reference ellipsoid index (default is WGS 1984)",
                             "example": "23",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1461,28 +1461,28 @@
                             "name": "verbose",
                             "description": "=1: echo ellipsoid parameters",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "xoff",
                             "description": "false Easting (default: UTM)",
                             "example": "500000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ysoff",
                             "description": "false Northing, southern hemisphere (default: UTM)",
                             "example": "10000000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ynoff",
                             "description": "false Northing, northern hemisphere (default: UTM)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

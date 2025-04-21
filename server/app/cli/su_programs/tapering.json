@@ -21,14 +21,14 @@
                             "name": "x0",
                             "description": "key value defining the center of gaussian window,",
                             "example": "300",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "xw",
                             "description": "width of gaussian window in units of key value",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -55,7 +55,7 @@
                             "name": "tr1",
                             "description": "number of traces to be tapered at beginning",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -76,21 +76,21 @@
                             "name": "tbeg",
                             "description": "length of taper (ms) at trace start",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tend",
                             "description": "length of taper (ms) at trace end",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taper",
                             "description": "taper type",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -111,21 +111,21 @@
                             "name": "tbeg",
                             "description": "length of taper (ms) at trace start",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tend",
                             "description": "length of taper (ms) at trace end",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taper",
                             "description": "taper type",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -139,7 +139,7 @@
                             "name": "tr1",
                             "description": "number of traces to be tapered at beg (key=tr)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {

@@ -14,56 +14,56 @@
                             "name": "zerophase",
                             "description": "=0 for minimum phase filter",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "locut",
                             "description": "=0 for no low cut filter",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "hicut",
                             "description": "=0 for no high cut filter",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "astoplo",
                             "description": "upper bound on amp at fstoplo",
                             "example": "0.05",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "apasslo",
                             "description": "lower bound on amp at fpasslo",
                             "example": "0.95",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "apasshi",
                             "description": "lower bound on amp at fpasshi",
                             "example": "0.95",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "astophi",
                             "description": "upper bound on amp at fstophi",
                             "example": "0.05",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for filter design info",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -105,14 +105,14 @@
                             "name": "cch",
                             "description": "Correlation coefficient high pass value",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "ccl",
                             "description": "Correlation coefficient low pass value",
                             "example": "0.3",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -126,7 +126,7 @@
                             "name": "padd",
                             "description": "FFT padding in percentage",
                             "example": "25",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -141,48 +141,48 @@
                             "description": "or receiver depth",
                             "example": "source",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "v",
                             "description": "speed of sound in the top layer",
                             "example": "1500.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "r",
                             "description": "surface reflectivity 0 < r < .8",
                             "example": "0.5",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "lambert",
                             "description": "Lambert's cosine law obliquity factor",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for advisory messages, =2 debugging",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "deghost",
                             "description": "deghosting filter; =0 ghosting filter",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "f2",
                             "description": "and d2=0, then the program assumes that the ghost signal is normally",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -197,41 +197,41 @@
                             "description": "header)\tif not set in header then mandatory",
                             "example": "(from",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "dx",
                             "description": "header, d1)\tif not set in header then mandatory",
                             "example": "(from",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "slopes",
                             "description": "monotonically increasing slopes",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "amps",
                             "description": "amplitudes corresponding to slopes",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "bias",
                             "description": "slope made horizontal before filtering",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -259,7 +259,7 @@
                             "name": "verbose",
                             "description": "=1 for advisory messages",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -280,7 +280,7 @@
                             "name": "power",
                             "description": "exponent of (-i*omega)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -294,14 +294,14 @@
                             "name": "phasefac",
                             "description": "phase shift by phase=phasefac*PI",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for advisory messages",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -316,14 +316,14 @@
                             "description": "Header words defining mixing dimesnion",
                             "example": "key1,key2,..",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "dx",
                             "description": "Distance units for each header word",
                             "example": "d1,d2,..",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "keyg",
@@ -336,14 +336,14 @@
                             "name": "vf",
                             "description": "=1 Do a frequency dependent mix",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "vmin",
                             "description": "Velocity of the reflection slope",
                             "example": "5000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -399,7 +399,7 @@
                             "name": "quad",
                             "description": "=0 all four quandrants",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -420,7 +420,7 @@
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -476,35 +476,35 @@
                             "name": "power",
                             "description": "exponent of (i*sqrt(k1^2 + k2^2))^power",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sign",
                             "description": "sign on transform exponent",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "d1",
                             "description": "x1 sampling interval",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "d2",
                             "description": "x2 sampling interval",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "phasefac",
                             "description": "phase shift by phase=phasefac*PI",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -525,35 +525,35 @@
                             "name": "f1",
                             "description": "lower frequency\tcutof",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "f2",
                             "description": "high frequency cutof",
                             "example": "20",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fr",
                             "description": "frequency ramp",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "vel",
                             "description": "surface wave velocity",
                             "example": "1000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dx",
                             "description": "trace spacing",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -567,14 +567,14 @@
                             "name": "adb",
                             "description": "add back ratio 1.0=pure filtered 0.0=origibal",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "tri",
                             "description": "1 Triangular weight in mixing window",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -602,28 +602,28 @@
                             "name": "median",
                             "description": "=0  for mix",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nmed",
                             "description": "odd no. of traces to median filter",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "subtract",
                             "description": "=1  subtract filtered data from input",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1  echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -637,14 +637,14 @@
                             "name": "sign1",
                             "description": "sign of first transform\t(1 or -1)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for advisory messages",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -658,14 +658,14 @@
                             "name": "a",
                             "description": "constant phase shift",
                             "example": "90",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "c",
                             "description": "phase = a +b*(old_phase)+c*f;",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -679,14 +679,14 @@
                             "name": "a1",
                             "description": "smoothing parameter in the 1 direction",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "a2",
                             "description": "smoothing parameter in the 2 direction",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -707,21 +707,21 @@
                             "name": "verbose",
                             "description": "1 = echo additional information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "numpp",
                             "description": "number of principal planes to retain",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "subtract",
                             "description": "subtarct selected principal planes from i/p",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -736,7 +736,7 @@
                             "description": "Corner frequencies corresponding to the",
                             "example": "f1,f2,f3,f4",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         }
                     ]
                 }

@@ -14,7 +14,7 @@
                             "name": "trac",
                             "description": "Reset tracl and tracr keys to the output trace count",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -35,28 +35,28 @@
                             "name": "abs",
                             "description": "Use absolute value of key.",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "size",
                             "description": "size of key ranges for output files. Must be > 0.",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "high",
                             "description": "base value in highest magnitude range for output files.",
                             "example": "100000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "print",
                             "description": "Do not print.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -70,7 +70,7 @@
                             "name": "verbose",
                             "description": "wordy output",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -84,7 +84,7 @@
                             "name": "dir",
                             "description": "0:  change of header key",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -98,14 +98,14 @@
                             "name": "verbose",
                             "description": "=1 more chatty",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "vt",
                             "description": "=1 allows gathers with variable length traces",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -119,14 +119,14 @@
                             "name": "nx",
                             "description": "number of traces to sum to create pilot trace (odd)",
                             "example": "51",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fbt",
                             "description": "length of first break in number of samples",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -147,14 +147,14 @@
                             "name": "a",
                             "description": "header value identifying tracces to kill",
                             "example": "2",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "count",
                             "description": "number of traces to kill",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -169,7 +169,7 @@
                             "description": "if ntr header field is not set, then ntr is mandatory",
                             "example": "tr.ntr",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         }
                     ]
                 },
@@ -189,28 +189,28 @@
                             "name": "ntaper",
                             "description": "number of points to taper before hard",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "mode",
                             "description": "mute ABOVE the polygonal curve",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "linvel",
                             "description": "constant velocity for linear or hyperbolic mute",
                             "example": "330",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tm0",
                             "description": "time shift of linear or hyperbolic mute at",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -231,70 +231,70 @@
                             "name": "abs",
                             "description": "use the absolute value of offkey.",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntaper",
                             "description": "number of samples to taper (sine-squared) from",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "mode",
                             "description": "mute ABOVE the polygonal curves",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "vel",
                             "description": "constant velocity for linear or hyperbolic mute",
                             "example": "330",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tzero",
                             "description": "time shift (ms.) of linear or hyperbolic mute at the",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "extrapi",
                             "description": "do not extrapolate at ends in igi direction.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "extrapc",
                             "description": "do not extrapolate at ends in igc direction.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "extrapt",
                             "description": "do not extrapolate at ends in offset direction.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "check",
                             "description": "Do not print grid checking and function locations.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "print",
                             "description": "Do not print INPUT mute functions.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -329,14 +329,14 @@
                             "name": "val3",
                             "description": "value assigned to padded traces",
                             "example": "2",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "d",
                             "description": "trace key spacing",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -357,14 +357,14 @@
                             "name": "verbose",
                             "description": "verbose = 1 echos information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "numlength",
                             "description": "Length of numeric part of filename",
                             "example": "7",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -384,35 +384,35 @@
                             "name": "nt",
                             "description": "number of time samples",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nshot",
                             "description": "number of shots",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dshot",
                             "description": "shot interval (m)",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "noff",
                             "description": "number of offsets",
                             "example": "20",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "doff",
                             "description": "offset increment (m)",
                             "example": "20",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -454,21 +454,21 @@
                             "name": "numlength",
                             "description": "Length of numeric part of filename",
                             "example": "7",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 to echo filenames, etc.",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "close",
                             "description": "=1 to close files before opening new ones",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -482,7 +482,7 @@
                             "name": "verbose",
                             "description": "=1 for verbose",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -510,28 +510,28 @@
                             "name": "abs",
                             "description": "=1 to take absolute value of key header word",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "j",
                             "description": "Pass every j-th trace ...",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "s",
                             "description": "... based at s  (if ((key - s)%j) == 0)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "skip",
                             "description": "skip the initial N traces",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -559,7 +559,7 @@
                             "name": "ordered",
                             "description": "=1 if traces sorted in increasing keyword value",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -580,7 +580,7 @@
                             "name": "tmin",
                             "description": "min time to pass",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -594,7 +594,7 @@
                             "name": "itmin",
                             "description": "min time sample to pass",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -608,14 +608,14 @@
                             "name": "max",
                             "description": "option (rejecting everything).  For example, to accept",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "trid",
                             "description": "designates traces as being seismic traces. Other traces,",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -630,21 +630,21 @@
                             "description": "list of X coordinates for vertices",
                             "example": "x1,x2,...",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "y",
                             "description": "list of Y coordinates for vertices",
                             "example": "y1,y2,...",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "file",
                             "description": "output filename(s)",
                             "example": "file1,file2,..",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "xkey",
@@ -664,21 +664,21 @@
                             "name": "pass",
                             "description": "polyline mode: pass traces near the polygonal line",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dx",
                             "description": "unit increment distance in X direction",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dy",
                             "description": "unit increment distance in Y direction",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -699,14 +699,14 @@
                             "name": "dw",
                             "description": "distance in X-Y coordinate units of extracted line",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "pass",
                             "description": "or pass=2.",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

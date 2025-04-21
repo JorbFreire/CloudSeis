@@ -1,4 +1,5 @@
 import re
+from typing import Literal
 
 def read_program_doc(program_path: str) -> list[str]:
     with open(program_path, "r") as f:
@@ -19,6 +20,13 @@ def read_program_doc(program_path: str) -> list[str]:
     except Exception as e:
         raise Exception(f"Some error happened to read the doc of the file: {program_path}\nError: {e}")
 
+def detect_type(value: str) -> Literal["integer", "float", "string"]:
+    if value.isdigit():  # Only digits (e.g., "42")
+        return "integer"
+    elif re.match(r'^\d+\.\d+$', value):  # Digits with a dot (e.g., "3.14")
+        return "float"
+    else:  # Only letters or mixed (e.g., "hello", "param1")
+        return "string"
 
 def jsonofy_sdoc(sdoc_lines: list[str]) -> dict[str, str]:
     db_data = {
@@ -42,16 +50,22 @@ def jsonofy_sdoc(sdoc_lines: list[str]) -> dict[str, str]:
         db_data["description"] = sdoc_lines[1].strip() if len(sdoc_lines) > 1 else ""
 
     # Get parameters
+    isRequired = False
     for line in sdoc_lines:
         parameter_pattern = r'(\w+)=([\w,\.()]+)\s+(.*)'
+        if "Required" in line:
+            isRequired = True
+        elif "Optional" in line:
+            isRequired = False
         match = re.match(parameter_pattern, line)
         if match:
+            input_type = detect_type(match.group(2))
             db_data["parameters"].append({
             "name": match.group(1),
             "description": match.group(3).strip(),
             "example": match.group(2),
-            "input_type": "string", # For now
-            "isRequired": False, # For now
+            "input_type": input_type,
+            "isRequired": isRequired,
         })
 
     return db_data

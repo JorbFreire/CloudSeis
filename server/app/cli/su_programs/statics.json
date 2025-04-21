@@ -28,7 +28,7 @@
                             "name": "verbose",
                             "description": "=1 print useful information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -56,7 +56,7 @@
                             "name": "scale",
                             "description": "scale factor for shifts",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -70,77 +70,77 @@
                             "name": "ntpick",
                             "description": "maximum static shift (samples)",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "niter",
                             "description": "number of iterations",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nshot",
                             "description": "largest shot number (fldr=1 to nshot)",
                             "example": "240",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nr",
                             "description": "largest receiver number (tracf=1 to nr)",
                             "example": "335",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nc",
                             "description": "maximum number of cmp's (for array allocation)",
                             "example": "574",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sfold",
                             "description": "maximum shot gather fold",
                             "example": "96",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "rfold",
                             "description": "maximum receiver gather fold",
                             "example": "96",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "cfold",
                             "description": "maximum cmp gather fold",
                             "example": "48",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sub",
                             "description": "subtract super trace 1 from super trace 2 (=1)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sub",
                             "description": "strongly biases static to a value of 0",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "mode",
                             "description": "use global maximum in cross-correllation window",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -154,7 +154,7 @@
                             "name": "verbose",
                             "description": "print diagnostic output (verbose=1)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -175,35 +175,35 @@
                             "name": "hdrs",
                             "description": "=1 to read statics from headers",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sign",
                             "description": "apply static correction (add tstat values)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ns",
                             "description": "number of souces",
                             "example": "240",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nr",
                             "description": "number of receivers",
                             "example": "335",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "no",
                             "description": "number of offsets",
                             "example": "96",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -224,35 +224,35 @@
                             "name": "hdrs",
                             "description": "=1 to read statics from headers",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sign",
                             "description": "apply static correction (add tstat values)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ns",
                             "description": "(2)number of sources; (3) max fldr",
                             "example": "240",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nr",
                             "description": "number of receivers",
                             "example": "335",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "no",
                             "description": "number of offsets",
                             "example": "96",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -273,35 +273,35 @@
                             "name": "hdrs",
                             "description": "=1 to read statics from headers",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sign",
                             "description": "=-1 to subtract statics from traces(up shift)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ns",
                             "description": "number of sources",
                             "example": "240",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nr",
                             "description": "number of receivers",
                             "example": "335",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "no",
                             "description": "number of offsets",
                             "example": "96",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
