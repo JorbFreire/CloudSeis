@@ -21,21 +21,21 @@
                             "name": "nvstack",
                             "description": "number of stacking velocity panels to compute",
                             "example": "180",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lmute",
                             "description": "length of mute taper in ms",
                             "example": "24",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nonhyp",
                             "description": "1 if do mute at 2*offset/vhyp to avoid",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -49,28 +49,28 @@
                             "name": "lbtaper",
                             "description": "length of bottom taper in ms",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lstaper",
                             "description": "length of side taper in traces",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "mxfold",
                             "description": "maximum number of offsets/input cmp",
                             "example": "120",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "salias",
                             "description": "fraction of output frequencies to force within sloth",
                             "example": "0.8",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -91,14 +91,14 @@
                             "name": "winlen",
                             "description": "window length in seconds.",
                             "example": "0.064",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "peak",
                             "description": "peak power option default is average power",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -119,7 +119,7 @@
                             "name": "pwr",
                             "description": "raise phase stack to power pwr",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -133,21 +133,21 @@
                             "name": "sl",
                             "description": "window length in seconds used for smoothing",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "ps",
                             "description": "0 = output is PWS, 1 = output is phase stack",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "1 = echo additional information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -174,28 +174,28 @@
                             "name": "normpow",
                             "description": "each sample is divided by the",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "repeat",
                             "description": "=1 repeats the stack trace nrepeat times",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nrepeat",
                             "description": "repeats stack trace nrepeat times in",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "verbose = 1 echos information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

@@ -14,7 +14,7 @@
                             "name": "sn",
                             "description": "signal to noise ratio",
                             "example": "20",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -49,7 +49,7 @@
                             "name": "verbose",
                             "description": "=1 for echoing useful information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -77,21 +77,21 @@
                             "name": "sb",
                             "description": "1 for the graund-roll",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nrot",
                             "description": "the principal components for the m largest eigenvalues",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -105,91 +105,91 @@
                             "name": "niter",
                             "description": "number of requested iterations",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "anenv",
                             "description": "=1 for positive analytic envelopes",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "scl",
                             "description": "=1 to scale output traces (not recommended)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "plot",
                             "description": "=0 for no plots. =1 for 1-D plots only",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "norm",
                             "description": "=0 not to normalize reliability values",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=0 not to print processing information",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "rgt",
                             "description": "=1 for uniform random generator",
                             "example": "2",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sts",
                             "description": "=0 for no smoothing (not recommended)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dx",
                             "description": "offset sampling interval (m)",
                             "example": "20",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fx",
                             "description": "offset on first trace (m)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dt",
                             "description": "time sampling interval (s)",
                             "example": "0.004",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "gopt",
                             "description": "=1 for parabolic transform. =2 for Foster/Mosher",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pmax1",
                             "description": "maximum moveout at farthest offset for fwd transf(ms)",
                             "example": "400",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -210,28 +210,28 @@
                             "name": "np",
                             "description": "number of p-values for taup transform",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "prewhite",
                             "description": "prewhitening value (suggested between 0.1 and 0,01)",
                             "example": "0.01",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "offref",
                             "description": "reference offset for p-values (m)",
                             "example": "2000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "depthref",
                             "description": "reference depth for Foster/Mosher taup (if gopt=4)",
                             "example": "500",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -252,56 +252,56 @@
                             "name": "ninterp",
                             "description": "number of traces to interpolate in input data",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nintlh",
                             "description": "number of intervals (bins) in histograms",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sditer",
                             "description": "number of steepest descent iterations to compute ps",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "c",
                             "description": "maximum noise allowed in a sample of signal(%)",
                             "example": "0.04",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "rel1",
                             "description": "reliability value for first pass of the extraction",
                             "example": "0.5",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "rel2",
                             "description": "reliability value for second pass of the extraction",
                             "example": "0.75",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "r1",
                             "description": "number of points for damped lsq vertical smoothing",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "r2",
                             "description": "number of points for damped lsq horizontal smoothing",
                             "example": "2",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -336,28 +336,28 @@
                             "name": "min",
                             "description": "minimum random time shift (samples)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "max",
                             "description": "maximum random time shift (samples)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pon",
                             "description": "shift can be positive or negative",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fldr",
                             "description": "each trace has new shift",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

@@ -35,14 +35,14 @@
                             "name": "verbose",
                             "description": "silent",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "list",
                             "description": "silent",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -96,28 +96,28 @@
                             "name": "jobid",
                             "description": "job id field",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lino",
                             "description": "line number (only one line per reel)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "reno",
                             "description": "reel number",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "format",
                             "description": "data format",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -138,21 +138,21 @@
                             "name": "buff",
                             "description": "for buffered device (9-track reel tape drive)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent operation",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "vblock",
                             "description": "echo every 'vblock' traces under verbose option",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -180,7 +180,7 @@
                             "name": "over",
                             "description": "quit if bhed format not equal 1, 2, 3, 5, or 8",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -194,14 +194,14 @@
                             "name": "conv",
                             "description": "convert data to native format",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ebcdic",
                             "description": "perform ebcdic to ascii conversion on 3200 byte textural",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -215,14 +215,14 @@
                             "name": "trcwt",
                             "description": "apply trace weighting factor (bytes 169-170)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "trmin",
                             "description": "first trace to read",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -271,7 +271,7 @@
                             "name": "errmax",
                             "description": "allowable number of consecutive tape IO errors",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -305,35 +305,35 @@
                             "name": "verbose",
                             "description": "silent operation",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "vblock",
                             "description": "echo every 'vblock' traces under verbose option",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "buff",
                             "description": "for buffered device (9-track reel tape drive)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "conv",
                             "description": "=0 don't convert to IBM format",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ebcdic",
                             "description": "convert text header to ebcdic, =0 leave as ascii",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -354,7 +354,7 @@
                             "name": "trmin",
                             "description": "first trace to write",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -375,7 +375,7 @@
                             "name": "errmax",
                             "description": "allowable number of consecutive tape IO errors",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -410,28 +410,28 @@
                             "name": "bare",
                             "description": "print headers and data",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntr",
                             "description": "maximum number of output traces (bare=3 or bare=4 only)",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "index",
                             "description": "don't include time/depth index in ascii file (bare=4)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for detailed information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -445,7 +445,7 @@
                             "name": "mode",
                             "description": "output h= v= ; =1 output v=  t=",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -493,7 +493,7 @@
                             "name": "dip",
                             "description": "(constant) dip of the layers (degrees)",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -521,21 +521,21 @@
                             "name": "format",
                             "description": "foreign to native",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "swaphdr",
                             "description": "swap the header byte order",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "swapdata",
                             "description": "swap the data byte order",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {

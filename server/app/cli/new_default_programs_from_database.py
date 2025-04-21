@@ -5,7 +5,7 @@ from ..models.ProgramGroupModel import ProgramGroupModel
 from ..models.ProgramModel import ProgramModel
 from ..models.ParameterModel import ParameterModel
 
-from .get_CLI_file_path import get_CLI_file_path
+from .get_CLI_dir_path import get_CLI_dir_path
 
 def new_default_programs_from_database():
     groups_result = []
@@ -37,7 +37,7 @@ def new_default_programs_from_database():
         del group_info['id']
         groups_result.append(group_info)
 
-    with open(get_CLI_file_path(), 'w') as file:
+    with open(get_CLI_file_path(), 'w') as file: # Fix
         json.dump(
             {
                 "count_programs": count_programs,

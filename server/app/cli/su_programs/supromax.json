@@ -14,7 +14,7 @@
                             "name": "verbose",
                             "description": "minimal listing",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -28,7 +28,7 @@
                             "name": "verbose",
                             "description": "minimal listing",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

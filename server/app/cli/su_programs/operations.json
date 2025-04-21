@@ -14,14 +14,14 @@
                             "name": "flip",
                             "description": "rotational sense of flip",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "verbose = 1 echoes flip info",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -36,14 +36,14 @@
                             "description": "Header words defining mixing dimension",
                             "example": "key1,key2,..",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "dx",
                             "description": "Distance units for each header word",
                             "example": "d1,d2,..",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "keyg",
@@ -56,14 +56,14 @@
                             "name": "vf",
                             "description": "=1 Do a frequency dependent mix",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "vmin",
                             "description": "Velocity of the reflection slope",
                             "example": "5000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -84,7 +84,7 @@
                             "name": "copy",
                             "description": "n>1 copy each trace n times",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -119,7 +119,7 @@
                             "name": "nw",
                             "description": "number of time samples in window",
                             "example": "21",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -168,49 +168,49 @@
                             "name": "n3",
                             "description": "number of samples in the slow direction",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "o1",
                             "description": "new fast direction",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "o2",
                             "description": "new med direction",
                             "example": "2",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "o3",
                             "description": "new slow direction",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "d1",
                             "description": "output interval in new fast direction",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "d2",
                             "description": "output interval in new med direction",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "d3",
                             "description": "output interval in new slow direction",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -224,7 +224,7 @@
                             "name": "fill",
                             "description": "value to pad",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -238,28 +238,28 @@
                             "name": "panel",
                             "description": "use only the first trace of sufile as filter",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "mt",
                             "description": "operator window length (odd integer)",
                             "example": "21",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taper",
                             "description": "no taper to data fragments",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "method",
                             "description": "use xcorrelation as similarity meausure",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -273,42 +273,42 @@
                             "name": "taplen",
                             "description": "Length of overlap in integer number of",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taptype",
                             "description": "Type of taper or combination method in the",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taptype",
                             "description": "output is assigned the unweighted average of",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taptype",
                             "description": "output is assigned the value of the maximum",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taptype",
                             "description": "output is assigned the weighted average of",
                             "example": "2",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "taptype",
                             "description": "output is assigned the sum of the amplitudes",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

@@ -21,42 +21,42 @@
                             "name": "jack",
                             "description": "=1  divide value at zero frequency by 2",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "unwrap",
                             "description": "|dphase| > pi/unwrap constitutes a phase wrapping",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "trend",
                             "description": "remove linear trend from the unwrapped phase",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "zeromean",
                             "description": "assume phase(0)=0.0, else assume phase is zero mean",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "smooth",
                             "description": "apply damped least squares smoothing to unwrapped phase",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "r",
                             "description": "... damping coefficient, only active when smooth=1",
                             "example": "10.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -76,7 +76,7 @@
                             "name": "sign1",
                             "description": "sign of real to complex transform",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -90,21 +90,21 @@
                             "name": "unwrap",
                             "description": "|dphase| > pi/unwrap constitutes a phase wrapping",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "trend",
                             "description": "deramp the phase, =0 do not deramp the phase",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "zeromean",
                             "description": "assume phase starts at 0,  =1 phase is zero mean",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -118,14 +118,14 @@
                             "name": "noct",
                             "description": "Number of octaves (int)",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nv",
                             "description": "Number of voices per octave (int)",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -139,21 +139,21 @@
                             "name": "k",
                             "description": "Use complex Morlet as wavelet transform kernel",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fs",
                             "description": "Use dyadic freq sampling (CWT standard, honors",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "df",
                             "description": "Frequency sample interval in Hz (used only for fs=2)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -167,7 +167,7 @@
                             "name": "verbose",
                             "description": "Run silent, except echo c value. (=1 for more info)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -181,7 +181,7 @@
                             "name": "sign1",
                             "description": "sign in exponent of fft",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -195,7 +195,7 @@
                             "name": "verbose",
                             "description": "=0 to stop advisory messages",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -209,35 +209,35 @@
                             "name": "unwrap",
                             "description": "|dphase| > pi/unwrap constitutes a phase wrapping",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "trend",
                             "description": "remove linear trend from the unwrapped phase",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "zeromean",
                             "description": "assume phase(0)=0.0, else assume phase is zero mean",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "smooth",
                             "description": "apply damped least squares smoothing to unwrapped phase",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "r",
                             "description": "... damping coefficient, only active when smooth=1",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -251,7 +251,7 @@
                             "name": "sign",
                             "description": "sign in exponent of fft",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -265,7 +265,7 @@
                             "name": "verbose",
                             "description": "=0 to stop advisory messages",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -279,21 +279,21 @@
                             "name": "unwrap",
                             "description": "|dphase| > pi/unwrap constitutes a phase wrapping",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "trend",
                             "description": "remove linear trend from the unwrapped phase",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "zeromean",
                             "description": "assume phase(0)=0.0, else assume phase is zero mean",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -307,98 +307,98 @@
                             "name": "base",
                             "description": "Base value for wavelet transform scales",
                             "example": "10",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "expinc",
                             "description": "Exponent increment for wavelet transform scales",
                             "example": "0.01",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "last",
                             "description": "Last exponent value for wavelet transform scales",
                             "example": "1.5",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "wtype",
                             "description": "2nd derivative of Gaussian (Mexican hat)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nwavelet",
                             "description": "number of samples in the wavelet",
                             "example": "1024",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "xcenter",
                             "description": "center x value  wavelet is computed",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "xmax",
                             "description": "maximum x value wavelet is computed",
                             "example": "20",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sigma",
                             "description": "sharpness parameter ( sigma > 1 sharper)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent, =1 chatty",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "holder",
                             "description": "=1 compute Holder regularity estimate",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "divisor",
                             "description": "a floating point number >= 1.0 (see notes)",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "divisor",
                             "description": "means the exponent is computed simply by fitting a line",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "holder",
                             "description": "to determine the range of first, last, and expinc that best",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "holder",
                             "description": "and values of divisor>=1.0 may proceed.",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -412,7 +412,7 @@
                             "name": "sign",
                             "description": "sign in exponent of fft",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -426,7 +426,7 @@
                             "name": "verbose",
                             "description": "=0 to stop advisory messages",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -447,7 +447,7 @@
                             "name": "fmin",
                             "description": "minimum frequency of filter array (hz)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -461,21 +461,21 @@
                             "name": "beta",
                             "description": "ln[filter peak amp/filter endpoint amp]",
                             "example": "3.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 supply additional info",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "holder",
                             "description": "=1 output Holder regularity estimate",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -495,14 +495,14 @@
                             "name": "sign1",
                             "description": "sign in exponent of first fft",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sym",
                             "description": "=1 center  output",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -523,7 +523,7 @@
                             "name": "sym",
                             "description": "=1 center  output",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -543,42 +543,42 @@
                             "name": "fv",
                             "description": "minimum phase velocity (m/s)",
                             "example": "330",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nv",
                             "description": "number of phase velocities",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dv",
                             "description": "phase velocity step (m/s)",
                             "example": "25",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fmax",
                             "description": "maximum frequency to process (Hz)",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "norm",
                             "description": "do not normalize by amplitude spectrum",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -592,14 +592,14 @@
                             "name": "choose",
                             "description": "0  Forward Radon transform",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "igopt",
                             "description": "1  parabolic transform: g(x) = offset**2",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -620,35 +620,35 @@
                             "name": "pmax",
                             "description": "maximum moveout in ms on reference offset",
                             "example": "400",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "anderson",
                             "description": "p values in ms, =0 pvalues in horizontal slowness",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dp",
                             "description": "moveout increment in ms on reference offset",
                             "example": "16",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pmula",
                             "description": "moveout in ms on reference offset where multiples begin",
                             "example": "80",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pmulb",
                             "description": "moveout in ms on reference offset where multiples begin",
                             "example": "200",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -662,7 +662,7 @@
                             "name": "nwin",
                             "description": "number of windows to use through the mute zone",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -683,7 +683,7 @@
                             "name": "prewhite",
                             "description": "Prewhitening factor in percent.",
                             "example": "0.1",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -704,63 +704,63 @@
                             "name": "nxmax",
                             "description": "maximum number of input traces per ensemble",
                             "example": "240",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ltaper",
                             "description": "taper (integer) for mute tapering function",
                             "example": "7",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ninterp",
                             "description": "number of traces to interpolate between each input trace",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "freq1",
                             "description": "low-end frequency in Hz for picking (good default: 3 Hz)",
                             "example": "4.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "freq2",
                             "description": "high-end frequency in Hz for picking (good default: 20 Hz)",
                             "example": "20.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "lagc",
                             "description": "length of AGC operator for picking (good default: 400 ms)",
                             "example": "400",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lent",
                             "description": "length of time smoother in samples for picker",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lenx",
                             "description": "length of space smoother in samples for picker",
                             "example": "7",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "xopt",
                             "description": "1 = use differences for spatial derivative",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -774,7 +774,7 @@
                             "name": "sign",
                             "description": "sign in exponent of fft",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -823,7 +823,7 @@
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -857,7 +857,7 @@
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -878,7 +878,7 @@
                             "name": "fmin",
                             "description": "minimum frequency of filter array (hz)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -892,7 +892,7 @@
                             "name": "verbose",
                             "description": "=1 supply additional info",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -906,7 +906,7 @@
                             "name": "option",
                             "description": "=1 for forward F-K domian computation",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -927,21 +927,21 @@
                             "name": "dx",
                             "description": "horizontal sampling interval (m)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "npoints",
                             "description": "number of points for rho filter",
                             "example": "71",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pmin",
                             "description": "minimum slope for Tau-P transform (s/m)",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -969,21 +969,21 @@
                             "name": "fmin",
                             "description": "minimum frequency of interest",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "xmin",
                             "description": "offset on first trace",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -997,21 +997,21 @@
                             "name": "w0",
                             "description": "weight for AmpSpectrum[f-df]",
                             "example": "0.75",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "w1",
                             "description": "weight for AmpSpectrum[f].. center value",
                             "example": "1.00",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "w2",
                             "description": "weight for AmpSpectrum[f+df]",
                             "example": "0.75",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -1025,14 +1025,14 @@
                             "name": "t0",
                             "description": "time of peak value t0",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for advisory messages",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

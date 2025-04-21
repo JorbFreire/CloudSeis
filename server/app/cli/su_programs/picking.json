@@ -21,7 +21,7 @@
                             "name": "test",
                             "description": "Output the characteristic function",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -49,7 +49,7 @@
                             "name": "min",
                             "description": "Threshold value for considering as zero",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -77,14 +77,14 @@
                             "name": "tmin",
                             "description": "minimum time in input trace",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "x2beg",
                             "description": "first lateral position",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -98,7 +98,7 @@
                             "name": "verbose",
                             "description": "writes complete  pick information into outpar",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -119,7 +119,7 @@
                             "name": "verbose",
                             "description": "or 2 writes min, max, abs[max], energy and associated times",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

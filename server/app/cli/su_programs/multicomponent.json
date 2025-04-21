@@ -21,7 +21,7 @@
                             "name": "ntraces",
                             "description": "will use three adjacent traces to",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -42,14 +42,14 @@
                             "name": "wl",
                             "description": "SVD time window length in seconds",
                             "example": "0.1",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "pwr",
                             "description": "exponent of filter weights",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -63,7 +63,7 @@
                             "name": "verbose",
                             "description": "1 = echo additional information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -77,21 +77,21 @@
                             "name": "rl1",
                             "description": "1 = rectilinearity along first principal axis",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "rl2",
                             "description": "1 = rectilinearity along second principal axis",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pln",
                             "description": "1 = planarity",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -112,14 +112,14 @@
                             "name": "inv",
                             "description": "1 = inverse rotation (counter-clockwise)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "1 = echo angle for each 3-C station",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -147,7 +147,7 @@
                             "name": "n",
                             "description": "number of x and a values in input files",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -196,7 +196,7 @@
                             "name": "mode",
                             "description": "is more robust estimation for Polarization angle",
                             "example": "3",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -211,14 +211,14 @@
                             "description": "file containing the 3 components of the",
                             "example": "polar.dir",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "wfile",
                             "description": "file name of weighting polarization parameter",
                             "example": "polar.rl",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "dt",
@@ -231,35 +231,35 @@
                             "name": "smooth",
                             "description": "1 = smooth filter operators, 0 do not",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sl",
                             "description": "smoothing window length in seconds",
                             "example": "0.05",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "wpow",
                             "description": "raise weighting function to power wpow",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dpow",
                             "description": "raise directivity functions to power dpow",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "1 = echo additional information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -280,7 +280,7 @@
                             "name": "wl",
                             "description": "correlation window length in seconds",
                             "example": "0.1",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -301,77 +301,77 @@
                             "name": "rl",
                             "description": "1 = rectilinearity evaluating 2 eigenvalues,",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "rlq",
                             "description": "contrast parameter for rectilinearity",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dir",
                             "description": "1 = 3 components of direction of polarization",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tau",
                             "description": "1 = global polarization parameter",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ellip",
                             "description": "1 = principal, subprincipal, and transverse",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pln",
                             "description": "1 = planarity measure",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "f1",
                             "description": "1 = flatness or oblateness coefficient",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "l1",
                             "description": "1 = linearity coefficient",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "amp",
                             "description": "1 = amplitude parameters: instantaneous,",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "theta",
                             "description": "1, 2, 3 = incidence angle of principal axis",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "phi",
                             "description": "1, 2, 3 = horizontal azimuth of principal axis",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -385,14 +385,14 @@
                             "name": "all",
                             "description": "1, 2, 3 = set all output flags to that value",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "1 = echo additional information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]

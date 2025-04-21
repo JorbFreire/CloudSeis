@@ -12,7 +12,7 @@ from .errors.AppError import AppError
 from .errors.AuthError import AuthError
 from .errors.FileError import FileError
 
-from .cli import populate_database_programs, new_default_programs_from_database
+from .cli import populate_database_programs, new_default_programs_from_database, write_programs_docs
 
 
 def create_app(mode: Literal["production", "development", "test"] = "development"):
@@ -57,10 +57,14 @@ def create_app(mode: Literal["production", "development", "test"] = "development
     app.register_error_handler(AuthError, handle_auth_exception)
     app.register_error_handler(FileError, handle_file_exception)
 
+    @app.cli.command('write_su_programs')
+    @app.cli.command('ws')
+    def write_programs():
+        write_programs_docs.write_programs_docs()
     @app.cli.command('populate-programs')
     @app.cli.command('pp')
     def populate_programs():
-        populate_database_programs()
+        populate_database_programs() # HOW??
 
     @app.cli.command('export-programs')
     @app.cli.command('ep')

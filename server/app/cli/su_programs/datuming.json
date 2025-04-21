@@ -21,21 +21,21 @@
                             "name": "buff",
                             "description": "number of zero traces added to each side of each",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tap_len",
                             "description": "taper length (in number of traces)",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "x_0",
                             "description": "x coordinate of leftmost position in velocity model",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -50,14 +50,14 @@
                             "description": "file for input seismic traces",
                             "example": "stdin",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "outfile",
                             "description": "file for common offset migration output",
                             "example": "stdout",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "fzo",
@@ -91,28 +91,28 @@
                             "name": "offmax",
                             "description": "maximum absolute offset allowed in migration",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "angmax",
                             "description": "migration angle aperature from vertical",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dvz",
                             "description": "reference velocity vertical gradient",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "antiali",
                             "description": "Antialiase filter (no-filter = 0)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -126,21 +126,21 @@
                             "name": "mtr",
                             "description": "print verbal information at every mtr traces",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntr",
                             "description": "maximum number of input traces to be migrated",
                             "example": "100000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent, =1 chatty",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -155,14 +155,14 @@
                             "description": "file for input seismic traces",
                             "example": "stdin",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "outfile",
                             "description": "file for common offset migration output",
                             "example": "stdout",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "fzo",
@@ -196,28 +196,28 @@
                             "name": "offmax",
                             "description": "maximum absolute offset allowed in migration",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "angmax",
                             "description": "migration angle aperature from vertical",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dvz",
                             "description": "reference velocity vertical gradient",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "antiali",
                             "description": "Antialiase filter (no-filter = 0)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -231,14 +231,14 @@
                             "name": "mtr",
                             "description": "print verbal information at every mtr traces",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntr",
                             "description": "maximum number of input traces to be migrated",
                             "example": "100000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -253,62 +253,62 @@
                             "description": "file for input seismic traces",
                             "example": "stdin",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "outfile",
                             "description": "file for output",
                             "example": "stdout",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "fxso",
                             "description": "x-coordinate of first shot",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "fxgo",
                             "description": "first receiver offset",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "offmax",
                             "description": "maximum absolute offset allowed",
                             "example": "99999",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "recsurf",
                             "description": "recording surface (horizontal=0, topographic=1)",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "datsurf",
                             "description": "datuming surface (horizontal=0, irregular=1)",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "freq",
                             "description": "dominant frequency in data, used to determine",
                             "example": "50",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "scale",
                             "description": "user defined scale factor for output",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -322,14 +322,14 @@
                             "name": "mtr",
                             "description": "print verbal information at every mtr traces",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntr",
                             "description": "maximum number of input traces to be datumed",
                             "example": "100000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -344,105 +344,105 @@
                             "description": "file for input seismic traces",
                             "example": "stdin",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "outfile",
                             "description": "file for output",
                             "example": "stdout",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "fxso",
                             "description": "x-coordinate of first shot",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "fxgo",
                             "description": "first receiver offset",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "dc",
                             "description": "flag for previously datumed receivers:",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "dc",
                             "description": "receivers on recording surface",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "dc",
                             "description": "receivers on datum                      ,",
                             "example": "1",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "offmax",
                             "description": "maximum absolute offset allowed",
                             "example": "99999",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "recsurf",
                             "description": "recording surface (horizontal=0, topographic=1)",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "datsurf",
                             "description": "datuming surface (horizontal=0, irregular=1)",
                             "example": "0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "freq",
                             "description": "dominant frequency in data, used to determine",
                             "example": "50",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "scale",
                             "description": "user defined scale factor for output",
                             "example": "1.0",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "float",
+                            "isRequired": true
                         },
                         {
                             "name": "jpfile",
                             "description": "job print file name",
                             "example": "stderr",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "mtr",
                             "description": "print verbal information at every mtr traces",
                             "example": "100",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         },
                         {
                             "name": "ntr",
                             "description": "maximum number of input traces to be datumed",
                             "example": "100000",
-                            "input_type": "string",
-                            "isRequired": false
+                            "input_type": "integer",
+                            "isRequired": true
                         }
                     ]
                 }

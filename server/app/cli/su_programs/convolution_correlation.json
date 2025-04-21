@@ -14,21 +14,21 @@
                             "name": "ntout",
                             "description": "odd number of time samples output",
                             "example": "101",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "norm",
                             "description": "if non-zero, normalize maximum absolute output to 1",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "sym",
                             "description": "if non-zero, produce a symmetric output from",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -42,14 +42,14 @@
                             "name": "a",
                             "description": "exponent of complex amplitude",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "b",
                             "description": "multiplier of complex phase",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -63,7 +63,7 @@
                             "name": "verbose",
                             "description": "=1 for advisory messages",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -77,7 +77,7 @@
                             "name": "sym",
                             "description": "if non-zero, produce a symmetric output from",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -91,7 +91,7 @@
                             "name": "panel",
                             "description": "use only the first trace of sufile",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -105,35 +105,35 @@
                             "name": "vibroseis",
                             "description": "=nsout for correlating vibroseis data",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "first",
                             "description": "supplied trace is default first element of",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "panel",
                             "description": "use only the first trace of sufile as filter",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ftwin",
                             "description": "first sample on the first trace of the window",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ltwin",
                             "description": "first sample on the last trace of the window",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -147,7 +147,7 @@
                             "name": "ntrc",
                             "description": "number of traces on a gather",
                             "example": "48",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {

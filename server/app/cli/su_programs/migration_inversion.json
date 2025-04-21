@@ -28,7 +28,7 @@
                             "name": "ft",
                             "description": "first time sample",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -56,14 +56,14 @@
                             "name": "tmig",
                             "description": "times corresponding to interval velocities in vmig",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "vmig",
                             "description": "interval velocities corresponding to times in tmig",
                             "example": "1500.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -84,7 +84,7 @@
                             "name": "verbose",
                             "description": "verbose = 1 echoes information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -98,119 +98,119 @@
                             "name": "fxm",
                             "description": "first midpoint in input trace",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nxd",
                             "description": "skipped number of midpoints (see note)",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dx",
                             "description": "x sampling interval of velocity",
                             "example": "50.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "fx",
                             "description": "first x sample of velocity",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dz",
                             "description": "z sampling interval of velocity",
                             "example": "50.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nxc",
                             "description": "hozizontal range in which velocity is changed",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nzc",
                             "description": "vertical range in which velocity is changed",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fxo",
                             "description": "x-coordinate of first output trace",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dxo",
                             "description": "horizontal spacing of output trace",
                             "example": "15.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nxo",
                             "description": "number of output traces \t\t\t\t,",
                             "example": "101",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fzo",
                             "description": "z-coordinate of first point in output trace",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dzo",
                             "description": "vertical spacing of output trace",
                             "example": "15.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nzo",
                             "description": "number of points in output trace\t\t\t,",
                             "example": "101",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ang",
                             "description": "Maximum dip angle allowed in the image",
                             "example": "180",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ls",
                             "description": "=1 for line source; =0 for point source",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "pert",
                             "description": "=1 calculate time correction from v_p[nx][nz]",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 to print some useful information",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -224,112 +224,112 @@
                             "name": "fxm",
                             "description": "first midpoint in input trace",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nxd",
                             "description": "skipped number of midpoints (see note)",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dx",
                             "description": "x sampling interval of velocity",
                             "example": "50.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "fx",
                             "description": "first x sample of velocity",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dz",
                             "description": "z sampling interval of velocity",
                             "example": "50.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "fxo",
                             "description": "x-coordinate of first output trace",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dxo",
                             "description": "horizontal spacing of output trace",
                             "example": "15.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nxo",
                             "description": "number of output traces \t\t\t,",
                             "example": "101",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fyo",
                             "description": "y-coordinate of first output trace",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dyo",
                             "description": "y-coordinate spacing of output trace",
                             "example": "15.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nyo",
                             "description": "number of output traces in y-direction",
                             "example": "101",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fzo",
                             "description": "z-coordinate of first point in output trace",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "dzo",
                             "description": "vertical spacing of output trace",
                             "example": "15.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nzo",
                             "description": "number of points in output trace\t\t,",
                             "example": "101",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ang",
                             "description": "Maximum dip angle allowed in the image",
                             "example": "180",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 to print some useful information",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -344,14 +344,14 @@
                             "description": "file for input seismic traces",
                             "example": "stdin",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "outfile",
                             "description": "file for common offset migration output",
                             "example": "stdout",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "fzo",
@@ -371,63 +371,63 @@
                             "name": "off0",
                             "description": "first offest in output",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "doff",
                             "description": "offset increment in output",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "noff",
                             "description": "number of offsets in output \t\t\t,",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "absoff",
                             "description": "flag for using absolute offsets of input traces",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "limoff",
                             "description": "flag for only using input traces that fall within the range",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "offmax",
                             "description": "maximum absolute offset allowed in migration",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "angmax",
                             "description": "migration angle aperature from vertical",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dvz",
                             "description": "reference velocity vertical gradient",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "ls",
                             "description": "flag for line source",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -441,28 +441,28 @@
                             "name": "mtr",
                             "description": "print verbal information at every mtr traces",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntr",
                             "description": "maximum number of input traces to be migrated",
                             "example": "100000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "npv",
                             "description": "flag of computing quantities for velocity analysis",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "rscale",
                             "description": "scaling for roundoff error suppression",
                             "example": "1000.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -490,7 +490,7 @@
                             "name": "absoff",
                             "description": "and limoff=0, all traces with gx<sx will get migrated into the",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -546,63 +546,63 @@
                             "name": "fxoffset",
                             "description": "first offest in output in x",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fyoffset",
                             "description": "first offest in output in y",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dxoffset",
                             "description": "offset increment in output in x",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dyoffset",
                             "description": "offset increment in output in y",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nxoffset",
                             "description": "number of offsets in output in x",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nyoffset",
                             "description": "number of offsets in output in y\t\t,",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "xoffsetmax",
                             "description": "x-maximum absolute offset allowed in migration",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "yoffsetmax",
                             "description": "y-maximum absolute offset allowed in migration",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "angmax",
                             "description": "max angle to handle",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -616,21 +616,21 @@
                             "name": "pptr",
                             "description": "print verbal information at every pptr traces",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntrmax",
                             "description": "maximum number of input traces to be migrated",
                             "example": "100000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ls",
                             "description": "point =0 line source =1",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -672,21 +672,21 @@
                             "name": "angmax",
                             "description": "maximum aperture angle for migration (degrees)",
                             "example": "40",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nfc",
                             "description": "number of Fourier-coefficients to approximate",
                             "example": "16",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fwidth",
                             "description": "high-end frequency increment for the low-pass",
                             "example": "5",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -742,14 +742,14 @@
                             "name": "ft",
                             "description": "first time sample",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "fz",
                             "description": "first depth sample",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -777,21 +777,21 @@
                             "name": "dz",
                             "description": "depth sampling interval",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "amax",
                             "description": "maximum emergence angle; must be < 90 degrees",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=0 silent; =1 chatty",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -819,21 +819,21 @@
                             "name": "dz",
                             "description": "depth sampling interval",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "amax",
                             "description": "maximum emergence angle; must be < 90 degrees",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent, =1 chatty",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -847,21 +847,21 @@
                             "name": "dip",
                             "description": "the maximum dip to migrate, possible values are:",
                             "example": "79",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "fmax",
                             "description": "peak frequency of Ricker wavelet used as source wavelet",
                             "example": "25",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent, =1 additional runtime information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -875,14 +875,14 @@
                             "name": "fmax",
                             "description": "the peak frequency of Ricker wavelet used as source wavelet",
                             "example": "25",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent, =1 additional runtime information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -896,21 +896,21 @@
                             "name": "fmax",
                             "description": "the peak frequency of Ricker wavelet used as source wavelet",
                             "example": "25",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nflag",
                             "description": "normalization of cross-correlation:",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent, =1 additional runtime information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -924,14 +924,14 @@
                             "name": "fmax",
                             "description": "The peak frequency of Ricker wavelet used as source wavelet",
                             "example": "25",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "silent, =1 additional runtime information",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -959,35 +959,35 @@
                             "name": "tmig",
                             "description": "times corresponding to interval velocities in vmig",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "vmig",
                             "description": "interval velocities corresponding to times in tmig",
                             "example": "1500.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nxpad",
                             "description": "number of cdps to pad with zeros before FFT",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ltaper",
                             "description": "length of linear taper for left and right edges,",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for diagnostic print",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1036,49 +1036,49 @@
                             "name": "tmig",
                             "description": "times corresponding to interval velocities in vmig",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "vnmig",
                             "description": "interval NMO velocities corresponding to times in tmig",
                             "example": "1500.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "vmig",
                             "description": "interval velocities corresponding to times in tmig",
                             "example": "1500.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "etamig",
                             "description": "interval eta values corresponding to times in tmig",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nxpad",
                             "description": "number of cdps to pad with zeros before FFT",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ltaper",
                             "description": "length of linear taper for left and right edges\t\t,",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for diagnostic print",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1106,7 +1106,7 @@
                             "name": "ft",
                             "description": "first time sample",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         }
                     ]
@@ -1127,35 +1127,35 @@
                             "name": "tmig",
                             "description": "times corresponding to interval velocities in vmig",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "vmig",
                             "description": "interval velocities corresponding to times in tmig",
                             "example": "1500.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "nxpad",
                             "description": "number of cdps to pad with zeros before FFT",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ltaper",
                             "description": "length of linear taper for left and right edges,",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for diagnostic print",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1170,14 +1170,14 @@
                             "description": "file for input seismic traces",
                             "example": "stdin",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "outfile",
                             "description": "file for common offset migration output",
                             "example": "stdout",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "fzo",
@@ -1197,49 +1197,49 @@
                             "name": "off0",
                             "description": "first offest in output",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "doff",
                             "description": "offset increment in output",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "noff",
                             "description": "number of offsets in output \t\t\t,",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "offmax",
                             "description": "maximum absolute offset allowed in migration",
                             "example": "99999",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "angmax",
                             "description": "migration angle aperature from vertical",
                             "example": "60",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "dvz",
                             "description": "reference velocity vertical gradient",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "ls",
                             "description": "flag for line source",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1253,14 +1253,14 @@
                             "name": "mtr",
                             "description": "print verbal information at every mtr traces",
                             "example": "100",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "ntr",
                             "description": "maximum number of input traces to be migrated",
                             "example": "100000",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1274,35 +1274,35 @@
                             "name": "noffmix",
                             "description": "number of offsets to mix (for unstacked data only)",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "tmig",
                             "description": "times corresponding to rms velocities in vmig (s)",
                             "example": "0.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "vmig",
                             "description": "rms velocities corresponding to times in tmig (m/s)",
                             "example": "1500.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "smig",
                             "description": "stretch factor (0.6 typical if vrms increasing)",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "vscale",
                             "description": "scale factor to apply to velocities",
                             "example": "1.0",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -1316,21 +1316,21 @@
                             "name": "lstaper",
                             "description": "length of side tapers (# of traces)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lbtaper",
                             "description": "length of bottom taper (# of samples)",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "verbose",
                             "description": "=1 for diagnostic print",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         }
                     ]
@@ -1344,14 +1344,14 @@
                             "name": "choose",
                             "description": "1 do full prestack time migration",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "getcvstacks",
                             "description": "flag to set to 1 if inputting precomputed cvstacks",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1372,14 +1372,14 @@
                             "name": "etamax",
                             "description": "maximum eta (see paper by Tariq Alkhalifah)",
                             "example": "0.5",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
                             "name": "neta",
                             "description": "number of eta values to image",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1393,7 +1393,7 @@
                             "name": "vpvs",
                             "description": "assumed vp/vs ratio (not critical -- default almost always ok)",
                             "example": "0.5",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -1421,63 +1421,63 @@
                             "name": "nv",
                             "description": "number of velocity panels to output",
                             "example": "75",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nvstack",
                             "description": "number of stacking velocity panels to compute",
                             "example": "180",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nxpad",
                             "description": "number of traces to padd for spatial fft",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lmute",
                             "description": "length of mute taper in ms",
                             "example": "24",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "nonhyp",
                             "description": "1 if do mute at 2*offset/vmin to avoid non-hyperbolic",
                             "example": "1",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lbtaper",
                             "description": "length of bottom taper in ms",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "lstaper",
                             "description": "length of side taper in traces",
                             "example": "0",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "mxfold",
                             "description": "maximum number of offsets/input cmp",
                             "example": "120",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
                             "name": "salias",
                             "description": "fraction of output frequencies to force within sloth",
                             "example": "0.8",
-                            "input_type": "string",
+                            "input_type": "float",
                             "isRequired": false
                         },
                         {
@@ -1498,7 +1498,7 @@
                             "name": "ngroup",
                             "description": "Number of cmps per velocity analysis group.",
                             "example": "20",
-                            "input_type": "string",
+                            "input_type": "integer",
                             "isRequired": false
                         },
                         {
@@ -1513,14 +1513,14 @@
                             "description": "- x coordinate as icmp*dx",
                             "example": "gx",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         },
                         {
                             "name": "tracl",
                             "description": "-sequential trace count (1 based)",
                             "example": "tracr",
                             "input_type": "string",
-                            "isRequired": false
+                            "isRequired": true
                         }
                     ]
                 }
