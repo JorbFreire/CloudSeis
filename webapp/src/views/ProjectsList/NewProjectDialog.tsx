@@ -30,9 +30,9 @@ export default function NewProjectDialog({ pushNewProject }: INewProjectDialogPr
   const submitNewProject = (event: FormEvent) => {
     event.preventDefault()
     setIsLoading(true)
-    const token = localStorage.getItem("jwt")
-    token && createNewProject(token, projectName)
-      .then((newProject) => newProject && pushNewProject(newProject))
+    createNewProject(projectName).then(
+      (newProject) => newProject && pushNewProject(newProject)
+    )
     setIsLoading(false)
     closeDialog()
   }
