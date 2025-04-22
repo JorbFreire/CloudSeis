@@ -19,6 +19,11 @@ import {
   restrictToWindowEdges,
 } from '@dnd-kit/modifiers';
 
+import {
+  dragActivationDelay,
+  dragActivationMouseMovementTolerance
+} from 'constants/dnd'
+
 import { IDefaultDNDListProps } from './types'
 
 function getOrientation(orientation: navigationOrientationType) {
@@ -41,13 +46,17 @@ export default function DefaultDNDList<T extends IgenericTab>({
   setItems,
 }: IDefaultDNDListProps<T>) {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: dragActivationDelay,
+        tolerance: dragActivationMouseMovementTolerance,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
-  // ! issue: item with id "0" cant be drag
   function handleDragEnd(event: any) {
     const { active, over } = event;
 
