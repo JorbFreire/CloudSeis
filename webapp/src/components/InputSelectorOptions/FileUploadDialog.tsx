@@ -9,6 +9,7 @@ import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
 
 import { createFile } from "services/fileServices"
+import { updateWorkflowFileLink } from "services/workflowServices"
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 
 interface IFileUploadDialogProps {
@@ -42,7 +43,12 @@ export default function FileUploadDialog({
       projectId,
       formData
     ).then((result) => {
+      console.log({ result })
       if (!result) return
+      updateWorkflowFileLink(
+        singleSelectedWorkflowId,
+        result.fileLink.id
+      )
       addFileLink(result.fileLink)
       setOpen(false)
     })
