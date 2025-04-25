@@ -6,19 +6,22 @@ import Tooltip from "@mui/material/Tooltip"
 export const Container = styled.form`
   display: flex;
   flex-direction: column;
-  max-width: 512px;
+  flex-wrap: wrap;
+
+  height: 100%;
+  width: 100%;
+  padding-top: 8px;
+  gap: 16px;
 `
 
 export const CustomTextField = styled(TextField)`
-  :not(:last-of-type) {
-    margin-bottom: 32px !important;
+  label {
+    font-size: 20px;
+    transform: translate(14px, -16px) scale(100%);
   }
   input {
-    color: #fff;
-  }
-  label {
-    font-size: 22px;
-    transform: translate(14px, -16px) scale(100%);
+    padding-top: 8px;
+    padding-bottom: 4px;
   }
   legend {
     font-size: 22px;

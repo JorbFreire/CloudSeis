@@ -92,7 +92,6 @@ export default function CustomTab({
               </ActionButton>
             </ActionButtonsContainer>
           )}
-          {/*  */}
         </Container>
       </Tooltip>
     </>

@@ -25,6 +25,7 @@ interface ICustomTabsNavigationProps<T extends IgenericTab> {
   children?: ReactNode
   color?: navigationColorType
   orientation?: navigationOrientationType
+  tabStaticContent?: ReactNode
 
   CustomDndContext?: ComponentType<IDefaultDNDListProps<T>>
 }
@@ -39,6 +40,7 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
   children,
   color = "primary",
   orientation = "horizontal",
+  tabStaticContent,
 
   // *** render empty element by default when no FixedLastTabOptions provided
   CustomDndContext = ({ children }) => (<>{children}</>),
@@ -58,7 +60,7 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
   }
 
   return Boolean(tabs.length) ? (
-    <Container $orientation={orientation}>
+    <Container id="containerSample" $orientation={orientation}>
       {/* *** CustomDndContext is passed by optional props *** */}
       <CustomDndContext
         orientation={orientation}
@@ -84,6 +86,7 @@ export default function CustomTabsNavigation<T extends IgenericTab>({
               $isActive={tab.is_active ?? true}
             />
           ))}
+          {tabStaticContent && tabStaticContent}
         </Tabs>
       </CustomDndContext>
 

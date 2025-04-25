@@ -13,8 +13,8 @@ export const Container = styled.div`
 
 export const CustomHeadCell = styled(TableCell)`
   &.MuiTableCell-root {
-    background-color: #355F55;
-    color: #ffffff;
+    background-color: ${({ theme }) => theme.palette.primary.main};
+    color: ${({ theme }) => theme.palette.primary.contrastText};
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 2px;

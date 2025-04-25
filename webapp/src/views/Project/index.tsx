@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { useGatherKeyStore } from 'store/gatherKeyStore'
-import { useLogsStore } from 'store/logsStore';
 import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
-import { updateFile } from 'services/fileServices'
 import { updateCommandsOrder, deleteCommand } from 'services/commandServices'
 import { StaticTabKey } from 'constants/staticCommands'
 
@@ -17,10 +14,10 @@ import DefaultDNDList from 'components/DefaultDNDList';
 
 import FloatActions from './FloatActions';
 import TabContentDisplayer from './TabContentDisplayer'
+import RunWorkflowButton from './RunWorkflowButton';
 import {
   Container,
   SelectedWorkflowsContainer,
-  RunButton,
 } from './styles'
 
 interface IProjectProps {
@@ -40,8 +37,6 @@ export default function Project({ projectId }: IProjectProps) {
     setSingleSelectedWorkflowId: state.setSingleSelectedWorkflowId,
   }))
 
-  const pushNewLog = useLogsStore(state => state.pushNewLog)
-  const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
 
@@ -59,23 +54,6 @@ export default function Project({ projectId }: IProjectProps) {
     selectedCommandId: state.selectedCommandId,
     setSelectedCommandId: state.setSelectedCommandId,
   }))
-
-  const runWorkflow = () => {
-    if (!singleSelectedWorkflowId) return
-    updateFile(singleSelectedWorkflowId).then((result) => {
-      if (!result) return
-
-      pushNewLog(singleSelectedWorkflowId, result.process_output)
-      if (result.process_output) return
-
-      let vizualizerURL = `${import.meta.env.VITE_VISUALIZER_URL}/?`
-      const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
-      if (gatherKeyFromStore)
-        vizualizerURL += `gather_key=${gatherKeyFromStore}&`
-
-      window.open(`${vizualizerURL}workflowId=${singleSelectedWorkflowId}`, '_blank')
-    })
-  }
 
   const setUpdateCommandsOrder = (newOrderCommands: orderedCommandsListType) => {
     if (!singleSelectedWorkflowId) return
@@ -115,6 +93,7 @@ export default function Project({ projectId }: IProjectProps) {
             selectedTabId={singleSelectedWorkflowId}
             setSelectedTabId={setSingleSelectedWorkflowId}
             CustomDndContext={DefaultDNDList}
+            color='white'
           >
             <CustomTabsNavigation
               tabs={commands}
@@ -125,19 +104,14 @@ export default function Project({ projectId }: IProjectProps) {
                 deleteCommand(commandId.toString())
               }
               CustomDndContext={DefaultDNDList}
-              color='white'
+              // ! if is dataset, than color shall be secondary
+              color='primary'
               orientation='vertical'
+              tabStaticContent={<RunWorkflowButton />}
             >
               <TabContentDisplayer />
             </CustomTabsNavigation>
           </CustomTabsNavigation>
-
-          <RunButton
-            variant='contained'
-            onClick={runWorkflow}
-          >
-            Run Workflow
-          </RunButton>
         </SelectedWorkflowsContainer>
 
 

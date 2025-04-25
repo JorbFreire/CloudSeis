@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-
-import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type positionValueType = `${number}px` | "0"
 
@@ -22,7 +21,7 @@ export const Container = styled.div`
 export const SelectedWorkflowsContainer = styled.div`
   position: relative;
   display: flex;
-  width: calc(100% - (256px));
+  width: calc(100% - (320px));
 `
 
 export const FloatButton = styled(Fab) <IFloatButtonProps>`
@@ -35,19 +34,8 @@ export const FloatButton = styled(Fab) <IFloatButtonProps>`
   ${({ $right }) => $right && `right: ${$right};`}
 `
 
-export const Text = styled.text`
-  color: white;
-  padding: 8px 8px;
-`
-
-export const RunButton = styled(Button)`
-  &.MuiButtonBase-root {
-    position: absolute;
-    z-index: 10;
-    bottom: 20px;
-    left: 20px;
-  
-    width: 256px;
-    height: 40px;
-  }
+export const RunWorkflowButtonStyled = styled(LoadingButton)`
+  display: flex;
+  width: fit-content;
+  align-self: center;
 `

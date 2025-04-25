@@ -104,7 +104,7 @@ export default function InputSelectorOptions() {
 
       <Button
         variant="contained"
-        color="secondary"
+        color="primary"
         onClick={visualizeInputFile}
       >
         Visualizar input

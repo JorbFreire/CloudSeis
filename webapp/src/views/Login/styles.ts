@@ -8,13 +8,13 @@ export const Container = styled.div`
 
   width: 100vw;
   height: 100vh;
-  background-color: #355F55;
+  background-color: ${({ theme }) => theme.palette.primary.light};
 `
 
 export const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.palette.background.default};
   width: 92%;
   max-width: 512px;
 

@@ -2,11 +2,6 @@ import styled, { css } from "styled-components";
 import Tab from '@mui/material/Tab';
 import IconButton from "@mui/material/IconButton";
 
-
-interface IActionButtonProps {
-  $isActive: boolean
-}
-
 export function getCustumTabOrientationStyles($orientation: navigationOrientationType) {
   if ($orientation == "horizontal")
     return css`
@@ -27,28 +22,37 @@ export function getCustumTabOrientationStyles($orientation: navigationOrientatio
 export function getCustomTabColorStyles($color: navigationColorType) {
   if ($color == "white")
     return css`
-      background-color: #ABABAB;
-      color: #355F55;
+      background-color: ${({ theme }) => theme.palette.grey[50]};
+      color: ${({ theme }) => theme.palette.primary.main};
       ::after {
-        background: linear-gradient(to left, #ABABAB 32%, #0000 100%);
+        background: linear-gradient(
+          to left,
+          ${({ theme }) => theme.palette.grey[50]} 32%,
+          #0000 100%
+        );
       }
       &.Mui-selected {
-        background-color: #fff;
-        ::after {
-          background: linear-gradient(to left, #fff 32%, #0000 100%);
-        }
+        background-color: ${({ theme }) => theme.palette.grey[50]};
       }
     `
   return css`
-    background-color: #5B867C;
+    background-color: ${({ theme }) => theme.palette.primary.light};
     ::after {
-      background: linear-gradient(to left, #5B867C 32%, #0000 100%);
+      background: linear-gradient(
+        to left,
+        ${({ theme }) => theme.palette.primary.light} 32%,
+        #0000 100%,
+      );
     }
     &.Mui-selected {
-      color: #fff;
-      background-color: #355F55;
+      color: ${({ theme }) => theme.palette.primary.contrastText};
+      background-color: ${({ theme }) => theme.palette.primary.main};
       ::after {
-        background: linear-gradient(to left, #355F55 32%, #0000 100%);
+        background: linear-gradient(
+          to left,
+          ${({ theme }) => theme.palette.primary.main} 32%,
+          #0000 100%,
+        );
       }
     }
   `
@@ -62,8 +66,8 @@ export const TabBody = styled(Tab) <ICustomTabContainerProps>`
   &.MuiTab-root.MuiButtonBase-root {
     display: flex;
     align-items: flex-start;
-    white-space: nowrap;
     overflow: hidden;
+    white-space: nowrap;
     max-width: 256px;
 
     ${({ $orientation }) => getCustumTabOrientationStyles($orientation)}
@@ -80,7 +84,6 @@ export const TabBody = styled(Tab) <ICustomTabContainerProps>`
       position: absolute;
       right: 0;
       width: 32px;
-      height: 100%;
     }
 
     :not(.Mui-selected){
@@ -93,7 +96,6 @@ export const TabBody = styled(Tab) <ICustomTabContainerProps>`
     &.Mui-selected {
       cursor: auto;
       z-index: 10;
-      box-shadow: 0 -8px 16px 4px #0000003F;
       .MuiTouchRipple-root {
         display: none;
       }
@@ -114,5 +116,6 @@ export const ActionButton = styled(IconButton)`
     
     height: 44px;
     width: 44px;
+    color: ${({ theme }) => theme.palette.primary.contrastText};
   }
 `
