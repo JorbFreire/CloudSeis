@@ -27,8 +27,18 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
 
   setSelectedWorkflows: (newWorkflow) =>
     set({ selectedWorkflows: newWorkflow }),
-  setSingleSelectedWorkflowId: (newWorkflowId) =>
-    set({ singleSelectedWorkflowId: newWorkflowId }),
+  setSingleSelectedWorkflowId: (newWorkflowId) => {
+    let newHasSelectedDataset = false;
+    if (newWorkflowId) {
+      const workflowToSelect = get().selectedWorkflows.find((workflow) => workflow.id == newWorkflowId)
+      if (workflowToSelect && workflowToSelect.parentType == 'dataset')
+        newHasSelectedDataset = true
+    }
+    set({
+      singleSelectedWorkflowId: newWorkflowId,
+      hasSelectedDataset: newHasSelectedDataset,
+    })
+  },
 
   selectWorkflow: (workflowId: number, afterSelect) => {
     if (get().singleSelectedWorkflowId != undefined) {
