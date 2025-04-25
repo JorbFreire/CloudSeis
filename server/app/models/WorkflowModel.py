@@ -55,4 +55,5 @@ class WorkflowModel(database.Model):  # type: ignore
             "file_link_id": self.file_link_id,
             "output_name": self.output_name,
             "commands": self.orderedCommandsList[0].getCommands(),
+            "parentType": self.workflowParent.getParentType(),
         }

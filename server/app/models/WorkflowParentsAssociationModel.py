@@ -47,6 +47,14 @@ class WorkflowParentsAssociationModel(database.Model):  # type: ignore
             line = LineModel.query.filter_by(id=self.lineId).first()
             return line.projectId
 
+    def getParentType(self) -> str:
+        if self.projectId:
+            return "project"
+        if self.lineId:
+            return "line"
+        if self.datasetId:
+            return "dataset"
+
     def getAttributes(self):
         return {
             "projectId": self.projectId,

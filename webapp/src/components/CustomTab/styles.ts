@@ -36,21 +36,21 @@ export function getCustomTabColorStyles($color: navigationColorType) {
       }
     `
   return css`
-    background-color: ${({ theme }) => theme.palette.primary.light};
+    background-color: ${({ theme }) => theme.palette[$color].light};
     ::after {
       background: linear-gradient(
         to left,
-        ${({ theme }) => theme.palette.primary.light} 32%,
+        ${({ theme }) => theme.palette[$color].light} 32%,
         #0000 100%,
       );
     }
     &.Mui-selected {
-      color: ${({ theme }) => theme.palette.primary.contrastText};
-      background-color: ${({ theme }) => theme.palette.primary.main};
+      color: ${({ theme }) => theme.palette[$color].contrastText};
+      background-color: ${({ theme }) => theme.palette[$color].main};
       ::after {
         background: linear-gradient(
           to left,
-          ${({ theme }) => theme.palette.primary.main} 32%,
+          ${({ theme }) => theme.palette[$color].main} 32%,
           #0000 100%,
         );
       }

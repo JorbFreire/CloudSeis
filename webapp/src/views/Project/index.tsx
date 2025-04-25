@@ -15,6 +15,7 @@ import DefaultDNDList from 'components/DefaultDNDList';
 import FloatActions from './FloatActions';
 import TabContentDisplayer from './TabContentDisplayer'
 import RunWorkflowButton from './RunWorkflowButton';
+import VisualizeDatasetButton from './VisualizeDatasetButton';
 import {
   Container,
   SelectedWorkflowsContainer,
@@ -29,13 +30,16 @@ export default function Project({ projectId }: IProjectProps) {
     selectedWorkflows,
     setSelectedWorkflows,
     singleSelectedWorkflowId,
+    hasSelectedDataset,
     setSingleSelectedWorkflowId,
   } = useSelectedWorkflowsStore((state) => ({
     selectedWorkflows: state.selectedWorkflows,
     setSelectedWorkflows: state.setSelectedWorkflows,
     singleSelectedWorkflowId: state.singleSelectedWorkflowId,
+    hasSelectedDataset: state.hasSelectedDataset,
     setSingleSelectedWorkflowId: state.setSingleSelectedWorkflowId,
   }))
+
 
   const [isConsoleOpen, setIsConsoleOpen] = useState(true)
   const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
@@ -96,18 +100,22 @@ export default function Project({ projectId }: IProjectProps) {
             color='white'
           >
             <CustomTabsNavigation
-              tabs={commands}
-              setTabs={setUpdateCommandsOrder}
+              tabs={hasSelectedDataset ? commands.filter(
+                (command) => command.id !== StaticTabKey.Output
+              ) : commands}
+              setTabs={hasSelectedDataset && setUpdateCommandsOrder}
               selectedTabId={selectedCommandId}
               setSelectedTabId={setSelectedCommandId}
               onRemove={(commandId: number | StaticTabKey) =>
                 deleteCommand(commandId.toString())
               }
               CustomDndContext={DefaultDNDList}
-              // ! if is dataset, than color shall be secondary
-              color='primary'
+              color={hasSelectedDataset ? 'secondary' : 'primary'}
               orientation='vertical'
-              tabStaticContent={<RunWorkflowButton />}
+              tabStaticContent={!hasSelectedDataset ?
+                <RunWorkflowButton /> :
+                <VisualizeDatasetButton />
+              }
             >
               <TabContentDisplayer />
             </CustomTabsNavigation>

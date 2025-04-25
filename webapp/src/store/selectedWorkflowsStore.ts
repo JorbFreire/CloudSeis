@@ -11,6 +11,7 @@ interface ISelectedWorkflowsStoreState {
   // *** this will improve performance by not needing many forEachs to get selectedWorkflow info  
   // *** at some components.
   singleSelectedWorkflowId: singleSelectedWorkflowIdType
+  hasSelectedDataset: boolean
   setSelectedWorkflows: (newWorkflows: selectedWorkflowsType) => void
   setSingleSelectedWorkflowId: (newWorkflowId: singleSelectedWorkflowIdType) => void
   selectWorkflow: (
@@ -22,6 +23,7 @@ interface ISelectedWorkflowsStoreState {
 export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((set, get) => ({
   selectedWorkflows: [],
   singleSelectedWorkflowId: undefined,
+  hasSelectedDataset: false,
 
   setSelectedWorkflows: (newWorkflow) =>
     set({ selectedWorkflows: newWorkflow }),
@@ -35,13 +37,20 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
         return
     }
 
-    const isAlredySelected = get().selectedWorkflows.findIndex(
+
+    const selectedWorkflowIndex = get().selectedWorkflows.findIndex(
       (element) => element.id == workflowId
-    ) >= 0
+    )
+    const isAlredySelected = selectedWorkflowIndex >= 0
 
     if (isAlredySelected) {
+      let newHasSelectedDataset = false;
+      if (get().selectedWorkflows[selectedWorkflowIndex].parentType == 'dataset')
+        newHasSelectedDataset = true
+
       set({
-        singleSelectedWorkflowId: workflowId
+        singleSelectedWorkflowId: workflowId,
+        hasSelectedDataset: newHasSelectedDataset
       })
       afterSelect()
       return
@@ -49,10 +58,13 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
 
     getWorkflowByID(workflowId)
       .then(result => {
-        if (!result)
-          return
+        if (!result) return
+
+        let newHasSelectedDataset = false;
+        if (result.parentType == 'dataset') newHasSelectedDataset = true
 
         set((state) => ({
+          hasSelectedDataset: newHasSelectedDataset,
           singleSelectedWorkflowId: result.id,
           selectedWorkflows: [
             ...state.selectedWorkflows,
@@ -61,7 +73,8 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
               name: result.name,
               file_link_id: result.file_link_id,
               commands: result.commands,
-              output_name: result.output_name
+              output_name: result.output_name,
+              parentType: result.parentType,
             },
           ]
         }))

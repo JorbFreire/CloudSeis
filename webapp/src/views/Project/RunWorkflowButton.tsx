@@ -5,13 +5,13 @@ import { useGatherKeyStore } from "store/gatherKeyStore"
 import { useLogsStore } from "store/logsStore"
 import { updateFile } from 'services/fileServices'
 
-import { RunWorkflowButtonStyled } from './styles'
+import { CommandActionButtonStyled } from './styles'
 
 export default function RunWorkflowButton() {
   const {
     singleSelectedWorkflowId,
   } = useSelectedWorkflowsStore((state) => ({
-    singleSelectedWorkflowId: state.singleSelectedWorkflowId
+    singleSelectedWorkflowId: state.singleSelectedWorkflowId,
   }))
   const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
   const pushNewLog = useLogsStore(state => state.pushNewLog)
@@ -39,13 +39,13 @@ export default function RunWorkflowButton() {
   }
 
   return (
-    <RunWorkflowButtonStyled
+    <CommandActionButtonStyled
       color="primary"
       variant="outlined"
       onClick={runWorkflow}
       loading={isLoading}
     >
       Run workflow
-    </RunWorkflowButtonStyled>
+    </CommandActionButtonStyled>
   )
 }

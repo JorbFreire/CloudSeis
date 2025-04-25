@@ -32,6 +32,7 @@ declare global {
     file_link_id: number
     output_name: string
     commands: Array<ICommand>
+    parentType: 'dataset' | 'project' | 'line',
   }
 
   interface IResumedWorkflow extends IgenericEntitiesType {

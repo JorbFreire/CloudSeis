@@ -34,7 +34,7 @@ export const FloatButton = styled(Fab) <IFloatButtonProps>`
   ${({ $right }) => $right && `right: ${$right};`}
 `
 
-export const RunWorkflowButtonStyled = styled(LoadingButton)`
+export const CommandActionButtonStyled = styled(LoadingButton)`
   display: flex;
   width: fit-content;
   align-self: center;

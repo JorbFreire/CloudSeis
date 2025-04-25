@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import type { FormEvent } from "react"
 
 import { getParameters } from "services/programServices"
+import { useSelectedWorkflowsStore } from "store/selectedWorkflowsStore"
 import { useCommandsStore } from "store/commandsStore"
 
 import {
@@ -10,12 +11,18 @@ import {
   CustomButton,
   CustomTooltip
 } from "./styles"
+import ParameterReadOnly from "./ParameterReadOnly"
 
 interface ICommandParametersProps {
   command: ICommand | undefined
 }
 
 export default function CommandParameters({ command }: ICommandParametersProps) {
+  const {
+    hasSelectedDataset,
+  } = useSelectedWorkflowsStore((state) => ({
+    hasSelectedDataset: state.hasSelectedDataset,
+  }))
   const { updateCommandParams } = useCommandsStore()
 
   const [availableParameters, setAvailableParameters] = useState<Array<IseismicProgramParameters>>([])
@@ -28,6 +35,7 @@ export default function CommandParameters({ command }: ICommandParametersProps) 
     updateCommandParams(command.id, JSON.stringify(commandParameters))
   }
 
+
   useEffect(() => {
     if (!command)
       return
@@ -38,38 +46,50 @@ export default function CommandParameters({ command }: ICommandParametersProps) 
   }, [command])
 
   return (
-    <Container onSubmit={submitParametersUpdate}>
+    <Container
+      onSubmit={submitParametersUpdate}
+      $hasGap={!hasSelectedDataset}
+    >
       {availableParameters.map((parameterField) => (
         <CustomTooltip
           key={parameterField.id}
           title={parameterField.description}
         >
-          <CustomTextField
-            label={parameterField.name}
-            // todo: "type" must be improved to handle complex typing rendering stuff like a select list 
-            type={parameterField.input_type}
-            // ! display "required" status some other way
-            // required={parameterField.isRequired}
+          {hasSelectedDataset ? (
+            <ParameterReadOnly
+              name={parameterField.name}
+              value={commandParameters ? commandParameters[parameterField.name] : ""}
+            />
+          ) : (
+            <CustomTextField
+              label={parameterField.name}
+              // todo: "type" must be improved to handle complex typing rendering stuff like a select list 
+              type={parameterField.input_type}
+              // ! display "required" status some other way
+              // required={parameterField.isRequired}
 
-            value={commandParameters ? commandParameters[parameterField.name] : ""}
-            onChange={(event) => {
-              const temCommandParameters = { ...commandParameters }
-              temCommandParameters[parameterField.name] = event.target.value
-              setCommandParameters({ ...temCommandParameters })
-            }}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
+              value={commandParameters ? commandParameters[parameterField.name] : ""}
+              onChange={(event) => {
+                const temCommandParameters = { ...commandParameters }
+                temCommandParameters[parameterField.name] = event.target.value
+                setCommandParameters({ ...temCommandParameters })
+              }}
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+          )}
         </CustomTooltip>
       ))}
 
-      <CustomButton
-        type="submit"
-        variant="contained"
-      >
-        Save Parameters
-      </CustomButton>
+      {!hasSelectedDataset && (
+        <CustomButton
+          type="submit"
+          variant="contained"
+        >
+          Save Parameters
+        </CustomButton>
+      )}
     </Container>
   )
 }

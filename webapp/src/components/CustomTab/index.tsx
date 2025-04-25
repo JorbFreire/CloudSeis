@@ -5,6 +5,8 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import CommentsDisabledRoundedIcon from '@mui/icons-material/CommentsDisabledRounded';
 
 import { updateCommandIsActive } from 'services/commandServices';
+import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
+import { useCommandsStore } from 'store/commandsStore';
 
 import {
   Container,
@@ -12,7 +14,6 @@ import {
   ActionButtonsContainer,
   ActionButton
 } from './styles'
-import { useCommandsStore } from 'store/commandsStore';
 
 // use is_active to turn down opacity
 // todo: turn into generic and make two tab components
@@ -34,6 +35,12 @@ export default function CustomTab({
     transform,
     transition,
   } = useSortable({ id: value });
+
+  const {
+    hasSelectedDataset,
+  } = useSelectedWorkflowsStore((state) => ({
+    hasSelectedDataset: state.hasSelectedDataset,
+  }))
 
   const {
     commands,
@@ -81,19 +88,23 @@ export default function CustomTab({
             {...attributes}
             {...listeners}
           />
-          {$orientation == "vertical" && Number.isInteger(value) && (
-            <ActionButtonsContainer>
-              {/* ! comment disabled should not be in generic component */}
-              <ActionButton onClick={handleUpdateCommandIsActive}>
-                <CommentsDisabledRoundedIcon />
-              </ActionButton>
-              <ActionButton onClick={onRemove}>
-                <CloseRoundedIcon />
-              </ActionButton>
-            </ActionButtonsContainer>
-          )}
+          {
+            $orientation == "vertical" &&
+            Number.isInteger(value) &&
+            !hasSelectedDataset && (
+              <ActionButtonsContainer>
+                {/* ! comment disabled should not be in generic component */}
+                <ActionButton onClick={handleUpdateCommandIsActive}>
+                  <CommentsDisabledRoundedIcon />
+                </ActionButton>
+                <ActionButton onClick={onRemove}>
+                  <CloseRoundedIcon />
+                </ActionButton>
+              </ActionButtonsContainer>
+            )
+          }
         </Container>
-      </Tooltip>
+      </Tooltip >
     </>
   )
 }

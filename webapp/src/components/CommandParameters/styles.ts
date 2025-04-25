@@ -3,7 +3,11 @@ import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import Tooltip from "@mui/material/Tooltip"
 
-export const Container = styled.form`
+interface IContainerProps {
+  $hasGap: boolean
+}
+
+export const Container = styled.form<IContainerProps>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -11,7 +15,7 @@ export const Container = styled.form`
   height: 100%;
   width: 100%;
   padding-top: 8px;
-  gap: 16px;
+  gap: ${({ $hasGap }) => $hasGap ? '16px' : 0};
 `
 
 export const CustomTextField = styled(TextField)`

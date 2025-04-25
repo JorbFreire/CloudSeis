@@ -9,7 +9,13 @@ import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { Container } from './styles'
 
 export default function OutputConfigOptions() {
-  const singleSelectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
+  const {
+    singleSelectedWorkflowId,
+    hasSelectedDataset,
+  } = useSelectedWorkflowsStore((state) => ({
+    singleSelectedWorkflowId: state.singleSelectedWorkflowId,
+    hasSelectedDataset: state.hasSelectedDataset,
+  }))
   const selectedWorkflows = useSelectedWorkflowsStore((state) => state.selectedWorkflows)
   const [outputFileName, setOutputFileName] = useState("")
 

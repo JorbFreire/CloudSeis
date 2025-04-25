@@ -4,6 +4,7 @@ import { useLocation } from "@tanstack/react-location";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from "@mui/material/Button"
+import Typography from '@mui/material/Typography';
 
 import { listFiles } from "services/fileServices"
 import { updateWorkflowFileLink } from "services/workflowServices";
@@ -20,9 +21,11 @@ export default function InputSelectorOptions() {
   const {
     selectedWorkflows,
     singleSelectedWorkflowId,
+    hasSelectedDataset,
   } = useSelectedWorkflowsStore((state) => ({
     selectedWorkflows: state.selectedWorkflows,
     singleSelectedWorkflowId: state.singleSelectedWorkflowId,
+    hasSelectedDataset: state.hasSelectedDataset,
   }))
   const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
 
@@ -80,31 +83,44 @@ export default function InputSelectorOptions() {
 
   return (
     <Container>
-      <h1>Escolha o arquivo .su a ser usado no fluxo</h1>
+      <h1>
+        {
+          hasSelectedDataset ?
+            "Arquivo .su usado no fluxo" :
+            "Escolha o arquivo .su a ser usado no fluxo"
+        }
+      </h1>
 
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={selectedFileLinkId}
-        label="Arquivo"
-        onChange={(event) => submitWorkflowFileLinkUpdate(event.target.value)}
-      >
-        {fileLinks.map((fileLink) =>
-          <MenuItem value={fileLink.id}>
-            {fileLink.name}
-          </MenuItem>
-        )}
-
-        <Button
-          onClick={() => setIsFileUploadDialogOpen(true)}
+      {hasSelectedDataset ? (
+        <Typography fontSize={22}>
+          {fileLinks.find((link) => link.id.toString() === selectedFileLinkId)?.name}
+        </Typography>
+      ) : (
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={selectedFileLinkId}
+          label="Arquivo"
+          onChange={(event) => submitWorkflowFileLinkUpdate(event.target.value)}
         >
-          Upload de novo arquivo
-        </Button>
-      </Select>
+          {fileLinks.map((fileLink) =>
+            <MenuItem key={fileLink.id} value={fileLink.id}>
+              {fileLink.name}
+            </MenuItem>
+          )}
+
+          <Button
+            onClick={() => setIsFileUploadDialogOpen(true)}
+          >
+            Upload de novo arquivo
+          </Button>
+        </Select>
+      )}
+
 
       <Button
         variant="contained"
-        color="primary"
+        color={hasSelectedDataset ? 'secondary' : 'primary'}
         onClick={visualizeInputFile}
       >
         Visualizar input
