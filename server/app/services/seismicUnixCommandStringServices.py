@@ -37,7 +37,7 @@ def getSemicUnixCommandString(commandsQueue: list, source_file_path: str, target
         for seismicUnixProgramIndex, seismicUnixProgram in enumerate(orderedCommandsList):
             if not seismicUnixProgram["is_active"]:
                 continue
-            seismicUnixProcessString += f'{seismicUnixProgram["name"]}'
+            seismicUnixProcessString += f'{seismicUnixProgram["name"].lower()}'
             seismicUnixProcessString += _getAllParameters(
                 json.loads((seismicUnixProgram["parameters"]))
             )
