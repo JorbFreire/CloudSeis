@@ -2,8 +2,8 @@ import { create } from 'zustand'
 
 
 interface ILogsStore {
-  logs: Map<number, Array<string>>
-  pushNewLog: (workflowId: number, newLog: string) => void
+  logs: Map<number, Array<IprocessLogs>>
+  pushNewLog: (workflowId: number, newLog: IprocessLogs) => void
 }
 
 export const useLogsStore = create<ILogsStore>((set) => ({
@@ -15,9 +15,9 @@ export const useLogsStore = create<ILogsStore>((set) => ({
       if (!workflowLogs)
         workflowLogs = []
 
-      if (!newLog) {
-        newLog = "Comando executado com sucesso, sem avisos"
-      }
+      // ! must check on programs where the output is an text output 
+      if (newLog.returncode == 0)
+        newLog.logMessage = "Success"
 
       workflowLogs.push(newLog)
 

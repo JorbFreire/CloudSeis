@@ -1,6 +1,7 @@
 from os import path, makedirs
 from types import SimpleNamespace
 import subprocess
+from datetime import datetime
 
 from ..database.connection import database
 from ..models.FileLinkModel import FileLinkModel
@@ -10,8 +11,10 @@ from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationM
 from ..services.createDataset import createDataset
 from ..services.seismicFilePathServices import showWorkflowFilePath, createUploadedFilePath, createDatasetFilePath
 from ..services.seismicUnixCommandStringServices import getSemicUnixCommandString
+from ..services.getSimplifiedProcessStringService import getSimplifiedProcessString
 
 from ..errors.FileError import FileError
+
 
 def listByProjectId(projectId):
     fileLinks = FileLinkModel.query.filter_by(projectId=projectId).all()
@@ -26,7 +29,7 @@ def listByProjectId(projectId):
     return fileLinksResponse
 
 
-def create(file, projectId) -> str:
+def create(file, projectId):
     filePath = createUploadedFilePath(
         file.filename,
         projectId
@@ -49,7 +52,7 @@ def create(file, projectId) -> str:
     # *** File is blank if marmousi_CS.su is empty
 
 
-def update(userId, workflowId) -> str:
+def update(userId, workflowId):
     workflow = WorkflowModel.query.filter_by(id=workflowId).first()
     workflowParent = WorkflowParentsAssociationModel.query.filter_by(
         workflowId=workflowId
@@ -75,10 +78,15 @@ def update(userId, workflowId) -> str:
     )
 
     try:
-        process_output = subprocess.check_output(
+        processStartTime = datetime.now()
+        process_output = subprocess.run(
             seismicUnixProcessString,
-            shell=True
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
         )
+
         newFileLink = FileLinkModel(
             projectId=workflowParent.getProjectId(),
             datasetId=datasetAttributes["id"],
@@ -89,7 +97,13 @@ def update(userId, workflowId) -> str:
         database.session.add(newFileLink)
         database.session.commit()
 
-        return process_output.decode("utf-8")
+        return {
+            "executionSimplifiedString": getSimplifiedProcessString(process_output),
+            "logMessage": process_output.stderr,
+            "returncode": process_output.returncode,
+            "processStartTime": processStartTime,
+            "executionEndTime": datetime.now(),
+        }
     except Exception as error:
         return str(error)
 

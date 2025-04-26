@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import FeedbackRoundedIcon from '@mui/icons-material/FeedbackRounded';
+import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
+import IntegrationInstructionsRoundedIcon from '@mui/icons-material/IntegrationInstructionsRounded';
 
 import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
@@ -11,8 +14,8 @@ import ProgramsDrawer from 'components/ProgramsDrawer';
 import ProjectTab from 'components/ProjectTab';
 import CustomTabsNavigation from 'components/CustomTabsNavigation';
 import DefaultDNDList from 'components/DefaultDNDList';
+import DrawerTriggerButton from 'components/DrawerTriggerButton'
 
-import FloatActions from './FloatActions';
 import TabContentDisplayer from './TabContentDisplayer'
 import RunWorkflowButton from './RunWorkflowButton';
 import VisualizeDatasetButton from './VisualizeDatasetButton';
@@ -123,12 +126,20 @@ export default function Project({ projectId }: IProjectProps) {
         </SelectedWorkflowsContainer>
 
 
-        <FloatActions
-          isConsoleOpen={isConsoleOpen}
-          setIsConsoleOpen={setIsConsoleOpen}
-          isOptionsDrawerOpen={isOptionsDrawerOpen}
-          setIsOptionsDrawerOpen={setIsOptionsDrawerOpen}
-        />
+        <DrawerTriggerButton
+          setIsOpen={setIsConsoleOpen}
+          $bottom='16px'
+          $left='16px'
+        >
+          <TerminalRoundedIcon />
+        </DrawerTriggerButton>
+        <DrawerTriggerButton
+          setIsOpen={setIsOptionsDrawerOpen}
+          $top='16px'
+          $right='16px'
+        >
+          <IntegrationInstructionsRoundedIcon />
+        </DrawerTriggerButton>
       </Container >
 
       <Console isOpen={isConsoleOpen} setIsOpen={setIsConsoleOpen} />

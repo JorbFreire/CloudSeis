@@ -48,7 +48,5 @@ def createSuFile(_, projectId):
 @suFileRouter.route("/update/<workflowId>", methods=['PUT'])
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateSuFile(userId, workflowId):
-    process_output = suFileController.update(userId, workflowId)
-    return jsonify({
-        "process_output": process_output
-    })
+    process_logs = suFileController.update(userId, workflowId)
+    return jsonify(process_logs)

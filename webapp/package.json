@@ -24,6 +24,7 @@
     "@tanstack/react-location": "^3.7.4",
     "@types/styled-components": "^5.1.26",
     "axios": "^1.7.4",
+    "date-fns": "^4.1.0",
     "express": "^4.20.0",
     "generouted": "^1.6.3",
     "notistack": "^3.0.1",

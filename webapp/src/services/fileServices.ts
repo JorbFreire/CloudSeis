@@ -50,7 +50,7 @@ export async function createFile(
 
 export async function updateFile(
   workflowId: number
-): Promise<any | null> {
+): Promise<IprocessLogs | null> {
   try {
     const response = await api.put(
       `/su-file/update/${workflowId}`
