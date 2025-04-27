@@ -44,8 +44,8 @@ export default function Project({ projectId }: IProjectProps) {
   }))
 
 
-  const [isConsoleOpen, setIsConsoleOpen] = useState(true)
-  const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(true)
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false)
+  const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(false)
 
   const loadLines = useLinesStore((state) => state.loadLines)
   const {

@@ -1,11 +1,30 @@
 import { useState, useEffect } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+
+import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+
 import { getGroups } from 'services/programServices'
 import { createNewCommand } from 'services/commandServices'
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
 import { useCommandsStore } from 'store/commandsStore';
 import GenericDrawer from "../GenericDrawer"
+
+import {
+  Title,
+  CustomAccordion,
+  CustomListItem
+} from './styles'
+import Button from '@mui/material/Button';
+
+import { Tooltip } from '@mui/material';
+import useNotificationStore from 'store/notificationStore';
 
 interface IProgramsDrawerProps {
   isOpen: boolean
@@ -16,6 +35,7 @@ export default function ProgramsDrawer({
   isOpen,
   setIsOpen
 }: IProgramsDrawerProps) {
+  const triggerNotification = useNotificationStore((state) => state.triggerNotification)
   const singleSelectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
   // *** Commands in the current selected workflow
   const {
@@ -32,8 +52,8 @@ export default function ProgramsDrawer({
   const [programsGroups, setProgramsGroups] = useState<Array<IProgramsGroup>>([])
 
   const addProgramToCurrentWorkflow = (name: string, program_id: number) => {
-    if (singleSelectedWorkflowId) {
-      createNewCommand(
+    if (singleSelectedWorkflowId)
+      return createNewCommand(
         singleSelectedWorkflowId,
         program_id,
         name
@@ -48,7 +68,11 @@ export default function ProgramsDrawer({
         if (typeof result.id !== "number") return
         setSelectedCommandId(result.id)
       })
-    }
+
+    triggerNotification({
+      content: "Must select an workflow",
+      variant: "warning",
+    })
   }
 
   useEffect(() => {
@@ -63,28 +87,63 @@ export default function ProgramsDrawer({
       setIsOpen={setIsOpen}
       anchor='right'
     >
-      <h1>Programs</h1>
+      <Title variant='h5'>
+        Seismic Unix
+      </Title>
       {programsGroups.map((group) => (
-        <div
+        <CustomAccordion
           key={group.id}
+          disableGutters
         >
-          <h2>{group.name}</h2>
-          {group.programs.map((program) => (
-            <h4
-              key={program.id}
+          <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
+            <Typography
+              variant='subtitle1'
+              fontWeight="700"
             >
-              {program.name}
-              <button
-                onClick={() => addProgramToCurrentWorkflow(
-                  program.path_to_executable_file,
-                  program.id,
-                )}
-              >
-                Add to queue
-              </button>
-            </h4>
-          ))}
-        </div>
+              {group.name.toUpperCase()}
+            </Typography>
+          </AccordionSummary>
+
+          <AccordionDetails>
+            <List
+              dense
+              disablePadding
+            >
+              {group.programs.map((program) => (
+                <>
+                  <CustomListItem disableGutters>
+                    <Button
+                      onClick={() => addProgramToCurrentWorkflow(
+                        program.path_to_executable_file,
+                        program.id,
+                      )}
+                      variant='text'
+                      startIcon={<KeyboardBackspaceRoundedIcon />}
+                    >
+                      <Typography
+                        variant='body1'
+                        key={program.id}
+                      >
+                        {program.name}
+                      </Typography>
+                    </Button>
+
+                    <Tooltip
+                      title={program.description}
+                      placement='top'
+                      arrow
+                    >
+                      <QuestionMarkIcon
+                        color='primary'
+                        fontSize='small'
+                      />
+                    </Tooltip>
+                  </CustomListItem>
+                </>
+              ))}
+            </List>
+          </AccordionDetails>
+        </CustomAccordion>
       ))}
     </GenericDrawer>
   )
