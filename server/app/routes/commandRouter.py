@@ -62,7 +62,7 @@ def updateCommand(_, id):
 
 @commandRouter.route("/order/<workflowId>", methods=['PUT'])
 @decorator_factory(validateRequestBody, SerializerSchema=CommandsUpdateOrderSchema)
-@decorator_factory(requireAuthentication, routeModel=CommandModel)
+@decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def updateOrder(_, workflowId):
     # ! need refactor
     data = request.get_json()

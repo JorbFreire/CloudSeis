@@ -64,7 +64,9 @@ export default function Project({ projectId }: IProjectProps) {
 
   const setUpdateCommandsOrder = (newOrderCommands: orderedCommandsListType) => {
     if (!singleSelectedWorkflowId) return
+    if (hasSelectedDataset) return
 
+    const oldOrderCommands = commands
     setCommands([...newOrderCommands])
 
     const newOrderIds: idsType = newOrderCommands
@@ -74,9 +76,10 @@ export default function Project({ projectId }: IProjectProps) {
     updateCommandsOrder(
       singleSelectedWorkflowId.toString(),
       newOrderIds
-    ).catch(() => {
+    ).then((result) => {
       // ! reverting order changes when face any errors
-      setCommands([...newOrderCommands])
+      if (result == null)
+        setCommands([...oldOrderCommands])
     })
   }
 
@@ -106,7 +109,7 @@ export default function Project({ projectId }: IProjectProps) {
               tabs={hasSelectedDataset ? commands.filter(
                 (command) => command.id !== StaticTabKey.Output
               ) : commands}
-              setTabs={hasSelectedDataset && setUpdateCommandsOrder}
+              setTabs={setUpdateCommandsOrder}
               selectedTabId={selectedCommandId}
               setSelectedTabId={setSelectedCommandId}
               onRemove={(commandId: number | StaticTabKey) =>
