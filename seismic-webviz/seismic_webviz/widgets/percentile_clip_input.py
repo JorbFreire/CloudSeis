@@ -1,6 +1,5 @@
 from bokeh.models import NumericInput
 from collections.abc import Callable
-from icecream import ic
 
 
 def create_percentile_clip_input(
@@ -22,11 +21,9 @@ def create_percentile_clip_input(
         print(f"\nCALLBACK percentile_clip_input. new={new}")
         percentile_clip = float(new)
         if percentile_clip > 100.0:
-            ic("EXCEEDED")
             percentile_clip_input.value = 100.0
             return
         elif percentile_clip < 1.0:
-            ic("EXCEEDED")
             percentile_clip_input.value = 100.0
             return
         state["percentile_clip"] = percentile_clip

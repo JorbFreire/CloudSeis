@@ -1,6 +1,5 @@
 from bokeh.models import RadioButtonGroup
 from collections.abc import Callable
-from icecream import ic
 
 GAIN_OPTIONS = ["None", "agc", "wagc"]
 

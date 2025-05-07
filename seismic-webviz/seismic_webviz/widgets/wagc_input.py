@@ -1,6 +1,5 @@
 from bokeh.models import NumericInput
 from collections.abc import Callable
-from icecream import ic
 
 
 def create_wagc_input(

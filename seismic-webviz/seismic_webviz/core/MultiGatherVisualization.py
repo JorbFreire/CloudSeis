@@ -3,7 +3,6 @@ import time
 import numpy.typing as npt
 from bokeh.layouts import column, row
 from bokeh.models import Paragraph
-from icecream import ic
 from seismicio.Models.SuDataModel import SuFile
 
 from ..widgets import widgets
@@ -100,7 +99,6 @@ class MultiGatherVisualization:
         # WARNING: this function expects the index or slice to be correct
         start_time = time.perf_counter()
         print("CALL handle_state_change")
-        ic(self.state)
 
         gather_index_stop = self.state["gather_index_start"] + \
             self.state["num_loadedgathers"]

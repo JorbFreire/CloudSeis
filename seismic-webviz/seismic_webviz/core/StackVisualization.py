@@ -3,7 +3,6 @@ import time
 import numpy.typing as npt
 from bokeh.layouts import column, row
 from bokeh.models import Paragraph
-from icecream import ic
 from seismicio.Models.SuDataModel import SuFile
 
 from ..widgets import widgets
@@ -77,7 +76,6 @@ class StackVisualization:
     def handle_state_change(self):
         start_time = time.perf_counter()
         print("CALL handle_state_change")
-        ic(self.state)
 
         data = self.sufile.traces
 

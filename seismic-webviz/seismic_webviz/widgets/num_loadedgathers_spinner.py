@@ -1,6 +1,5 @@
 from bokeh.models import Spinner
 from collections.abc import Callable
-from icecream import ic
 
 
 def create_num_loadedgathers_spinner(
@@ -28,7 +27,6 @@ def create_num_loadedgathers_spinner(
         # if exceeding to the right
         gather_index_stop = state["gather_index_start"] + num_loadedgathers
         if gather_index_stop > state["num_gathers"]:
-            ic("EXCEEDED")
             num_loadedgathers_spinner.value = state["num_gathers"] - state["gather_index_start"]
             return
 

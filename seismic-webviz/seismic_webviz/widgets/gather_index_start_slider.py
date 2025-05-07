@@ -1,5 +1,4 @@
 from bokeh.models import Slider
-from icecream import ic
 
 
 def create_gather_index_start_slider(state: dict, update_func) -> Slider:
