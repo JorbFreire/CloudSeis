@@ -6,7 +6,7 @@ from bokeh.application.handlers import FunctionHandler
 from bokeh.application import Application
 from bokeh.document.document import Document
 
-from ..core import Visualization
+from ..core import visualization_factory, StackVisualization, MultiGatherVisualization
 from .config import BASE_URL
 
 
@@ -42,7 +42,7 @@ def app_factory():
             origin=origin
         )
 
-        visualization_manager = Visualization(
+        visualization_manager: StackVisualization | MultiGatherVisualization = visualization_factory(
             filename=absolute_file_path,
             gather_key=gather_key
         )
