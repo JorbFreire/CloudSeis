@@ -1,35 +1,28 @@
 import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
-import { useLocation } from '@tanstack/react-location';
 import { useTimeout } from 'react-use';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Button from '@mui/material/Button';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-import { defaultLineName } from 'constants/defaults';
 import { useLinesStore } from 'store/linesStore';
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
 import LineChildrenFolder from './LineChildrenFolder'
 import DataSetsFolder from './DataSetsFolder'
+import MenuActions from './MenuActions';
 
 import { Container } from "./styles"
 
 export default function ProjectTab() {
-  const location = useLocation()
-  const projectId = Number(location.current.pathname.split('/')[2])
-
   const {
     lines,
-    saveNewLine
   } = useLinesStore((state) => ({
     lines: state.lines,
-    saveNewLine: state.saveNewLine
   }))
   const {
-    selectWorkflow,
+    selectWorkflow
   } = useSelectedWorkflowsStore((state) => ({
     selectWorkflow: state.selectWorkflow,
   }))
@@ -37,15 +30,6 @@ export default function ProjectTab() {
   const [expanded, setExpanded] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>("");
   const [isAllowToSelect, _, resetAllowToSelectTimer] = useTimeout(1000);
-
-  const generateNextLineName = () => {
-    if (lines.length < 1)
-      return defaultLineName
-
-    return (
-      `${defaultLineName} (${lines.length + 1})`
-    )
-  }
 
   const handleToggle = (_: SyntheticEvent, nodeId: string[]) => {
     setExpanded(nodeId);
@@ -80,14 +64,7 @@ export default function ProjectTab() {
         onNodeToggle={handleToggle}
         onNodeSelect={handleSelect}
       >
-        <Button
-          onClick={() => saveNewLine(
-            projectId,
-            generateNextLineName()
-          )}
-        >
-          New Line
-        </Button>
+        <MenuActions />
         {Boolean(lines.length) && lines.map((line) => (
           <TreeItem key={line.id} nodeId={`line-${line.id}`} label={line.name}>
             <LineChildrenFolder
