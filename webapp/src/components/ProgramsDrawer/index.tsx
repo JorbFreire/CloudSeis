@@ -5,26 +5,28 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import { getGroups } from 'services/programServices'
 import { createNewCommand } from 'services/commandServices'
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore';
 import { useCommandsStore } from 'store/commandsStore';
+import useNotificationStore from 'store/notificationStore';
 import GenericDrawer from "../GenericDrawer"
+
 
 import {
   Title,
+  CloseButton,
   CustomAccordion,
   CustomListItem
 } from './styles'
-import Button from '@mui/material/Button';
-
-import { Tooltip } from '@mui/material';
-import useNotificationStore from 'store/notificationStore';
 
 interface IProgramsDrawerProps {
   isOpen: boolean
@@ -87,6 +89,14 @@ export default function ProgramsDrawer({
       setIsOpen={setIsOpen}
       anchor='right'
     >
+      <CloseButton
+        color='error'
+        size='small'
+        onClick={() => setIsOpen(false)}
+      >
+        <CloseRoundedIcon fontSize='large' />
+      </CloseButton>
+
       <Title variant='h5'>
         Seismic Unix
       </Title>

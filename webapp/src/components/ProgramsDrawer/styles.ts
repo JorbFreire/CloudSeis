@@ -2,6 +2,7 @@ import styled from "styled-components"
 import Typography from "@mui/material/Typography"
 import Accordion from '@mui/material/Accordion';
 import ListItem from '@mui/material/ListItem';
+import IconButton from '@mui/material/IconButton'
 
 export const Title = styled(Typography)`
   && {
@@ -10,6 +11,11 @@ export const Title = styled(Typography)`
     text-transform: uppercase;
     letter-spacing: 1.2px;
   }
+`
+
+export const CloseButton = styled(IconButton)`
+  position: absolute !important;
+  z-index: 10;
 `
 
 export const CustomAccordion = styled(Accordion)`
