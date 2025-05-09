@@ -25,13 +25,11 @@ export default function RunWorkflowButton() {
       if (!result) return
 
       pushNewLog(singleSelectedWorkflowId, result)
-      if (result) return
 
       let vizualizerURL = `${import.meta.env.VITE_VISUALIZER_URL}/?`
       const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
       if (gatherKeyFromStore)
         vizualizerURL += `gather_key=${gatherKeyFromStore}&`
-
       window.open(`${vizualizerURL}workflowId=${singleSelectedWorkflowId}`, '_blank')
     }).finally(() => {
       setIsLoading(false)
