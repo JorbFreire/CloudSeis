@@ -4,7 +4,7 @@ from ..middlewares.decoratorsFactory import decorator_factory
 from ..middlewares.requireAuthentication import requireAuthentication
 from ..models.WorkflowModel import WorkflowModel
 
-from ..services.seismicFilePathServices import showWorkflowFilePath, createDatasetFilePath
+from ..services.seismicFilePathServices import showWorkflowFilePath, showDatasetFilePath
 
 suFileNameRouter = Blueprint(
     "su-file-name-routes",
@@ -27,7 +27,7 @@ def showSuFilePath(_, workflowId):
 @decorator_factory(requireAuthentication, routeModel=WorkflowModel)
 def showDatasetSuFilePath(_, workflowId):
     # *** no controller layer for this route, no adcional rules *** #
-    file_path = createDatasetFilePath(workflowId)
+    file_path = showDatasetFilePath(workflowId)
     return jsonify({
         "file_path": file_path,
     })

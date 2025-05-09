@@ -15,7 +15,7 @@ export default function VisualizeDatasetButton() {
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const runWorkflow = () => {
+  const displayDataset = () => {
     setIsLoading(true)
     if (!singleSelectedWorkflowId) return
 
@@ -33,7 +33,7 @@ export default function VisualizeDatasetButton() {
     <CommandActionButtonStyled
       color="primary"
       variant="outlined"
-      onClick={runWorkflow}
+      onClick={displayDataset}
       loading={isLoading}
     >
       Visualize Dataset
