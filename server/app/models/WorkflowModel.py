@@ -36,7 +36,12 @@ class WorkflowModel(database.Model):  # type: ignore
 
     workflowParent: Mapped[
         WorkflowParentsAssociationModel
-    ] = relationship(WorkflowParentsAssociationModel, cascade="all, delete-orphan")
+    ] = relationship(
+        WorkflowParentsAssociationModel,
+        cascade="all, delete-orphan",
+        single_parent=True,
+        passive_deletes=True
+    )
 
     def getSelectedFileName(self) -> str:
         fileLink = FileLinkModel.query.filter_by(id=self.file_link_id).first()

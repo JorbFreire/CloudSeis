@@ -13,31 +13,31 @@ from ..repositories.OrderedCommandsListRepository import orderedCommandsListRepo
 from ..repositories.WorkflowParentsAssociationRepository import workflowParentsAssociationRepository
 
 
-def createDataset(userId, baseWorkflowId) -> dict:
+def createDataset(userId, originWorkflowId) -> dict:
     # *** this method duplicate a workflow and keep it as history
     # *** being chidren of the dataset table.
     # *** Keeping the generated file and the workflow used to get it
     user = UserModel.query.filter_by(id=UUID(userId)).first()
 
-    baseWorkflow = WorkflowModel.query.filter_by(
-        id=baseWorkflowId
+    originWorkflow = WorkflowModel.query.filter_by(
+        id=originWorkflowId
     ).first()
 
     commands = CommandModel.query.filter_by(
-        workflowId=baseWorkflowId
+        workflowId=originWorkflowId
     ).all()
 
     dataset = DataSetModel(
-        workflowId=baseWorkflowId,
+        originWorkflowId=originWorkflowId,
         owner_email=user.email
     )
     database.session.add(dataset)
     database.session.commit()
 
     newWorkflowData = {
-        "name": f"{baseWorkflow.name} - dataset",
+        "name": f"{originWorkflow.name} - dataset",
         "parentType": "datasetId",
-        "output_name": baseWorkflow.output_name,
+        "output_name": originWorkflow.output_name,
     }
 
     newWorkflow = workflowRepository.create(
@@ -55,7 +55,7 @@ def createDataset(userId, baseWorkflowId) -> dict:
 
     workflowRepository.updateFilePath(
         newWorkflow.id,
-        baseWorkflow.file_link_id
+        originWorkflow.file_link_id
     )
 
     # ? not sure "copy" is necessary, but removing directly from

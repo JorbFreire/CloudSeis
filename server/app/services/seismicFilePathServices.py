@@ -11,15 +11,15 @@ def _generateSuFilePath(unique_filename, user_email, projectId) -> str:
     return file_path
 
 
-def _buildFilePath(folderBaseWorkflowId, output_name):
-    source_file_path = showWorkflowFilePath(folderBaseWorkflowId)
+def _buildFilePath(folderOriginWorkflowId, output_name):
+    source_file_path = showWorkflowFilePath(folderOriginWorkflowId)
     directory = path.dirname(source_file_path)
     target_file_name = f'{output_name}.su'
 
     target_file_path = path.join(
         directory,
         "datasets",
-        f"from_workflow_{folderBaseWorkflowId}",
+        f"from_workflow_{folderOriginWorkflowId}",
         target_file_name
     )
 

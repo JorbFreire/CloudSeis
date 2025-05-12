@@ -17,7 +17,7 @@ class DataSetModel(database.Model):
         name="FK_users_table_dataset_table"
     ))
 
-    workflowId = dbTypes.Column(dbTypes.ForeignKey(
+    originWorkflowId = dbTypes.Column(dbTypes.ForeignKey(
         "workflows_table.id",
         name="FK_workflows_tables_datasets_table",
         ondelete="CASCADE"
@@ -25,7 +25,10 @@ class DataSetModel(database.Model):
 
     workflowParentAssociations: Mapped[
         List[WorkflowParentsAssociationModel]
-    ] = relationship(WorkflowParentsAssociationModel)
+    ] = relationship(
+        WorkflowParentsAssociationModel,
+        passive_deletes=True
+    )
 
     def getWorkflows(self) -> list[dict[str, str]]:
         if len(self.workflowParentAssociations) == 0:
@@ -42,5 +45,3 @@ class DataSetModel(database.Model):
             "id": self.id,
             "workflows": self.getWorkflows()
         }
-
-# Add commands attributes

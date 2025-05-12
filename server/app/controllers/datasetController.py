@@ -14,7 +14,7 @@ def showById(id):
 
 
 def showAll(workflowId):
-    datasets = DataSetModel.query.filter_by(workflowId=workflowId).all()
+    datasets = DataSetModel.query.filter_by(originWorkflowId=workflowId).all()
     if len(datasets) == 0:
         raise AppError("There are no datasets", 404)
 

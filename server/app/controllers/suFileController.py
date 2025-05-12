@@ -6,6 +6,7 @@ from datetime import datetime
 from ..database.connection import database
 from ..models.FileLinkModel import FileLinkModel
 from ..models.WorkflowModel import WorkflowModel
+from ..models.DataSetModel import DataSetModel
 from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 
 from ..services.createDataset import createDataset
@@ -60,13 +61,29 @@ def update(userId, workflowId):
 
     if not workflow.output_name:
         raise FileError("Output name should be set before running workflow")
+    if not workflow.file_link_id:
+        raise FileError("Input file should be set before running workflow")
+
+    # ! overwrite any dataset with the same out_put name
+    datasets_to_delete = DataSetModel.query \
+        .join(WorkflowParentsAssociationModel, DataSetModel.id == WorkflowParentsAssociationModel.datasetId) \
+        .join(WorkflowModel, WorkflowModel.id == WorkflowParentsAssociationModel.workflowId) \
+        .filter(WorkflowModel.output_name == workflow.output_name) \
+        .all()
+    for dataset in datasets_to_delete:
+        if dataset.workflowParentAssociations:
+            workflow_to_delete = WorkflowModel.query.filter_by(
+                id=dataset.workflowParentAssociations[0].workflowId
+            ).first()
+            # dataset.workflowParentAssociations
+            database.session.delete(workflow_to_delete)
+        database.session.delete(dataset)
 
     datasetAttributes = createDataset(userId, workflowId)
 
     source_file_path = showWorkflowFilePath(
         workflowId
     )
-
     target_file_path = createDatasetFilePath(
         workflowId
     )
@@ -93,7 +110,6 @@ def update(userId, workflowId):
             data_type="any for now",
             name=path.basename(target_file_path)
         )
-
         database.session.add(newFileLink)
         database.session.commit()
 
