@@ -29,7 +29,7 @@ declare global {
   }
 
   interface IWorkflow extends IgenericEntitiesType {
-    file_link_id: number
+    input_file_link_id: number
     output_name: string
     commands: Array<ICommand>
     parentType: 'dataset' | 'project' | 'line',

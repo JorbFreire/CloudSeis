@@ -61,7 +61,7 @@ def update(userId, workflowId):
 
     if not workflow.output_name:
         raise FileError("Output name should be set before running workflow")
-    if not workflow.file_link_id:
+    if not workflow.input_file_link_id:
         raise FileError("Input file should be set before running workflow")
 
     # ! overwrite any dataset with the same out_put name

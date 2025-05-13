@@ -73,10 +73,11 @@ export default function InputSelectorOptions() {
         return
       setFileLinks(result)
 
-      const a = selectedWorkflows.filter(
+      // ! change this name
+      const availableSeismicFiles = selectedWorkflows.filter(
         (workflow) => workflow.id == singleSelectedWorkflowId
       )
-      const fileLinkId = a[0].file_link_id
+      const fileLinkId = availableSeismicFiles[0].input_file_link_id
       setSelectedFileLinkId(fileLinkId.toString())
     })
   }, [])

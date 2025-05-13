@@ -41,7 +41,7 @@ def updateFilePath(workflowId, fileLinkId):
     if not fileLink:
         raise AppError("FileLink does not exist", 409)
 
-    workflow.file_link_id = fileLink.id
+    workflow.input_file_link_id = fileLink.id
 
     database.session.commit()
     return workflow

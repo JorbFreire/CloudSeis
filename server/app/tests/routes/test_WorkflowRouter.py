@@ -98,7 +98,7 @@ class TestWorkflowRouter:
             assert isinstance(response.json['id'], int)
             assert response.json['name'] == expected_response_data['name']
             # ? how will it work now ?
-            assert response.json['file_link_id'] == None
+            assert response.json['input_file_link_id'] == None
             self.created_workflows.append(response.json)
 
     def test_create_new_workflow_at_project(self):
@@ -121,7 +121,7 @@ class TestWorkflowRouter:
             assert isinstance(response.json['id'], int)
             assert response.json['name'] == expected_response_data['name']
             # ? how will it work now ?
-            assert response.json['file_link_id'] == None
+            assert response.json['input_file_link_id'] == None
             self.created_workflows.append(response.json)
 
     def test_update_workflow_name(self):

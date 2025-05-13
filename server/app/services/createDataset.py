@@ -55,7 +55,7 @@ def createDataset(userId, originWorkflowId) -> dict:
 
     workflowRepository.updateFilePath(
         newWorkflow.id,
-        originWorkflow.file_link_id
+        originWorkflow.input_file_link_id
     )
 
     # ? not sure "copy" is necessary, but removing directly from

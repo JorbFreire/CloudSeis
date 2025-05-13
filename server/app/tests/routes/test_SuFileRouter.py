@@ -143,6 +143,7 @@ class TestSuFileRouter:
         assert response.json["Error"] == expeted_response_data["Error"]
 
     def test_update_su_file(self):
+        # ! Needs documentation and/or refactoring
         with _app.app_context():
             database.session.execute(
                 text(
@@ -153,10 +154,10 @@ class TestSuFileRouter:
             )
             database.session.execute(
                 text(
-                    "UPDATE workflows_table SET file_link_id = :file_link_id WHERE id = :id"
+                    "UPDATE workflows_table SET input_file_link_id = :input_file_link_id WHERE id = :id"
                 ),
                 # ! missing link id
-                {"file_link_id": self.created_file_link["id"],
+                {"input_file_link_id": self.created_file_link["id"],
                     "id": self.mock.workflow["id"]}
             )
             database.session.commit()

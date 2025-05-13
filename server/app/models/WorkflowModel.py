@@ -16,7 +16,7 @@ class WorkflowModel(database.Model):  # type: ignore
     name = dbTypes.Column(dbTypes.String)
     output_name = dbTypes.Column(dbTypes.String)
 
-    file_link_id = dbTypes.Column(dbTypes.ForeignKey(
+    input_file_link_id = dbTypes.Column(dbTypes.ForeignKey(
         "file_link_table.id",
         name="FK_file_links_table_workflows_table"
     ))
@@ -39,12 +39,12 @@ class WorkflowModel(database.Model):  # type: ignore
     ] = relationship(
         WorkflowParentsAssociationModel,
         cascade="all, delete-orphan",
-        single_parent=True,
-        passive_deletes=True
     )
 
     def getSelectedFileName(self) -> str:
-        fileLink = FileLinkModel.query.filter_by(id=self.file_link_id).first()
+        fileLink = FileLinkModel.query.filter_by(
+            id=self.input_file_link_id
+        ).first()
         return fileLink.name
 
     def getResumedAttributes(self) -> dict[str, str | int]:
@@ -57,7 +57,7 @@ class WorkflowModel(database.Model):  # type: ignore
         return {
             "id": self.id,
             "name": self.name,
-            "file_link_id": self.file_link_id,
+            "input_file_link_id": self.input_file_link_id,
             "output_name": self.output_name,
             "commands": self.orderedCommandsList[0].getCommands(),
             "parentType": self.workflowParent.getParentType(),

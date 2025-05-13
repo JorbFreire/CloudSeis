@@ -81,7 +81,7 @@ export const useSelectedWorkflowsStore = create<ISelectedWorkflowsStoreState>((s
             {
               id: result.id,
               name: result.name,
-              file_link_id: result.file_link_id,
+              input_file_link_id: result.input_file_link_id,
               commands: result.commands,
               output_name: result.output_name,
               parentType: result.parentType,
