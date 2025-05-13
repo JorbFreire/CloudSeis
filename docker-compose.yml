@@ -39,5 +39,27 @@ services:
 
   webapp:
     build: ./webapp
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:5000}
+      - VITE_VISUALIZER_URL=${VITE_VISUALIZER_URL:-http://localhost:5006}
     ports:
-      - "5173:5173"
+      - "4173:4173"
+
+  admin:
+    build: ./admin
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:5000}
+    ports:
+      - "4172:4173"
+
+  webviz:
+    build: ./seismic-webviz
+    environment:
+      - FLASK_ENV=${FLASK_ENV:-DEVELOPMENT}
+      - API_URL=${API_URL:-http://host.docker.internal:5000}
+    volumes:
+      - ./server/static:/home/jorb/code/CloudSeis/server/static
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "5006:5006"

@@ -52,7 +52,7 @@ def create_app(mode: Literal["PRODUCTION", "DEVELOPMENT", "TEST"] = "DEVELOPMENT
             "*"
         ])
 
-    jwt = JWTManager(app)
+    JWTManager(app)
 
     app.register_blueprint(router)
 
@@ -85,10 +85,11 @@ def create_app(mode: Literal["PRODUCTION", "DEVELOPMENT", "TEST"] = "DEVELOPMENT
     @app.cli.command('ws')
     def write_programs():
         write_programs_docs.write_programs_docs()
+
     @app.cli.command('populate-programs')
     @app.cli.command('pp')
     def populate_programs():
-        populate_database_programs() # HOW??
+        populate_database_programs()
 
     @app.cli.command('export-programs')
     @app.cli.command('ep')

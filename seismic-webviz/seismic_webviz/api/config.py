@@ -1,7 +1,7 @@
 from os import getenv
 
 BASE_URL = getenv(
-    'SERVER_URL',
+    'API_URL',
     'http://localhost:5000'
 )
 
