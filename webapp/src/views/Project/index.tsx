@@ -71,7 +71,8 @@ export default function Project({ projectId }: IProjectProps) {
 
     const newOrderIds: idsType = newOrderCommands
       .map((command) => command.id)
-      .filter((id) => typeof id === "number")
+      // *** "id is number" needed to build
+      .filter((id): id is number => typeof id === "number")
 
     updateCommandsOrder(
       singleSelectedWorkflowId.toString(),

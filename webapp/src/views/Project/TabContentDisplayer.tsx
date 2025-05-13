@@ -35,6 +35,7 @@ export default function TabContentDisplayer() {
               command={selectedCommand}
             />
           )
+        return <></>
     }
   }
 
