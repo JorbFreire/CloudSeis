@@ -23,7 +23,9 @@ services:
       - 5431:5432
 
   server:
-    build: ./server
+    image: boto/server:demo-1.0
+    build:
+      context: ./server
     depends_on:
       - db
     environment:
@@ -38,7 +40,9 @@ services:
       - "5000:5000"
 
   webapp:
-    build: ./webapp
+    image: boto/webapp:demo-1.0
+    build:
+      context: ./webapp
     environment:
       - VITE_API_URL=${VITE_API_URL:-http://localhost:5000}
       - VITE_VISUALIZER_URL=${VITE_VISUALIZER_URL:-http://localhost:5006}
@@ -46,14 +50,18 @@ services:
       - "4173:4173"
 
   admin:
-    build: ./admin
+    image: boto/admin:demo-1.0
+    build:
+      context: ./admin
     environment:
       - VITE_API_URL=${VITE_API_URL:-http://localhost:5000}
     ports:
       - "4172:4173"
 
   webviz:
-    build: ./seismic-webviz
+    image: boto/webviz:demo-1.0
+    build:
+      context: ./seismic-webviz
     environment:
       - FLASK_ENV=${FLASK_ENV:-DEVELOPMENT}
       - API_URL=${API_URL:-http://host.docker.internal:5000}
