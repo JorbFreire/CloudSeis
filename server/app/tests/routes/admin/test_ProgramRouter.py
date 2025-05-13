@@ -4,7 +4,8 @@ from server.app.database.connection import database
 from ...conftest import _app
 from ...Mock import Mock
 
-class TestProgramGroupRouter:
+
+class TestProgramRouter:
     url_prefix = "/programs"
     client = pytest.client
     mock = Mock()
@@ -29,9 +30,6 @@ class TestProgramGroupRouter:
     def test_empty_get(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.programGroup['id']}",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 200
         assert response.json == []
@@ -47,9 +45,6 @@ class TestProgramGroupRouter:
                 "description": "description of NOTSUFILTER",
                 "path_to_executable_file": "notsufilter",
             },
-            headers={
-                "Authorization": self.mock.token,
-            }
         )
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
@@ -65,13 +60,9 @@ class TestProgramGroupRouter:
                 "description": "description of NOTSUFILTER",
                 "path_to_executable_file": "notsufilter",
             },
-            headers={
-                "Authorization": self.mock.token,
-            }
         )
         assert response.status_code == 415
         assert response.json['Error'] == expected_response_data['Error']
-
 
     def test_create_new_program(self):
         for i in range(3):
@@ -88,9 +79,6 @@ class TestProgramGroupRouter:
                     "description": "description of NOTSUFILTER",
                     "path_to_executable_file": "notsufilter",
                 },
-                headers={
-                    "Authorization": self.mock.token,
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -99,13 +87,10 @@ class TestProgramGroupRouter:
             assert response.json['path_to_executable_file'] == expected_response_data['path_to_executable_file']
             assert response.json['groupId'] == expected_response_data['groupId']
             self.created_programs.append(response.json)
-    
+
     def test_list_program_groups(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.programGroup['id']}",
-            headers={
-                "Authorization": self.mock.token,
-            }
         )
         assert response.status_code == 200
         assert isinstance(response.json, list)
@@ -124,9 +109,6 @@ class TestProgramGroupRouter:
         for program in self.created_programs:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{program['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)

@@ -5,6 +5,7 @@ from server.app.database.connection import database
 from ...conftest import _app
 from ...Mock import Mock
 
+
 class TestParameterRouter:
     url_prefix = "/programs/parameters"
     client = pytest.client
@@ -27,16 +28,13 @@ class TestParameterRouter:
         with _app.app_context():
             database.drop_all()
             database.create_all()
-            
+
     def test_empty_get(self):
         expected_response_data = {
             "Error": "There are no parameters for this program"
         }
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.program['id']}",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 200
         assert response.json == []
@@ -47,9 +45,6 @@ class TestParameterRouter:
         }
         response = self.client.post(
             f"{self.url_prefix}/create/9999",
-            headers={
-                "Authorization": self.mock.token,
-            }
         )
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
@@ -59,9 +54,6 @@ class TestParameterRouter:
         for _ in range(3):
             response = self.client.post(
                 f"{self.url_prefix}/create/{self.mock.program['id']}",
-                headers={
-                    "Authorization": self.mock.token,
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -81,9 +73,6 @@ class TestParameterRouter:
                 json={
                     "name": f"new name - {parameter['id']}",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                },
             )
             assert response.status_code == 200
             assert response.json == expected_response_data
@@ -99,9 +88,6 @@ class TestParameterRouter:
                 json={
                     "description": "New description",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                },
             )
             assert response.status_code == 200
             assert response.json == expected_response_data
@@ -116,9 +102,6 @@ class TestParameterRouter:
                 f"{self.url_prefix}/update/{parameter['id']}",
                 json={
                     "example": "New Usage Example: 0.,1.,...,1.,0.",
-                },
-                headers={
-                    "Authorization": self.mock.token
                 },
             )
             assert response.status_code == 200
@@ -136,9 +119,6 @@ class TestParameterRouter:
                 json={
                     "input_type": "string",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                },
             )
             assert response.status_code == 200
             assert response.json == expected_response_data
@@ -153,9 +133,6 @@ class TestParameterRouter:
                 f"{self.url_prefix}/update/{parameter['id']}",
                 json={
                     "isRequired": True,
-                },
-                headers={
-                    "Authorization": self.mock.token
                 },
             )
             assert response.status_code == 200
@@ -174,9 +151,6 @@ class TestParameterRouter:
                     "description": "Description and type update",
                     "input_type": "boolean",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                },
             )
             assert response.status_code == 200
             assert response.json == expected_response_data
@@ -186,9 +160,6 @@ class TestParameterRouter:
     def test_show_parameter(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.program['id']}",
-            headers={
-                "Authorization": self.mock.token
-            },
         )
         assert response.status_code == 200
         assert isinstance(response.json, list)
@@ -207,9 +178,6 @@ class TestParameterRouter:
         for program in self.created_parameters:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{program['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)

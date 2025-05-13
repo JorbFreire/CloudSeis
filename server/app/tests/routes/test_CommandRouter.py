@@ -36,9 +36,6 @@ class TestCommandRouter:
         }
         response = self.client.get(
             f"{self.url_prefix}/show/1",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
@@ -54,9 +51,6 @@ class TestCommandRouter:
                 "parameters": "SUDEFAULT",
                 "program_id": self.mock.program['id'],
             },
-            headers={
-                "Authorization": self.mock.token,
-            }
         )
 
         assert response.status_code == 404
@@ -73,9 +67,6 @@ class TestCommandRouter:
                 "parameters": "SUDEFAULT",
                 "program_id": 99,
             },
-            headers={
-                "Authorization": self.mock.token,
-            }
         )
 
         assert response.status_code == 404
@@ -96,9 +87,6 @@ class TestCommandRouter:
                     "parameters": "SUDEFAULT",
                     "program_id": self.mock.program['id'],
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -110,9 +98,6 @@ class TestCommandRouter:
         for command in self.created_commands:
             response = self.client.get(
                 f"{self.url_prefix}/show/{command['id']}",
-                headers={
-                    "Authorization": self.mock.token,
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -131,9 +116,6 @@ class TestCommandRouter:
                 json={
                     "parameters": f"SUDEFAULT-updated-{command['id']}",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -147,9 +129,6 @@ class TestCommandRouter:
         for index, command in enumerate(self.created_commands):
             response = self.client.put(
                 f"{self.url_prefix}/update/{command['id']}/is_active",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -171,9 +150,6 @@ class TestCommandRouter:
             json={
                 "newOrder": order,
             },
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 200
         assert isinstance(response.status_code, int)
@@ -189,6 +165,7 @@ class TestCommandRouter:
         self.created_commands = expected_response_data
 
     def test_delete_command_with_invalid(self):
+        self.client.set_cookie("Authorization", "!NV4L1dT0k3N")
         for command in self.created_commands:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{command['id']}",
@@ -199,11 +176,9 @@ class TestCommandRouter:
             assert response.status_code == 401
 
     def test_delete_command(self):
+        self.mock.loadSession()
         for command in self.created_commands:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{command['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200

@@ -8,7 +8,6 @@ from ..Mock import Mock, DEFAULT_PASSWORD
 class TestUserRouter:
     url_prefix = "/user"
     client = pytest.client
-    token = ""
     mock = Mock()
     created_users: list[dict] = []
 
@@ -81,11 +80,10 @@ class TestUserRouter:
     def test_update_user(self):
         """Test updating a user's name with a valid session token."""
         for user in self.created_users:
-            token = self.mock.createSession(email=user['email'])
+            self.mock.loadSession(email=user['email'])
             response = self.client.put(
                 f"{self.url_prefix}/update",
                 json={"name": f"updated_{user['name']}"},
-                headers={"Authorization": token}
             )
             assert response.status_code == 200
             assert response.json['name'] == f"updated_{user['name']}"
@@ -93,6 +91,7 @@ class TestUserRouter:
     def test_invalid_token_user(self):
         """Test updating a user with an invalid token."""
         for _ in self.created_users:
+            self.client.set_cookie("Authorization", "!NV4L1dT0k3N")
             response = self.client.delete(
                 f"{self.url_prefix}/delete",
                 headers={"Authorization": "!NV4L1dT0k3N"}
@@ -102,10 +101,9 @@ class TestUserRouter:
     def test_delete_user(self):
         """Test deleting users with a valid session token."""
         for user in self.created_users:
-            token = self.mock.createSession(email=user['email'])
+            self.mock.loadSession(email=user['email'])
             response = self.client.delete(
                 f"{self.url_prefix}/delete",
-                headers={"Authorization": token}
             )
             assert response.status_code == 200
             assert response.json['email'] == user['email']

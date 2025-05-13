@@ -7,11 +7,14 @@ dotenv_path = find_dotenv()
 result = load_dotenv(dotenv_path, override=True)
 _app = create_app("TEST")
 
+
 def _client():
     return _app.test_client()
 
+
 def pytest_configure():
     pytest.client = _client()
+
 
 def pytest_collection_modifyitems(items):
     CLASS_ORDER = [
@@ -20,7 +23,7 @@ def pytest_collection_modifyitems(items):
         "TestLineRouter",
         "TestWorkflowRouter",
         "TestProgramGroupRouter",
-        "TestProgramGroupRouter",
+        "TestProgramRouter",
         "TestParameterRouter",
         "TestCommandRouter",
         "TestSuFileRouter",

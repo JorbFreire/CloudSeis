@@ -32,9 +32,6 @@ class TestWorkflowRouter:
         }
         response = self.client.get(
             f"{self.url_prefix}/show/1",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
@@ -51,9 +48,6 @@ class TestWorkflowRouter:
                 "name": f'NEW BAD WORKFLOW',
                 "parentType": "badParent"
             },
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 422
         assert response.json['Error'] == expected_response_data['Error']
@@ -68,9 +62,6 @@ class TestWorkflowRouter:
                 "name": f'NEW BAD WORKFLOW',
                 "parentType": "projectId"
             },
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
@@ -86,9 +77,6 @@ class TestWorkflowRouter:
                 "name": f'NEW BAD WORKFLOW',
                 "parentType": "lineId"
             },
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 404
         assert response.json['Error'] == expected_response_data['Error']
@@ -105,9 +93,6 @@ class TestWorkflowRouter:
                     "name": f'NEW WORKFLOW-{i}',
                     "parentType": "lineId"
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -131,9 +116,6 @@ class TestWorkflowRouter:
                     "name": f'NEW WORKFLOW-{i}',
                     "parentType": "projectId",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -146,22 +128,18 @@ class TestWorkflowRouter:
         pass
 
     def test_invalid_token_workflow(self):
+        self.client.set_cookie("Authorization", "!NV4L1dT0k3N")
         for workflow in self.created_workflows:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{workflow['id']}",
-                headers={
-                    "Authorization": "!NV4L1dT0k3N"
-                }
             )
             assert response.status_code == 401
 
     def test_delete_workflow(self):
+        self.mock.loadSession()
         for workflow in self.created_workflows:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{workflow['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert response.json == workflow

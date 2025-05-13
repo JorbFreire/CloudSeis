@@ -3,6 +3,7 @@ from os import path
 
 DEFAULT_PASSWORD = "password123"
 
+
 class Mock():
     client = pytest.client
     base_marmousi_stack_path = path.join(
@@ -21,16 +22,6 @@ class Mock():
     program = dict()
     token: str = ""
 
-    def createSession(self, email, password=DEFAULT_PASSWORD):
-        response = self.client.post(
-            "/session/",
-            json={
-                "email": email,
-                "password": password
-            }
-        )
-        return response.json["token"]
-
     def loadUser(self, name="root"):
         email = f'{name}@email.com'
         response = self.client.post(
@@ -45,10 +36,14 @@ class Mock():
         self.user = user_data
         return user_data
 
-    def loadSession(self):
-        token = self.createSession(email=self.user["email"])
-        self.token = token
-        return token
+    def loadSession(self, email=None, password=DEFAULT_PASSWORD):
+        response = self.client.post(
+            "/session/",
+            json={
+                "email": email or self.user["email"],
+                "password": password
+            }
+        )
 
     def loadProject(self):
         response = self.client.post(
@@ -94,7 +89,7 @@ class Mock():
         workflow_data = response.json
         self.workflow = workflow_data
         return workflow_data
-    
+
     def loadProgramGroup(self):
         response = self.client.post(
             f"/programs/groups/create",
@@ -109,7 +104,7 @@ class Mock():
         programGroupData = response.json
         self.programGroup = programGroupData
         return programGroupData
-    
+
     def loadProgram(
         self,
         name="program_test",
@@ -123,7 +118,7 @@ class Mock():
                 "path_to_executable_file": name,
             },
             headers={
-                "Content-Type": "application/x-www-form-urlencoded", 
+                "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": self.token,
             }
         )

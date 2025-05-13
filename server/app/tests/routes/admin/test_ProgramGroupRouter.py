@@ -4,6 +4,7 @@ from server.app.database.connection import database
 from ...conftest import _app
 from ...Mock import Mock
 
+
 class TestProgramGroupRouter:
     url_prefix = "/programs/groups"
     client = pytest.client
@@ -28,13 +29,9 @@ class TestProgramGroupRouter:
     def test_empty_get(self):
         response = self.client.get(
             f"{self.url_prefix}/list",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 200
         assert response.json == []
-
 
     def test_create_new_program_group(self):
         for i in range(3):
@@ -49,9 +46,6 @@ class TestProgramGroupRouter:
                     "name": f"NEW PROGRAM GROUP - {i}",
                     "description": "some description",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -72,9 +66,6 @@ class TestProgramGroupRouter:
                 json={
                     "name": f"GROUP {group['id']} new name",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                },
             )
 
             assert response.status_code == 200
@@ -94,9 +85,6 @@ class TestProgramGroupRouter:
                 json={
                     "description": "some new updated description",
                 },
-                headers={
-                    "Authorization": self.mock.token
-                },
             )
 
             assert response.status_code == 200
@@ -106,9 +94,6 @@ class TestProgramGroupRouter:
     def test_list_program_groups(self):
         response = self.client.get(
             f"{self.url_prefix}/list",
-            headers={
-                "Authorization": self.mock.token,
-            }
         )
         assert response.status_code == 200
         assert isinstance(response.json, list)
@@ -126,9 +111,6 @@ class TestProgramGroupRouter:
         for program_group in self.created_groups:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{program_group['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)

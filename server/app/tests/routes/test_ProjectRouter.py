@@ -28,9 +28,6 @@ class TestProjectRouter:
     def test_empty_get(self):
         response = self.client.get(
             f"{self.url_prefix}/list",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 200
         assert response.json == []
@@ -46,9 +43,6 @@ class TestProjectRouter:
                 json={
                     "name": f'NEW PROJECT-{i}',
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -59,9 +53,6 @@ class TestProjectRouter:
     def test_list_projects(self):
         response = self.client.get(
             f"{self.url_prefix}/list",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 200
         assert isinstance(response.json, list)
@@ -76,15 +67,13 @@ class TestProjectRouter:
                 json={
                     "name": new_name,
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             project['modified_at'] = response.json['modified_at']
             assert response.status_code == 200
             assert response.json == project
 
     def test_invalid_token_project(self):
+        self.client.set_cookie("Authorization", "!NV4L1dT0k3N")
         for project in self.created_projects:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{project['id']}",
@@ -95,12 +84,10 @@ class TestProjectRouter:
             assert response.status_code == 401
 
     def test_delete_project(self):
+        self.mock.loadSession()
         for project in self.created_projects:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{project['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert response.json == project

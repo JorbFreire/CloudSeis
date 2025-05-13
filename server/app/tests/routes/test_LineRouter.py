@@ -31,13 +31,9 @@ class TestLineRouter:
     def test_empty_get(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.project['id']}",
-            headers={
-                "Authorization": self.mock.token,
-            },
         )
         assert response.status_code == 200
         assert response.json == []
-
 
     def test_create_new_line(self):
         for i in range(3):
@@ -51,9 +47,6 @@ class TestLineRouter:
                     "name": f'NEW LINE-{i}',
                     "projectId": self.mock.project['id']
                 },
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
             assert isinstance(response.json['id'], int)
@@ -64,9 +57,6 @@ class TestLineRouter:
     def test_list_lines(self):
         response = self.client.get(
             f"{self.url_prefix}/list/{self.mock.project['id']}",
-            headers={
-                "Authorization": self.mock.token
-            }
         )
         assert response.status_code == 200
         assert isinstance(response.json, list)
@@ -82,9 +72,6 @@ class TestLineRouter:
             }
             response = self.client.put(
                 f"{self.url_prefix}/update/{line['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                },
                 json={
                     "name": f"new_line_name_{line['id']}",
                 },
@@ -94,6 +81,7 @@ class TestLineRouter:
             assert response.json == expected_response_data
 
     def test_invalid_token_line(self):
+        self.client.set_cookie("Authorization", "!NV4L1dT0k3N")
         for line in self.created_lines:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{line['id']}",
@@ -104,11 +92,9 @@ class TestLineRouter:
             assert response.status_code == 401
 
     def test_delete_line(self):
+        self.mock.loadSession()
         for line in self.created_lines:
             response = self.client.delete(
                 f"{self.url_prefix}/delete/{line['id']}",
-                headers={
-                    "Authorization": self.mock.token
-                }
             )
             assert response.status_code == 200
