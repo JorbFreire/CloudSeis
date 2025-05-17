@@ -57,8 +57,8 @@ def createDatasetFilePath(workflowId) -> str:
     # *** Expected to be used when updating a file and generating a dataset
     workflow = WorkflowModel.query.filter_by(id=workflowId).first()
 
-    # *** get origin workflow
-    target_file_path = _buildFilePath(workflowId, f'{workflow.output_name}.su')
+    # *** get origin workflow folder path
+    target_file_path = _buildFilePath(workflowId, workflow.output_name)
 
     datasetsDirectory = path.dirname(target_file_path)
     if not path.exists(datasetsDirectory):
@@ -69,13 +69,8 @@ def createDatasetFilePath(workflowId) -> str:
 
 def showDatasetFilePath(workflowId):
     workflow = WorkflowModel.query.filter_by(id=workflowId).first()
-    datasetId = workflow.workflowParent.datasetId
 
-    dataset = DataSetModel.query.filter_by(id=datasetId).first()
-
-    # *** origin workflow
-    target_file_path = _buildFilePath(dataset.workflowId, workflow.output_name)
-
-    print(target_file_path)
+    # *** get origin workflow folder path
+    target_file_path = _buildFilePath(workflowId, workflow.output_name)
 
     return target_file_path
