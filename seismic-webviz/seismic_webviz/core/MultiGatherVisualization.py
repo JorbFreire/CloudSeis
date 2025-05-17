@@ -63,7 +63,7 @@ class MultiGatherVisualization:
         left_tools_column = column(
             self.gather_label_wrapper.widget,
             row(Paragraph(text="Image"), self.seismic_plot_wrapper.image_switch),
-            row(Paragraph(text="Lines"), self.seismic_plot_wrapper.lines_switch),
+            row(Paragraph(text="Wiggle"), self.seismic_plot_wrapper.wiggle_switch),
             row(Paragraph(text="Areas"), self.seismic_plot_wrapper.areas_switch),
             percentile_clip_input,
             gain_option_picker,

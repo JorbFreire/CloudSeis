@@ -1,17 +1,17 @@
 import numpy.typing as npt
-from bokeh.models import ColumnDataSource, GlyphRenderer, Image, Switch
+from bokeh.models import ColumnDataSource, GlyphRenderer, Switch
 import numpy as np
 import numpy.typing as npt
 from bokeh.plotting import figure
 
 
-MAX_TRACES_LINE_HAREA = 100
+MAX_TRACES_LINE_HAREA = 10
 
 
 class SeismicPlotWrapper:
 
     image_switch: Switch | None = None
-    lines_switch: Switch | None = None
+    wiggle_switch: Switch | None = None
     areas_switch: Switch | None = None
 
     def __init__(
@@ -65,7 +65,9 @@ class SeismicPlotWrapper:
 
         # Time sample instants (data for all renderers)
         first_time_sample = 0.0
-        last_time_sample = first_time_sample + (num_time_samples - 1) * interval_time_samples
+        # ! REVOKE THIS CHANGE
+        last_time_sample = first_time_sample + \
+            (num_time_samples - 1) * interval_time_samples
         time_sample_instants = np.linspace(
             start=first_time_sample, stop=last_time_sample, num=num_time_samples
         )
@@ -76,9 +78,11 @@ class SeismicPlotWrapper:
         # Create image source
         self.image_source = ColumnDataSource(data={"image": [data]})
 
-        # Create multi_line renderer's source
-        self.multi_line_source = ColumnDataSource(
-            data=self._compute_multi_line_source_data(data_rescaled, x_positions, time_sample_instants)
+        # Create wiggle renderer's source
+        self.wiggle_source = ColumnDataSource(
+            data=self._compute_wiggle_source_data(
+                data_rescaled, x_positions, time_sample_instants
+            )
         )
 
         # Add renderers
@@ -86,7 +90,9 @@ class SeismicPlotWrapper:
 
         # --- Add (single) image renderer ---
         # auxiliary data for image renderer parameters
-        width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
+        width_time_sample_instants = np.abs(
+            time_sample_instants[0] - time_sample_instants[-1]
+        )
         if num_traces == 1:
             self.image_renderer: GlyphRenderer = self.plot.image(
                 image="image",
@@ -109,20 +115,22 @@ class SeismicPlotWrapper:
                 source=self.image_source,
                 x=x_positions[0] - distance_first_x_positions / 2,
                 y=first_time_sample,
-                dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
+                # ! REVOKE THIS CHANGE
+                dw=width_x_positions +
+                (distance_first_x_positions + distance_last_x_positions) / 2,
                 dh=width_time_sample_instants,
                 palette="Greys256",
                 anchor="bottom_left",
                 origin="bottom_left",
             )
 
-        # Add (single) multi_line renderer
-        self.multi_line_renderer: GlyphRenderer = self.plot.multi_line(
+        # Add (single) wiggle renderer
+        self.wiggle_renderer: GlyphRenderer = self.plot.multi_line(
             xs="xs",
             ys="ys",
-            source=self.multi_line_source,
+            source=self.wiggle_source,
             color=color,
-            visible=self.lines_switch.active if self.lines_switch else True,
+            visible=self.wiggle_switch.active if self.wiggle_switch else True,
         )
 
         # Add (multiple) harea renderers
@@ -172,7 +180,7 @@ class SeismicPlotWrapper:
         return data_rescaled
 
     @staticmethod
-    def _compute_multi_line_source_data(
+    def _compute_wiggle_source_data(
         data: npt.NDArray,
         x_positions: npt.NDArray,
         time_sample_instants: npt.NDArray,
@@ -230,7 +238,9 @@ class SeismicPlotWrapper:
     def _update_image_glyph(self, x_positions: npt.NDArray, time_sample_instants: npt.NDArray):
         num_traces = x_positions.size
         first_time_sample = time_sample_instants[0]
-        width_time_sample_instants = np.abs(time_sample_instants[0] - time_sample_instants[-1])
+        width_time_sample_instants = np.abs(
+            time_sample_instants[0] - time_sample_instants[-1]
+        )
         if num_traces == 1:
             self.image_renderer.glyph.update(
                 x=x_positions[0] - 1,
@@ -244,7 +254,9 @@ class SeismicPlotWrapper:
             distance_last_x_positions = x_positions[-1] - x_positions[-2]
             self.image_renderer.glyph.update(
                 x=x_positions[0] - distance_first_x_positions / 2,
-                dw=width_x_positions + (distance_first_x_positions + distance_last_x_positions) / 2,
+                # ! REVOKE THIS CHANGE
+                dw=width_x_positions +
+                (distance_first_x_positions + distance_last_x_positions) / 2,
                 y=first_time_sample,
                 dh=width_time_sample_instants,
             )
@@ -278,7 +290,9 @@ class SeismicPlotWrapper:
 
         # Time sample instants (data for all renderers)
         first_time_sample = 0.0
-        last_time_sample = first_time_sample + (num_time_samples - 1) * interval_time_samples
+        # ! REVOKE THIS CHANGE
+        last_time_sample = first_time_sample + \
+            (num_time_samples - 1) * interval_time_samples
         time_sample_instants = np.linspace(
             start=first_time_sample, stop=last_time_sample, num=num_time_samples
         )
@@ -291,8 +305,11 @@ class SeismicPlotWrapper:
         # Update image renderer's glyph
         self._update_image_glyph(x_positions, time_sample_instants)
 
-        # Update multi_line renderer's source
-        self._update_multi_line_source(data_rescaled, x_positions, time_sample_instants)
+        # Update wiggle renderer's source
+        self._update_wiggle_source(
+            data_rescaled, x_positions,
+            time_sample_instants
+        )
 
         # Update harea renderers
         self._remove_hareas()
@@ -318,19 +335,21 @@ class SeismicPlotWrapper:
     def _update_image_source(self, data: npt.NDArray):
         self.image_source.data = {"image": [data]}
 
-    def _update_multi_line_source(
+    def _update_wiggle_source(
         self,
         data_rescaled: npt.NDArray,
         x_positions: npt.NDArray,
         time_sample_instants: npt.NDArray,
     ):
-        self.multi_line_source.data = self._compute_multi_line_source_data(
+        self.wiggle_source.data = self._compute_wiggle_source_data(
             data_rescaled, x_positions, time_sample_instants
         )
 
     def _remove_hareas(self):
         """Remove all harea glyph renderers from this plot"""
-        self.plot.renderers = list(filter(lambda gl: gl.name != "H", self.plot.renderers))
+        self.plot.renderers = list(
+            filter(lambda gl: gl.name != "H", self.plot.renderers)
+        )
 
     def _set_up_renderers_on_trace_excess(self, num_traces: int):
         # If there are too many traces...
@@ -343,12 +362,16 @@ class SeismicPlotWrapper:
             if self.areas_switch is not None:
                 self.areas_switch.disabled = False
 
-    def assign_line_switch(self, switch: Switch):
+    def assign_wiggle_switch(self, switch: Switch):
         """Link the `active` attribute of a Switch instance (either a
         Switch or CheckBox instance) to the visibility of the line renderer"""
-        self.lines_switch = switch
-        self.lines_switch.active = self.multi_line_renderer.visible
-        self.lines_switch.js_link("active", self.multi_line_renderer, "visible")
+        self.wiggle_switch = switch
+        self.wiggle_switch.active = self.wiggle_renderer.visible
+        self.wiggle_switch.js_link(
+            "active",
+            self.wiggle_renderer,
+            "visible"
+        )
 
     def assign_area_switch(self, switch: Switch):
         """Link the `active` attribute of a Switch instance (either a
@@ -371,6 +394,6 @@ class SeismicPlotWrapper:
         self.image_switch.active = self.image_renderer.visible
         self.image_switch.js_link("active", self.image_renderer, "visible")
 
-    def toggle_lines_visible(self, value: bool) -> None:
-        self.multi_line_renderer.visible = value
-        self.lines_switch.active = value
+    def toggle_wiggle_visible(self, value: bool) -> None:
+        self.wiggle_renderer.visible = value
+        self.wiggle_switch.active = value

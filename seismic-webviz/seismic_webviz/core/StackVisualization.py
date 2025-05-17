@@ -29,7 +29,7 @@ class StackVisualization:
             self.state,
             self.sufile
         )
-        self.seismic_plot_wrapper.toggle_lines_visible(False)
+        self.seismic_plot_wrapper.toggle_wiggle_visible(False)
 
         percentile_clip_input = widgets.create_percentile_clip_input(
             self.state,
@@ -46,7 +46,7 @@ class StackVisualization:
 
         left_tools_column = column(
             row(Paragraph(text="Image"), self.seismic_plot_wrapper.image_switch),
-            row(Paragraph(text="Lines"), self.seismic_plot_wrapper.lines_switch),
+            row(Paragraph(text="Wiggle"), self.seismic_plot_wrapper.wiggle_switch),
             row(Paragraph(text="Areas"), self.seismic_plot_wrapper.areas_switch),
             percentile_clip_input,
             gain_option_picker,
