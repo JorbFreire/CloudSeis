@@ -42,11 +42,11 @@ def getSemicUnixCommandString(commandsQueue: list, source_file_path: str, target
                 json.loads((seismicUnixProgram["parameters"]))
             )
             if (seismicUnixProgramIndex == 0):
-                seismicUnixProcessString += f'< {source_file_path}'
+                seismicUnixProcessString += f' < {source_file_path}'
             if (seismicUnixProgramIndex <= len(orderedCommandsList)-2):
                 seismicUnixProcessString += ' | '
             if (seismicUnixProgramIndex == len(orderedCommandsList)-1):
-                seismicUnixProcessString += f'> {target_file_path}'
+                seismicUnixProcessString += f' > {target_file_path}'
 
     print("seismicUnixProcessString")
     print(seismicUnixProcessString)
