@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react'
 
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
+import Typography from '@mui/material/Typography'
 
 import { updateWorkflowOutputName } from 'services/workflowServices'
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
@@ -32,7 +33,9 @@ export default function OutputConfigOptions() {
 
   return (
     <Container>
-      <h1>Informe o nome do output</h1>
+      <Typography variant="h5">
+        Informe o nome do output
+      </Typography>
       <TextField
         type='text'
         value={outputFileName}

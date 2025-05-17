@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import TextField from "@mui/material/TextField"
+import Typography from '@mui/material/Typography'
 
 import { useGatherKeyStore } from 'store/gatherKeyStore'
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
@@ -22,7 +23,9 @@ export default function VizualizerConfigOptions() {
 
   return (
     <Container>
-      <h1>Informe o Gather key</h1>
+      <Typography variant="h5">
+        Informe o Gather key
+      </Typography>
 
       <TextField
         type='text'

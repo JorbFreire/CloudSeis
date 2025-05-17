@@ -84,13 +84,13 @@ export default function InputSelectorOptions() {
 
   return (
     <Container>
-      <h1>
+      <Typography variant="h5">
         {
           hasSelectedDataset ?
             "Arquivo .su usado no fluxo" :
             "Escolha o arquivo .su a ser usado no fluxo"
         }
-      </h1>
+      </Typography>
 
       {hasSelectedDataset ? (
         <Typography fontSize={22}>
