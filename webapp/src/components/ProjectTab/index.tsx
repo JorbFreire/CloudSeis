@@ -2,6 +2,9 @@ import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
 import { useTimeout } from 'react-use';
 
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+
+import Box from '@mui/material/Box'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
@@ -14,12 +17,48 @@ import DataSetsFolder from './DataSetsFolder'
 import MenuActions from './MenuActions';
 
 import { Container } from "./styles"
+import IconButton from '@mui/material/IconButton';
+
+interface ILabelContentProps {
+  labelText: string
+  onRemove(): void
+}
+
+const LabelContent = ({
+  labelText,
+  onRemove,
+}: ILabelContentProps) => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }}
+  >
+    {labelText}
+    <IconButton
+      sx={{ zIndex: 1000 }}
+      size="small"
+      onClick={(e) => {
+        e.stopPropagation();
+        onRemove()
+      }}
+    >
+      <DeleteForeverRoundedIcon
+        color="error"
+        fontSize="small"
+      />
+    </IconButton>
+  </Box>
+)
 
 export default function ProjectTab() {
   const {
     lines,
+    removeLine,
   } = useLinesStore((state) => ({
     lines: state.lines,
+    removeLine: state.removeLine,
   }))
   const {
     selectWorkflow
@@ -66,7 +105,16 @@ export default function ProjectTab() {
       >
         <MenuActions />
         {Boolean(lines.length) && lines.map((line) => (
-          <TreeItem key={line.id} nodeId={`line-${line.id}`} label={line.name}>
+          <TreeItem
+            key={line.id}
+            nodeId={`line-${line.id}`}
+            label={
+              <LabelContent
+                labelText={line.name}
+                onRemove={() => removeLine(line.id)}
+              />
+            }
+          >
             <LineChildrenFolder
               lineId={line.id}
               entityType='workflow'

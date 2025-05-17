@@ -28,9 +28,26 @@ export async function createNewLine(
   try {
     const response = await api.post<ILine>(
       `/line/create/${projectId}`,
-      {
-        name
-      }
+      { name }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    return null
+  }
+}
+
+
+export async function deleteLine(
+  lineId: number
+): Promise<ILine | null> {
+  try {
+    const response = await api.delete<ILine>(
+      `/line/delete/${lineId}`
     )
     return response.data
   } catch (error) {

@@ -94,3 +94,21 @@ export async function updateWorkflowOutputName(
     return null
   }
 }
+
+export async function deleteWorkflow(
+  workflowId: number,
+): Promise<IWorkflow | null> {
+  try {
+    const response = await api.delete<IWorkflow>(
+      `/workflow/delete/${workflowId}`
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    return null
+  }
+}
