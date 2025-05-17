@@ -4,6 +4,18 @@ import Accordion from '@mui/material/Accordion';
 import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton'
 
+export const Container = styled.div`
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+export const GroupsListBox = styled.div`
+  overflow-y: auto;
+  height: 100%;
+`
+
 export const Title = styled(Typography)`
   && {
     margin-top: 8px;

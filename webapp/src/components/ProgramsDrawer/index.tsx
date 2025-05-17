@@ -22,6 +22,8 @@ import GenericDrawer from "../GenericDrawer"
 
 
 import {
+  Container,
+  GroupsListBox,
   Title,
   CloseButton,
   CustomAccordion,
@@ -89,72 +91,78 @@ export default function ProgramsDrawer({
       setIsOpen={setIsOpen}
       anchor='right'
     >
-      <CloseButton
-        color='error'
-        size='small'
-        onClick={() => setIsOpen(false)}
-      >
-        <CloseRoundedIcon fontSize='large' />
-      </CloseButton>
-
-      <Title variant='h5'>
-        Seismic Unix
-      </Title>
-      {programsGroups.map((group) => (
-        <CustomAccordion
-          key={group.id}
-          disableGutters
+      <Container>
+        <CloseButton
+          color='error'
+          size='small'
+          onClick={() => setIsOpen(false)}
         >
-          <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
-            <Typography
-              variant='subtitle1'
-              fontWeight="700"
-            >
-              {group.name.toUpperCase()}
-            </Typography>
-          </AccordionSummary>
+          <CloseRoundedIcon fontSize='large' />
+        </CloseButton>
 
-          <AccordionDetails>
-            <List
-              dense
-              disablePadding
-            >
-              {group.programs.map((program) => (
-                <>
-                  <CustomListItem disableGutters>
-                    <Button
-                      onClick={() => addProgramToCurrentWorkflow(
-                        program.path_to_executable_file,
-                        program.id,
-                      )}
-                      variant='text'
-                      startIcon={<KeyboardBackspaceRoundedIcon />}
-                    >
-                      <Typography
-                        variant='body1'
-                        key={program.id}
-                      >
-                        {program.name}
-                      </Typography>
-                    </Button>
+        <Title variant='h5'>
+          Seismic Unix
+        </Title>
 
-                    <Tooltip
-                      title={program.description}
-                      placement='top'
-                      arrow
-                    >
-                      <QuestionMarkIcon
-                        color='primary'
-                        fontSize='small'
-                      />
-                    </Tooltip>
-                  </CustomListItem>
-                </>
-              ))}
-            </List>
-          </AccordionDetails>
-        </CustomAccordion>
-      ))}
+        <GroupsListBox>
+          {programsGroups.map((group) => (
+            <CustomAccordion
+              key={group.id}
+              disableGutters
+            >
+              <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
+                <Typography
+                  variant='subtitle1'
+                  fontWeight="700"
+                >
+                  {group.name.toUpperCase()}
+                </Typography>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                <List
+                  dense
+                  disablePadding
+                >
+                  {group.programs.map((program) => (
+                    <>
+                      <CustomListItem disableGutters>
+                        <Button
+                          onClick={() => addProgramToCurrentWorkflow(
+                            program.path_to_executable_file,
+                            program.id,
+                          )}
+                          variant='text'
+                          startIcon={<KeyboardBackspaceRoundedIcon />}
+                        >
+                          <Typography
+                            variant='body1'
+                            key={program.id}
+                          >
+                            {program.name}
+                          </Typography>
+                        </Button>
+
+                        <Tooltip
+                          title={program.description}
+                          placement='top'
+                          arrow
+                        >
+                          <QuestionMarkIcon
+                            color='primary'
+                            fontSize='small'
+                          />
+                        </Tooltip>
+                      </CustomListItem>
+                    </>
+                  ))}
+                </List>
+              </AccordionDetails>
+            </CustomAccordion>
+          ))}
+        </GroupsListBox>
+
+      </Container>
     </GenericDrawer>
   )
 }
