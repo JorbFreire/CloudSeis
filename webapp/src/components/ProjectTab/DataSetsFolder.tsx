@@ -7,8 +7,6 @@ interface IDataSetsFolderProps {
 }
 
 export default function DataSetsFolder({ line }: IDataSetsFolderProps) {
-
-
   return (
     <TreeItem
       nodeId={`from-${line.id}-datasets-folder`}

@@ -125,36 +125,37 @@ export default function ProgramsDrawer({
                   disablePadding
                 >
                   {group.programs.map((program) => (
-                    <>
-                      <CustomListItem disableGutters>
-                        <Button
-                          onClick={() => addProgramToCurrentWorkflow(
-                            program.path_to_executable_file,
-                            program.id,
-                          )}
-                          variant='text'
-                          startIcon={<KeyboardBackspaceRoundedIcon />}
+                    <CustomListItem
+                      key={program.id}
+                      disableGutters
+                    >
+                      <Button
+                        onClick={() => addProgramToCurrentWorkflow(
+                          program.path_to_executable_file,
+                          program.id,
+                        )}
+                        variant='text'
+                        startIcon={<KeyboardBackspaceRoundedIcon />}
+                      >
+                        <Typography
+                          variant='body1'
+                          key={program.id}
                         >
-                          <Typography
-                            variant='body1'
-                            key={program.id}
-                          >
-                            {program.name}
-                          </Typography>
-                        </Button>
+                          {program.name}
+                        </Typography>
+                      </Button>
 
-                        <Tooltip
-                          title={program.description}
-                          placement='top'
-                          arrow
-                        >
-                          <QuestionMarkIcon
-                            color='primary'
-                            fontSize='small'
-                          />
-                        </Tooltip>
-                      </CustomListItem>
-                    </>
+                      <Tooltip
+                        title={program.description}
+                        placement='top'
+                        arrow
+                      >
+                        <QuestionMarkIcon
+                          color='primary'
+                          fontSize='small'
+                        />
+                      </Tooltip>
+                    </CustomListItem>
                   ))}
                 </List>
               </AccordionDetails>
