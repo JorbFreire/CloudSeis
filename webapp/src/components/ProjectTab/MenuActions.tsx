@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import { useLocation, useNavigate } from '@tanstack/react-location';
+import CreateNewFolderRoundedIcon from '@mui/icons-material/CreateNewFolderRounded';
 
 import { defaultLineName } from 'constants/defaults';
 import { useLinesStore } from 'store/linesStore';
@@ -34,6 +35,7 @@ export default function MenuActions() {
     <CustomButtonGroup
       fullWidth
       variant='contained'
+      size='small'
     >
       <Button
         onClick={() => saveNewLine(
@@ -41,7 +43,7 @@ export default function MenuActions() {
           generateNextLineName()
         )}
       >
-        New Line
+        <CreateNewFolderRoundedIcon fontSize='small' />New Line
       </Button>
       <Button onClick={() => navigate({ to: "/projects" })}>
         Projects

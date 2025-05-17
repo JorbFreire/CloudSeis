@@ -11,5 +11,5 @@ export const CustomButtonGroup = styled(ButtonGroup)`
   & button {
     border-radius: 0 0 4px;
   }
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 `
