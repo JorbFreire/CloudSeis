@@ -1,5 +1,5 @@
 export const defaultOutputName = "Result"
 
-export const defaultWorkflowName = "New workflow"
+export const defaultWorkflowName = "Workflow"
 
-export const defaultLineName = "New line"
+export const defaultLineName = "Line"
