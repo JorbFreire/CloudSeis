@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useLocation } from "@tanstack/react-location"
 import type { Dispatch, SetStateAction } from "react"
 
 import Dialog from '@mui/material/Dialog'
@@ -8,50 +7,30 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
 
-import { createFile } from "services/fileServices"
-import { updateWorkflowFileLink } from "services/workflowServices"
-import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
+export type uploadNewFileType = (newFileLink: IfileLink, formData: FormData) => void
 
 interface IFileUploadDialogProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  addFileLink: (newFileLink: IfileLink) => void
+  uploadNewFile: uploadNewFileType
 }
 
 export default function FileUploadDialog({
   open,
   setOpen,
-  addFileLink,
+  uploadNewFile,
 }: IFileUploadDialogProps) {
-  const location = useLocation()
-  const projectId = Number(location.current.pathname.split('/')[2])
-
-  const singleSelectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
   const [file, setFile] = useState<any>(null)
 
   const saveNewFile = () => {
-    if (!singleSelectedWorkflowId)
-      return
-
     if (!file)
       return
 
     const formData = new FormData();
     formData.append('file', file);
 
-    createFile(
-      projectId,
-      formData
-    ).then((result) => {
-      console.log({ result })
-      if (!result) return
-      updateWorkflowFileLink(
-        singleSelectedWorkflowId,
-        result.fileLink.id
-      )
-      addFileLink(result.fileLink)
-      setOpen(false)
-    })
+    uploadNewFile(file, formData)
+    setOpen(false)
   }
 
   return (

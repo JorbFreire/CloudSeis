@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "@tanstack/react-location";
 
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import Button from "@mui/material/Button"
 import Typography from '@mui/material/Typography';
 
-import { listFiles } from "services/fileServices"
+import { FileSelector } from "shared-ui"
+
+import { listFiles, createFile } from "services/fileServices"
 import { updateWorkflowFileLink } from "services/workflowServices";
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { useGatherKeyStore } from 'store/gatherKeyStore'
 
-import FileUploadDialog from "./FileUploadDialog"
 import { Container } from "./styles"
 
 export default function InputSelectorOptions() {
@@ -32,11 +31,26 @@ export default function InputSelectorOptions() {
   const [fileLinks, setFileLinks] = useState<Array<IfileLink>>([])
   const [selectedFileLinkId, setSelectedFileLinkId] = useState<string | undefined>("0")
 
-  const [isFileUploadDialogOpen, setIsFileUploadDialogOpen] = useState<boolean>(false)
+  const uploadNewFile = (
+    newFileLink: IfileLink,
+    formData: FormData
+  ) => {
+    if (!singleSelectedWorkflowId)
+      return
 
-  const addFileLink = (newFileLink: IfileLink) => {
-    setFileLinks([...fileLinks, newFileLink])
-    setSelectedFileLinkId(newFileLink.id.toString())
+    createFile(
+      projectId,
+      formData
+    ).then((result) => {
+      console.log({ result })
+      if (!result) return
+      updateWorkflowFileLink(
+        singleSelectedWorkflowId,
+        result.fileLink.id
+      )
+      setFileLinks([...fileLinks, newFileLink])
+      setSelectedFileLinkId(newFileLink.id.toString())
+    })
   }
 
   const visualizeInputFile = () => {
@@ -97,27 +111,13 @@ export default function InputSelectorOptions() {
           {fileLinks.find((link) => link.id.toString() === selectedFileLinkId)?.name}
         </Typography>
       ) : (
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={selectedFileLinkId}
-          label="Arquivo"
-          onChange={(event) => submitWorkflowFileLinkUpdate(event.target.value)}
-        >
-          {fileLinks.map((fileLink) =>
-            <MenuItem key={fileLink.id} value={fileLink.id}>
-              {fileLink.name}
-            </MenuItem>
-          )}
-
-          <Button
-            onClick={() => setIsFileUploadDialogOpen(true)}
-          >
-            Upload de novo arquivo
-          </Button>
-        </Select>
+        <FileSelector
+          fileLinks={fileLinks}
+          selectedFileLinkId={selectedFileLinkId}
+          onSubmitFileLinkUpdate={submitWorkflowFileLinkUpdate}
+          uploadNewFile={uploadNewFile}
+        />
       )}
-
 
       <Button
         variant="contained"
@@ -126,12 +126,6 @@ export default function InputSelectorOptions() {
       >
         Visualizar input
       </Button>
-
-      <FileUploadDialog
-        open={isFileUploadDialogOpen}
-        setOpen={setIsFileUploadDialogOpen}
-        addFileLink={addFileLink}
-      />
     </Container>
   )
 }
