@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Fab from '@mui/material/Fab'
+import Button from '@mui/material/Button'
 
 type positionValueType = `${number}px` | "0"
 
@@ -11,10 +11,11 @@ export interface IFloatButtonProps {
 }
 
 
-export const CustomFab = styled(Fab) <IFloatButtonProps>`
+export const CustomButton = styled(Button) <IFloatButtonProps>`
   && {
     position: absolute;
     z-index: 10;
+    border-radius: 16px;
   }
 
   ${({ $top }) => $top && `top: ${$top};`}

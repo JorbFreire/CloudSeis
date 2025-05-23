@@ -14,7 +14,8 @@ import ProgramsDrawer from 'components/ProgramsDrawer';
 import ProjectTab from 'components/ProjectTab';
 import CustomTabsNavigation from 'components/CustomTabsNavigation';
 import DefaultDNDList from 'components/DefaultDNDList';
-import DrawerTriggerButton from 'components/DrawerTriggerButton'
+
+import { DrawerTriggerButton } from 'shared-ui'
 
 import TabContentDisplayer from './TabContentDisplayer'
 import RunWorkflowButton from './RunWorkflowButton';
@@ -78,7 +79,7 @@ export default function Project({ projectId }: IProjectProps) {
       singleSelectedWorkflowId.toString(),
       newOrderIds
     ).then((result) => {
-      // ! reverting order changes when face any errors
+      // *** reverting order changes when face any errors
       if (result == null)
         setCommands([...oldOrderCommands])
     })
@@ -129,20 +130,21 @@ export default function Project({ projectId }: IProjectProps) {
           </CustomTabsNavigation>
         </SelectedWorkflowsContainer>
 
-
         <DrawerTriggerButton
           setIsOpen={setIsConsoleOpen}
+          startIcon={<TerminalRoundedIcon />}
           $bottom='16px'
           $left='16px'
         >
-          <TerminalRoundedIcon />
+          Jobs views
         </DrawerTriggerButton>
         <DrawerTriggerButton
           setIsOpen={setIsOptionsDrawerOpen}
+          startIcon={<IntegrationInstructionsRoundedIcon />}
           $top='16px'
           $right='16px'
         >
-          <IntegrationInstructionsRoundedIcon />
+          Programs
         </DrawerTriggerButton>
       </Container >
 
