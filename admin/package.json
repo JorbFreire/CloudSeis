@@ -21,6 +21,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-location": "^3.3.4",
+    "shared-ui": "^0.0.8",
     "use-debounce": "^10.0.0"
   },
   "devDependencies": {

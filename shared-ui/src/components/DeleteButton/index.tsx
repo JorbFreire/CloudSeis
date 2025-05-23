@@ -1,45 +1,54 @@
 import { useState } from "react"
 
-import IconButton from "@mui/material/IconButton"
-import Button from "@mui/material/Button"
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 
+import {
+  CustomIconButton,
+  CustomButton,
+} from "./styles"
+
 interface IDeleteButtonProps {
-  onClick(): void
+  onRemove(): void
   size?: "small" | "medium" | "large"
 }
 
 export default function DeleteButton({
-  onClick,
-  size="large"
+  onRemove,
+  size = "large"
 }: IDeleteButtonProps) {
   const [allowDelete, setAllowDelete] = useState(false)
 
-  const displayDeleteButton = () => {
+  const displayDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     setAllowDelete(true)
     setTimeout(() => {
       setAllowDelete(false)
     }, 4000);
   }
 
+  const deleteEntity = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    onRemove()
+  }
+
   return (
-    <IconButton
+    <CustomIconButton
       onClick={displayDeleteButton}
       color="error"
+      size={size}
+      disableRipple={allowDelete}
+      $isHoverDisable={allowDelete}
     >
-      <Button
-        onClick={onClick}
+      <CustomButton
+        onClick={deleteEntity}
         variant="contained"
+        size={size}
         color="error"
-        sx={{
-          position: "absolute",
-          right: 0,
-          display: allowDelete ? "flex" : "none"
-        }}
+        $isHidden={!allowDelete}
       >
         Deletar
-      </Button>
+      </CustomButton>
       <DeleteForeverRoundedIcon color="error" fontSize={size} />
-    </IconButton>
+    </CustomIconButton>
   )
 }

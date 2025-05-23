@@ -2057,6 +2057,11 @@ semver@^7.5.4:
   dependencies:
     lru-cache "^6.0.0"
 
+shared-ui@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/shared-ui/-/shared-ui-0.0.8.tgz#d8ced9910d62a21c5b750c7fecb082a460c9ea3b"
+  integrity sha512-PrBFiULw1vETX3yRvDi8ZJ/Y8ZvBPGesS01OBWf8mxq5bNhE2kk6phsfZocn0ZtdfRBBb8r40nf22ZmYdIrXiA==
+
 shebang-command@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-2.0.0.tgz#ccd0af4f8835fbdc265b82461aaf0c36663f34ea"
