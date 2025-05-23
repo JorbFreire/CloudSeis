@@ -1,11 +1,8 @@
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import Button from '@mui/material/Button';
-
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box'
-
 import NoteAddRoundedIcon from '@mui/icons-material/NoteAddRounded';
-import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+
+import { TreeItemLabelWithActions } from 'shared-ui';
 
 import { defaultWorkflowName } from 'constants/defaults';
 import { useLinesStore } from 'store/linesStore';
@@ -15,39 +12,6 @@ interface ILineChildrenFolderProps {
   entityType: "workflow" | "dataset"
   data: Array<IResumedWorkflow>
 }
-
-interface ILabelContentProps {
-  labelText: string
-  onRemove(): void
-}
-
-const LabelContent = ({
-  labelText,
-  onRemove,
-}: ILabelContentProps) => (
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center"
-    }}
-  >
-    {labelText}
-    <IconButton
-      sx={{ zIndex: 1000 }}
-      size="small"
-      onClick={(e) => {
-        e.stopPropagation();
-        onRemove()
-      }}
-    >
-      <DeleteForeverRoundedIcon
-        color="error"
-        fontSize="small"
-      />
-    </IconButton>
-  </Box>
-)
 
 export default function LineChildrenFolder({
   lineId,
@@ -81,9 +45,10 @@ export default function LineChildrenFolder({
           key={`${entityType}-${workflow.id}`}
           nodeId={`${entityType}-${workflow.id}-${workflow.name}`}
           label={
-            <LabelContent
+            <TreeItemLabelWithActions
               labelText={workflow.name}
               onRemove={() => removeWorkflowFromLine(lineId, workflow.id)}
+              onUpdate={() => { }}
             />
           }
         />

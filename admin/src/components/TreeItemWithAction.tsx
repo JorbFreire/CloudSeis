@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import Box from '@mui/material/Box'
-import DeleteButton from '../components/DeleteButton';
 import Button from '@mui/material/Button';
+
+import { TreeItemLabelWithActions } from 'shared-ui';
 
 import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider';
 
@@ -17,24 +17,6 @@ interface ITreeItemWithActionProps extends ILabelContentProps {
   nodeId: string
 }
 
-const LabelContent = ({
-  labelText,
-  deleteAction
-}: ILabelContentProps) => (
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center"
-    }}
-  >
-    {labelText}
-
-
-    <DeleteButton onClick={deleteAction} size='small' />
-  </Box>
-)
-
 export default function TreeItemWithAction({
   children,
   nodeId,
@@ -46,9 +28,9 @@ export default function TreeItemWithAction({
     <TreeItem
       nodeId={nodeId}
       label={
-        <LabelContent
+        <TreeItemLabelWithActions
           labelText={labelText}
-          deleteAction={deleteAction}
+          onRemove={deleteAction}
         />
       }
     >
