@@ -9,12 +9,12 @@ interface IDataSetsFolderProps {
 export default function DataSetsFolder({ line }: IDataSetsFolderProps) {
   return (
     <TreeItem
-      nodeId={`from-${line.id}-datasets-folder`}
+      itemId={`from-${line.id}-datasets-folder`}
       label={`Datasets`}
     >
       {line.workflows.map((workflow) => (
         <TreeItem
-          nodeId={`from-${line.id}-datasets-${workflow.id}`}
+          itemId={`from-${line.id}-datasets-${workflow.id}`}
           label={`dataset->${workflow.name}`}
           key={workflow.id}
         >

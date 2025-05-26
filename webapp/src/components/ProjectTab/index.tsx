@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import type { SyntheticEvent } from 'react'
 import { useTimeout } from 'react-use';
+import { useShallow } from 'zustand/react/shallow'
 
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { TreeView } from '@mui/x-tree-view/TreeView';
-import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 import { TreeItemLabelWithActions } from 'shared-ui';
 
@@ -21,62 +22,71 @@ export default function ProjectTab() {
   const {
     lines,
     removeLine,
-  } = useLinesStore((state) => ({
+    updateLineName,
+  } = useLinesStore(useShallow((state) => ({
     lines: state.lines,
     removeLine: state.removeLine,
-  }))
+    updateLineName: state.updateLineName,
+  })))
   const {
     selectWorkflow
-  } = useSelectedWorkflowsStore((state) => ({
+  } = useSelectedWorkflowsStore(useShallow((state) => ({
     selectWorkflow: state.selectWorkflow,
-  }))
+  })))
 
-  const [expanded, setExpanded] = useState<string[]>([]);
-  const [selected, setSelected] = useState<string>("");
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string>("");
   const [isAllowToSelect, _, resetAllowToSelectTimer] = useTimeout(1000);
 
-  const handleToggle = (_: SyntheticEvent, nodeId: string[]) => {
-    setExpanded(nodeId);
+  const handleToggle = (_: SyntheticEvent | null, itemId: string[] | null) => {
+    if (!itemId)
+      return
+    setExpandedItems(itemId);
   };
 
-  const handleSelect = (_: SyntheticEvent, nodeId: string) => {
+  const handleSelect = (_: SyntheticEvent | null, itemId: string | null) => {
     if (!isAllowToSelect())
+      return
+    if (!itemId)
       return
     resetAllowToSelectTimer()
 
-    const isWorkflow = nodeId.startsWith("workflow")
-    const isDataset = nodeId.startsWith("dataset")
+    const isWorkflow = itemId.startsWith("workflow")
+    const isDataset = itemId.startsWith("dataset")
 
 
     if (!(isWorkflow || isDataset))
       return
-    const [key, id, name] = nodeId.split("-")
+    const [key, id, name] = itemId.split("-")
 
     if (key !== "workflow" || !id || !name)
       return
 
-    selectWorkflow(Number(id), () => setSelected(nodeId))
+    selectWorkflow(Number(id), () => setSelectedItems(itemId))
   }
 
   return (
     <Container>
-      <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-        expanded={expanded}
-        selected={selected}
-        onNodeToggle={handleToggle}
-        onNodeSelect={handleSelect}
+      <SimpleTreeView
+        slotProps={{
+          collapseIcon: <ExpandMoreIcon />,
+          expandIcon: <ChevronRightIcon />
+        }}
+        expandedItems={expandedItems}
+        selectedItems={selectedItems}
+        onExpandedItemsChange={handleToggle}
+        onSelectedItemsChange={handleSelect}
       >
         <MenuActions />
         {Boolean(lines.length) && lines.map((line) => (
           <TreeItem
             key={line.id}
-            nodeId={`line-${line.id}`}
+            itemId={`line-${line.id}`}
             label={
               <TreeItemLabelWithActions
                 labelText={line.name}
                 onRemove={() => removeLine(line.id)}
+                onUpdate={(newName) => updateLineName(line.id, newName)}
               />
             }
           >
@@ -89,7 +99,7 @@ export default function ProjectTab() {
             <DataSetsFolder line={line} />
           </TreeItem>
         ))}
-      </TreeView>
+      </SimpleTreeView>
     </Container>
   )
 }

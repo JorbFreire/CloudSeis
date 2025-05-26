@@ -1,5 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useShallow } from 'zustand/react/shallow';
+
 import Tooltip from '@mui/material/Tooltip';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import CommentsDisabledRoundedIcon from '@mui/icons-material/CommentsDisabledRounded';
@@ -38,17 +40,18 @@ export default function CustomTab({
 
   const {
     hasSelectedDataset,
-  } = useSelectedWorkflowsStore((state) => ({
+  } = useSelectedWorkflowsStore(useShallow((state) => ({
     hasSelectedDataset: state.hasSelectedDataset,
-  }))
+  })))
 
   const {
     commands,
     setCommands,
-  } = useCommandsStore((state) => ({
+  } = useCommandsStore(useShallow((state) => ({
     commands: state.commands,
     setCommands: state.setCommands,
-  }))
+  })))
+
 
   const handleUpdateCommandIsActive = () => {
     updateCommandIsActive(value)

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import FeedbackRoundedIcon from '@mui/icons-material/FeedbackRounded';
 import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
 import IntegrationInstructionsRoundedIcon from '@mui/icons-material/IntegrationInstructionsRounded';
+import { useShallow } from 'zustand/react/shallow'
 
 import { useLinesStore } from 'store/linesStore';
 import { useCommandsStore } from 'store/commandsStore';
@@ -30,38 +31,38 @@ interface IProjectProps {
 }
 
 export default function Project({ projectId }: IProjectProps) {
+  const loadLines = useLinesStore((state) => state.loadLines)
+
   const {
     selectedWorkflows,
     setSelectedWorkflows,
     singleSelectedWorkflowId,
     hasSelectedDataset,
     setSingleSelectedWorkflowId,
-  } = useSelectedWorkflowsStore((state) => ({
+  } = useSelectedWorkflowsStore(useShallow((state) => ({
     selectedWorkflows: state.selectedWorkflows,
     setSelectedWorkflows: state.setSelectedWorkflows,
     singleSelectedWorkflowId: state.singleSelectedWorkflowId,
     hasSelectedDataset: state.hasSelectedDataset,
     setSingleSelectedWorkflowId: state.setSingleSelectedWorkflowId,
-  }))
+  })))
 
-
-  const [isConsoleOpen, setIsConsoleOpen] = useState(false)
-  const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(false)
-
-  const loadLines = useLinesStore((state) => state.loadLines)
   const {
     commands,
     loadCommands,
     setCommands,
     selectedCommandId,
     setSelectedCommandId
-  } = useCommandsStore((state) => ({
+  } = useCommandsStore(useShallow((state) => ({
     commands: state.commands,
     loadCommands: state.loadCommands,
     setCommands: state.setCommands,
     selectedCommandId: state.selectedCommandId,
     setSelectedCommandId: state.setSelectedCommandId,
-  }))
+  })))
+
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false)
+  const [isOptionsDrawerOpen, setIsOptionsDrawerOpen] = useState(false)
 
   const setUpdateCommandsOrder = (newOrderCommands: orderedCommandsListType) => {
     if (!singleSelectedWorkflowId) return
@@ -125,7 +126,6 @@ export default function Project({ projectId }: IProjectProps) {
                 <VisualizeDatasetButton />
               }
             >
-              <TabContentDisplayer />
             </CustomTabsNavigation>
           </CustomTabsNavigation>
         </SelectedWorkflowsContainer>
@@ -146,7 +146,7 @@ export default function Project({ projectId }: IProjectProps) {
         >
           Programs
         </DrawerTriggerButton>
-      </Container >
+      </Container>
 
       <Console isOpen={isConsoleOpen} setIsOpen={setIsConsoleOpen} />
       <ProgramsDrawer isOpen={isOptionsDrawerOpen} setIsOpen={setIsOptionsDrawerOpen} />

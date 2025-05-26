@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import { useLocation, useNavigate } from '@tanstack/react-location';
+import { useShallow } from 'zustand/react/shallow'
 import CreateNewFolderRoundedIcon from '@mui/icons-material/CreateNewFolderRounded';
 
 import { defaultLineName } from 'constants/defaults';
@@ -16,10 +17,10 @@ export default function MenuActions() {
   const {
     lines,
     saveNewLine
-  } = useLinesStore((state) => ({
+  } = useLinesStore(useShallow((state) => ({
     lines: state.lines,
     saveNewLine: state.saveNewLine
-  }))
+  })))
 
   const generateNextLineName = () => {
     if (lines.length < 1)

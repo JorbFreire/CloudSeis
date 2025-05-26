@@ -7,26 +7,24 @@ import { TreeItemLabelWithActions } from 'shared-ui';
 
 import { useSelectedProgramCommand } from '../providers/SelectedProgramProvider';
 
-interface ILabelContentProps {
+interface ITreeItemWithActionProps {
+  children: ReactNode
+  itemId: string
   labelText: string
   deleteAction(): void
 }
 
-interface ITreeItemWithActionProps extends ILabelContentProps {
-  children: ReactNode
-  nodeId: string
-}
-
 export default function TreeItemWithAction({
   children,
-  nodeId,
+  itemId,
   labelText,
   deleteAction
 }: ITreeItemWithActionProps) {
   const { setSelectedProgram } = useSelectedProgramCommand()
+
   return (
     <TreeItem
-      nodeId={nodeId}
+      itemId={itemId}
       label={
         <TreeItemLabelWithActions
           labelText={labelText}

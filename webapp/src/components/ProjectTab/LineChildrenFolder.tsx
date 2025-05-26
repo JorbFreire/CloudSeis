@@ -37,18 +37,18 @@ export default function LineChildrenFolder({
 
   return (
     <TreeItem
-      nodeId={`from-${lineId}-${entityType}`}
+      itemId={`from-${lineId}-${entityType}`}
       label={`${entityType}s`}
     >
       {data.map((workflow) => (
         <TreeItem
           key={`${entityType}-${workflow.id}`}
-          nodeId={`${entityType}-${workflow.id}-${workflow.name}`}
+          itemId={`${entityType}-${workflow.id}-${workflow.name}`}
           label={
             <TreeItemLabelWithActions
               labelText={workflow.name}
               onRemove={() => removeWorkflowFromLine(lineId, workflow.id)}
-              onUpdate={() => { }}
+              onUpdate={(newName) => console.log(newName)}
             />
           }
         />

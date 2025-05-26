@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { format } from 'date-fns'
+import { useShallow } from 'zustand/react/shallow'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -31,8 +32,8 @@ function getFormatedDate(dateString: string): string {
 }
 
 export default function Console({ isOpen, setIsOpen }: IConsoleProps) {
-  const consoleLogs = useLogsStore((state) => state.logs)
-  const selectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
+  const consoleLogs = useLogsStore(useShallow((state) => state.logs))
+  const selectedWorkflowId = useSelectedWorkflowsStore(useShallow((state) => state.singleSelectedWorkflowId))
 
   return (
     <GenericDrawer

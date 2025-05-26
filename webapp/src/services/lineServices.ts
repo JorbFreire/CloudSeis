@@ -41,6 +41,25 @@ export async function createNewLine(
   }
 }
 
+export async function updateLineName(
+  lineId: number,
+  newName: string
+): Promise<ILine | null> {
+  try {
+    const response = await api.put<ILine>(
+      `/line/update/${lineId}`,
+      { name: newName }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    return null
+  }
+}
 
 export async function deleteLine(
   lineId: number

@@ -1,13 +1,20 @@
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce"
+import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from "@mui/material/IconButton";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 
 import DeleteButton from "../DeleteButton";
-import { Container, ActionsBox } from "./styles"
+import {
+  Container,
+  ActionsBox,
+  CustomTextField,
+} from "./styles"
 
 interface ILabelContentProps {
   labelText: string
   onRemove(): void
-  onUpdate?(): void
+  onUpdate?(newName: string): void
 }
 
 export default function TreeItemLabelWithActions({
@@ -15,20 +22,46 @@ export default function TreeItemLabelWithActions({
   onRemove,
   onUpdate
 }: ILabelContentProps) {
+  const [isLoadingUpdate, setIsLoadingUpdate] = useState(false)
+  const [labelTextEditing, setLabelTextEditing] = useState(labelText)
+  const [labelTextDebounced] = useDebounce(labelTextEditing, 1500)
+
+  useEffect(() => {
+    setIsLoadingUpdate(true)
+  }, [labelTextEditing])
+
+  useEffect(() => {
+    if (onUpdate && labelTextDebounced !== labelText)
+      onUpdate(labelTextDebounced)
+    setIsLoadingUpdate(false)
+  }, [labelTextDebounced])
+
   return (
     <Container>
-      {labelText}
+      {isLoadingUpdate && <CircularProgress size={16} />}
+      <CustomTextField
+        id={`label-${labelText}`}
+        type="text"
+        size="small"
+        value={labelTextEditing}
+        isLoadingUpdate={isLoadingUpdate}
+
+        onChange={(event) => setLabelTextEditing(event.target.value)}
+        onKeyDown={(event) => event.stopPropagation()}
+        onClick={(event) => {
+          event.preventDefault()
+          event.stopPropagation()
+        }}
+      />
 
       <ActionsBox>
         {onUpdate && (
           <IconButton
-            sx={{ zIndex: 1000 }}
             size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onUpdate)
-                onUpdate()
-            }}
+            onClick={(event) => event.stopPropagation()}
+            component="label"
+            htmlFor={`label-${labelText}`}
+            sx={{ zIndex: 1000 }}
           >
             <DriveFileRenameOutlineRoundedIcon
               color="primary"

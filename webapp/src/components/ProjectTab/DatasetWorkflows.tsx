@@ -20,7 +20,7 @@ export default function DatasetWorkflows({ workflowId }: IDatasetWorkflows) {
     <>
       {datasets.map((dataset) => (
         <TreeItem
-          nodeId={`workflow-${dataset.id}-from-dataset-from-${workflowId}`}
+          itemId={`workflow-${dataset.id}-from-dataset-from-${workflowId}`}
           label={dataset.output_name ? dataset.output_name : `dataset-${dataset.id}`}
           key={dataset.id}
         />

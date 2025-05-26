@@ -3,8 +3,10 @@ import { create } from 'zustand'
 import {
   getLinesByProjectID,
   createNewLine,
+  updateLineName,
   deleteLine,
 } from 'services/lineServices'
+
 import { createNewWorkflow, deleteWorkflow } from 'services/workflowServices'
 
 type linesType = Array<ILine>
@@ -13,6 +15,7 @@ interface ILinesStoreState {
   lines: linesType
   loadLines: (projectId: number) => void
   saveNewLine: (projectId: number, name: string) => void
+  updateLineName: (lineId: number, newName: string) => void
   removeLine: (lineId: number) => void
   removeWorkflowFromLine: (lineId: number, workflowId: number) => void
   pushNewWorkflowToLine: (lineId: number, name: string) => void
@@ -33,6 +36,20 @@ export const useLinesStore = create<ILinesStoreState>((set) => ({
         if (!result)
           return
         set((state) => ({ lines: [...state.lines, result] }))
+      })
+  },
+  updateLineName: (lineId: number, newName: string) => {
+    updateLineName(lineId, newName)
+      .then(result => {
+        if (!result)
+          return
+        set((state) => ({
+          lines: state.lines.map((line) => {
+            if (line.id == lineId)
+              line.name = newName
+            return line
+          })
+        }))
       })
   },
   removeLine: (lineId: number) => {

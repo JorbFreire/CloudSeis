@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -39,18 +40,18 @@ export default function ProgramsDrawer({
   isOpen,
   setIsOpen
 }: IProgramsDrawerProps) {
-  const triggerNotification = useNotificationStore((state) => state.triggerNotification)
-  const singleSelectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
+  const triggerNotification = useNotificationStore(useShallow((state) => state.triggerNotification))
+  const singleSelectedWorkflowId = useSelectedWorkflowsStore(useShallow((state) => state.singleSelectedWorkflowId))
   // *** Commands in the current selected workflow
   const {
     commands,
     setCommands,
     setSelectedCommandId
-  } = useCommandsStore((state) => ({
+  } = useCommandsStore(useShallow((state) => ({
     commands: state.commands,
     setCommands: state.setCommands,
     setSelectedCommandId: state.setSelectedCommandId,
-  }))
+  })))
 
   // *** Groups of Commands, available commands to insert in the workflow
   const [programsGroups, setProgramsGroups] = useState<Array<IProgramsGroup>>([])
