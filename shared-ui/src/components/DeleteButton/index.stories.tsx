@@ -1,20 +1,20 @@
-// DeleteButton.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+
 import DeleteButton from './';
 
-const meta: Meta<typeof DeleteButton> = {
+type Story = StoryObj<typeof DeleteButton>;
+
+const meta: Meta<Story> = {
   title: 'Components/DeleteButton',
   component: DeleteButton,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof DeleteButton>;
-
 export const Default: Story = {
   args: {
-    onClick: () => action('Clicked delete!'),
+    onRemove: () => action('Clicked delete!'),
     size: 'large',
   },
   decorators: [
