@@ -3,15 +3,25 @@ import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 
 const theme = createTheme();
 
-const preview: Preview = {
-  decorators: [
-    (Story) => (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+const StoryWrapper = (Story, context) => {
+  const isSmallBox = context.parameters?.isSmallBox ?? false;
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {isSmallBox ? (
+        <div style={{ maxWidth: 512 }}>
+          <Story />
+        </div>
+      ) : (
         <Story />
-      </ThemeProvider>
-    ),
-  ],
+      )}
+    </ThemeProvider>
+  );
+};
+
+const preview: Preview = {
+  decorators: [StoryWrapper],
   parameters: {
     controls: {
       matchers: {
