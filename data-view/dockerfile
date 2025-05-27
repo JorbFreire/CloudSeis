@@ -1,8 +1,8 @@
 FROM python:3.12.3
-WORKDIR /home/seismic-webviz
+WORKDIR /home/data-view
 
 COPY . .
 RUN pip install -r requirements.txt
 
 EXPOSE 5006
-CMD python -m seismic_webviz
+CMD python -m data_view

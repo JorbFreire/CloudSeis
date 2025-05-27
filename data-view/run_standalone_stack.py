@@ -1,5 +1,5 @@
 from os import getenv, getcwd
-from seismic_webviz.core import visualization_factory
+from data_view.core import visualization_factory
 from bokeh.plotting import curdoc
 
 SU_FILE_PATH = getenv(
