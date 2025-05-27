@@ -59,9 +59,9 @@ To create a new migration:
 flask db migrate -m 'Migration Name'
 ```
 
-### Run the Webapp
+### Run the Workspace
 
-Once inside the `Webapp` folder, install its dependencies and run the dev environment as shown below.
+Once inside the `Workspace` folder, install its dependencies and run the dev environment as shown below.
 ```bash
 yarn
 ```

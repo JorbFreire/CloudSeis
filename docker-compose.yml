@@ -39,10 +39,10 @@ services:
     ports:
       - "5000:5000"
 
-  webapp:
-    image: boto/webapp:demo-1.0
+  workspace:
+    image: boto/workspace:demo-1.0
     build:
-      context: ./webapp
+      context: ./workspace
     environment:
       - VITE_API_URL=${VITE_API_URL:-http://localhost:5000}
       - VITE_VISUALIZER_URL=${VITE_VISUALIZER_URL:-http://localhost:5006}
