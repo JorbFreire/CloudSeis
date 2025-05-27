@@ -7,7 +7,11 @@ import {
   deleteLine,
 } from 'services/lineServices'
 
-import { createNewWorkflow, deleteWorkflow } from 'services/workflowServices'
+import {
+  createNewWorkflow,
+  updateWorkflowName,
+  deleteWorkflow,
+} from 'services/workflowServices'
 
 type linesType = Array<ILine>
 
@@ -17,8 +21,12 @@ interface ILinesStoreState {
   saveNewLine: (projectId: number, name: string) => void
   updateLineName: (lineId: number, newName: string) => void
   removeLine: (lineId: number) => void
-  removeWorkflowFromLine: (lineId: number, workflowId: number) => void
+
+  // ! Workflows are too acoplated to lines store
+  // ! Deacoplate may cost performance
   pushNewWorkflowToLine: (lineId: number, name: string) => void
+  updateWorkflowName: (lineId: number, workflowId: number, newName: string) => void
+  removeWorkflowFromLine: (lineId: number, workflowId: number) => void
 }
 
 export const useLinesStore = create<ILinesStoreState>((set) => ({
@@ -61,19 +69,6 @@ export const useLinesStore = create<ILinesStoreState>((set) => ({
       }))
     })
   },
-  removeWorkflowFromLine: (lineId: number, workflowId: number) => {
-    deleteWorkflow(workflowId).then(result => {
-      if (!result)
-        return
-      set((state) => ({
-        lines: state.lines.map((line) => {
-          if (line.id == lineId)
-            line.workflows = line.workflows.filter((workflow) => workflow.id != workflowId)
-          return line
-        })
-      }))
-    })
-  },
   pushNewWorkflowToLine: (lineId: number, name: string) => {
     createNewWorkflow(lineId, "lineId", name)
       .then(result => {
@@ -87,5 +82,35 @@ export const useLinesStore = create<ILinesStoreState>((set) => ({
           })
         }))
       })
-  }
+  },
+  updateWorkflowName: (lineId, workflowId, newName) => {
+    updateWorkflowName(workflowId, newName).then(result => {
+      if (!result)
+        return
+      set((state) => ({
+        lines: state.lines.map((line) => {
+          if (line.id == lineId)
+            line.workflows = line.workflows.map((workflow) => {
+              if (workflow.id == workflowId)
+                workflow.name = newName
+              return workflow
+            })
+          return line
+        })
+      }))
+    })
+  },
+  removeWorkflowFromLine: (lineId: number, workflowId: number) => {
+    deleteWorkflow(workflowId).then(result => {
+      if (!result)
+        return
+      set((state) => ({
+        lines: state.lines.map((line) => {
+          if (line.id == lineId)
+            line.workflows = line.workflows.filter((workflow) => workflow.id != workflowId)
+          return line
+        })
+      }))
+    })
+  },
 }))

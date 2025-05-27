@@ -51,7 +51,7 @@ export default function LineChildrenFolder({
             <TreeItemLabelWithActions
               labelText={workflow.name}
               onRemove={() => removeWorkflowFromLine(lineId, workflow.id)}
-              onUpdate={() => { }}
+              onUpdate={(newName) => updateWorkflowName(lineId, workflow.id, newName)}
             />
           }
         />

@@ -51,6 +51,28 @@ export async function createNewWorkflow(
   }
 }
 
+export async function updateWorkflowName(
+  workflowId: number,
+  name: string,
+): Promise<IWorkflow | null> {
+  try {
+    const response = await api.put<IWorkflow>(
+      `/workflow/update/${workflowId}/name`,
+      {
+        name
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+    const axiosError = error as AxiosError
+    notificationStore.triggerNotification({
+      content: axiosError
+    });
+    return null
+  }
+}
+
 export async function updateWorkflowFileLink(
   workflowId: number,
   fileLinkId: number,
