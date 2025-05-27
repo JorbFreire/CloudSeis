@@ -50,6 +50,7 @@ export default function CustomTab({
     setCommands: state.setCommands,
   })))
 
+  // ! This function should not be in a generic component
   const handleUpdateCommandIsActive = () => {
     updateCommandIsActive(value)
     const newCommandsList = commands.map(command => {
