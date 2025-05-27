@@ -6,7 +6,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 import AddRoundedIcon from "@mui/icons-material/AddRounded"
 
@@ -58,12 +57,12 @@ export default function NewProjectDialog({ pushNewProject }: INewProjectDialogPr
             Cancelar
           </Button>
 
-          <LoadingButton
+          <Button
             type='submit'
             loading={isLoading}
           >
             Salvar
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </Dialog>
 

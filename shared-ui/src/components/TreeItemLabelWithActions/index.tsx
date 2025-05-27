@@ -44,7 +44,7 @@ export default function TreeItemLabelWithActions({
         type="text"
         size="small"
         value={labelTextEditing}
-        isLoadingUpdate={isLoadingUpdate}
+        $isLoadingUpdate={isLoadingUpdate}
 
         onChange={(event) => setLabelTextEditing(event.target.value)}
         onKeyDown={(event) => event.stopPropagation()}

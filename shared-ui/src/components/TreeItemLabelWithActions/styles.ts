@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 interface ICustomTextFieldProps {
-  isLoadingUpdate: boolean
+  $isLoadingUpdate: boolean
 }
 
 export const Container = styled(Box)`
@@ -23,7 +23,7 @@ export const CustomTextField = styled(TextField) <ICustomTextFieldProps>`
     border: none;
   }
   pointer-events: none;
-  width: calc(100% - 72px ${({ isLoadingUpdate }) => isLoadingUpdate && " - 24px"} );
+  width: calc(100% - 72px ${({ $isLoadingUpdate }) => $isLoadingUpdate && " - 24px"} );
 `
 
 export const ActionsBox = styled(Box)`

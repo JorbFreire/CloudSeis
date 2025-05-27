@@ -2,8 +2,8 @@ import { useState, useEffect } from "react"
 import type { FormEvent } from "react"
 import { useNavigate } from "@tanstack/react-location"
 
-import { TextField } from "@mui/material"
-import LoadingButton from '@mui/lab/LoadingButton';
+import TextField from "@mui/material/TextField"
+import Button from "@mui/material/Button"
 
 import { validateSession, createNewSession } from "services/sessionServices";
 import {
@@ -57,13 +57,13 @@ export default function Login() {
           onChange={(event) => setPassword(event.target.value)}
         />
 
-        <LoadingButton
+        <Button
           type="submit"
           variant="contained"
           loading={isLoading}
         >
           Login
-        </LoadingButton>
+        </Button>
 
         <LinksBox>
           <Link to="/account-recovery">
