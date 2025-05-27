@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useShallow } from "zustand/react/shallow"
 
 import { useGatherKeyStore } from "store/gatherKeyStore"
 import { useSelectedWorkflowsStore } from "store/selectedWorkflowsStore";
@@ -6,12 +7,10 @@ import { useSelectedWorkflowsStore } from "store/selectedWorkflowsStore";
 import { CommandActionButtonStyled } from "./styles";
 
 export default function VisualizeDatasetButton() {
-  const {
-    singleSelectedWorkflowId,
-  } = useSelectedWorkflowsStore((state) => ({
-    singleSelectedWorkflowId: state.singleSelectedWorkflowId,
-  }))
-  const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
+  const singleSelectedWorkflowId = useSelectedWorkflowsStore(useShallow((state) => (
+    state.singleSelectedWorkflowId
+  )))
+  const gatherKeys = useGatherKeyStore(useShallow((state) => state.gatherKeys))
 
   const [isLoading, setIsLoading] = useState(false)
 

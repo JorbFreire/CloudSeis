@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import type { ChangeEvent } from 'react'
 
 import Button from "@mui/material/Button"
@@ -10,8 +11,8 @@ import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { Container } from './styles'
 
 export default function OutputConfigOptions() {
-  const singleSelectedWorkflowId = useSelectedWorkflowsStore((state) => state.singleSelectedWorkflowId)
-  const selectedWorkflows = useSelectedWorkflowsStore((state) => state.selectedWorkflows)
+  const singleSelectedWorkflowId = useSelectedWorkflowsStore(useShallow((state) => state.singleSelectedWorkflowId))
+  const selectedWorkflows = useSelectedWorkflowsStore(useShallow((state) => state.selectedWorkflows))
   const [outputFileName, setOutputFileName] = useState("")
 
   const updateOutputFileName = (event: ChangeEvent<HTMLInputElement>) => {

@@ -33,7 +33,9 @@ function getFormatedDate(dateString: string): string {
 
 export default function Console({ isOpen, setIsOpen }: IConsoleProps) {
   const consoleLogs = useLogsStore(useShallow((state) => state.logs))
-  const selectedWorkflowId = useSelectedWorkflowsStore(useShallow((state) => state.singleSelectedWorkflowId))
+  const selectedWorkflowId = useSelectedWorkflowsStore(useShallow((state) => (
+    state.singleSelectedWorkflowId
+  )))
 
   return (
     <GenericDrawer

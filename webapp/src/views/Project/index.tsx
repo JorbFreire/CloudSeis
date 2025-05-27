@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import FeedbackRoundedIcon from '@mui/icons-material/FeedbackRounded';
 import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
 import IntegrationInstructionsRoundedIcon from '@mui/icons-material/IntegrationInstructionsRounded';
 import { useShallow } from 'zustand/react/shallow'
@@ -31,7 +30,7 @@ interface IProjectProps {
 }
 
 export default function Project({ projectId }: IProjectProps) {
-  const loadLines = useLinesStore((state) => state.loadLines)
+  const loadLines = useLinesStore(useShallow((state) => state.loadLines))
 
   const {
     selectedWorkflows,
@@ -126,6 +125,7 @@ export default function Project({ projectId }: IProjectProps) {
                 <VisualizeDatasetButton />
               }
             >
+              <TabContentDisplayer />
             </CustomTabsNavigation>
           </CustomTabsNavigation>
         </SelectedWorkflowsContainer>

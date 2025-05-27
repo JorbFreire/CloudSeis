@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useShallow } from "zustand/react/shallow"
 
 import { useSelectedWorkflowsStore } from "store/selectedWorkflowsStore"
 import { useGatherKeyStore } from "store/gatherKeyStore"
@@ -8,13 +9,11 @@ import { updateFile } from 'services/fileServices'
 import { CommandActionButtonStyled } from './styles'
 
 export default function RunWorkflowButton() {
-  const {
-    singleSelectedWorkflowId,
-  } = useSelectedWorkflowsStore((state) => ({
-    singleSelectedWorkflowId: state.singleSelectedWorkflowId,
-  }))
-  const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
-  const pushNewLog = useLogsStore(state => state.pushNewLog)
+  const singleSelectedWorkflowId = useSelectedWorkflowsStore(useShallow((state) => (
+    state.singleSelectedWorkflowId
+  )))
+  const gatherKeys = useGatherKeyStore(useShallow((state) => state.gatherKeys))
+  const pushNewLog = useLogsStore(useShallow(state => state.pushNewLog))
 
   const [isLoading, setIsLoading] = useState(false)
 

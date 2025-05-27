@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
-import { useLocation } from "@tanstack/react-location";
+import { useLocation } from "@tanstack/react-location"
+import { useShallow } from 'zustand/react/shallow'
 
 import Button from "@mui/material/Button"
-import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography'
 
 import { FileSelector } from "shared-ui"
 
 import { listFiles, createFile } from "services/fileServices"
-import { updateWorkflowFileLink } from "services/workflowServices";
+import { updateWorkflowFileLink } from "services/workflowServices"
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { useGatherKeyStore } from 'store/gatherKeyStore'
 
@@ -21,12 +22,12 @@ export default function InputSelectorOptions() {
     selectedWorkflows,
     singleSelectedWorkflowId,
     hasSelectedDataset,
-  } = useSelectedWorkflowsStore((state) => ({
+  } = useSelectedWorkflowsStore(useShallow((state) => ({
     selectedWorkflows: state.selectedWorkflows,
     singleSelectedWorkflowId: state.singleSelectedWorkflowId,
     hasSelectedDataset: state.hasSelectedDataset,
-  }))
-  const gatherKeys = useGatherKeyStore((state) => state.gatherKeys)
+  })))
+  const gatherKeys = useGatherKeyStore(useShallow((state) => state.gatherKeys))
 
   const [fileLinks, setFileLinks] = useState<Array<IfileLink>>([])
   const [selectedFileLinkId, setSelectedFileLinkId] = useState<string | undefined>("0")

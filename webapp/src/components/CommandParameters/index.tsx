@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import type { FormEvent } from "react"
+import { useShallow } from "zustand/react/shallow"
 
 import { getParameters } from "services/programServices"
 import { useSelectedWorkflowsStore } from "store/selectedWorkflowsStore"
@@ -18,12 +19,12 @@ interface ICommandParametersProps {
 }
 
 export default function CommandParameters({ command }: ICommandParametersProps) {
-  const {
-    hasSelectedDataset,
-  } = useSelectedWorkflowsStore((state) => ({
-    hasSelectedDataset: state.hasSelectedDataset,
-  }))
-  const { updateCommandParams } = useCommandsStore()
+  const hasSelectedDataset = useSelectedWorkflowsStore(useShallow((state) => (
+    state.hasSelectedDataset
+  )))
+  const updateCommandParams = useCommandsStore(useShallow(state => (
+    state.updateCommandParams
+  )))
 
   const [availableParameters, setAvailableParameters] = useState<Array<IseismicProgramParameters>>([])
   const [commandParameters, setCommandParameters] = useState<IobjectWithDynamicFields | null>(null)
@@ -74,8 +75,10 @@ export default function CommandParameters({ command }: ICommandParametersProps) 
                 temCommandParameters[parameterField.name] = event.target.value
                 setCommandParameters({ ...temCommandParameters })
               }}
-              InputLabelProps={{
-                shrink: true
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
               }}
             />
           )}

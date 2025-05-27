@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 import TextField from "@mui/material/TextField"
 import Typography from '@mui/material/Typography'
@@ -8,8 +9,8 @@ import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import { Container, HelperText } from './styles'
 
 export default function VizualizerConfigOptions() {
-  const singleSelectedWorkflowId = useSelectedWorkflowsStore(state => state.singleSelectedWorkflowId)
-  const [gatherKeys, updateGatherKey] = useGatherKeyStore((state) => ([state.gatherKeys, state.updateGatherKey]))
+  const singleSelectedWorkflowId = useSelectedWorkflowsStore(useShallow(state => state.singleSelectedWorkflowId))
+  const [gatherKeys, updateGatherKey] = useGatherKeyStore(useShallow((state) => ([state.gatherKeys, state.updateGatherKey])))
   const [gatherKey, setGatherKey] = useState("")
 
   useEffect(() => {

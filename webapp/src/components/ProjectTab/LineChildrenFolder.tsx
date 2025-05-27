@@ -1,3 +1,4 @@
+import { useShallow } from 'zustand/react/shallow';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import Button from '@mui/material/Button';
 import NoteAddRoundedIcon from '@mui/icons-material/NoteAddRounded';
@@ -20,11 +21,13 @@ export default function LineChildrenFolder({
 }: ILineChildrenFolderProps) {
   const {
     pushNewWorkflowToLine,
+    updateWorkflowName,
     removeWorkflowFromLine,
-  } = useLinesStore((state) => ({
+  } = useLinesStore(useShallow((state) => ({
     pushNewWorkflowToLine: state.pushNewWorkflowToLine,
+    updateWorkflowName: state.updateWorkflowName,
     removeWorkflowFromLine: state.removeWorkflowFromLine
-  }))
+  })))
 
   const generateNextWorkflowName = () => {
     if (data.length < 1)
@@ -48,7 +51,7 @@ export default function LineChildrenFolder({
             <TreeItemLabelWithActions
               labelText={workflow.name}
               onRemove={() => removeWorkflowFromLine(lineId, workflow.id)}
-              onUpdate={(newName) => console.log(newName)}
+              onUpdate={() => { }}
             />
           }
         />

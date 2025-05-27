@@ -38,11 +38,9 @@ export default function CustomTab({
     transition,
   } = useSortable({ id: value });
 
-  const {
-    hasSelectedDataset,
-  } = useSelectedWorkflowsStore(useShallow((state) => ({
-    hasSelectedDataset: state.hasSelectedDataset,
-  })))
+  const hasSelectedDataset = useSelectedWorkflowsStore(useShallow((state) => (
+    state.hasSelectedDataset
+  )))
 
   const {
     commands,
@@ -51,7 +49,6 @@ export default function CustomTab({
     commands: state.commands,
     setCommands: state.setCommands,
   })))
-
 
   const handleUpdateCommandIsActive = () => {
     updateCommandIsActive(value)

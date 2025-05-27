@@ -1,4 +1,5 @@
 import { useCommandsStore } from 'store/commandsStore'
+import { useShallow } from 'zustand/react/shallow'
 
 import CommandParameters from 'components/CommandParameters';
 import InputSelectorOptions from 'components/InputSelectorOptions';
@@ -11,10 +12,10 @@ export default function TabContentDisplayer() {
   const {
     commands,
     selectedCommandId,
-  } = useCommandsStore((state) => ({
+  } = useCommandsStore(useShallow((state) => ({
     commands: state.commands,
     selectedCommandId: state.selectedCommandId,
-  }))
+  })))
 
   const getTabContent = () => {
     switch (selectedCommandId) {

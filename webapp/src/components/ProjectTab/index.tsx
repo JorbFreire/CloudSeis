@@ -5,8 +5,8 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
 
 import { TreeItemLabelWithActions } from 'shared-ui';
 
@@ -28,11 +28,9 @@ export default function ProjectTab() {
     removeLine: state.removeLine,
     updateLineName: state.updateLineName,
   })))
-  const {
-    selectWorkflow
-  } = useSelectedWorkflowsStore(useShallow((state) => ({
-    selectWorkflow: state.selectWorkflow,
-  })))
+  const selectWorkflow = useSelectedWorkflowsStore(useShallow((state) => (
+    state.selectWorkflow
+  )))
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [selectedItems, setSelectedItems] = useState<string>("");
@@ -68,9 +66,9 @@ export default function ProjectTab() {
   return (
     <Container>
       <SimpleTreeView
-        slotProps={{
-          collapseIcon: <ExpandMoreIcon />,
-          expandIcon: <ChevronRightIcon />
+        slots={{
+          collapseIcon: ExpandMoreIcon,
+          expandIcon: ChevronRightIcon
         }}
         expandedItems={expandedItems}
         selectedItems={selectedItems}
