@@ -2,19 +2,11 @@ import styled, { css } from 'styled-components'
 
 import TableContainer from '@mui/material/TableContainer'
 import TableCell from '@mui/material/TableCell'
-import IconButton from '@mui/material/IconButton'
 
 interface ICustomTableCellProps {
   $isShort?: boolean
   $hasDivider?: boolean
 }
-
-export const CloseButton = styled(IconButton)`
-  position: absolute !important;
-  z-index: 10;
-  top: -6px;
-  left: 16px;
-`
 
 export const CustomTableContainer = styled(TableContainer)`
   &.MuiTableContainer-root {

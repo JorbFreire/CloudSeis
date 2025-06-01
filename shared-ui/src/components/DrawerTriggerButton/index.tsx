@@ -1,10 +1,12 @@
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
 
+import type { IFloatButtonProps } from '../../types/buttonTypes'
+
+
 import {
   CustomButton
 } from './styles'
 
-import type { IFloatButtonProps } from './styles'
 
 interface IDrawerTriggerButton extends IFloatButtonProps {
   children?: ReactNode

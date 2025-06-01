@@ -30,7 +30,7 @@ export default function InputSelectorOptions() {
   const gatherKeys = useGatherKeyStore(useShallow((state) => state.gatherKeys))
 
   const [fileLinks, setFileLinks] = useState<Array<IfileLink>>([])
-  const [selectedFileLinkId, setSelectedFileLinkId] = useState<string | undefined>("0")
+  const [selectedFileLinkId, setSelectedFileLinkId] = useState<number | undefined>(0)
 
   const uploadNewFile = (
     newFileLink: IfileLink,
@@ -50,7 +50,7 @@ export default function InputSelectorOptions() {
         result.fileLink.id
       )
       setFileLinks([...fileLinks, newFileLink])
-      setSelectedFileLinkId(newFileLink.id.toString())
+      setSelectedFileLinkId(newFileLink.id)
     })
   }
 
@@ -64,7 +64,7 @@ export default function InputSelectorOptions() {
     window.open(`${vizualizerURL}workflowId=${singleSelectedWorkflowId}&origin=input`, '_blank')
   }
 
-  const submitWorkflowFileLinkUpdate = (fileLinkId: string) => {
+  const submitWorkflowFileLinkUpdate = (fileLinkId: number) => {
     const oldFileLinkId = selectedFileLinkId
     setSelectedFileLinkId(fileLinkId)
 
@@ -93,7 +93,7 @@ export default function InputSelectorOptions() {
         (workflow) => workflow.id == singleSelectedWorkflowId
       )
       const fileLinkId = availableSeismicFiles[0].input_file_link_id
-      setSelectedFileLinkId(fileLinkId.toString())
+      setSelectedFileLinkId(fileLinkId)
     })
   }, [])
 
@@ -109,7 +109,7 @@ export default function InputSelectorOptions() {
 
       {hasSelectedDataset ? (
         <Typography fontSize={22}>
-          {fileLinks.find((link) => link.id.toString() === selectedFileLinkId)?.name}
+          {fileLinks.find((link) => link.id === selectedFileLinkId)?.name}
         </Typography>
       ) : (
         <FileSelector

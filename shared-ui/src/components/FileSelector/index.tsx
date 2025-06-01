@@ -8,15 +8,13 @@ import FileUploadDialog from "../FileUploadDialog"
 import { uploadNewFileType } from "../FileUploadDialog"
 
 interface IFileSelectorProps {
-  label?: string
   fileLinks: Array<IfileLink>
-  selectedFileLinkId: string | undefined
-  onSubmitFileLinkUpdate: (fileLinkId: string) => void
+  selectedFileLinkId: number | undefined
+  onSubmitFileLinkUpdate: (fileLinkId: number) => void
   uploadNewFile: uploadNewFileType
 }
 
 export default function FileSelector({
-  label = "Arquivo",
   fileLinks,
   selectedFileLinkId,
   onSubmitFileLinkUpdate,
@@ -28,8 +26,8 @@ export default function FileSelector({
     <>
       <Select
         value={selectedFileLinkId}
-        label={label}
         onChange={(event) => onSubmitFileLinkUpdate(event.target.value)}
+        variant="outlined"
       >
         {fileLinks.map((fileLink) =>
           <MenuItem key={fileLink.id} value={fileLink.id}>

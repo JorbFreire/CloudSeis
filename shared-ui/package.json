@@ -1,6 +1,6 @@
 {
   "name": "shared-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/index.js",
   "dependencies": {
     "@emotion/react": "^11.14.0",
