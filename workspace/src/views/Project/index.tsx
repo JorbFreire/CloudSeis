@@ -141,7 +141,7 @@ export default function Project({ projectId }: IProjectProps) {
         <DrawerTriggerButton
           setIsOpen={setIsOptionsDrawerOpen}
           startIcon={<IntegrationInstructionsRoundedIcon />}
-          $top='16px'
+          $top='8px'
           $right='16px'
         >
           Programs

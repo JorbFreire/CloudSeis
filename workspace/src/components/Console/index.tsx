@@ -8,14 +8,13 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { CloseButton } from 'shared-ui'
 
 import { useLogsStore } from 'store/logsStore'
 import { useSelectedWorkflowsStore } from 'store/selectedWorkflowsStore'
 import GenericDrawer from '../GenericDrawer'
 
 import {
-  CloseButton,
   CustomTableContainer,
   CustomTableCell,
   IconCellContainer,
@@ -44,12 +43,9 @@ export default function Console({ isOpen, setIsOpen }: IConsoleProps) {
       anchor='bottom'
     >
       <CloseButton
-        color='error'
-        size='small'
         onClick={() => setIsOpen(false)}
-      >
-        <CloseRoundedIcon fontSize='large' />
-      </CloseButton>
+        $top={"2px"}
+      />
       <CustomTableContainer>
         <Table
           size="small"

@@ -12,7 +12,8 @@ import Tooltip from '@mui/material/Tooltip';
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+
+import { CloseButton } from 'shared-ui';
 
 import { getGroups } from 'services/programServices'
 import { createNewCommand } from 'services/commandServices'
@@ -26,7 +27,6 @@ import {
   Container,
   GroupsListBox,
   Title,
-  CloseButton,
   CustomAccordion,
   CustomListItem
 } from './styles'
@@ -94,12 +94,9 @@ export default function ProgramsDrawer({
     >
       <Container>
         <CloseButton
-          color='error'
-          size='small'
           onClick={() => setIsOpen(false)}
-        >
-          <CloseRoundedIcon fontSize='large' />
-        </CloseButton>
+          $top={"8px"}
+        />
 
         <Title variant='h5'>
           Seismic Unix
