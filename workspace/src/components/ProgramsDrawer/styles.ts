@@ -37,7 +37,7 @@ export const CustomAccordion = styled(Accordion)`
 `
 
 export const CustomListItem = styled(ListItem)`
-  :not(:last-child) {
+  &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
   }
   svg:not(:first-child) {
