@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
 
-export type uploadNewFileType = (newFileLink: IfileLink, formData: FormData) => void
+export type uploadNewFileType = (newFile: File, formData: FormData) => void
 
 interface IFileUploadDialogProps {
   open: boolean

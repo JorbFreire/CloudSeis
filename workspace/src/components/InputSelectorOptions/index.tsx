@@ -33,7 +33,7 @@ export default function InputSelectorOptions() {
   const [selectedFileLinkId, setSelectedFileLinkId] = useState<number | undefined>(0)
 
   const uploadNewFile = (
-    newFileLink: IfileLink,
+    newFile: File,
     formData: FormData
   ) => {
     if (!singleSelectedWorkflowId)
@@ -43,14 +43,13 @@ export default function InputSelectorOptions() {
       projectId,
       formData
     ).then((result) => {
-      console.log({ result })
       if (!result) return
       updateWorkflowFileLink(
         singleSelectedWorkflowId,
         result.fileLink.id
       )
-      setFileLinks([...fileLinks, newFileLink])
-      setSelectedFileLinkId(newFileLink.id)
+      setFileLinks([...fileLinks, result.fileLink])
+      setSelectedFileLinkId(result.fileLink.id)
     })
   }
 
@@ -77,7 +76,7 @@ export default function InputSelectorOptions() {
       singleSelectedWorkflowId,
       Number(fileLinkId)
     ).catch((error) => {
-      console.log(error)
+      console.error(error)
       setSelectedFileLinkId(oldFileLinkId)
     })
   }
