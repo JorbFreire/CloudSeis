@@ -3,6 +3,11 @@ import useNotificationStore from 'store/notificationStore';
 
 import api from "./api"
 
+interface IupdateFileResult {
+  result_workflow_id: number
+  process_details: IprocessLogs
+}
+
 const notificationStore = useNotificationStore.getState()
 
 export async function listFiles(
@@ -50,7 +55,7 @@ export async function createFile(
 
 export async function updateFile(
   workflowId: number
-): Promise<IprocessLogs | null> {
+): Promise<IupdateFileResult | null> {
   try {
     const response = await api.put(
       `/su-file/update/${workflowId}`

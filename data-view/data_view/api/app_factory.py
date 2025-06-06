@@ -1,4 +1,5 @@
 
+from os import path, getcwd
 from typing import Literal
 
 import requests
@@ -12,19 +13,22 @@ from .config import BASE_URL
 
 def app_factory():
     def find_file_path(auth_token: str, workflowId: int, origin: Literal["input", "output"]) -> None | str:
-        api_url = f"{BASE_URL}/su-file-path/dataset/show-path/{workflowId}"
+        api_url = f"{BASE_URL}/su-file-path/{workflowId}/show-path/output"
         if origin == "input":
-            api_url = api_url.replace("/dataset", "")
+            api_url = api_url.replace("/output", "/input")
         cookies = {
             "Authorization": f"Bearer {auth_token}"
         }
 
         response = requests.get(api_url, cookies=cookies)
-
         if response.status_code != 200:
             return None
 
-        absolute_file_path = response.json()["file_path"]
+        absolute_file_path = path.join(
+            "..",
+            "server",
+            response.json()["file_path"]
+        )
         return absolute_file_path
 
     def modify_document(document: Document) -> None:

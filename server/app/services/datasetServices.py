@@ -5,6 +5,7 @@ from ..database.connection import database
 from ..models.UserModel import UserModel
 from ..models.DataSetModel import DataSetModel
 from ..models.WorkflowModel import WorkflowModel
+from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationModel
 from ..models.CommandModel import CommandModel
 
 from ..repositories.WorkflowRepository import workflowRepository
@@ -79,3 +80,20 @@ def createDataset(userId, originWorkflowId) -> dict:
     database.session.commit()
 
     return dataset.getAttributes()
+
+
+def deleteDatasets(originWorkflow):
+    # *** overwrite any dataset with the same output name
+    datasets_to_delete = DataSetModel.query \
+        .join(WorkflowParentsAssociationModel, DataSetModel.id == WorkflowParentsAssociationModel.datasetId) \
+        .join(WorkflowModel, WorkflowModel.id == WorkflowParentsAssociationModel.workflowId) \
+        .filter(WorkflowModel.output_name == originWorkflow.output_name) \
+        .all()
+    for dataset in datasets_to_delete:
+        if dataset.workflowParentAssociations:
+            workflow_to_delete = WorkflowModel.query.filter_by(
+                id=dataset.workflowParentAssociations[0].workflowId
+            ).first()
+            # dataset.workflowParentAssociations
+            database.session.delete(workflow_to_delete)
+        database.session.delete(dataset)

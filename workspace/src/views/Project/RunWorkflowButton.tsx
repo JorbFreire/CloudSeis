@@ -23,13 +23,13 @@ export default function RunWorkflowButton() {
     updateFile(singleSelectedWorkflowId).then((result) => {
       if (!result) return
 
-      pushNewLog(singleSelectedWorkflowId, result)
+      pushNewLog(singleSelectedWorkflowId, result.process_details)
 
       let vizualizerURL = `${import.meta.env.VITE_VISUALIZER_URL}/?`
       const gatherKeyFromStore = gatherKeys.get(singleSelectedWorkflowId)
       if (gatherKeyFromStore)
         vizualizerURL += `gather_key=${gatherKeyFromStore}&`
-      window.open(`${vizualizerURL}workflowId=${singleSelectedWorkflowId}`, '_blank')
+      window.open(`${vizualizerURL}workflowId=${result.result_workflow_id}`, '_blank')
     }).finally(() => {
       setIsLoading(false)
     })
