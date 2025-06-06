@@ -10,8 +10,8 @@ from ..models.WorkflowParentsAssociationModel import WorkflowParentsAssociationM
 
 from ..services.datasetServices import createDataset, deleteDatasets
 from ..factories.filePathFactory import createUploadedFilePath, createDatasetFilePath
-from ..services.seismicUnixCommandStringServices import getSemicUnixCommandString
-from ..services.getSimplifiedProcessStringService import getSimplifiedProcessString
+from ..factories.seismicUnixCommandStringFactory import createSemicUnixCommandString
+from ..factories.simplifiedProcessStringFactory import createSimplifiedProcessString
 
 from ..errors.FileError import FileError
 
@@ -69,7 +69,7 @@ def update(userId, workflowId):
     if not path.exists(datasetsDirectory):
         makedirs(datasetsDirectory)
 
-    seismicUnixProcessString = getSemicUnixCommandString(
+    seismicUnixProcessString = createSemicUnixCommandString(
         workflow.orderedCommandsList,
         source_file_path,
         target_file_path
@@ -101,7 +101,7 @@ def update(userId, workflowId):
         database.session.commit()
 
         process_details = {
-            "executionSimplifiedString": getSimplifiedProcessString(process_output),
+            "executionSimplifiedString": createSimplifiedProcessString(process_output),
             "logMessage": process_output.stderr,
             "returncode": process_output.returncode,
             "processStartTime": processStartTime,

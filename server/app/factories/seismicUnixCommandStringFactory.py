@@ -26,7 +26,7 @@ def _getAllParameters(parameters) -> str:
     return parametersProcessString
 
 
-def getSemicUnixCommandString(commandsQueue: list, source_file_path: str, target_file_path: str) -> str:
+def createSemicUnixCommandString(commandsQueue: list, source_file_path: str, target_file_path: str) -> str:
     # It will generate a string based on filled fields,
     # parameters with empty values (like empty string or empty lists) will be ignored,
     # leting the command line program handle it if not mandatory

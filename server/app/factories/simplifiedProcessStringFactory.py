@@ -1,7 +1,7 @@
 from os import path
 
 
-def getSimplifiedProcessString(process_output):
+def createSimplifiedProcessString(process_output):
     commands, rest = process_output.args.split("<", 1)
     inputPath, outputPath = rest.split(">", 1)
     inputFileName = path.basename(inputPath)
